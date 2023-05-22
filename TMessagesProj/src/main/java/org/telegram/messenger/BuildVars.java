@@ -29,14 +29,14 @@ public class BuildVars {
     public static boolean NO_SCOPED_STORAGE = Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q;
     public static int BUILD_VERSION = BuildConfig.BUILD_VERSION;
     public static String BUILD_VERSION_STRING = BuildConfig.BUILD_VERSION_STRING;
-    public static int TELEGRAM_BUILD_VERSION = 3356;
-    public static String TELEGRAM_VERSION_STRING = "9.6.5";
-
+    public static int TELEGRAM_BUILD_VERSION = 3227;
+    public static String TELEGRAM_VERSION_STRING = "9.5.4";
+    public static int APP_ID = 12921654;
+    public static String APP_HASH = "8ebeb77d7170894d560ca40bdeabac3a";
     public static String SAFETYNET_KEY = "";
     public static String SMS_HASH = isStandaloneApp() ? "w0lkcmTZkKh" : (DEBUG_VERSION ? "O2P2z+/jBpJ" : "oLeq9AcOZkT");
     public static String PLAYSTORE_APP_URL = "";
-
-    public static String GOOGLE_AUTH_CLIENT_ID = "760348033671-81kmi3pi84p11ub8hp9a1funsv0rn2p9.apps.googleusercontent.com";
+    public static String GOOGLE_AUTH_CLIENT_ID = "217475623555-jut3eg13m94k6nk7scbucq5h4os3qrfv.apps.googleusercontent.com";
 
     public static String HUAWEI_APP_ID = "101184875";
 
@@ -51,7 +51,7 @@ public class BuildVars {
     }
 
     public static boolean useInvoiceBilling() {
-        return DEBUG_VERSION; isStandaloneApp();  isBetaApp();  isHuaweiStoreApp();  hasDirectCurrency();
+        return DEBUG_VERSION || isStandaloneApp() || isBetaApp() || isHuaweiStoreApp() || hasDirectCurrency();
     }
 
     private static boolean hasDirectCurrency() {

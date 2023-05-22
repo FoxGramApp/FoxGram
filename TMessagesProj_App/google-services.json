@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "826016820998",
-    "project_id": "owlgram",
-    "storage_bucket": "owlgram.appspot.com"
+    "project_number": "217475623555",
+    "project_id": "colorgram",
+    "storage_bucket": "colorgram.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:826016820998:android:9b4f2b158dcb543e13f887",
+        "mobilesdk_app_id": "1:217475623555:android:bed62b84b1c4bad77ec9b6",
         "android_client_info": {
-          "package_name": "it.owlgram.android"
+          "package_name": "It.colorgram.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "826016820998-jh4646513lkckpgi20fdb239gkh1tj0t.apps.googleusercontent.com",
+          "client_id": "217475623555-jut3eg13m94k6nk7scbucq5h4os3qrfv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "It.colorgram.android",
+            "certificate_hash": "48304bfc7069c920ac01b5290c238cfe712e17bf"
+          }
+        },
+        {
+          "client_id": "217475623555-78a16l68d0d2r2uf98875mlq1soo9jn0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA2OdEYAUiwnKPnX-J8mpk9VEZlz7JksPo"
+          "current_key": "AIzaSyACAHiEIf6sp5T1F7m_Hv5-HXUxMfIvaIM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "826016820998-jh4646513lkckpgi20fdb239gkh1tj0t.apps.googleusercontent.com",
+              "client_id": "217475623555-472ctm32s2cp6ah2bb9sfkmb2bfa4vvi.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -36,27 +44,27 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:826016820998:android:10665689bf34ecb613f887",
+        "mobilesdk_app_id": "1:217475623555:android:eb7b1fb5304f83ac7ec9b6",
         "android_client_info": {
-          "package_name": "it.owlgram.android.beta"
+          "package_name": "it.colorgram.android.beta"
         }
       },
       "oauth_client": [
         {
-          "client_id": "826016820998-jh4646513lkckpgi20fdb239gkh1tj0t.apps.googleusercontent.com",
+          "client_id": "217475623555-78a16l68d0d2r2uf98875mlq1soo9jn0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA2OdEYAUiwnKPnX-J8mpk9VEZlz7JksPo"
+          "current_key": "AIzaSyACAHiEIf6sp5T1F7m_Hv5-HXUxMfIvaIM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "826016820998-jh4646513lkckpgi20fdb239gkh1tj0t.apps.googleusercontent.com",
+              "client_id": "217475623555-472ctm32s2cp6ah2bb9sfkmb2bfa4vvi.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
