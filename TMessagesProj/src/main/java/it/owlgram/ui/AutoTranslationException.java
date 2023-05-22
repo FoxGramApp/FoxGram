@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -25,7 +25,7 @@ import org.telegram.ui.ProfileActivity;
 
 import java.util.ArrayList;
 
-import it.owlgram.android.translator.AutoTranslateConfig;
+import it.colorgram.android.translator.AutoTranslateConfig;
 
 public class AutoTranslationException extends BaseSettingsActivity {
 

@@ -1,4 +1,4 @@
-package it.owlgram.ui.Components.Dialogs;
+package it.colorgram.ui.Components.Dialogs;
 
 import android.app.Activity;
 import android.content.DialogInterface;

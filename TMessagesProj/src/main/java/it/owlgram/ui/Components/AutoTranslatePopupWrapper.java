@@ -1,4 +1,4 @@
-package it.owlgram.ui.Components;
+package it.colorgram.ui.Components;
 
 import android.content.Context;
 import android.util.TypedValue;
@@ -19,8 +19,8 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.PopupSwipeBackLayout;
 
-import it.owlgram.android.translator.AutoTranslateConfig;
-import it.owlgram.ui.AutoTranslateGroupInfo;
+import it.colorgram.android.translator.AutoTranslateConfig;
+import it.colorgram.ui.AutoTranslateGroupInfo;
 
 public class AutoTranslatePopupWrapper {
     public ActionBarPopupWindow.ActionBarPopupWindowLayout windowLayout;

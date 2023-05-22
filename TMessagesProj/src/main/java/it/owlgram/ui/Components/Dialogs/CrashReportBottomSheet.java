@@ -1,4 +1,4 @@
-package it.owlgram.ui.Components.Dialogs;
+package it.colorgram.ui.Components.Dialogs;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -27,7 +27,7 @@ import org.telegram.ui.LaunchActivity;
 import java.io.File;
 import java.io.IOException;
 
-import it.owlgram.android.Crashlytics;
+import it.colorgram.android.Crashlytics;
 
 public class CrashReportBottomSheet extends OnceBottomSheet {
     public CrashReportBottomSheet(BaseFragment fragment) {

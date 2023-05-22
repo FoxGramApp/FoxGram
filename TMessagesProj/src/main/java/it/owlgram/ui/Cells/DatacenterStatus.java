@@ -1,4 +1,4 @@
-package it.owlgram.ui.Cells;
+package it.colorgram.ui.Cells;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -30,10 +30,10 @@ import org.telegram.ui.Components.TextStyleSpan;
 import java.util.Locale;
 import java.util.Objects;
 
-import it.owlgram.android.utils.DCHelper;
-import it.owlgram.ui.Components.RadialProgressView;
-import it.owlgram.ui.Components.Shimmer;
-import it.owlgram.ui.Components.ShimmerFrameLayout;
+import it.colorgram.android.utils.DCHelper;
+import it.colorgram.ui.Components.RadialProgressView;
+import it.colorgram.ui.Components.Shimmer;
+import it.colorgram.ui.Components.ShimmerFrameLayout;
 
 public class DatacenterStatus extends LinearLayout {
 

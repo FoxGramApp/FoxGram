@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.annotation.SuppressLint;
 import android.view.View;
@@ -19,9 +19,9 @@ import org.telegram.ui.Cells.TextCheckbox2Cell;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.translator.BaseTranslator;
-import it.owlgram.android.translator.Translator;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.translator.BaseTranslator;
+import it.colorgram.android.translator.Translator;
 
 public class DoNotTranslateSettings extends BaseSettingsActivity {
     private int languageHeaderRow;

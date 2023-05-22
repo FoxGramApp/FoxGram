@@ -1,4 +1,4 @@
-package it.owlgram.ui.Cells;
+package it.colorgram.ui.Cells;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

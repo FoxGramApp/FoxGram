@@ -1,4 +1,4 @@
-package it.owlgram.android.utils;
+package it.colorgram.android.utils;
 
 import java.util.HashMap;
 import java.util.Map;

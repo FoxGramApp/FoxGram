@@ -1,4 +1,4 @@
-package it.owlgram.ui.Components;
+package it.colorgram.ui.Components;
 
 import android.content.Context;
 import android.content.res.TypedArray;

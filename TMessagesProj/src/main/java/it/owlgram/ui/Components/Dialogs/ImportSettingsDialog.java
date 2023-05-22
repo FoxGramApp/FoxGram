@@ -1,4 +1,4 @@
-package it.owlgram.ui.Components.Dialogs;
+package it.colorgram.ui.Components.Dialogs;
 
 import android.app.Activity;
 import android.util.TypedValue;
@@ -22,7 +22,7 @@ import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.StickerImageView;
 
-import it.owlgram.android.OwlConfig;
+import it.colorgram.android.OwlConfig;
 
 public class ImportSettingsDialog extends BottomSheet {
     private final int difference;

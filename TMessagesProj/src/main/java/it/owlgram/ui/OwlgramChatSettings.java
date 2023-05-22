@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -33,15 +33,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import it.owlgram.android.AlertController;
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.camera.CameraXUtils;
-import it.owlgram.android.entities.EntitiesHelper;
-import it.owlgram.android.media.AudioEnhance;
-import it.owlgram.ui.Cells.CameraTypeSelector;
-import it.owlgram.ui.Cells.StickerSize;
+import it.colorgram.android.AlertController;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.camera.CameraXUtils;
+import it.colorgram.android.entities.EntitiesHelper;
+import it.colorgram.android.media.AudioEnhance;
+import it.colorgram.ui.Cells.CameraTypeSelector;
+import it.colorgram.ui.Cells.StickerSize;
 
-public class OwlgramChatSettings extends BaseSettingsActivity implements NotificationCenter.NotificationCenterDelegate {
+public class colorgramChatSettings extends BaseSettingsActivity implements NotificationCenter.NotificationCenterDelegate {
 
     private int stickerSizeHeaderRow;
     private int stickerSizeRow;

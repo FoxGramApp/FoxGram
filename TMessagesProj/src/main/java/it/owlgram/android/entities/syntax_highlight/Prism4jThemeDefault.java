@@ -1,4 +1,4 @@
-package it.owlgram.android.entities.syntax_highlight;
+package it.colorgram.android.entities.syntax_highlight;
 
 import android.graphics.Typeface;
 import android.text.Spannable;

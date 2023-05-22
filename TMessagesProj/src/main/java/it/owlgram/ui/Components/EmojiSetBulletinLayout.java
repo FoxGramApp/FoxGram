@@ -1,4 +1,4 @@
-package it.owlgram.ui.Components;
+package it.colorgram.ui.Components;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.Bulletin;
 
-import it.owlgram.android.CustomEmojiController;
+import it.colorgram.android.CustomEmojiController;
 
 @SuppressLint("ViewConstructor")
 public class EmojiSetBulletinLayout extends Bulletin.TwoLineLayout {

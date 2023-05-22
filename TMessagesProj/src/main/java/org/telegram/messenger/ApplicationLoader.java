@@ -42,7 +42,7 @@ import org.telegram.ui.LauncherIconController;
 
 import java.io.File;
 
-import it.owlgram.android.camera.CameraXUtils;
+import it.colorgram.android.camera.CameraXUtils;
 
 public class ApplicationLoader extends Application {
 

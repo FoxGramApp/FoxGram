@@ -1,4 +1,4 @@
-package it.owlgram.ui.Cells;
+package it.colorgram.ui.Cells;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -28,7 +28,7 @@ import org.telegram.ui.Components.RadialProgressView;
 
 import java.util.Objects;
 
-import it.owlgram.android.http.FileDownloader;
+import it.colorgram.android.http.FileDownloader;
 
 public class UpdateAvailableCell extends FrameLayout {
     private final BackupImageView backupImageView;

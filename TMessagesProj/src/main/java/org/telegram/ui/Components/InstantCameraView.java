@@ -123,9 +123,9 @@ import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.egl.EGLSurface;
 import javax.microedition.khronos.opengles.GL;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.camera.CameraXController;
-import it.owlgram.android.camera.CameraXUtils;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.camera.CameraXController;
+import it.colorgram.android.camera.CameraXUtils;
 
 @TargetApi(18)
 public class InstantCameraView extends FrameLayout implements NotificationCenter.NotificationCenterDelegate {

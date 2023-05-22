@@ -1,4 +1,4 @@
-package it.owlgram.android.http;
+package it.colorgram.android.http;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
-import it.owlgram.android.translator.BaseTranslator;
+import it.colorgram.android.translator.BaseTranslator;
 
 public class StandardHTTPRequest {
     private final HttpURLConnection httpURLConnection;

@@ -29,7 +29,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipException;
 
-import it.owlgram.android.OwlConfig;
+import it.colorgram.android.OwlConfig;
 
 public class FileLoadOperation {
 

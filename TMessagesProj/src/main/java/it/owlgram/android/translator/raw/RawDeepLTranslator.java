@@ -1,4 +1,4 @@
-package it.owlgram.android.translator.raw;
+package it.colorgram.android.translator.raw;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

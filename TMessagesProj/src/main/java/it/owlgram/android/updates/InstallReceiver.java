@@ -1,4 +1,4 @@
-package it.owlgram.android.updates;
+package it.colorgram.android.updates;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -64,10 +64,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.entities.HTMLKeeper;
-import it.owlgram.android.translator.Translator;
-import it.owlgram.android.translator.TranslatorHelper;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.entities.HTMLKeeper;
+import it.colorgram.android.translator.Translator;
+import it.colorgram.android.translator.TranslatorHelper;
 
 public class TranslateAlert2 extends BottomSheet implements NotificationCenter.NotificationCenterDelegate {
 

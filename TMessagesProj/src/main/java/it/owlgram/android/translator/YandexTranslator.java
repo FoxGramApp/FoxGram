@@ -1,4 +1,4 @@
-package it.owlgram.android.translator;
+package it.colorgram.android.translator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import it.owlgram.android.http.StandardHTTPRequest;
+import it.colorgram.android.http.StandardHTTPRequest;
 
 public class YandexTranslator extends BaseTranslator {
 

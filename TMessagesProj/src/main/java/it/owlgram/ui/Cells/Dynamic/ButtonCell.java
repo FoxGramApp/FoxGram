@@ -1,4 +1,4 @@
-package it.owlgram.ui.Cells.Dynamic;
+package it.colorgram.ui.Cells.Dynamic;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,7 +6,7 @@ import android.graphics.Paint;
 
 import org.telegram.ui.ActionBar.Theme;
 
-import it.owlgram.android.OwlConfig;
+import it.colorgram.android.OwlConfig;
 
 public class ButtonCell {
     public static BaseButtonCell getCurrentButtonCell(Context context, Theme.ResourcesProvider resourcesProvider, String text, int iconId, String color) {

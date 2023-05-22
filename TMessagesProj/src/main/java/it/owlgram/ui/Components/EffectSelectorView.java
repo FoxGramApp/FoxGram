@@ -1,11 +1,11 @@
 /*
- * This is the source code of OwlGram for Android v. 1.4.x.
+ * This is the source code of colorgram for Android v. 1.4.x.
  * It is licensed under GNU GPL v. 2 or later.
  * You should have received a copy of the license in this archive (see LICENSE).
  *
  * Copyright Laky64, 2021-2022.
  */
-package it.owlgram.ui.Components;
+package it.colorgram.ui.Components;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -23,7 +23,7 @@ import org.telegram.ui.Components.LayoutHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.owlgram.android.camera.CameraXController;
+import it.colorgram.android.camera.CameraXController;
 
 public class EffectSelectorView extends LinearLayout {
 

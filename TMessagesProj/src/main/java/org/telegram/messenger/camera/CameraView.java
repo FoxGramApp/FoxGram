@@ -83,7 +83,7 @@ import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.egl.EGLSurface;
 import javax.microedition.khronos.opengles.GL;
 
-import it.owlgram.ui.Components.BaseCameraView;
+import it.colorgram.ui.Components.BaseCameraView;
 
 @SuppressLint("NewApi")
 public class CameraView extends BaseCameraView implements TextureView.SurfaceTextureListener {

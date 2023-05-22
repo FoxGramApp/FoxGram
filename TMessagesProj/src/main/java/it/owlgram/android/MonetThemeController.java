@@ -1,4 +1,4 @@
-package it.owlgram.android;
+package it.colorgram.android;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package it.owlgram.android.updates;
+package it.colorgram.android.updates;
 
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.BuildConfig;
@@ -9,7 +9,7 @@ import org.telegram.tgnet.TLRPC;
 
 import java.util.ArrayList;
 
-import it.owlgram.android.OwlConfig;
+import it.colorgram.android.OwlConfig;
 
 public class UpdateSignaling {
     public static void checkWasUpdated() {

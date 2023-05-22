@@ -1,4 +1,4 @@
-package it.owlgram.ui.Components;
+package it.colorgram.ui.Components;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

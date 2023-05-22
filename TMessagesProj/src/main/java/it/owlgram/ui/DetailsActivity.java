@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -35,10 +35,10 @@ import java.io.File;
 import java.util.Date;
 import java.util.Locale;
 
-import it.owlgram.android.entities.EntitiesHelper;
-import it.owlgram.android.utils.DCHelper;
-import it.owlgram.ui.Cells.DetailsPreviewMessages;
-import it.owlgram.ui.Cells.TextDetailCellMultiline;
+import it.colorgram.android.entities.EntitiesHelper;
+import it.colorgram.android.utils.DCHelper;
+import it.colorgram.ui.Cells.DetailsPreviewMessages;
+import it.colorgram.ui.Cells.TextDetailCellMultiline;
 
 public class DetailsActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
     private int rowCount;

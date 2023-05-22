@@ -1,4 +1,4 @@
-package it.owlgram.android.entities;
+package it.colorgram.android.entities;
 
 import android.text.Editable;
 import android.text.Html;

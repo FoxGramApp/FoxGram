@@ -1,4 +1,4 @@
-package it.owlgram.android.utils;
+package it.colorgram.android.utils;
 
 import android.graphics.Color;
 import android.os.SystemClock;
@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.http.StandardHTTPRequest;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.http.StandardHTTPRequest;
 
 public class DCHelper {
     public static TInfo getTInfo(TLRPC.User userInfo) {
@@ -178,7 +178,7 @@ public class DCHelper {
                 public void run() {
                 while (isRunning) {
                     try {
-                        String url = "https://app.owlgram.org/dc_status";
+                        String url = "https://app.colorgram.org/dc_status";
                         JSONObject obj = new JSONObject(new StandardHTTPRequest(url).request());
                         JSONArray listDatacenters = obj.getJSONArray("status");
                         int refreshTimeIn = obj.getInt("refresh_in_time");

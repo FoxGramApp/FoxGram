@@ -1,4 +1,4 @@
-package it.owlgram.ui.Components.Dialogs;
+package it.colorgram.ui.Components.Dialogs;
 
 import static org.telegram.messenger.AndroidUtilities.dp;
 
@@ -34,7 +34,7 @@ import org.telegram.ui.Components.ExtendedGridLayoutManager;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.RecyclerListView;
 
-import it.owlgram.android.FolderIconController;
+import it.colorgram.android.FolderIconController;
 
 public class IconSelectorAlert extends BottomSheet {
 

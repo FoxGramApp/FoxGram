@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.transition.TransitionManager;
 import android.view.View;
@@ -16,14 +16,14 @@ import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Cells.TextSettingsCell;
 
-import it.owlgram.android.CustomEmojiController;
-import it.owlgram.android.OwlConfig;
-import it.owlgram.ui.Cells.BlurIntensity;
-import it.owlgram.ui.Cells.DrawerProfilePreview;
-import it.owlgram.ui.Cells.DynamicButtonSelector;
-import it.owlgram.ui.Cells.ThemeSelectorDrawer;
+import it.colorgram.android.CustomEmojiController;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.ui.Cells.BlurIntensity;
+import it.colorgram.ui.Cells.DrawerProfilePreview;
+import it.colorgram.ui.Cells.DynamicButtonSelector;
+import it.colorgram.ui.Cells.ThemeSelectorDrawer;
 
-public class OwlgramAppearanceSettings extends BaseSettingsActivity implements NotificationCenter.NotificationCenterDelegate {
+public class colorgramAppearanceSettings extends BaseSettingsActivity implements NotificationCenter.NotificationCenterDelegate {
     private DrawerProfilePreview profilePreviewCell;
 
     private int drawerRow;

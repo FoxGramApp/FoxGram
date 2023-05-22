@@ -28,7 +28,7 @@ import org.xml.sax.XMLReader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-import it.owlgram.android.entities.syntax_highlight.SyntaxHighlight;
+import it.colorgram.android.entities.syntax_highlight.SyntaxHighlight;
 
 public class CopyUtilities {
 

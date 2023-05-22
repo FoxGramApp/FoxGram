@@ -1,4 +1,4 @@
-package it.owlgram.ui.Components.Dialogs;
+package it.colorgram.ui.Components.Dialogs;
 
 import android.app.Activity;
 import android.util.TypedValue;
@@ -19,7 +19,7 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.StickerImageView;
 
-import it.owlgram.android.MonetIconController;
+import it.colorgram.android.MonetIconController;
 
 public class MonetAndroidFixDialog extends OnceBottomSheet {
 

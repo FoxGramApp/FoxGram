@@ -1,4 +1,4 @@
-package it.owlgram.android;
+package it.colorgram.android;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -36,14 +36,14 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
-import it.owlgram.android.camera.CameraXUtils;
-import it.owlgram.android.entities.EntitiesHelper;
-import it.owlgram.android.magic.MagicBaseObject;
-import it.owlgram.android.magic.OWLENC;
-import it.owlgram.android.translator.Translator;
-import it.owlgram.android.utils.JavaUtils;
-import it.owlgram.android.utils.SharedPreferencesHelper;
-import it.owlgram.ui.Components.Dialogs.FileSettingsNameDialog;
+import it.colorgram.android.camera.CameraXUtils;
+import it.colorgram.android.entities.EntitiesHelper;
+import it.colorgram.android.magic.MagicBaseObject;
+import it.colorgram.android.magic.OWLENC;
+import it.colorgram.android.translator.Translator;
+import it.colorgram.android.utils.JavaUtils;
+import it.colorgram.android.utils.SharedPreferencesHelper;
+import it.colorgram.ui.Components.Dialogs.FileSettingsNameDialog;
 
 public class SettingsController extends SharedPreferencesHelper {
     protected static boolean configLoaded;
@@ -483,7 +483,7 @@ public class SettingsController extends SharedPreferencesHelper {
     }
 
     protected static File backupFile() {
-        return new File(ApplicationLoader.getFilesDirFixed(), "owlgram_data.json");
+        return new File(ApplicationLoader.getFilesDirFixed(), "colorgram_data.json");
     }
 
     public static void internalResetSettings() {

@@ -116,8 +116,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.utils.ForwardContext;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.utils.ForwardContext;
 
 @SuppressWarnings("unchecked")
 public class SharedMediaLayout extends FrameLayout implements NotificationCenter.NotificationCenterDelegate {

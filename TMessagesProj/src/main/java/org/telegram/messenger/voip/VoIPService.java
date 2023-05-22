@@ -145,7 +145,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import it.owlgram.android.OwlConfig;
+import it.colorgram.android.OwlConfig;
 
 @SuppressLint("NewApi")
 public class VoIPService extends Service implements SensorEventListener, AudioManager.OnAudioFocusChangeListener, VoIPController.ConnectionStateListener, NotificationCenter.NotificationCenterDelegate {

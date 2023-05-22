@@ -1,9 +1,9 @@
-package it.owlgram.android.updates;
+package it.colorgram.android.updates;
 
 import android.app.Activity;
 
-import it.owlgram.android.StoreUtils;
-import it.owlgram.android.http.FileDownloader;
+import it.colorgram.android.StoreUtils;
+import it.colorgram.android.http.FileDownloader;
 
 public class AppDownloader {
 

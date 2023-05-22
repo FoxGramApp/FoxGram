@@ -1,4 +1,4 @@
-package it.owlgram.android;
+package it.colorgram.android;
 
 import org.telegram.messenger.ApplicationLoader;
 

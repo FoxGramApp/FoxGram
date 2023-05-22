@@ -1,4 +1,4 @@
-package it.owlgram.android.translator;
+package it.colorgram.android.translator;
 
 import android.text.TextUtils;
 
@@ -16,9 +16,9 @@ import org.telegram.tgnet.TLRPC;
 
 import java.util.Locale;
 
-import it.owlgram.android.MessageHelper;
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.entities.HTMLKeeper;
+import it.colorgram.android.MessageHelper;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.entities.HTMLKeeper;
 
 public class TranslatorHelper {
 

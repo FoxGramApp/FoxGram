@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.view.View;
 
@@ -16,17 +16,17 @@ import org.telegram.ui.Cells.HeaderCell;
 import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Cells.TextCheckCell;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.StoreUtils;
-import it.owlgram.android.http.FileDownloader;
-import it.owlgram.android.magic.OWLENC;
-import it.owlgram.android.updates.AppDownloader;
-import it.owlgram.android.updates.PlayStoreAPI;
-import it.owlgram.android.updates.UpdateManager;
-import it.owlgram.ui.Cells.UpdateAvailableCell;
-import it.owlgram.ui.Cells.UpdateCheckCell;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.StoreUtils;
+import it.colorgram.android.http.FileDownloader;
+import it.colorgram.android.magic.OWLENC;
+import it.colorgram.android.updates.AppDownloader;
+import it.colorgram.android.updates.PlayStoreAPI;
+import it.colorgram.android.updates.UpdateManager;
+import it.colorgram.ui.Cells.UpdateAvailableCell;
+import it.colorgram.ui.Cells.UpdateCheckCell;
 
-public class OwlgramUpdateSettings extends BaseSettingsActivity {
+public class colorgramUpdateSettings extends BaseSettingsActivity {
 
     private int updateSectionAvailableRow;
     private int updateSectionDividerRow;
@@ -156,7 +156,7 @@ public class OwlgramUpdateSettings extends BaseSettingsActivity {
                     break;
                 case UPDATE:
                     UpdateAvailableCell updateCell = (UpdateAvailableCell) holder.itemView;
-                    OwlgramUpdateSettings.this.updateCell = updateCell;
+                    colorgramUpdateSettings.this.updateCell = updateCell;
                     updateCell.setUpdate(
                             updateAvailable.title,
                             updateAvailable.description,

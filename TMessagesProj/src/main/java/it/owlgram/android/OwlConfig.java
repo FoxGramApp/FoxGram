@@ -1,4 +1,4 @@
-package it.owlgram.android;
+package it.colorgram.android;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -10,13 +10,13 @@ import org.telegram.ui.ActionBar.Theme;
 import java.util.Calendar;
 import java.util.Date;
 
-import it.owlgram.android.camera.CameraXUtils;
-import it.owlgram.android.magic.OWLENC;
-import it.owlgram.android.magic.OptionalMagic;
-import it.owlgram.android.translator.AutoTranslateConfig;
-import it.owlgram.android.translator.BaseTranslator;
-import it.owlgram.android.translator.DeepLTranslator;
-import it.owlgram.android.translator.Translator;
+import it.colorgram.android.camera.CameraXUtils;
+import it.colorgram.android.magic.OWLENC;
+import it.colorgram.android.magic.OptionalMagic;
+import it.colorgram.android.translator.AutoTranslateConfig;
+import it.colorgram.android.translator.BaseTranslator;
+import it.colorgram.android.translator.DeepLTranslator;
+import it.colorgram.android.translator.Translator;
 
 public class OwlConfig extends SettingsController {
     public static final int TAB_TYPE_TEXT = 0;

@@ -35,9 +35,9 @@ import org.telegram.ui.Components.SideMenultItemAnimator;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.MenuOrderController;
-import it.owlgram.android.PasscodeController;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.MenuOrderController;
+import it.colorgram.android.PasscodeController;
 
 public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
 
@@ -358,7 +358,7 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
                     case "settings":
                         items.add(new Item(8, data.text, settingsIcon));
                         break;
-                    case "owlgram_settings":
+                    case "colorgram_settings":
                         items.add(new Item(201, data.text, settingsIcon));
                         break;
                     case "invite_friends":

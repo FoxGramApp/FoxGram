@@ -1,4 +1,4 @@
-package it.owlgram.android;
+package it.colorgram.android;
 
 import android.Manifest;
 import android.app.Activity;

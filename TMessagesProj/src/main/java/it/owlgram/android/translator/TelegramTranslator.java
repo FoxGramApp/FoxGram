@@ -1,4 +1,4 @@
-package it.owlgram.android.translator;
+package it.colorgram.android.translator;
 
 import org.telegram.messenger.LanguageDetector;
 import org.telegram.messenger.TranslateController;
@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-import it.owlgram.android.MessageHelper;
+import it.colorgram.android.MessageHelper;
 import kotlin.NotImplementedError;
 
 public class TelegramTranslator extends BaseTranslator {

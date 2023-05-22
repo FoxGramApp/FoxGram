@@ -206,28 +206,28 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import it.owlgram.android.StoreUtils;
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.magic.OWLENC;
-import it.owlgram.ui.Components.Dialogs.UpdateAlertDialog;
-import it.owlgram.android.Crashlytics;
-import it.owlgram.android.CustomEmojiController;
-import it.owlgram.android.utils.ForwardContext;
-import it.owlgram.android.LanguageController;
-import it.owlgram.android.MonetThemeController;
-import it.owlgram.android.StickersUtils;
-import it.owlgram.android.updates.UpdateSignaling;
-import it.owlgram.ui.OwlgramAppearanceSettings;
-import it.owlgram.ui.OwlgramChatSettings;
-import it.owlgram.ui.OwlgramExperimentalSettings;
-import it.owlgram.ui.OwlgramGeneralSettings;
-import it.owlgram.ui.OwlgramSettings;
-import it.owlgram.ui.DatacenterActivity;
-import it.owlgram.android.http.FileDownloader;
-import it.owlgram.android.updates.ApkInstaller;
-import it.owlgram.android.updates.AppDownloader;
-import it.owlgram.android.updates.PlayStoreAPI;
-import it.owlgram.android.updates.UpdateManager;
+import it.colorgram.android.StoreUtils;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.magic.OWLENC;
+import it.colorgram.ui.Components.Dialogs.UpdateAlertDialog;
+import it.colorgram.android.Crashlytics;
+import it.colorgram.android.CustomEmojiController;
+import it.colorgram.android.utils.ForwardContext;
+import it.colorgram.android.LanguageController;
+import it.colorgram.android.MonetThemeController;
+import it.colorgram.android.StickersUtils;
+import it.colorgram.android.updates.UpdateSignaling;
+import it.colorgram.ui.colorgramAppearanceSettings;
+import it.colorgram.ui.colorgramChatSettings;
+import it.colorgram.ui.colorgramExperimentalSettings;
+import it.colorgram.ui.colorgramGeneralSettings;
+import it.colorgram.ui.colorgramSettings;
+import it.colorgram.ui.DatacenterActivity;
+import it.colorgram.android.http.FileDownloader;
+import it.colorgram.android.updates.ApkInstaller;
+import it.colorgram.android.updates.AppDownloader;
+import it.colorgram.android.updates.PlayStoreAPI;
+import it.colorgram.android.updates.UpdateManager;
 
 public class LaunchActivity extends BasePermissionsActivity implements INavigationLayout.INavigationLayoutDelegate, NotificationCenter.NotificationCenterDelegate, DialogsActivity.DialogsActivityDelegate {
     public final static Pattern PREFIX_T_ME_PATTERN = Pattern.compile("^(?:http(?:s|)://|)([A-z0-9-]+?)\\.t\\.me");
@@ -627,7 +627,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 } else if (id == 15) {
                     showSelectStatusDialog();
                 } else if (id == 201) {
-                    presentFragment(new OwlgramSettings());
+                    presentFragment(new colorgramSettings());
                     drawerLayoutContainer.closeDrawer(false);
                 } else if (id == 202) {
                     Bundle args = new Bundle();
@@ -2631,7 +2631,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             OwlConfig.unlockChupa();
                                         }
                                     } else if (url.startsWith("tg:experimental") || url.startsWith("tg://experimental")) {
-                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new OwlgramExperimentalSettings(), false, false));
+                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new colorgramExperimentalSettings(), false, false));
                                         if (AndroidUtilities.isTablet()) {
                                             actionBarLayout.showLastFragment();
                                             rightActionBarLayout.showLastFragment();
@@ -2640,7 +2640,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             drawerLayoutContainer.setAllowOpenDrawer(true, false);
                                         }
                                     } else if (url.startsWith("tg:chat") || url.startsWith("tg://chat")) {
-                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new OwlgramChatSettings(), false, false));
+                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new colorgramChatSettings(), false, false));
                                         if (AndroidUtilities.isTablet()) {
                                             actionBarLayout.showLastFragment();
                                             rightActionBarLayout.showLastFragment();
@@ -2649,7 +2649,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             drawerLayoutContainer.setAllowOpenDrawer(true, false);
                                         }
                                     } else if (url.startsWith("tg:general") || url.startsWith("tg://general")) {
-                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new OwlgramGeneralSettings(), false, false));
+                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new colorgramGeneralSettings(), false, false));
                                         if (AndroidUtilities.isTablet()) {
                                             actionBarLayout.showLastFragment();
                                             rightActionBarLayout.showLastFragment();
@@ -2658,7 +2658,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             drawerLayoutContainer.setAllowOpenDrawer(true, false);
                                         }
                                     } else if (url.startsWith("tg:appearance") || url.startsWith("tg://appearance")) {
-                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new OwlgramAppearanceSettings(), false, false));
+                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new colorgramAppearanceSettings(), false, false));
                                         if (AndroidUtilities.isTablet()) {
                                             actionBarLayout.showLastFragment();
                                             rightActionBarLayout.showLastFragment();
@@ -2793,9 +2793,9 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             NotificationCenter.getInstance(intentAccount[0]).postNotificationName(NotificationCenter.closeChats);
                                             push_user_id = userId;
                                             @SuppressLint("Range") String mimeType = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE));
-                                            if (TextUtils.equals(mimeType, "vnd.android.cursor.item/vnd.it.owlgram.android.android.call")) {
+                                            if (TextUtils.equals(mimeType, "vnd.android.cursor.item/vnd.it.colorgram.android.android.call")) {
                                                 audioCallUser = true;
-                                            } else if (TextUtils.equals(mimeType, "vnd.android.cursor.item/vnd.it.owlgram.android.android.call.video")) {
+                                            } else if (TextUtils.equals(mimeType, "vnd.android.cursor.item/vnd.it.colorgram.android.android.call.video")) {
                                                 videoCallUser = true;
                                             }
                                         }
@@ -5153,7 +5153,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                             if(updateAvailable.version > BuildVars.BUILD_VERSION) {
                                 createUpdateUI();
                                 updateLayoutIcon.setIcon(MediaActionDrawable.ICON_DOWNLOAD, true, true);
-                                updateTextView.setText(LocaleController.getString("UpdateOwlGram", R.string.UpdateOwlGram));
+                                updateTextView.setText(LocaleController.getString("Updatecolorgram", R.string.Updatecolorgram));
                                 updateSizeTextView.setTag(null);
                                 updateSizeTextView.animate().alpha(1.0f).scaleX(1.0f).scaleY(1.0f).setDuration(180).start();
                                 updateSizeTextView.setText(AndroidUtilities.formatFileSize(updateAvailable.fileSize));

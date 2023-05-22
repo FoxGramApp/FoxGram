@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -29,7 +29,7 @@ import org.telegram.ui.PasscodeActivity;
 
 import java.util.ArrayList;
 
-import it.owlgram.android.PasscodeController;
+import it.colorgram.android.PasscodeController;
 
 public class AccountProtectionSettings extends BaseSettingsActivity {
     private int dbAnRow;

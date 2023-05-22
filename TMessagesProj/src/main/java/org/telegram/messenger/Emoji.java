@@ -28,8 +28,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.CustomEmojiController;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.CustomEmojiController;
 
 import org.telegram.ui.Components.AnimatedEmojiSpan;
 

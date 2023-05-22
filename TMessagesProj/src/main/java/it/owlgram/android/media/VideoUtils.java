@@ -1,4 +1,4 @@
-package it.owlgram.android.media;
+package it.colorgram.android.media;
 
 public class VideoUtils {
     enum Quality {

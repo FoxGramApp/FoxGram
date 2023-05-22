@@ -87,8 +87,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
-import it.owlgram.android.StoreUtils;
-import it.owlgram.android.OwlConfig;
+import it.colorgram.android.StoreUtils;
+import it.colorgram.android.OwlConfig;
 
 public class  MessagesController extends BaseController implements NotificationCenter.NotificationCenterDelegate {
 

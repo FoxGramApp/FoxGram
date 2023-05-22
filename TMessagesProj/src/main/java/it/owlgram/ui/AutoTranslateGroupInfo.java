@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -24,8 +24,8 @@ import org.telegram.ui.Components.FlickerLoadingView;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import it.owlgram.android.translator.AutoTranslateConfig;
-import it.owlgram.ui.Cells.EditTopic;
+import it.colorgram.android.translator.AutoTranslateConfig;
+import it.colorgram.ui.Cells.EditTopic;
 
 public class AutoTranslateGroupInfo extends BaseSettingsActivity implements NotificationCenter.NotificationCenterDelegate {
 

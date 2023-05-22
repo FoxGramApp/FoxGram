@@ -1,4 +1,4 @@
-package it.owlgram.ui.Cells;
+package it.colorgram.ui.Cells;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,8 +19,8 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.NumberPicker;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.ui.Cells.Dynamic.ButtonCell;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.ui.Cells.Dynamic.ButtonCell;
 
 public class DynamicButtonSelector extends LinearLayout {
     Paint pickerDividersPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

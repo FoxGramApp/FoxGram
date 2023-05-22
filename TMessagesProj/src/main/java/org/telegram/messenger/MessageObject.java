@@ -73,9 +73,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import it.owlgram.android.MessageHelper;
-import it.owlgram.android.entities.syntax_highlight.SyntaxHighlight;
-import it.owlgram.ui.DoNotTranslateSettings;
+import it.colorgram.android.MessageHelper;
+import it.colorgram.android.entities.syntax_highlight.SyntaxHighlight;
+import it.colorgram.ui.DoNotTranslateSettings;
 
 public class MessageObject {
 

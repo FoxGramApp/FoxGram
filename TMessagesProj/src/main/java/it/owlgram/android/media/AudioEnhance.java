@@ -1,11 +1,11 @@
-package it.owlgram.android.media;
+package it.colorgram.android.media;
 
 import android.media.AudioRecord;
 import android.media.audiofx.AcousticEchoCanceler;
 import android.media.audiofx.AutomaticGainControl;
 import android.media.audiofx.NoiseSuppressor;
 
-import it.owlgram.android.OwlConfig;
+import it.colorgram.android.OwlConfig;
 
 public class AudioEnhance {
     private static AutomaticGainControl automaticGainControl = null;

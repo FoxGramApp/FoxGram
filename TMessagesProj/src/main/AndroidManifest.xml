@@ -358,7 +358,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="vnd.android.cursor.item/vnd.it.owlgram.android.android.profile"/>
+                <data android:mimeType="vnd.android.cursor.item/vnd.it.colorgram.android.android.profile"/>
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
@@ -395,8 +395,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="vnd.android.cursor.item/vnd.it.owlgram.android.android.call"/>
-                <data android:mimeType="vnd.android.cursor.item/vnd.it.owlgram.android.android.call.video"/>
+                <data android:mimeType="vnd.android.cursor.item/vnd.it.colorgram.android.android.call"/>
+                <data android:mimeType="vnd.android.cursor.item/vnd.it.colorgram.android.android.call.video"/>
             </intent-filter>
         </activity-alias>
         <activity
@@ -492,9 +492,9 @@
                   android:exported="true"
                 android:theme="@style/Theme.TMessages.TransparentWithAlerts"/>
         <activity
-            android:name="it.owlgram.android.utils.AppRestartHelper"
+            android:name="it.colorgram.android.utils.AppRestartHelper"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:process=":owlgram"
+            android:process=":colorgram"
             android:exported="false"
             />
 

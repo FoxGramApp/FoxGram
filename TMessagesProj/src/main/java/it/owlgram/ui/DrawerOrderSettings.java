@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -24,10 +24,10 @@ import org.telegram.ui.Cells.HeaderCell;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import it.owlgram.android.MenuOrderController;
-import it.owlgram.ui.Cells.AddItem;
-import it.owlgram.ui.Cells.HintHeader;
-import it.owlgram.ui.Cells.SwapOrder;
+import it.colorgram.android.MenuOrderController;
+import it.colorgram.ui.Cells.AddItem;
+import it.colorgram.ui.Cells.HintHeader;
+import it.colorgram.ui.Cells.SwapOrder;
 
 public class DrawerOrderSettings extends BaseSettingsActivity {
     private ItemTouchHelper itemTouchHelper;

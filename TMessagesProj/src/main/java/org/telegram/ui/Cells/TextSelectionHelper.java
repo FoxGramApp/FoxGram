@@ -61,8 +61,8 @@ import org.telegram.ui.Components.RecyclerListView;
 
 import java.util.ArrayList;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.ui.DoNotTranslateSettings;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.ui.DoNotTranslateSettings;
 
 public abstract class TextSelectionHelper<Cell extends TextSelectionHelper.SelectableView> {
 

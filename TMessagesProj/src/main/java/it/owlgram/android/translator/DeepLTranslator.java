@@ -1,12 +1,12 @@
-package it.owlgram.android.translator;
+package it.colorgram.android.translator;
 
 import android.text.TextUtils;
 
 import java.util.Arrays;
 import java.util.List;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.translator.raw.RawDeepLTranslator;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.translator.raw.RawDeepLTranslator;
 
 public class DeepLTranslator extends BaseTranslator {
 

@@ -4,7 +4,7 @@
     <string name="TestBackend">Test Backend</string>
     <string name="TestBackendOn">This account will connect to the test backend.</string>
     <string name="TestBackendOff">This account will connect to the production backend.</string>
-    <string name="OwlSetting">OwlGram Settings</string>
+    <string name="OwlSetting">colorgram Settings</string>
     <string name="Chat">Chats</string>
     <string name="OwlUpdates">Updates</string>
     <string name="Experimental">Experimental Settings</string>
@@ -14,12 +14,12 @@
     <string name="ExperimentalDesc">Try experimental features. Some may not work correctly.</string>
     <string name="DisableExperimentalAlert">Are you sure you want to disable experimental settings?\n\nNote that this will disable the Monet Icon.</string>
     <string name="OfficialChannel">Official Channel</string>
-    <string name="ChannelUsername">OwlGram</string>
+    <string name="ChannelUsername">colorgram</string>
     <string name="OfficialGroup">Official Group</string>
-    <string name="GroupUsername">OwlGramForum</string>
+    <string name="GroupUsername">colorgramForum</string>
     <string name="SourceCode">View Source Code</string>
-    <string name="TranslateOwl">Translate OwlGram</string>
-    <string name="TranslateOwlDesc">Help us translate OwlGram into your language</string>
+    <string name="TranslateOwl">Translate colorgram</string>
+    <string name="TranslateOwlDesc">Help us translate colorgram into your language</string>
     <string name="Donate">Donate</string>
     <string name="DonateDesc">Support the development</string>
     <string name="CopyReportDetails">Copy Report Details</string>
@@ -31,10 +31,10 @@
     <string name="ImportingChangesOthers">%d changes will be applied to the current settings.</string>
     <string name="SettingsImported">Settings have been imported.</string>
     <string name="SameSettings">This backup contains the same changes as the current settings.</string>
-    <string name="UpdateToImport">This backup is not supported by your version of OwlGram. Update the app to import it.</string>
+    <string name="UpdateToImport">This backup is not supported by your version of colorgram. Update the app to import it.</string>
     <string name="ExportSettings">Export Settings</string>
     <string name="BackupName">Backup Name</string>
-    <string name="ResetSettingsAlert">Are you sure you want to reset OwlGram settings?</string>
+    <string name="ResetSettingsAlert">Are you sure you want to reset colorgram settings?</string>
     <string name="ResetSettingsHint">Settings have been reset.</string>
     <string name="AvatarAsBackground">Profile Photo as Background</string>
     <string name="AvatarBlur">Blur Background</string>
@@ -206,7 +206,7 @@
     <string name="InAppUpdates">In-App Updates</string>
     <string name="CheckUpdates">Check</string>
     <string name="UpdateAvailable">Update Available</string>
-    <string name="UpdateOwlGram">Update OwlGram</string>
+    <string name="Updatecolorgram">Update colorgram</string>
     <string name="DownloadUpdate">Download</string>
     <string name="DownloadingUpdate">Downloading…</string>
     <string name="InstallUpdate">Install</string>
@@ -216,17 +216,17 @@
     <string name="InstallationInProgress">Installation in progress…</string>
     <string name="InstallationWarning">Please keep the app open until the installation is complete.</string>
     <string name="ErrorDuringInstallation">Error during installation!</string>
-    <string name="InstallationBlocked">The installation was blocked by your device. Please report this issue to OwlGram support.</string>
-    <string name="InstallationFailure">The APK file is corrupted. Please report this issue to OwlGram support.</string>
-    <string name="UnknownInstallationError">Your device raised an unknown error. Please report this issue to OwlGram support.</string>
+    <string name="InstallationBlocked">The installation was blocked by your device. Please report this issue to colorgram support.</string>
+    <string name="InstallationFailure">The APK file is corrupted. Please report this issue to colorgram support.</string>
+    <string name="UnknownInstallationError">Your device raised an unknown error. Please report this issue to colorgram support.</string>
     <string name="NoMoreSpace">Your phone has run out of available storage. Please free some space to download and install the update.</string>
-    <string name="NoUpdateAvailable">OwlGram is up to date.</string>
+    <string name="NoUpdateAvailable">colorgram is up to date.</string>
     <string name="LastCheck">Last Check: %s</string>
     <string name="NeverChecked">Never Checked</string>
     <string name="LastCheckNever">Never</string>
     <string name="CheckFailed">Unable to Check for Updates</string>
     <string name="InstallBetas">Install Beta Versions</string>
-    <string name="InstallBetasDesc">Test new OwlGram updates before their official release</string>
+    <string name="InstallBetasDesc">Test new colorgram updates before their official release</string>
     <string name="AutoUpdate">Update Automatically</string>
     <string name="AutoUpdatePrompt">Prompt when available</string>
     <string name="APKsChannel">APKs Channel</string>
@@ -251,7 +251,7 @@
     <string name="FoldersTypeIcons">Icons</string>
     <string name="FoldersTypeIconsTitles">Icons with Titles</string>
     <string name="ChooseFolderIcon">Choose an Icon</string>
-    <string name="OwlGramVersion">OwlGram %1$s\nBased on Telegram %2$s</string>
+    <string name="colorgramVersion">colorgram %1$s\nBased on Telegram %2$s</string>
     <string name="MutualContact">Mutual Contact</string>
     <string name="MutualContactDesc">**%s** and you have added each other in the contacts list.</string>
     <string name="JumpToBeginning">Jump to Beginning</string>
@@ -273,7 +273,7 @@
     <string name="UserRestrictionsNoSendInlineBots">no inline bots</string>
     <string name="RestrictionReason">Restriction Reason</string>
     <string name="AppLinkNotVerifiedTitle">App links not verified</string>
-    <string name="AppLinkNotVerifiedMessage">For Android 12 and newer, you need to manually add link to verified links in order to open t.me links in OwlGram.</string>
+    <string name="AppLinkNotVerifiedMessage">For Android 12 and newer, you need to manually add link to verified links in order to open t.me links in colorgram.</string>
     <string name="SendWithoutMarkdown">Send without markdown</string>
     <string name="SaveWithoutMarkdown">Save without markdown</string>
     <string name="SendAsEmoji">Send as emoji</string>
@@ -295,14 +295,14 @@
     <string name="DisableAccountProtection">Disable Account Protection</string>
     <string name="DisableAccountProtectionAlert">Are you sure you want to disable the account protection feature?</string>
     <string name="AppCrashed">Something went wrong</string>
-    <string name="AppCrashedDesc">OwlGram has stopped working. Please, send logs to the developers so that they can fix this bug as soon as possible.</string>
+    <string name="AppCrashedDesc">colorgram has stopped working. Please, send logs to the developers so that they can fix this bug as soon as possible.</string>
     <string name="KeepMarkdown" comment="KeepMarkdown">Keep Markdown</string>
     <string name="KeepMarkdownDesc" comment="KeepMarkdownDesc">When translating a message, keep the markdown formatting.</string>
     <string name="ThemeMonetLight">Monet Light</string>
     <string name="ThemeMonetDark">Monet Dark</string>
     <string name="Patpat">Patpat</string>
     <string name="PrivacyPolicyLogin">By continuing,\nyou agree to the *Privacy Policy*.</string>
-    <string name="OwlPrivacyPolicy">OwlGram Privacy Policy</string>
+    <string name="OwlPrivacyPolicy">colorgram Privacy Policy</string>
     <string name="HideSendAsChannel">Hide "Send as Channel"</string>
     <string name="EmojiSets">Emoji Sets</string>
     <string name="MyEmojiSets">My Emoji Sets</string>
@@ -331,5 +331,5 @@
     <string name="ZeroShutterLag">Zero-Shutter Lag</string>
     <string name="ZeroShutterLagDesc">Minimize latency when taking photos by capturing multiple frames quickly before and after the shutter button is pressed</string>
     <string name="BrokenBackupDetail">Unable to export your backup. Please contact us via our <![CDATA[<a href="https://t.me/%1$s">Support Group</a>]]>.</string>
-    <string name="TranslateInfo">Manage your translation and auto-translation preferences in OwlGram settings.</string>
+    <string name="TranslateInfo">Manage your translation and auto-translation preferences in colorgram settings.</string>
 </resources>

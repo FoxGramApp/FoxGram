@@ -99,9 +99,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.media.AudioEnhance;
-import it.owlgram.android.PermissionsUtils;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.media.AudioEnhance;
+import it.colorgram.android.PermissionsUtils;
 
 public class MediaController implements AudioManager.OnAudioFocusChangeListener, NotificationCenter.NotificationCenterDelegate, SensorEventListener {
 

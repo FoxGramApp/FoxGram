@@ -91,9 +91,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.media.VideoUtils;
-import it.owlgram.android.entities.EntitiesHelper;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.media.VideoUtils;
+import it.colorgram.android.entities.EntitiesHelper;
 
 public class SendMessagesHelper extends BaseController implements NotificationCenter.NotificationCenterDelegate {
 

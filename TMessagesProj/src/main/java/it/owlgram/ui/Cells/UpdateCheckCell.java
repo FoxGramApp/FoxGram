@@ -1,4 +1,4 @@
-package it.owlgram.ui.Cells;
+package it.colorgram.ui.Cells;
 
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
@@ -20,9 +20,9 @@ import org.telegram.ui.Components.LayoutHelper;
 
 import java.util.Date;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.StoreUtils;
-import it.owlgram.android.updates.UpdateManager;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.StoreUtils;
+import it.colorgram.android.updates.UpdateManager;
 
 @SuppressLint("ViewConstructor")
 public class UpdateCheckCell extends RelativeLayout {

@@ -1,4 +1,4 @@
-package it.owlgram.android;
+package it.colorgram.android;
 
 import android.app.Activity;
 import android.content.ClipData;
@@ -47,11 +47,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import it.owlgram.Fonts.FontFileReader;
-import it.owlgram.android.http.FileDownloader;
-import it.owlgram.android.http.StandardHTTPRequest;
-import it.owlgram.android.utils.FileUnzip;
-import it.owlgram.ui.Components.EmojiSetBulletinLayout;
+import it.colorgram.Fonts.FontFileReader;
+import it.colorgram.android.http.FileDownloader;
+import it.colorgram.android.http.StandardHTTPRequest;
+import it.colorgram.android.utils.FileUnzip;
+import it.colorgram.ui.Components.EmojiSetBulletinLayout;
 
 public class CustomEmojiController {
     private static Typeface systemEmojiTypeface;
@@ -207,7 +207,7 @@ public class CustomEmojiController {
                     emojiPacksInfo.addAll(tmp);
                     AndroidUtilities.runOnUIThread(listener::onLoaded);
                     try {
-                        String json = new StandardHTTPRequest(String.format("https://app.owlgram.org/emoji_packs?noCache=%s",  Math.random() * 10000)).request();
+                        String json = new StandardHTTPRequest(String.format("https://app.colorgram.org/emoji_packs?noCache=%s",  Math.random() * 10000)).request();
                         preferences.edit().putString("emoji_packs", json).apply();
                         invalidateCache(true);
                         emojiPacksInfo.addAll(loadFromJson(json));

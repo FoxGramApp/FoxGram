@@ -1,4 +1,4 @@
-package it.owlgram.android.translator;
+package it.colorgram.android.translator;
 
 import android.os.SystemClock;
 import android.util.LruCache;
@@ -23,8 +23,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import it.owlgram.android.MessageHelper;
-import it.owlgram.android.OwlConfig;
+import it.colorgram.android.MessageHelper;
+import it.colorgram.android.OwlConfig;
 
 
 abstract public class BaseTranslator {

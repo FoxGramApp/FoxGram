@@ -1,4 +1,4 @@
-package it.owlgram.android.updates;
+package it.colorgram.android.updates;
 
 import android.app.Activity;
 import android.content.pm.PackageInfo;
@@ -22,12 +22,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.StoreUtils;
-import it.owlgram.android.entities.HTMLKeeper;
-import it.owlgram.android.http.FileDownloader;
-import it.owlgram.android.http.StandardHTTPRequest;
-import it.owlgram.android.magic.OWLENC;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.StoreUtils;
+import it.colorgram.android.entities.HTMLKeeper;
+import it.colorgram.android.http.FileDownloader;
+import it.colorgram.android.http.StandardHTTPRequest;
+import it.colorgram.android.magic.OWLENC;
 
 public class UpdateManager {
 
@@ -48,7 +48,7 @@ public class UpdateManager {
     }
 
     public static String getApkChannel() {
-        return OwlConfig.betaUpdates ? "OwlGramBeta" : "OwlGramAPKs";
+        return OwlConfig.betaUpdates ? "colorgramBeta" : "colorgramAPKs";
     }
 
     public static void getChangelogs(ChangelogCallback changelogCallback) {
@@ -59,7 +59,7 @@ public class UpdateManager {
             @Override
             public void run() {
                 try {
-                    String url = String.format("https://app.owlgram.org/get_changelogs?lang=%s&version=%s", locale.getLanguage(), BuildVars.BUILD_VERSION);
+                    String url = String.format("https://app.colorgram.org/get_changelogs?lang=%s&version=%s", locale.getLanguage(), BuildVars.BUILD_VERSION);
                     JSONObject obj = new JSONObject(new StandardHTTPRequest(url).request());
                     String changelog_text = obj.getString("changelogs");
                     if (!changelog_text.equals("null")) {
@@ -127,7 +127,7 @@ public class UpdateManager {
                             abi = "universal";
                             break;
                     }
-                    String url = String.format(locale, "https://app.owlgram.org/version?lang=%s&beta=%s&abi=%s", locale.getLanguage(), betaMode, URLEncoder.encode(abi, StandardCharsets.UTF_8.name()));
+                    String url = String.format(locale, "https://app.colorgram.org/version?lang=%s&beta=%s&abi=%s", locale.getLanguage(), betaMode, URLEncoder.encode(abi, StandardCharsets.UTF_8.name()));
                     JSONObject obj = new JSONObject(new StandardHTTPRequest(url).request());
                     String update_status = obj.getString("status");
                     if (update_status.equals("no_updates")) {

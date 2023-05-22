@@ -1,4 +1,4 @@
-package it.owlgram.ui.Cells;
+package it.colorgram.ui.Cells;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,9 +21,9 @@ import org.telegram.ui.ActionBar.Theme;
 
 import java.util.Objects;
 
-import it.owlgram.android.utils.DCHelper;
-import it.owlgram.ui.Cells.Dynamic.BaseButtonCell;
-import it.owlgram.ui.Cells.Dynamic.ThemeInfo;
+import it.colorgram.android.utils.DCHelper;
+import it.colorgram.ui.Cells.Dynamic.BaseButtonCell;
+import it.colorgram.ui.Cells.Dynamic.ThemeInfo;
 
 
 @SuppressLint("ViewConstructor")

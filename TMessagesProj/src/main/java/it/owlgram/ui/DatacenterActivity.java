@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -22,9 +22,9 @@ import org.telegram.ui.Cells.ShadowSectionCell;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.RecyclerListView;
 
-import it.owlgram.android.utils.DCHelper;
-import it.owlgram.ui.Cells.DatacenterHeader;
-import it.owlgram.ui.Cells.DatacenterStatus;
+import it.colorgram.android.utils.DCHelper;
+import it.colorgram.ui.Cells.DatacenterHeader;
+import it.colorgram.ui.Cells.DatacenterStatus;
 
 public class DatacenterActivity extends BaseFragment {
     private int rowCount;

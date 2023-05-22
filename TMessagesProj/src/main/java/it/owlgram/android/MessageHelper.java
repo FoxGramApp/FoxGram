@@ -1,4 +1,4 @@
-package it.owlgram.android;
+package it.colorgram.android;
 
 import android.app.Activity;
 import android.content.ClipData;
@@ -44,8 +44,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-import it.owlgram.android.entities.EntitiesHelper;
-import it.owlgram.android.translator.TranslatorHelper;
+import it.colorgram.android.entities.EntitiesHelper;
+import it.colorgram.android.translator.TranslatorHelper;
 
 public class MessageHelper extends BaseController {
 

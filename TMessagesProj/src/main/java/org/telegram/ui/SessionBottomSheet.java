@@ -358,10 +358,10 @@ public class SessionBottomSheet extends BottomSheet {
             colorKey2 = Theme.key_avatar_background2Cyan;
         } else if (platform.contains("android")) {
             iconId = R.raw.android_30;
-            if (app_name.contains("owlgram")) {
+            if (app_name.contains("colorgram")) {
                 animation = false;
                 colorValue = Color.parseColor("#4285F4");
-                iconId = R.drawable.device_owlgram;
+                iconId = R.drawable.device_colorgram;
             } else {
                 colorKey = Theme.key_avatar_backgroundGreen;
                 colorKey2 = Theme.key_avatar_background2Green;

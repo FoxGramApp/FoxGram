@@ -74,7 +74,7 @@ import org.telegram.ui.Components.Reactions.AnimatedEmojiEffect;
 import org.telegram.ui.Components.Reactions.ReactionsLayoutInBubble;
 import org.telegram.ui.Components.SnowflakesEffect;
 import org.telegram.ui.ThemeActivity;
-import it.owlgram.android.OwlConfig;
+import it.colorgram.android.OwlConfig;
 
 import java.util.ArrayList;
 

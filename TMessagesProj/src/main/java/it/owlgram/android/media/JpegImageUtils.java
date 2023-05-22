@@ -1,11 +1,11 @@
 /*
- * This is the source code of OwlGram for Android v. 1.4.x.
+ * This is the source code of colorgram for Android v. 1.4.x.
  * It is licensed under GNU GPL v. 2 or later.
  * You should have received a copy of the license in this archive (see LICENSE).
  *
  * Copyright Laky64, 2021-2022.
  */
-package it.owlgram.android.media;
+package it.colorgram.android.media;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

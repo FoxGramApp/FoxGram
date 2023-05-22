@@ -46,8 +46,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.LanguageController;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.LanguageController;
 
 public class LocaleController {
 

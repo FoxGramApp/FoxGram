@@ -1,4 +1,4 @@
-package it.owlgram.ui.Cells;
+package it.colorgram.ui.Cells;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,17 +20,17 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.NumberPicker;
 
-import it.owlgram.android.OwlConfig;
+import it.colorgram.android.OwlConfig;
 
 public class DcStyleSelector extends LinearLayout {
     Paint pickerDividersPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     String[] strings = new String[]{
             LocaleController.getString("Automatic", R.string.Automatic),
             "Telegram",
-            "OwlGram",
+            "colorgram",
     };
     public static int TELEGRAM_DC = 1;
-    public static int OWLGRAM_DC = 2;
+    public static int colorgram_DC = 2;
 
     public DcStyleSelector(Context context) {
         super(context);

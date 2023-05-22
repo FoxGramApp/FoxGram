@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -25,7 +25,7 @@ import org.telegram.ui.PasscodeActivity;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import it.owlgram.ui.Cells.AccountSelectList;
+import it.colorgram.ui.Cells.AccountSelectList;
 
 public class AccountProtectionIntro extends BaseFragment {
     private RLottieImageView imageView;

@@ -1,4 +1,4 @@
-package it.owlgram.ui.Components;
+package it.colorgram.ui.Components;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,7 +20,7 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.AlertsCreator;
 import org.telegram.ui.Components.LayoutHelper;
 
-import it.owlgram.android.utils.ForwardContext;
+import it.colorgram.android.utils.ForwardContext;
 
 @SuppressLint({"ClickableViewAccessibility", "ViewConstructor"})
 public class SendOptionsMenuLayout extends LinearLayout {

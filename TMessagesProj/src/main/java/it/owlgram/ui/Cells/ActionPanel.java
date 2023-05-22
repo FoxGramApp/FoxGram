@@ -1,4 +1,4 @@
-package it.owlgram.ui.Cells;
+package it.colorgram.ui.Cells;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,9 +13,9 @@ import org.telegram.ui.Components.RLottieImageView;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import it.owlgram.ui.Cells.Dynamic.BaseButtonCell;
-import it.owlgram.ui.Cells.Dynamic.ButtonCell;
-import it.owlgram.ui.Cells.Dynamic.ThemeInfo;
+import it.colorgram.ui.Cells.Dynamic.BaseButtonCell;
+import it.colorgram.ui.Cells.Dynamic.ButtonCell;
+import it.colorgram.ui.Cells.Dynamic.ThemeInfo;
 
 @SuppressLint("ViewConstructor")
 public class ActionPanel extends LinearLayout {

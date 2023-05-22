@@ -91,7 +91,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import it.owlgram.android.OwlConfig;
+import it.colorgram.android.OwlConfig;
 
 @SuppressWarnings("unchecked")
 public class MediaDataController extends BaseController {

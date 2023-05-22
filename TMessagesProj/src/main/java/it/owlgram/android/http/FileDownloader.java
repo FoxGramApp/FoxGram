@@ -1,4 +1,4 @@
-package it.owlgram.android.http;
+package it.colorgram.android.http;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

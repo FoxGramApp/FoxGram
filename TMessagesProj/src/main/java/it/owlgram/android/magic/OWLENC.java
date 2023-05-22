@@ -1,4 +1,4 @@
-package it.owlgram.android.magic;
+package it.colorgram.android.magic;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import it.owlgram.android.MenuOrderController;
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.updates.PlayStoreAPI;
+import it.colorgram.android.MenuOrderController;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.updates.PlayStoreAPI;
 
 public class OWLENC {
     public static class DrawerItems extends MagicVector<String> {

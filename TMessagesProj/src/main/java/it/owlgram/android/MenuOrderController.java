@@ -1,11 +1,11 @@
-package it.owlgram.android;
+package it.colorgram.android;
 
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
 
 import java.util.ArrayList;
 
-import it.owlgram.android.magic.OWLENC;
+import it.colorgram.android.magic.OWLENC;
 
 public class MenuOrderController {
     private static final Object sync = new Object();
@@ -19,7 +19,7 @@ public class MenuOrderController {
             "nearby_people",
             "saved_message",
             "settings",
-            "owlgram_settings",
+            "colorgram_settings",
             "new_channel",
             "new_secret_chat",
             "invite_friends",
@@ -227,7 +227,7 @@ public class MenuOrderController {
                 return LocaleController.getString("SavedMessages", R.string.SavedMessages);
             case "settings":
                 return LocaleController.getString("Settings", R.string.Settings);
-            case "owlgram_settings":
+            case "colorgram_settings":
                 return LocaleController.getString("OwlSetting", R.string.OwlSetting);
             case "new_channel":
                 return LocaleController.getString("NewChannel", R.string.NewChannel);

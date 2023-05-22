@@ -24,13 +24,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.entities.HTMLKeeper;
-import it.owlgram.android.MessageHelper;
-import it.owlgram.ui.DoNotTranslateSettings;
-import it.owlgram.android.translator.BaseTranslator;
-import it.owlgram.android.translator.Translator;
-import it.owlgram.android.translator.TranslatorHelper;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.entities.HTMLKeeper;
+import it.colorgram.android.MessageHelper;
+import it.colorgram.ui.DoNotTranslateSettings;
+import it.colorgram.android.translator.BaseTranslator;
+import it.colorgram.android.translator.Translator;
+import it.colorgram.android.translator.TranslatorHelper;
 
 public class TranslateController extends BaseController {
 

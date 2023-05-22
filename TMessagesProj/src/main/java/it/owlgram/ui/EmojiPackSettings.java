@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -46,11 +46,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import it.owlgram.android.CustomEmojiController;
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.http.FileDownloader;
-import it.owlgram.android.utils.FileUnzip;
-import it.owlgram.ui.Cells.EmojiSet;
+import it.colorgram.android.CustomEmojiController;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.http.FileDownloader;
+import it.colorgram.android.utils.FileUnzip;
+import it.colorgram.ui.Cells.EmojiSet;
 
 public class EmojiPackSettings extends BaseSettingsActivity implements NotificationCenter.NotificationCenterDelegate, ChatAttachAlertDocumentLayout.DocumentSelectActivityDelegate {
 

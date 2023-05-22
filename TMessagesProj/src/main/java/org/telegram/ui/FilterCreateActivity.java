@@ -53,8 +53,8 @@ import org.telegram.ui.Components.RecyclerListView;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import it.owlgram.ui.Components.Dialogs.IconSelectorAlert;
-import it.owlgram.android.FolderIconController;
+import it.colorgram.ui.Components.Dialogs.IconSelectorAlert;
+import it.colorgram.android.FolderIconController;
 
 public class FilterCreateActivity extends BaseFragment {
 

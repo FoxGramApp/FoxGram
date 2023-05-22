@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -52,8 +52,8 @@ import org.telegram.ui.Components.UndoView;
 import java.util.List;
 import java.util.Locale;
 
-import it.owlgram.ui.Cells.EditTopic;
-import it.owlgram.ui.Cells.EmojiSet;
+import it.colorgram.ui.Cells.EditTopic;
+import it.colorgram.ui.Cells.EmojiSet;
 
 public abstract class BaseSettingsActivity extends BaseFragment {
     protected static final Object PARTIAL = new Object();

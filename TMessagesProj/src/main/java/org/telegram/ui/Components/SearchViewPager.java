@@ -62,8 +62,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.utils.ForwardContext;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.utils.ForwardContext;
 
 public class SearchViewPager extends ViewPagerFixed implements FilteredSearchView.UiCallback {
 

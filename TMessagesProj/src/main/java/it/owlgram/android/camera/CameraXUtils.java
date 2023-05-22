@@ -1,11 +1,11 @@
 /*
- * This is the source code of OwlGram for Android v. 1.4.x.
+ * This is the source code of colorgram for Android v. 1.4.x.
  * It is licensed under GNU GPL v. 2 or later.
  * You should have received a copy of the license in this archive (see LICENSE).
  *
  * Copyright Laky64, 2021-2022.
  */
-package it.owlgram.android.camera;
+package it.colorgram.android.camera;
 
 import static android.hardware.camera2.CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS;
 import static android.hardware.camera2.CameraMetadata.LENS_FACING_BACK;
@@ -39,7 +39,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import it.owlgram.android.OwlConfig;
+import it.colorgram.android.OwlConfig;
 
 public class CameraXUtils {
 

@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -18,8 +18,8 @@ import org.telegram.ui.Cells.TextInfoPrivacyCell;
 import org.telegram.ui.Cells.TextSettingsCell;
 import org.telegram.ui.GroupCreateActivity;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.translator.AutoTranslateConfig;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.translator.AutoTranslateConfig;
 
 public class AutoTranslateSettings extends BaseSettingsActivity {
 

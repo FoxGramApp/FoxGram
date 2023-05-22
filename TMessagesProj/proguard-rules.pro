@@ -96,10 +96,10 @@
 -keep class com.huawei.hms.**{ *; }
 
 # Keep OwlConfig fields name
--keepnames class it.owlgram.android.OwlConfig { <fields>; }
+-keepnames class it.colorgram.android.OwlConfig { <fields>; }
 
 # Keep all classes and fiels name of Magic Objects
--keepattributes InnerClasses, EnclosingMethod -keepnames class it.owlgram.android.magic.** { <fields>; }
+-keepattributes InnerClasses, EnclosingMethod -keepnames class it.colorgram.android.magic.** { <fields>; }
 
 # Keep all classes of Apache Commons
 -keep class org.apache.commons.text.** { *; }

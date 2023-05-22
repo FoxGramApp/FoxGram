@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_NO;
 
@@ -27,11 +27,11 @@ import org.telegram.ui.Components.StickerImageView;
 
 import java.util.ArrayList;
 
-import it.owlgram.android.AlertController;
-import it.owlgram.android.MonetIconController;
-import it.owlgram.android.OwlConfig;
+import it.colorgram.android.AlertController;
+import it.colorgram.android.MonetIconController;
+import it.colorgram.android.OwlConfig;
 
-public class OwlgramExperimentalSettings extends BaseSettingsActivity {
+public class colorgramExperimentalSettings extends BaseSettingsActivity {
 
     private int checkBoxExperimentalRow;
     private int headerImageRow;

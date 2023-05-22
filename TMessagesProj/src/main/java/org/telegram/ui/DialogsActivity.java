@@ -205,17 +205,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.ui.Components.Dialogs.AppLinkVerifyBottomSheet;
-import it.owlgram.ui.Components.Dialogs.CrashReportBottomSheet;
-import it.owlgram.ui.Components.Dialogs.MonetAndroidFixDialog;
-import it.owlgram.ui.Components.SendOptionsMenuLayout;
-import it.owlgram.android.Crashlytics;
-import it.owlgram.android.utils.ForwardContext;
-import it.owlgram.android.MonetIconController;
-import it.owlgram.android.PasscodeController;
-import it.owlgram.android.updates.AppDownloader;
-import it.owlgram.android.updates.UpdateManager;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.ui.Components.Dialogs.AppLinkVerifyBottomSheet;
+import it.colorgram.ui.Components.Dialogs.CrashReportBottomSheet;
+import it.colorgram.ui.Components.Dialogs.MonetAndroidFixDialog;
+import it.colorgram.ui.Components.SendOptionsMenuLayout;
+import it.colorgram.android.Crashlytics;
+import it.colorgram.android.utils.ForwardContext;
+import it.colorgram.android.MonetIconController;
+import it.colorgram.android.PasscodeController;
+import it.colorgram.android.updates.AppDownloader;
+import it.colorgram.android.updates.UpdateManager;
 
 public class DialogsActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, FloatingDebugProvider {
 

@@ -1,4 +1,4 @@
-package it.owlgram.android.entities;
+package it.colorgram.android.entities;
 
 import android.graphics.Typeface;
 import android.text.Html;

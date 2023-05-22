@@ -106,15 +106,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.ui.Components.BaseCameraView;
-import it.owlgram.android.camera.CameraXController;
-import it.owlgram.android.camera.CameraXUtils;
-import it.owlgram.ui.Components.CameraXView;
-import it.owlgram.ui.Components.EffectSelectorView;
-import it.owlgram.ui.Components.LockAnimationView;
-import it.owlgram.ui.Components.SlideControlView;
-import it.owlgram.android.PermissionsUtils;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.ui.Components.BaseCameraView;
+import it.colorgram.android.camera.CameraXController;
+import it.colorgram.android.camera.CameraXUtils;
+import it.colorgram.ui.Components.CameraXView;
+import it.colorgram.ui.Components.EffectSelectorView;
+import it.colorgram.ui.Components.LockAnimationView;
+import it.colorgram.ui.Components.SlideControlView;
+import it.colorgram.android.PermissionsUtils;
 
 public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayout implements NotificationCenter.NotificationCenterDelegate {
 

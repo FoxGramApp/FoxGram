@@ -1,4 +1,4 @@
-package it.owlgram.ui.Cells.Dynamic;
+package it.colorgram.ui.Cells.Dynamic;
 
 import android.content.Context;
 import android.view.MotionEvent;

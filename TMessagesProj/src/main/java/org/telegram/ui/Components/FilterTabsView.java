@@ -60,8 +60,8 @@ import org.telegram.ui.ActionBar.Theme;
 
 import java.util.ArrayList;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.FolderIconController;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.FolderIconController;
 
 public class FilterTabsView extends FrameLayout {
 

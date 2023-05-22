@@ -234,22 +234,22 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.StoreUtils;
-import it.owlgram.ui.Cells.ActionPanel;
-import it.owlgram.ui.Cells.Datacenter;
-import it.owlgram.ui.Cells.DcStyleSelector;
-import it.owlgram.ui.Cells.Dynamic.ThemeInfo;
-import it.owlgram.android.ActionButtonController;
-import it.owlgram.android.utils.DCHelper;
-import it.owlgram.ui.BaseSettingsActivity;
-import it.owlgram.ui.DoNotTranslateSettings;
-import it.owlgram.ui.OwlgramSettings;
-import it.owlgram.ui.Components.AutoTranslatePopupWrapper;
-import it.owlgram.android.translator.BaseTranslator;
-import it.owlgram.android.translator.Translator;
-import it.owlgram.android.translator.TranslatorHelper;
-import it.owlgram.android.updates.UpdateManager;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.StoreUtils;
+import it.colorgram.ui.Cells.ActionPanel;
+import it.colorgram.ui.Cells.Datacenter;
+import it.colorgram.ui.Cells.DcStyleSelector;
+import it.colorgram.ui.Cells.Dynamic.ThemeInfo;
+import it.colorgram.android.ActionButtonController;
+import it.colorgram.android.utils.DCHelper;
+import it.colorgram.ui.BaseSettingsActivity;
+import it.colorgram.ui.DoNotTranslateSettings;
+import it.colorgram.ui.colorgramSettings;
+import it.colorgram.ui.Components.AutoTranslatePopupWrapper;
+import it.colorgram.android.translator.BaseTranslator;
+import it.colorgram.android.translator.Translator;
+import it.colorgram.android.translator.TranslatorHelper;
+import it.colorgram.android.updates.UpdateManager;
 
 public class ProfileActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, DialogsActivity.DialogsActivityDelegate, SharedMediaLayout.SharedMediaPreloaderDelegate, ImageUpdater.ImageUpdaterDelegate, SharedMediaLayout.Delegate {
     private final static int PHONE_OPTION_CALL = 0,
@@ -506,7 +506,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private int questionRow;
     private int faqRow;
     private int policyRow;
-    private int owlgramPolicyRow;
+    private int colorgramPolicyRow;
     private int helpSectionCell;
     private int debugHeaderRow;
     private int sendLogsRow;
@@ -3440,8 +3440,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 Browser.openUrl(getParentActivity(), LocaleController.getString("TelegramFaqUrl", R.string.TelegramFaqUrl));
             } else if (position == policyRow) {
                 Browser.openUrl(getParentActivity(), LocaleController.getString("PrivacyPolicyUrl", R.string.PrivacyPolicyUrl));
-            } else if (position == owlgramPolicyRow) {
-                Browser.openUrl(getParentActivity(), "https://owlgram.org/terms");
+            } else if (position == colorgramPolicyRow) {
+                Browser.openUrl(getParentActivity(), "https://colorgram.org/terms");
             } else if (position == sendLogsRow) {
                 sendLogs(getParentActivity(), false);
             } else if (position == sendLastLogsRow) {
@@ -3475,7 +3475,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             } else if (position == premiumRow) {
                 presentFragment(new PremiumPreviewFragment("settings"));
             } else if (position == owlSettingsRow) {
-                presentFragment(new OwlgramSettings());
+                presentFragment(new colorgramSettings());
             } else {
                 processOnClickOrPress(position, view, x, y);
             }
@@ -7429,7 +7429,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         questionRow = -1;
         faqRow = -1;
         policyRow = -1;
-        owlgramPolicyRow = -1;
+        colorgramPolicyRow = -1;
         helpSectionCell = -1;
         debugHeaderRow = -1;
         sendLogsRow = -1;
@@ -7506,7 +7506,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     setAvatarSectionRow = rowCount++;
                 }
                 numberSectionRow = rowCount++;
-                if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.OWLGRAM_DC) {
+                if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
                     datacenterRow = rowCount++;
                 }
                 numberRow = rowCount++;
@@ -7550,7 +7550,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 questionRow = rowCount++;
                 faqRow = rowCount++;
                 policyRow = rowCount++;
-                owlgramPolicyRow = rowCount++;
+                colorgramPolicyRow = rowCount++;
                 if (BuildVars.LOGS_ENABLED || BuildVars.DEBUG_PRIVATE_VERSION) {
                     helpSectionCell = rowCount++;
                     debugHeaderRow = rowCount++;
@@ -7579,7 +7579,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 infoHeaderRow = rowCount++;
 
-                if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.OWLGRAM_DC) {
+                if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
                     if (currentUser != null || currentChat != null) {
                         datacenterRow = rowCount++;
                     } else {
@@ -7668,7 +7668,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             if (OwlConfig.showIDAndDC) {
                 infoHeaderRow = rowCount++;
             }
-            if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.OWLGRAM_DC) {
+            if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
                 if (currentUser != null || currentChat != null) {
                     datacenterRow = rowCount++;
                 } else {
@@ -9599,7 +9599,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                 }
                                 break;
                         }
-                        String version_info = LocaleController.formatString("OwlGramVersion", R.string.OwlGramVersion, String.format(Locale.US, "v%s (%s) %s", BuildVars.BUILD_VERSION_STRING, BuildVars.DEBUG_PRIVATE_VERSION ? BuildConfig.GIT_COMMIT_HASH:BuildVars.BUILD_VERSION, abi), String.format(Locale.US, "v%s (%d)", BuildVars.TELEGRAM_VERSION_STRING, BuildVars.TELEGRAM_BUILD_VERSION));
+                        String version_info = LocaleController.formatString("colorgramVersion", R.string.colorgramVersion, String.format(Locale.US, "v%s (%s) %s", BuildVars.BUILD_VERSION_STRING, BuildVars.DEBUG_PRIVATE_VERSION ? BuildConfig.GIT_COMMIT_HASH:BuildVars.BUILD_VERSION, abi), String.format(Locale.US, "v%s (%d)", BuildVars.TELEGRAM_VERSION_STRING, BuildVars.TELEGRAM_BUILD_VERSION));
                         cell.setText(version_info);
                     } catch (Exception e) {
                         FileLog.e(e);
@@ -9992,7 +9992,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         textCell.setTextAndIcon(LocaleController.getString("TelegramFAQ", R.string.TelegramFAQ), R.drawable.msg2_help, true);
                     } else if (position == policyRow) {
                         textCell.setTextAndIcon(LocaleController.getString("PrivacyPolicy", R.string.PrivacyPolicy), R.drawable.msg2_policy, true);
-                    } else if (position == owlgramPolicyRow) {
+                    } else if (position == colorgramPolicyRow) {
                         textCell.setTextAndIcon(LocaleController.getString("OwlPrivacyPolicy", R.string.OwlPrivacyPolicy), R.drawable.msg2_policy, false);
                     } else if (position == sendLogsRow) {
                         textCell.setText(LocaleController.getString("DebugSendLogs", R.string.DebugSendLogs), true);
@@ -10321,7 +10321,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         position == faqRow || position == policyRow || position == sendLogsRow || position == sendLastLogsRow ||
                         position == clearLogsRow || position == switchBackendRow || position == setAvatarRow ||
                         position == addToGroupButtonRow || position == premiumRow || position == liteModeRow ||
-                        position == owlSettingsRow || position == datacenterRow || position == owlgramPolicyRow;
+                        position == owlSettingsRow || position == datacenterRow || position == colorgramPolicyRow;
             }
             if (holder.itemView instanceof UserCell) {
                 UserCell userCell = (UserCell) holder.itemView;
@@ -10365,7 +10365,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     position == questionRow || position == devicesRow || position == filtersRow || position == stickersRow ||
                     position == faqRow || position == policyRow || position == sendLogsRow || position == sendLastLogsRow ||
                     position == clearLogsRow || position == switchBackendRow || position == setAvatarRow || position == addToGroupButtonRow ||
-                    position == addToContactsRow || position == liteModeRow || position == owlSettingsRow || position == owlgramPolicyRow) {
+                    position == addToContactsRow || position == liteModeRow || position == owlSettingsRow || position == colorgramPolicyRow) {
                 return VIEW_TYPE_TEXT;
             } else if (position == notificationsDividerRow) {
                 return VIEW_TYPE_DIVIDER;
@@ -10396,7 +10396,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 return VIEW_TYPE_PLACEHOLDER;
             } else if(position == actionsSectionDivider){
                 return VIEW_TYPE_ACTIONS_BUTTON_DIVIDER;
-            } else if (position == datacenterRow && DcStyleSelector.getStyleSelected() == DcStyleSelector.OWLGRAM_DC) {
+            } else if (position == datacenterRow && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
                 return VIEW_TYPE_DATACENTER_INFO;
             } else if (position == addToGroupInfoRow) {
                 return VIEW_TYPE_ADDTOGROUP_INFO;
@@ -10441,7 +10441,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             }
         }
         ThemeInfo themeInfo = actionPanelCell.getTheme();
-        if (datacenterCell != null && themeInfo != null && OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.OWLGRAM_DC) {
+        if (datacenterCell != null && themeInfo != null && OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
             datacenterCell.setTheme(themeInfo);
         }
         RLottieDrawable photoAnimationDrawable = actionPanelCell.getPhotoAnimationDrawable();
@@ -11327,7 +11327,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
 
         // CUSTOM ELEMENTS
-        if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.OWLGRAM_DC) {
+        if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
             arrayList.add(new ThemeDescription(listView, 0, new Class[]{Datacenter.class}, new String[]{"tv"}, null, null, null, Theme.key_windowBackgroundWhiteBlackText));
             arrayList.add(new ThemeDescription(listView, 0, new Class[]{Datacenter.class}, new String[]{"tv2"}, null, null, null, Theme.key_windowBackgroundWhiteGrayText2));
             arrayList.add(new ThemeDescription(listView,0, new Class[]{Datacenter.class}, new String[]{"iv"}, null, null, null, Theme.key_switch2TrackChecked));
@@ -11528,7 +11528,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             put(++pointer, questionRow, sparseIntArray);
             put(++pointer, faqRow, sparseIntArray);
             put(++pointer, policyRow, sparseIntArray);
-            put(++pointer, owlgramPolicyRow, sparseIntArray);
+            put(++pointer, colorgramPolicyRow, sparseIntArray);
             put(++pointer, helpSectionCell, sparseIntArray);
             put(++pointer, debugHeaderRow, sparseIntArray);
             put(++pointer, sendLogsRow, sparseIntArray);

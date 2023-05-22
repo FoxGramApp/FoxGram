@@ -1,4 +1,4 @@
-package it.owlgram.android.entities;
+package it.colorgram.android.entities;
 
 
 import android.graphics.Typeface;
@@ -39,7 +39,7 @@ import java.util.Optional;
 import io.noties.prism4j.DefaultGrammarLocator;
 import io.noties.prism4j.Grammar;
 import io.noties.prism4j.Prism4j;
-import it.owlgram.android.entities.syntax_highlight.SyntaxHighlight;
+import it.colorgram.android.entities.syntax_highlight.SyntaxHighlight;
 
 public class EntitiesHelper {
 

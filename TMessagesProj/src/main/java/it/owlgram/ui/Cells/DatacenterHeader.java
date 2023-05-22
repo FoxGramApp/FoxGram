@@ -1,4 +1,4 @@
-package it.owlgram.ui.Cells;
+package it.colorgram.ui.Cells;
 
 import android.content.Context;
 import android.text.Spannable;
@@ -23,7 +23,7 @@ import org.telegram.ui.Components.StickerImageView;
 
 import java.util.Objects;
 
-import it.owlgram.android.entities.EntitiesHelper;
+import it.colorgram.android.entities.EntitiesHelper;
 
 public class DatacenterHeader extends LinearLayout {
     public DatacenterHeader(Context context) {
@@ -57,7 +57,7 @@ public class DatacenterHeader extends LinearLayout {
         spannableStringBuilder.append(".  ").append(LocaleController.getString("WebVersion", R.string.WebVersion));
         spannableStringBuilder.setSpan(new ColoredImageSpan(Objects.requireNonNull(ContextCompat.getDrawable(getContext(), R.drawable.web_access))), 0, 1, 0);
         buttonTextView.setText(spannableStringBuilder);
-        buttonTextView.setOnClickListener(view -> Browser.openUrl(AndroidUtilities.findActivity(context), "https://status.owlgram.org/"));
+        buttonTextView.setOnClickListener(view -> Browser.openUrl(AndroidUtilities.findActivity(context), "https://status.colorgram.org/"));
 
         buttonTextView.setTextColor(Theme.getColor(Theme.key_featuredStickers_buttonText));
         buttonTextView.setBackground(Theme.createSimpleSelectorRoundRectDrawable(AndroidUtilities.dp(6), Theme.getColor(Theme.key_featuredStickers_addButton), Theme.getColor(Theme.key_featuredStickers_addButtonPressed)));

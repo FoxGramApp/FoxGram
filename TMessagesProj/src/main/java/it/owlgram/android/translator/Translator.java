@@ -1,4 +1,4 @@
-package it.owlgram.android.translator;
+package it.colorgram.android.translator;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
-import it.owlgram.android.AlertController;
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.entities.HTMLKeeper;
+import it.colorgram.android.AlertController;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.entities.HTMLKeeper;
 
 public class Translator {
 

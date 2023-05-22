@@ -1,4 +1,4 @@
-package it.owlgram.ui.Cells;
+package it.colorgram.ui.Cells;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -29,9 +29,9 @@ import org.telegram.ui.Components.RadialProgressView;
 
 import java.util.Objects;
 
-import it.owlgram.android.CustomEmojiController;
-import it.owlgram.android.http.FileDownloader;
-import it.owlgram.android.utils.FileUnzip;
+import it.colorgram.android.CustomEmojiController;
+import it.colorgram.android.http.FileDownloader;
+import it.colorgram.android.utils.FileUnzip;
 
 public class EmojiSet extends FrameLayout {
     private final TextView textView;

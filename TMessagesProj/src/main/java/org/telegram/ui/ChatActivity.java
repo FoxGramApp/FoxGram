@@ -323,19 +323,19 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.ui.Components.EmojiSetBulletinLayout;
-import it.owlgram.ui.Components.Dialogs.ImportSettingsDialog;
-import it.owlgram.android.CustomEmojiController;
-import it.owlgram.android.utils.ForwardContext;
-import it.owlgram.android.MessageHelper;
-import it.owlgram.android.PermissionsUtils;
-import it.owlgram.ui.DoNotTranslateSettings;
-import it.owlgram.android.translator.AutoTranslateConfig;
-import it.owlgram.android.translator.BaseTranslator;
-import it.owlgram.android.translator.Translator;
-import it.owlgram.android.translator.TranslatorHelper;
-import it.owlgram.ui.DetailsActivity;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.ui.Components.EmojiSetBulletinLayout;
+import it.colorgram.ui.Components.Dialogs.ImportSettingsDialog;
+import it.colorgram.android.CustomEmojiController;
+import it.colorgram.android.utils.ForwardContext;
+import it.colorgram.android.MessageHelper;
+import it.colorgram.android.PermissionsUtils;
+import it.colorgram.ui.DoNotTranslateSettings;
+import it.colorgram.android.translator.AutoTranslateConfig;
+import it.colorgram.android.translator.BaseTranslator;
+import it.colorgram.android.translator.Translator;
+import it.colorgram.android.translator.TranslatorHelper;
+import it.colorgram.ui.DetailsActivity;
 
 @SuppressWarnings("unchecked")
 public class ChatActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, DialogsActivity.DialogsActivityDelegate, LocationActivity.LocationActivityDelegate, ChatAttachAlertDocumentLayout.DocumentSelectActivityDelegate, ChatActivityInterface, FloatingDebugProvider, ForwardContext {
@@ -24829,7 +24829,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         }
                         return false;
                     });
-                    if (option == 201) { // OwlGram Translate Button
+                    if (option == 201) { // colorgram Translate Button
                         MessageObject messageObject = getMessageHelper().getMessageForTranslate(selectedObject, selectedObjectGroup);
                         Utilities.CallbackReturn<URLSpan, Boolean> onLinkPress = (link) -> {
                             didPressMessageUrl(link, false, selectedObject, v instanceof ChatMessageCell ? (ChatMessageCell) v : null);

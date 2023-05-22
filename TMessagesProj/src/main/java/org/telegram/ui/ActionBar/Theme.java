@@ -142,9 +142,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.MonetThemeController;
-import it.owlgram.android.entities.syntax_highlight.SyntaxHighlight;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.MonetThemeController;
+import it.colorgram.android.entities.syntax_highlight.SyntaxHighlight;
 
 public class Theme {
 

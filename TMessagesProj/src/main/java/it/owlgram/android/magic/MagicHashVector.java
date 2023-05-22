@@ -1,4 +1,4 @@
-package it.owlgram.android.magic;
+package it.colorgram.android.magic;
 
 import androidx.annotation.NonNull;
 

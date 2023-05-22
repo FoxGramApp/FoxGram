@@ -1,4 +1,4 @@
-package it.owlgram.android.updates;
+package it.colorgram.android.updates;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -24,8 +24,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.ui.Components.Dialogs.UpdateInstallingDialog;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.ui.Components.Dialogs.UpdateInstallingDialog;
 
 public class ApkInstaller {
     @SuppressLint("StaticFieldLeak")

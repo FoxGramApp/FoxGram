@@ -1,4 +1,4 @@
-package it.owlgram.android.utils;
+package it.colorgram.android.utils;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -16,7 +16,7 @@ public class SharedPreferencesHelper {
     private static Runnable groupingRunnable;
 
     static {
-        preferences = ApplicationLoader.applicationContext.getSharedPreferences("owlgram", Activity.MODE_PRIVATE);
+        preferences = ApplicationLoader.applicationContext.getSharedPreferences("colorgram", Activity.MODE_PRIVATE);
     }
 
     protected static void putValue(String key, Object value) {

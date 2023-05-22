@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
@@ -32,16 +32,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 
-import it.owlgram.android.AlertController;
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.translator.AutoTranslateConfig;
-import it.owlgram.android.translator.BaseTranslator;
-import it.owlgram.android.translator.DeepLTranslator;
-import it.owlgram.android.translator.Translator;
-import it.owlgram.android.translator.TranslatorHelper;
-import it.owlgram.ui.Cells.DcStyleSelector;
+import it.colorgram.android.AlertController;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.translator.AutoTranslateConfig;
+import it.colorgram.android.translator.BaseTranslator;
+import it.colorgram.android.translator.DeepLTranslator;
+import it.colorgram.android.translator.Translator;
+import it.colorgram.android.translator.TranslatorHelper;
+import it.colorgram.ui.Cells.DcStyleSelector;
 
-public class OwlgramGeneralSettings extends BaseSettingsActivity {
+public class colorgramGeneralSettings extends BaseSettingsActivity {
     private final boolean supportLanguageDetector;
 
     private int divisorPrivacyRow;
@@ -73,7 +73,7 @@ public class OwlgramGeneralSettings extends BaseSettingsActivity {
     private int deepLFormalityRow;
     private int translateEntireChatRow;
 
-    public OwlgramGeneralSettings() {
+    public colorgramGeneralSettings() {
         supportLanguageDetector = LanguageDetector.hasSupport();
     }
 
@@ -171,7 +171,7 @@ public class OwlgramGeneralSettings extends BaseSettingsActivity {
             });
         } else if (position == autoTranslateRow) {
             if (!getUserConfig().isPremium() && OwlConfig.translationProvider == Translator.PROVIDER_TELEGRAM) {
-                showDialog(new PremiumFeatureBottomSheet(OwlgramGeneralSettings.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
+                showDialog(new PremiumFeatureBottomSheet(colorgramGeneralSettings.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
                 return;
             }
             if (!supportLanguageDetector) {
@@ -181,7 +181,7 @@ public class OwlgramGeneralSettings extends BaseSettingsActivity {
             presentFragment(new AutoTranslateSettings());
         } else if (position == keepMarkdownRow) {
             if (!getUserConfig().isPremium() && OwlConfig.translationProvider == Translator.PROVIDER_TELEGRAM) {
-                showDialog(new PremiumFeatureBottomSheet(OwlgramGeneralSettings.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
+                showDialog(new PremiumFeatureBottomSheet(colorgramGeneralSettings.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
                 return;
             }
             OwlConfig.toggleKeepTranslationMarkdown();
@@ -195,7 +195,7 @@ public class OwlgramGeneralSettings extends BaseSettingsActivity {
             }
         } else if (position == translateEntireChatRow) {
             if (!getUserConfig().isPremium() && OwlConfig.translationProvider == Translator.PROVIDER_TELEGRAM) {
-                showDialog(new PremiumFeatureBottomSheet(OwlgramGeneralSettings.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
+                showDialog(new PremiumFeatureBottomSheet(colorgramGeneralSettings.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
             } else {
                 OwlConfig.toggleTranslateEntireChat();
                 if (view instanceof TextCheckCell) {

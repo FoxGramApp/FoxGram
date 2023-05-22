@@ -1,4 +1,4 @@
-package it.owlgram.ui.Components.Dialogs;
+package it.colorgram.ui.Components.Dialogs;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +30,7 @@ import org.telegram.ui.Components.StickerImageView;
 
 import java.util.Map;
 
-import it.owlgram.android.OwlConfig;
+import it.colorgram.android.OwlConfig;
 
 @RequiresApi(api = Build.VERSION_CODES.S)
 public class AppLinkVerifyBottomSheet extends OnceBottomSheet {

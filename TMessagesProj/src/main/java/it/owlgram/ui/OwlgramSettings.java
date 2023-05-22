@@ -1,4 +1,4 @@
-package it.owlgram.ui;
+package it.colorgram.ui;
 
 import android.content.DialogInterface;
 import android.view.View;
@@ -24,11 +24,11 @@ import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Cells.TextDetailSettingsCell;
 import org.telegram.ui.Components.BulletinFactory;
 
-import it.owlgram.android.Crashlytics;
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.StoreUtils;
+import it.colorgram.android.Crashlytics;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.StoreUtils;
 
-public class OwlgramSettings extends BaseSettingsActivity {
+public class colorgramSettings extends BaseSettingsActivity {
 
     private int divisorInfoRow;
     private int categoryHeaderRow;
@@ -83,7 +83,7 @@ public class OwlgramSettings extends BaseSettingsActivity {
                     Emoji.reloadEmoji();
                     NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.emojiLoaded);
                 }
-                BulletinFactory.of(OwlgramSettings.this).createSimpleBulletin(R.raw.forward, LocaleController.getString("ResetSettingsHint", R.string.ResetSettingsHint)).show();
+                BulletinFactory.of(colorgramSettings.this).createSimpleBulletin(R.raw.forward, LocaleController.getString("ResetSettingsHint", R.string.ResetSettingsHint)).show();
             });
             AlertDialog alertDialog = builder.create();
             showDialog(alertDialog);
@@ -101,24 +101,24 @@ public class OwlgramSettings extends BaseSettingsActivity {
         } else if (position == groupUpdatesRow) {
             MessagesController.getInstance(currentAccount).openByUserName(LocaleController.getString("GroupUsername", R.string.GroupUsername), this, 1);
         } else if (position == sourceCodeRow) {
-            Browser.openUrl(getParentActivity(), "https://github.com/OwlGramDev/OwlGram");
+            Browser.openUrl(getParentActivity(), "https://github.com/colorgramDev/colorgram");
         } else if (position == supportTranslationRow) {
-            Browser.openUrl(getParentActivity(), "https://translations.owlgram.org/");
+            Browser.openUrl(getParentActivity(), "https://translations.colorgram.org/");
         } else if (position == generalSettingsRow) {
-            presentFragment(new OwlgramGeneralSettings());
+            presentFragment(new colorgramGeneralSettings());
         } else if (position == chatSettingsRow) {
-            presentFragment(new OwlgramChatSettings());
+            presentFragment(new colorgramChatSettings());
         } else if (position == updateSettingsRow) {
-            presentFragment(new OwlgramUpdateSettings());
+            presentFragment(new colorgramUpdateSettings());
         } else if (position == experimentalSettingsRow) {
-            presentFragment(new OwlgramExperimentalSettings());
+            presentFragment(new colorgramExperimentalSettings());
         } else if (position == supportDonationRow) {
-            Browser.openUrl(getParentActivity(), "https://donations.owlgram.org/");
+            Browser.openUrl(getParentActivity(), "https://donations.colorgram.org/");
         } else if (position == appearanceSettingsRow) {
-            presentFragment(new OwlgramAppearanceSettings());
+            presentFragment(new colorgramAppearanceSettings());
         } else if (position == bugReportRow) {
             AndroidUtilities.addToClipboard(Crashlytics.getReportMessage() + "\n\n#bug");
-            BulletinFactory.of(OwlgramSettings.this).createCopyBulletin(LocaleController.getString("ReportDetailsCopied", R.string.ReportDetailsCopied)).show();
+            BulletinFactory.of(colorgramSettings.this).createCopyBulletin(LocaleController.getString("ReportDetailsCopied", R.string.ReportDetailsCopied)).show();
         }
     }
 

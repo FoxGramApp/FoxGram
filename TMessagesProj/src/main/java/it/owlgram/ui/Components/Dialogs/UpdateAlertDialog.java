@@ -1,4 +1,4 @@
-package it.owlgram.ui.Components.Dialogs;
+package it.colorgram.ui.Components.Dialogs;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -35,10 +35,10 @@ import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.LaunchActivity;
 
-import it.owlgram.android.OwlConfig;
-import it.owlgram.android.http.FileDownloader;
-import it.owlgram.android.magic.OWLENC;
-import it.owlgram.android.updates.UpdateManager;
+import it.colorgram.android.OwlConfig;
+import it.colorgram.android.http.FileDownloader;
+import it.colorgram.android.magic.OWLENC;
+import it.colorgram.android.updates.UpdateManager;
 
 public class UpdateAlertDialog extends BottomSheet {
 
