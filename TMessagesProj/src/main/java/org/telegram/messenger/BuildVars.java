@@ -12,7 +12,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
-import it.owlgram.android.StoreUtils;
+import it.colorgram.android.StoreUtils;
 import com.android.billingclient.api.ProductDetails;
 
 import java.util.Objects;
@@ -29,15 +29,13 @@ public class BuildVars {
     public static boolean NO_SCOPED_STORAGE = Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q;
     public static int BUILD_VERSION = BuildConfig.BUILD_VERSION;
     public static String BUILD_VERSION_STRING = BuildConfig.BUILD_VERSION_STRING;
-    public static int TELEGRAM_BUILD_VERSION = 3227;
-    public static String TELEGRAM_VERSION_STRING = "9.5.4";
-    public static int APP_ID = 10029733;
-    public static String APP_HASH = "d0d81009d46e774f78c0e0e622f5fa21";
+    public static int TELEGRAM_BUILD_VERSION = 3356;
+    public static String TELEGRAM_VERSION_STRING = "9.6.5";
 
-    // SafetyNet key for Google Identity SDK, set it to empty to disable
     public static String SAFETYNET_KEY = "";
     public static String SMS_HASH = isStandaloneApp() ? "w0lkcmTZkKh" : (DEBUG_VERSION ? "O2P2z+/jBpJ" : "oLeq9AcOZkT");
-    public static String PLAYSTORE_APP_URL = "https://play.google.com/store/apps/details?id=it.owlgram.android";
+    public static String PLAYSTORE_APP_URL = "";
+
     public static String GOOGLE_AUTH_CLIENT_ID = "760348033671-81kmi3pi84p11ub8hp9a1funsv0rn2p9.apps.googleusercontent.com";
 
     public static String HUAWEI_APP_ID = "101184875";
@@ -53,7 +51,7 @@ public class BuildVars {
     }
 
     public static boolean useInvoiceBilling() {
-        return DEBUG_VERSION || isStandaloneApp() || isBetaApp() || isHuaweiStoreApp() || hasDirectCurrency();
+        return DEBUG_VERSION; isStandaloneApp();  isBetaApp();  isHuaweiStoreApp();  hasDirectCurrency();
     }
 
     private static boolean hasDirectCurrency() {
@@ -75,7 +73,7 @@ public class BuildVars {
     private static Boolean standaloneApp;
     public static boolean isStandaloneApp() {
         if (standaloneApp == null) {
-            standaloneApp = ApplicationLoader.applicationContext != null && "it.owlgram.android".equals(ApplicationLoader.applicationContext.getPackageName());
+            standaloneApp = ApplicationLoader.applicationContext != null && "it.colorgram.android".equals(ApplicationLoader.applicationContext.getPackageName());
         }
         return standaloneApp;
     }
@@ -83,7 +81,7 @@ public class BuildVars {
     private static Boolean betaApp;
     public static boolean isBetaApp() {
         if (betaApp == null) {
-            betaApp = ApplicationLoader.applicationContext != null && "it.owlgram.android.beta".equals(ApplicationLoader.applicationContext.getPackageName());
+            betaApp = ApplicationLoader.applicationContext != null && "it.colorgram.android.beta".equals(ApplicationLoader.applicationContext.getPackageName());
         }
         return betaApp;
     }
