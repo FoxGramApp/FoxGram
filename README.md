@@ -1,5 +1,5 @@
 # 🎨 **ColorGram**
-ColorGram is a **fork** of colorgram, an unoffical Telegram application that uses **Telegram's API**.
+ColorGram is a **fork** of OwlGram, an unoffical Telegram application that uses **Telegram's API**.
 
 # 🛠 About Reproducible Builds
 To reproduce the build of colorgram is only needed ccache (**already installed in "Tools" folder**), on macOs
@@ -20,4 +20,4 @@ MAPS_API_KEY=<your-api-key>
 • [**Nekogram**](<https://gitlab.com/Nekogram/Nekogram>)  
 • [**CatoGramX**](<https://github.com/CatogramX/CatogramX>)
 
-## And Thanks To [**colorgram**](<http://github.com/colorgramDev/colorgram>)
+## And Thanks To [**OwlGram**](<http://github.com/OwlgramDev/OwlGram>)
