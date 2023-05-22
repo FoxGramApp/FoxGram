@@ -71,7 +71,7 @@ import org.telegram.ui.Components.SuggestEmojiView;
 
 import java.util.ArrayList;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 import it.colorgram.android.MessageHelper;
 
 public class ContentPreviewViewer {
@@ -739,7 +739,7 @@ public class ContentPreviewViewer {
 
     private boolean canSend(View view) {
         boolean isGif = view instanceof ContextLinkCell && ((ContextLinkCell) view).isGif();
-        return !OwlConfig.confirmSending.sendGifs && isGif || !OwlConfig.confirmSending.sendStickers && !isGif;
+        return !ColorConfig.confirmSending.sendGifs && isGif || !ColorConfig.confirmSending.sendStickers && !isGif;
     }
 
     public boolean onTouch(MotionEvent event, final RecyclerListView listView, final int height, final Object listener, ContentPreviewViewerDelegate contentPreviewViewerDelegate, Theme.ResourcesProvider resourcesProvider) {

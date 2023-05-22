@@ -91,7 +91,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 
 @SuppressWarnings("unchecked")
 public class MediaDataController extends BaseController {
@@ -809,7 +809,7 @@ public class MediaDataController extends BaseController {
         if (type == TYPE_PREMIUM_STICKERS) {
             return new ArrayList<>(recentStickers[type]);
         }
-        return new ArrayList<>(arrayList.subList(0, Math.min(arrayList.size(), OwlConfig.maxRecentStickers)));
+        return new ArrayList<>(arrayList.subList(0, Math.min(arrayList.size(), ColorConfig.maxRecentStickers)));
     }
 
     public ArrayList<TLRPC.Document> getRecentStickersNoCopy(int type) {

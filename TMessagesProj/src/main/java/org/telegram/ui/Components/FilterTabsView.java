@@ -60,7 +60,7 @@ import org.telegram.ui.ActionBar.Theme;
 
 import java.util.ArrayList;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 import it.colorgram.android.FolderIconController;
 
 public class FilterTabsView extends FrameLayout {
@@ -118,7 +118,7 @@ public class FilterTabsView extends FrameLayout {
 
         public Tab(int i, String t, String e) {
             id = i;
-            title = OwlConfig.tabMode != OwlConfig.TAB_TYPE_ICON ? t:"";
+            title = ColorConfig.tabMode != ColorConfig.TAB_TYPE_ICON ? t:"";
             realTitle = t;
             emoticon = e;
         }
@@ -152,7 +152,7 @@ public class FilterTabsView extends FrameLayout {
             if (TextUtils.equals(title, newTitle)) {
                 return false;
             }
-            title = OwlConfig.tabMode != OwlConfig.TAB_TYPE_ICON ? newTitle:"";
+            title = ColorConfig.tabMode != ColorConfig.TAB_TYPE_ICON ? newTitle:"";
             realTitle = newTitle;
             return true;
         }
@@ -350,7 +350,7 @@ public class FilterTabsView extends FrameLayout {
             if (showRemove && (isEditing || editingStartAnimationProgress != 0)) {
                 countWidth = (int) (countWidth + (AndroidUtilities.dp(20) - countWidth) * editingStartAnimationProgress);
             }
-            if (OwlConfig.tabMode != OwlConfig.TAB_TYPE_ICON) {
+            if (ColorConfig.tabMode != ColorConfig.TAB_TYPE_ICON) {
                 tabWidth = currentTab.iconWidth + currentTab.titleWidth + ((countWidth != 0 && !animateCounterRemove) ? countWidth + AndroidUtilities.dp(6 * (counterText != null ? 1.0f : editingStartAnimationProgress)) : 0);
             } else {
                 tabWidth = currentTab.iconWidth + ((countWidth != 0 && !animateCounterRemove) ? countWidth + AndroidUtilities.dp(6 * (counterText != null ? 1.0f : editingStartAnimationProgress)) : 0);
@@ -406,7 +406,7 @@ public class FilterTabsView extends FrameLayout {
 
             int iconTab = 0;
             // TAB ICON
-            if (OwlConfig.tabMode != OwlConfig.TAB_TYPE_TEXT) {
+            if (ColorConfig.tabMode != ColorConfig.TAB_TYPE_TEXT) {
                 int emoticonSize = FolderIconController.getIconWidth();
                 if (!TextUtils.equals(currentTab.emoticon, currentEmoticon)) {
                     currentEmoticon = currentTab.emoticon;
@@ -475,7 +475,7 @@ public class FilterTabsView extends FrameLayout {
                 if (animateTextChange) {
                     titleWidth = animateFromTitleWidth * (1f - changeProgress) + currentTab.titleWidth * changeProgress;
                 }
-                int textSpace = OwlConfig.tabMode != OwlConfig.TAB_TYPE_ICON ? AndroidUtilities.dp(6) : 0;
+                int textSpace = ColorConfig.tabMode != ColorConfig.TAB_TYPE_ICON ? AndroidUtilities.dp(6) : 0;
                 if (animateTextChange && titleAnimateOutLayout == null) {
                     x = textX - titleXOffset + titleOffsetX + titleWidth + textSpace;
                 } else {
@@ -655,7 +655,7 @@ public class FilterTabsView extends FrameLayout {
                 countWidth = 0;
             }
             int tabWidth;
-            if (OwlConfig.tabMode != OwlConfig.TAB_TYPE_ICON) {
+            if (ColorConfig.tabMode != ColorConfig.TAB_TYPE_ICON) {
                 tabWidth = currentTab.iconWidth + currentTab.titleWidth + (countWidth != 0 ? countWidth + AndroidUtilities.dp(6 * 1.0f) : 0);
             } else {
                 tabWidth = currentTab.iconWidth + (countWidth != 0 ? countWidth + AndroidUtilities.dp(6 * 1.0f) : 0);
@@ -713,7 +713,7 @@ public class FilterTabsView extends FrameLayout {
                 }
             }
 
-            if (OwlConfig.tabMode != OwlConfig.TAB_TYPE_TEXT) {
+            if (ColorConfig.tabMode != ColorConfig.TAB_TYPE_TEXT) {
                 int iconX = (int) ((getMeasuredWidth() - tabWidth) / 2f);
 
                 if (iconX != lastIconTab) {
@@ -1127,7 +1127,7 @@ public class FilterTabsView extends FrameLayout {
             }
             TabView tabView = (TabView) view;
             if (isEditing) {
-                if (position != 0 || OwlConfig.hideAllTab) {
+                if (position != 0 || ColorConfig.hideAllTab) {
                     int side = AndroidUtilities.dp(6);
                     if (tabView.rect.left - side < x && tabView.rect.right + side > x) {
                         delegate.onDeletePressed(tabView.currentTab.id);
@@ -1434,7 +1434,7 @@ public class FilterTabsView extends FrameLayout {
         if (!tabs.isEmpty()) {
             int width = MeasureSpec.getSize(widthMeasureSpec) - AndroidUtilities.dp(7) - AndroidUtilities.dp(7);
             int trueTabsWidth;
-            if (!OwlConfig.hideAllTab)  {
+            if (!ColorConfig.hideAllTab)  {
                 Tab firstTab = findDefaultTab();
                 firstTab.setTitle(LocaleController.getString("FilterAllChats", R.string.FilterAllChats));
                 int tabWith = firstTab.getWidth(false);
@@ -1612,7 +1612,7 @@ public class FilterTabsView extends FrameLayout {
                 invalidated = true;
                 requestLayout();
                 allTabsWidth = 0;
-                if (!OwlConfig.hideAllTab) findDefaultTab().setTitle(LocaleController.getString("FilterAllChats", R.string.FilterAllChats));
+                if (!ColorConfig.hideAllTab) findDefaultTab().setTitle(LocaleController.getString("FilterAllChats", R.string.FilterAllChats));
                 for (int b = 0; b < N; b++) {
                     allTabsWidth += tabs.get(b).getWidth(true) + FolderIconController.getPaddingTab();
                 }
@@ -1643,7 +1643,7 @@ public class FilterTabsView extends FrameLayout {
             listView.setItemAnimator(itemAnimator);
             adapter.notifyDataSetChanged();
             allTabsWidth = 0;
-            if (!OwlConfig.hideAllTab) findDefaultTab().setTitle(LocaleController.getString("FilterAllChats", R.string.FilterAllChats));
+            if (!ColorConfig.hideAllTab) findDefaultTab().setTitle(LocaleController.getString("FilterAllChats", R.string.FilterAllChats));
             for (int b = 0, N = tabs.size(); b < N; b++) {
                 allTabsWidth += tabs.get(b).getWidth(true) + FolderIconController.getPaddingTab();
             }
@@ -1701,7 +1701,7 @@ public class FilterTabsView extends FrameLayout {
                 return;
             }
             ArrayList<MessagesController.DialogFilter> filters = MessagesController.getInstance(UserConfig.selectedAccount).dialogFilters;
-            if (OwlConfig.hideAllTab) {
+            if (ColorConfig.hideAllTab) {
                 int defaultPosition = 0;
                 for (int i = 0; i < filters.size(); i++) {
                     if (filters.get(i).isDefault()) {
@@ -1814,7 +1814,7 @@ public class FilterTabsView extends FrameLayout {
 
         @Override
         public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            if (!OwlConfig.hideAllTab && MessagesController.getInstance(UserConfig.selectedAccount).premiumLocked && (!isEditing || (viewHolder.getAdapterPosition() == 0 && tabs.get(0).isDefault && !UserConfig.getInstance(UserConfig.selectedAccount).isPremium()))) {
+            if (!ColorConfig.hideAllTab && MessagesController.getInstance(UserConfig.selectedAccount).premiumLocked && (!isEditing || (viewHolder.getAdapterPosition() == 0 && tabs.get(0).isDefault && !UserConfig.getInstance(UserConfig.selectedAccount).isPremium()))) {
                 return makeMovementFlags(0, 0);
             }
             return makeMovementFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, 0);
@@ -1822,7 +1822,7 @@ public class FilterTabsView extends FrameLayout {
 
         @Override
         public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
-            if (!OwlConfig.hideAllTab && MessagesController.getInstance(UserConfig.selectedAccount).premiumLocked && ((source.getAdapterPosition() == 0 || target.getAdapterPosition() == 0) && !UserConfig.getInstance(UserConfig.selectedAccount).isPremium())) {
+            if (!ColorConfig.hideAllTab && MessagesController.getInstance(UserConfig.selectedAccount).premiumLocked && ((source.getAdapterPosition() == 0 || target.getAdapterPosition() == 0) && !UserConfig.getInstance(UserConfig.selectedAccount).isPremium())) {
                 return false;
             }
             adapter.swapElements(source.getAdapterPosition(), target.getAdapterPosition());

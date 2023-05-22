@@ -207,7 +207,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import it.colorgram.android.StoreUtils;
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 import it.colorgram.android.magic.OWLENC;
 import it.colorgram.ui.Components.Dialogs.UpdateAlertDialog;
 import it.colorgram.android.Crashlytics;
@@ -2621,14 +2621,14 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             bulletin.show();
                                         });
                                     } else if (url.startsWith("tg:chupagram") || url.startsWith("tg://chupagram")) {
-                                        if (!OwlConfig.unlockedChupa) {
+                                        if (!ColorConfig.unlockedChupa) {
                                             BaseFragment fragment = mainFragmentsStack.get(mainFragmentsStack.size() - 1);
                                             AppIconBulletinLayout layout = new AppIconBulletinLayout(fragment.getParentActivity(), LauncherIconController.LauncherIcon.CHUPA, null);
                                             layout.textView.setText(LocaleController.getString("UnlockedHiddenChupaIcon", R.string.UnlockedHiddenChupaIcon));
                                             fireworksOverlay.start();
                                             layout.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
                                             Bulletin.make(fragment, layout, Bulletin.DURATION_SHORT).show();
-                                            OwlConfig.unlockChupa();
+                                            ColorConfig.unlockChupa();
                                         }
                                     } else if (url.startsWith("tg:experimental") || url.startsWith("tg://experimental")) {
                                         AndroidUtilities.runOnUIThread(() -> presentFragment(new colorgramExperimentalSettings(), false, false));
@@ -4999,10 +4999,10 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     UpdateManager.installUpdate(LaunchActivity.this);
                 } else {
                     try {
-                        if(OwlConfig.updateData.isPresent()) {
-                            OWLENC.UpdateAvailable update = OwlConfig.updateData.get();
+                        if(ColorConfig.updateData.isPresent()) {
+                            OWLENC.UpdateAvailable update = ColorConfig.updateData.get();
                             if (FileDownloader.downloadFile(LaunchActivity.this, "appUpdate", UpdateManager.apkFile(), update.fileLink))
-                                OwlConfig.saveOldVersion(update.version);
+                                ColorConfig.saveOldVersion(update.version);
                         }
                     } catch (Exception ignored){}
                 }
@@ -5148,8 +5148,8 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     updateSizeTextView.animate().alpha(0.0f).scaleX(0.0f).scaleY(0.0f).setDuration(180).start();
                 } else {
                     try {
-                        if(OwlConfig.updateData.isPresent()) {
-                            OWLENC.UpdateAvailable updateAvailable = OwlConfig.updateData.get();
+                        if(ColorConfig.updateData.isPresent()) {
+                            OWLENC.UpdateAvailable updateAvailable = ColorConfig.updateData.get();
                             if(updateAvailable.version > BuildVars.BUILD_VERSION) {
                                 createUpdateUI();
                                 updateLayoutIcon.setIcon(MediaActionDrawable.ICON_DOWNLOAD, true, true);
@@ -5181,7 +5181,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
     }
 
     public void checkAppUpdate(boolean force) {
-        if((!OwlConfig.notifyUpdates && !force) || UserConfig.getActivatedAccountsCount() == 0 || !StoreUtils.isFromCheckableStore() && StoreUtils.isDownloadedFromAnyStore()) {
+        if((!ColorConfig.notifyUpdates && !force) || UserConfig.getActivatedAccountsCount() == 0 || !StoreUtils.isFromCheckableStore() && StoreUtils.isDownloadedFromAnyStore()) {
             return;
         }
         UpdateManager.isDownloadedUpdate(result -> {
@@ -5213,27 +5213,27 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     public void onSuccess(Object updateResult) {
                         if(updateResult instanceof OWLENC.UpdateAvailable) {
                             OWLENC.UpdateAvailable updateAvailable = (OWLENC.UpdateAvailable) updateResult;
-                            long passed_time = (new Date().getTime() - OwlConfig.lastUpdateCheck) / 1000;
-                            if(passed_time >= 3600 * 2 || OwlConfig.lastUpdateStatus != 1 && !updateAvailable.isReminded() || force) {
-                                OwlConfig.updateData.set(updateAvailable);
-                                OwlConfig.applyUpdateData();
-                                OwlConfig.applyUpdateData();
-                                OwlConfig.remindUpdate(-1);
+                            long passed_time = (new Date().getTime() - ColorConfig.lastUpdateCheck) / 1000;
+                            if(passed_time >= 3600 * 2 || ColorConfig.lastUpdateStatus != 1 && !updateAvailable.isReminded() || force) {
+                                ColorConfig.updateData.set(updateAvailable);
+                                ColorConfig.applyUpdateData();
+                                ColorConfig.applyUpdateData();
+                                ColorConfig.remindUpdate(-1);
                                 NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
                                 if (StoreUtils.isFromPlayStore()) {
                                     PlayStoreAPI.openUpdatePopup(LaunchActivity.this);
                                 } else {
                                     new UpdateAlertDialog(LaunchActivity.this, updateAvailable).show();
                                 }
-                                OwlConfig.saveUpdateStatus(1);
-                                OwlConfig.saveLastUpdateCheck();
+                                ColorConfig.saveUpdateStatus(1);
+                                ColorConfig.saveLastUpdateCheck();
                                 updateAppUpdateViews();
                             }
                         } else {
                             if (updateResult instanceof UpdateManager.UpdateNotAvailable && force) {
                                 NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.showBulletin, Bulletin.TYPE_ERROR, LocaleController.formatString("NoUpdateAvailable", R.string.NoUpdateAvailable));
                             }
-                            OwlConfig.saveUpdateStatus(0);
+                            ColorConfig.saveUpdateStatus(0);
                         }
                     }
 
@@ -7278,7 +7278,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                         showVoiceChatTooltip(mute ? UndoView.ACTION_VOIP_SOUND_MUTED : UndoView.ACTION_VOIP_SOUND_UNMUTED);
                     }
                 }
-            } else if ((OwlConfig.turnSoundOnVDKey || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP) && (!mainFragmentsStack.isEmpty() && (!PhotoViewer.hasInstance() || !PhotoViewer.getInstance().isVisible()) && event.getRepeatCount() == 0)) {
+            } else if ((ColorConfig.turnSoundOnVDKey || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP) && (!mainFragmentsStack.isEmpty() && (!PhotoViewer.hasInstance() || !PhotoViewer.getInstance().isVisible()) && event.getRepeatCount() == 0)) {
                 BaseFragment fragment = mainFragmentsStack.get(mainFragmentsStack.size() - 1);
                 if (fragment instanceof ChatActivity) {
                     if (((ChatActivity) fragment).maybePlayVisibleVideo()) {

@@ -64,7 +64,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 import it.colorgram.android.entities.HTMLKeeper;
 import it.colorgram.android.translator.Translator;
 import it.colorgram.android.translator.TranslatorHelper;
@@ -1131,11 +1131,11 @@ public class TranslateAlert2 extends BottomSheet implements NotificationCenter.N
     }
 
     public static String getToLanguage() {
-        return OwlConfig.translationTarget;
+        return ColorConfig.translationTarget;
     }
 
     public static void setToLanguage(String toLang) {
-        OwlConfig.setTranslationTarget(toLang);
+        ColorConfig.setTranslationTarget(toLang);
     }
 
     public static void resetToLanguage() {

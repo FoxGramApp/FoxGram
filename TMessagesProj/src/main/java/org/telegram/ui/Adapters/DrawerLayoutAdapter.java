@@ -35,7 +35,7 @@ import org.telegram.ui.Components.SideMenultItemAnimator;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 import it.colorgram.android.MenuOrderController;
 import it.colorgram.android.PasscodeController;
 
@@ -257,8 +257,8 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             return;
         }
         int eventType = Theme.getEventType();
-        if (OwlConfig.eventType > 0) {
-            eventType = OwlConfig.eventType - 1;
+        if (ColorConfig.eventType > 0) {
+            eventType = ColorConfig.eventType - 1;
         }
         int newGroupIcon;
         int newSecretIcon;

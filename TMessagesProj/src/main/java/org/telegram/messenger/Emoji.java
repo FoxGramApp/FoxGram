@@ -28,7 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 import it.colorgram.android.CustomEmojiController;
 
 import org.telegram.ui.Components.AnimatedEmojiSpan;
@@ -87,11 +87,11 @@ public class Emoji {
     private static void reloadCache() {
         isSelectedCustomEmojiPack = CustomEmojiController.isSelectedCustomEmojiPack();
         emojiFile = CustomEmojiController.getCurrentEmojiPackOffline();
-        isSelectedEmojiPack = !OwlConfig.emojiPackSelected.equals("default") && emojiFile != null && emojiFile.exists();
+        isSelectedEmojiPack = !ColorConfig.emojiPackSelected.equals("default") && emojiFile != null && emojiFile.exists();
     }
 
     public static boolean isSelectedCustomPack() {
-        return isSelectedCustomEmojiPack || isSelectedEmojiPack || OwlConfig.useSystemEmoji;
+        return isSelectedCustomEmojiPack || isSelectedEmojiPack || ColorConfig.useSystemEmoji;
     }
 
     public static void reloadEmoji() {
@@ -157,7 +157,7 @@ public class Emoji {
 
             Bitmap bitmap = null;
             try {
-                if (OwlConfig.useSystemEmoji || isSelectedCustomEmojiPack) {
+                if (ColorConfig.useSystemEmoji || isSelectedCustomEmojiPack) {
                     int emojiSize = 66;
                     bitmap = Bitmap.createBitmap(emojiSize, emojiSize, Bitmap.Config.ARGB_8888);
                     Canvas canvas = new Canvas(bitmap);

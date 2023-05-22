@@ -29,7 +29,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipException;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 
 public class FileLoadOperation {
 
@@ -215,11 +215,11 @@ public class FileLoadOperation {
     }
 
     private void updateParams() {
-        if (OwlConfig.downloadSpeedBoost == OwlConfig.DOWNLOAD_BOOST_FAST || MessagesController.getInstance(currentAccount).getfileExperimentalParams && !forceSmallChunk) {
+        if (ColorConfig.downloadSpeedBoost == ColorConfig.DOWNLOAD_BOOST_FAST || MessagesController.getInstance(currentAccount).getfileExperimentalParams && !forceSmallChunk) {
             downloadChunkSizeBig = 1024 * 512;
             maxDownloadRequests = 8;
             maxDownloadRequestsBig = 8;
-        } else if (OwlConfig.downloadSpeedBoost == OwlConfig.DOWNLOAD_BOOST_EXTREME) {
+        } else if (ColorConfig.downloadSpeedBoost == ColorConfig.DOWNLOAD_BOOST_EXTREME) {
             downloadChunkSizeBig = 1024 * 1024;
             maxDownloadRequests = 12;
             maxDownloadRequestsBig = 12;

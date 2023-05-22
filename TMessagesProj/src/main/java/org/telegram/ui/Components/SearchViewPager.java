@@ -62,7 +62,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 import it.colorgram.android.utils.ForwardContext;
 
 public class SearchViewPager extends ViewPagerFixed implements FilteredSearchView.UiCallback {
@@ -423,7 +423,7 @@ public class SearchViewPager extends ViewPagerFixed implements FilteredSearchVie
             speedItem.getIconView().setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_actionBarActionModeDefaultIcon), PorterDuff.Mode.SRC_IN));
             gotoItem = actionMode.addItemWithWidth(gotoItemId, R.drawable.msg_message, AndroidUtilities.dp(54), LocaleController.getString("AccDescrGoToMessage", R.string.AccDescrGoToMessage));
             forwardNoQuoteItem = actionMode.addItemWithWidth(forwardNoQuoteItemId, R.drawable.msg_forward, AndroidUtilities.dp(54), LocaleController.getString("NoQuoteForward", R.string.NoQuoteForward));
-            forwardItem = actionMode.addItemWithWidth(forwardItemId, OwlConfig.contextMenu.noQuoteForward ? R.drawable.msg_forward_quote:R.drawable.msg_forward, AndroidUtilities.dp(54), LocaleController.getString("Forward", R.string.Forward));
+            forwardItem = actionMode.addItemWithWidth(forwardItemId, ColorConfig.contextMenu.noQuoteForward ? R.drawable.msg_forward_quote:R.drawable.msg_forward, AndroidUtilities.dp(54), LocaleController.getString("Forward", R.string.Forward));
             deleteItem = actionMode.addItemWithWidth(deleteItemId, R.drawable.msg_delete, AndroidUtilities.dp(54), LocaleController.getString("Delete", R.string.Delete));
         }
         if (selectedMessagesCountTextView != null) {
@@ -444,7 +444,7 @@ public class SearchViewPager extends ViewPagerFixed implements FilteredSearchVie
             speedItem.setVisibility(isSpeedItemVisible() ? View.VISIBLE : View.GONE);
             gotoItem.setVisibility(View.VISIBLE);
             forwardItem.setVisibility(View.VISIBLE);
-            forwardNoQuoteItem.setVisibility(OwlConfig.contextMenu.noQuoteForward ? View.VISIBLE : View.GONE);
+            forwardNoQuoteItem.setVisibility(ColorConfig.contextMenu.noQuoteForward ? View.VISIBLE : View.GONE);
             deleteItem.setVisibility(View.VISIBLE);
         } else {
             parent.getActionBar().hideActionMode();

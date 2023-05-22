@@ -95,8 +95,8 @@
 -keep class com.huawei.updatesdk.**{ *; }
 -keep class com.huawei.hms.**{ *; }
 
-# Keep OwlConfig fields name
--keepnames class it.colorgram.android.OwlConfig { <fields>; }
+# Keep ColorConfig fields name
+-keepnames class it.colorgram.android.ColorConfig { <fields>; }
 
 # Keep all classes and fiels name of Magic Objects
 -keepattributes InnerClasses, EnclosingMethod -keepnames class it.colorgram.android.magic.** { <fields>; }

@@ -63,7 +63,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 
 public class ActionBarLayout extends FrameLayout implements INavigationLayout, FloatingDebugProvider {
 
@@ -395,7 +395,7 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
 
         if (layerShadowDrawable == null) {
             layerShadowDrawable = getResources().getDrawable(R.drawable.layer_shadow);
-            headerShadowDrawable = OwlConfig.showAppBarShadow ? getResources().getDrawable(R.drawable.header_shadow).mutate():null;
+            headerShadowDrawable = ColorConfig.showAppBarShadow ? getResources().getDrawable(R.drawable.header_shadow).mutate():null;
             scrimPaint = new Paint();
         }
     }

@@ -42,7 +42,7 @@ import org.telegram.ui.BlurSettingsBottomSheet;
 
 import java.util.ArrayList;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 
 public class SizeNotifierFrameLayout extends FrameLayout {
 
@@ -421,7 +421,7 @@ public class SizeNotifierFrameLayout extends FrameLayout {
     }
 
     private void checkSnowflake(Canvas canvas) {
-        if ((Theme.canStartHolidayAnimation() || OwlConfig.eventType == 1) && OwlConfig.showSnowFalling && LiteMode.isEnabled(LiteMode.FLAG_CHAT_BACKGROUND)) {
+        if ((Theme.canStartHolidayAnimation() || ColorConfig.eventType == 1) && ColorConfig.showSnowFalling && LiteMode.isEnabled(LiteMode.FLAG_CHAT_BACKGROUND)) {
             if (snowflakesEffect == null) {
                 snowflakesEffect = new SnowflakesEffect(1);
             }

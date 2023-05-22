@@ -60,7 +60,7 @@ import org.telegram.ui.Components.SnowflakesEffect;
 
 import java.util.ArrayList;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 
 public class ActionBar extends FrameLayout {
 
@@ -320,12 +320,12 @@ public class ActionBar extends FrameLayout {
                     }
                 }
             }
-            if (Theme.canStartHolidayAnimation() && (OwlConfig.eventType == 0 || OwlConfig.eventType == 1)) {
+            if (Theme.canStartHolidayAnimation() && (ColorConfig.eventType == 0 || ColorConfig.eventType == 1)) {
                 if (snowflakesEffect == null) {
                     fireworksEffect = null;
                     snowflakesEffect = new SnowflakesEffect(0);
                 }
-            } else if ((Theme.getEventType() == 3 && OwlConfig.eventType == 0) || OwlConfig.eventType == 4 && OwlConfig.canShowFireworks()) {
+            } else if ((Theme.getEventType() == 3 && ColorConfig.eventType == 0) || ColorConfig.eventType == 4 && ColorConfig.canShowFireworks()) {
                 if (fireworksEffect == null || snowflakesEffect != null ) {
                     snowflakesEffect = null;
                     fireworksEffect = new FireworksEffect();

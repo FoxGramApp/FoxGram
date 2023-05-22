@@ -265,7 +265,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 import it.colorgram.android.media.VideoUtils;
 import it.colorgram.android.utils.ForwardContext;
 import it.colorgram.android.MessageHelper;
@@ -5236,7 +5236,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         containerView.addView(qualityPicker, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 48, Gravity.BOTTOM | Gravity.LEFT));
         qualityPicker.cancelButton.setOnClickListener(view -> {
             selectedCompression = previousCompression;
-            OwlConfig.setCompression(selectedCompression);
+            ColorConfig.setCompression(selectedCompression);
             didChangedCompressionLevel(false);
             showQualityView(false);
             requestVideoPreview(2);
@@ -5246,7 +5246,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             if (object instanceof MediaController.MediaEditState) {
                 ((MediaController.MediaEditState) object).editedInfo = getCurrentVideoEditedInfo();
             }
-            OwlConfig.setCompression(selectedCompression);
+            ColorConfig.setCompression(selectedCompression);
             showQualityView(false);
             requestVideoPreview(2);
         });
@@ -11534,7 +11534,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 MessagesController.getInstance(currentAccount).loadDialogPhotos(avatarsDialogId, 80, 0, true, classGuid);
             }
         }
-        if (currentMessageObject != null && currentMessageObject.isVideo() || (OwlConfig.gifAsVideo && currentMessageObject != null && currentMessageObject.isGif()) || currentBotInlineResult != null && (currentBotInlineResult.type.equals("video") || MessageObject.isVideoDocument(currentBotInlineResult.document)) || (pageBlocksAdapter != null && pageBlocksAdapter.isVideo(index)) || (sendPhotoType == SELECT_TYPE_NO_SELECT && ((MediaController.PhotoEntry)imagesArrLocals.get(index)).isVideo)) {
+        if (currentMessageObject != null && currentMessageObject.isVideo() || (ColorConfig.gifAsVideo && currentMessageObject != null && currentMessageObject.isGif()) || currentBotInlineResult != null && (currentBotInlineResult.type.equals("video") || MessageObject.isVideoDocument(currentBotInlineResult.document)) || (pageBlocksAdapter != null && pageBlocksAdapter.isVideo(index)) || (sendPhotoType == SELECT_TYPE_NO_SELECT && ((MediaController.PhotoEntry)imagesArrLocals.get(index)).isVideo)) {
             playerAutoStarted = true;
             onActionClick(false);
         } else if (!imagesArrLocals.isEmpty()) {
@@ -11623,7 +11623,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 dateTextView.setText("");
             } else {
                 menuItem.hideSubItem(gallery_menu_translate);
-                if (OwlConfig.showTranslate) {
+                if (ColorConfig.showTranslate) {
                     if (newMessageObject != null) {
                         if (!TextUtils.isEmpty(newMessageObject.caption)) {
                             if (!newMessageObject.isDoneTranslation() && !newMessageObject.translated && LanguageDetector.hasSupport()) {
@@ -15533,7 +15533,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     }
 
     private boolean shouldMessageObjectAutoPlayed(MessageObject messageObject) {
-        return messageObject != null && (messageObject.isVideo() || (OwlConfig.gifAsVideo && messageObject.isGif())) && (messageObject.mediaExists || messageObject.attachPathExists || messageObject.canStreamVideo() && SharedConfig.streamMedia) && SharedConfig.isAutoplayVideo();
+        return messageObject != null && (messageObject.isVideo() || (ColorConfig.gifAsVideo && messageObject.isGif())) && (messageObject.mediaExists || messageObject.attachPathExists || messageObject.canStreamVideo() && SharedConfig.streamMedia) && SharedConfig.isAutoplayVideo();
     }
 
     private boolean shouldIndexAutoPlayed(int index) {
@@ -16523,7 +16523,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     public boolean onDown(MotionEvent e) {
         if (!doubleTap && checkImageView.getVisibility() != View.VISIBLE && !drawPressedDrawable[0] && !drawPressedDrawable[1]) {
             float x = e.getX();
-            int side = !OwlConfig.mediaFlipByTap ? 0 : Math.min(135, containerView.getMeasuredWidth() / 8);
+            int side = !ColorConfig.mediaFlipByTap ? 0 : Math.min(135, containerView.getMeasuredWidth() / 8);
             if (x < side) {
                 if (leftImage.hasImageSet()) {
                     drawPressedDrawable[0] = true;
@@ -16543,7 +16543,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     public boolean canDoubleTap(MotionEvent e) {
         if (checkImageView.getVisibility() != View.VISIBLE && !drawPressedDrawable[0] && !drawPressedDrawable[1]) {
             float x = e.getX();
-            int side = !OwlConfig.mediaFlipByTap ? 0 : Math.min(135, containerView.getMeasuredWidth() / 8);
+            int side = !ColorConfig.mediaFlipByTap ? 0 : Math.min(135, containerView.getMeasuredWidth() / 8);
             if (x < side || x > containerView.getMeasuredWidth() - side) {
                 return currentMessageObject == null || (currentMessageObject.isVideo() || photoViewerWebView != null && photoViewerWebView.isControllable()) && (SystemClock.elapsedRealtime() - lastPhotoSetTime) >= 500 && canDoubleTapSeekVideo(e);
             }
@@ -16641,7 +16641,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         float y = e.getY();
         if (checkImageView.getVisibility() != View.VISIBLE) {
             if (y > ActionBar.getCurrentActionBarHeight() + AndroidUtilities.statusBarHeight + AndroidUtilities.dp(40)) {
-                int side = !OwlConfig.mediaFlipByTap ? 0 : Math.min(135, containerView.getMeasuredWidth() / 8);
+                int side = !ColorConfig.mediaFlipByTap ? 0 : Math.min(135, containerView.getMeasuredWidth() / 8);
                 if (x < side) {
                     if (leftImage.hasImageSet()) {
                         switchToNextIndex(-1, true);
@@ -17433,7 +17433,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
     private int selectCompression() {
         // FORCE TO HIGHEST QUALITY
-        return Math.min(OwlConfig.lastSelectedCompression, compressionsCount - 1);
+        return Math.min(ColorConfig.lastSelectedCompression, compressionsCount - 1);
         /*//1GB
         if (originalSize > 1024L * 1024L * 1000L) {
             return compressionsCount - 1;
@@ -17733,7 +17733,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             translateItem.setText(LocaleController.getString("TranslateMessage", R.string.TranslateMessage));
             return;
         }
-        if (OwlConfig.translatorStyle == BaseTranslator.DIALOG_STYLE) {
+        if (ColorConfig.translatorStyle == BaseTranslator.DIALOG_STYLE) {
             TranslateAlert2.showAlert(parentActivity, null, currentAccount, null, Translator.getCurrentTranslator().getCurrentTargetLanguage().split("-")[0], currentMessageObject.messageOwner.message, null, false, urlSpan -> onLinkClick(urlSpan, captionTextViewSwitcher.getCurrentView()), null);
             return;
         }

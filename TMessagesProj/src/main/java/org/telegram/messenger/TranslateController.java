@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 import it.colorgram.android.entities.HTMLKeeper;
 import it.colorgram.android.MessageHelper;
 import it.colorgram.ui.DoNotTranslateSettings;
@@ -70,11 +70,11 @@ public class TranslateController extends BaseController {
     }
 
     public boolean isFeatureAvailable() {
-        return !(!UserConfig.getInstance(currentAccount).isPremium() && OwlConfig.translationProvider == Translator.PROVIDER_TELEGRAM);
+        return !(!UserConfig.getInstance(currentAccount).isPremium() && ColorConfig.translationProvider == Translator.PROVIDER_TELEGRAM);
     }
 
     public boolean isChatTranslateEnabled() {
-        return OwlConfig.translateEntireChat;
+        return ColorConfig.translateEntireChat;
     }
 
     public boolean isContextTranslateEnabled() {
@@ -233,11 +233,11 @@ public class TranslateController extends BaseController {
             lang = "no";
         }
         return lang;*/
-        return Translator.getTranslator(OwlConfig.translationProvider).getCurrentTargetLanguage();
+        return Translator.getTranslator(ColorConfig.translationProvider).getCurrentTargetLanguage();
     }
 
     public void setDialogTranslateTo(long dialogId, int topicId, String language) {
-        if (TextUtils.equals(OwlConfig.translationTarget, language)) {
+        if (TextUtils.equals(ColorConfig.translationTarget, language)) {
             return;
         }
 
@@ -262,7 +262,7 @@ public class TranslateController extends BaseController {
             translatingDialogs.remove(getIdWithTopic(dialogId, topicId));
         }
         NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.dialogTranslate, dialogId, false);
-        OwlConfig.setTranslationTarget(language);
+        ColorConfig.setTranslationTarget(language);
     }
 
     public void updateDialogFull(long dialogId) {
@@ -507,7 +507,7 @@ public class TranslateController extends BaseController {
     public void applyTranslationResult(MessageObject messageObject, BaseTranslator.Result result) {
         messageObject.messageOwner.originalLanguage = result.sourceLanguage;
         messageObject.messageOwner.translatedToLanguage = getDialogTranslateTo(messageObject.getDialogId());
-        messageObject.messageOwner.translationProvider = OwlConfig.translationProvider;
+        messageObject.messageOwner.translationProvider = ColorConfig.translationProvider;
         if (result.translation instanceof String || result.translation instanceof TLRPC.TL_textWithEntities) {
             TLRPC.TL_textWithEntities textWithEntities;
             if (result.translation instanceof String) {
@@ -536,8 +536,8 @@ public class TranslateController extends BaseController {
     }
 
     public static boolean isValidTranslation(TLRPC.Message messageOwner) {
-        return TextUtils.equals(Translator.getTranslator(OwlConfig.translationProvider).getCurrentTargetLanguage(), messageOwner.translatedToLanguage)
-                && OwlConfig.translationProvider == messageOwner.translationProvider;
+        return TextUtils.equals(Translator.getTranslator(ColorConfig.translationProvider).getCurrentTargetLanguage(), messageOwner.translatedToLanguage)
+                && ColorConfig.translationProvider == messageOwner.translationProvider;
     }
 
     private boolean isRestrictedLanguage(MessageObject messageObject) {

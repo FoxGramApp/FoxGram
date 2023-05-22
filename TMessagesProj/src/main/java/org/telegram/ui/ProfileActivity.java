@@ -234,7 +234,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 import it.colorgram.android.StoreUtils;
 import it.colorgram.ui.Cells.ActionPanel;
 import it.colorgram.ui.Cells.Datacenter;
@@ -3567,11 +3567,11 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                             } else if (which == 12) {
                                 SharedConfig.pendingAppUpdate = null;
                                 SharedConfig.saveConfig();
-                                OwlConfig.updateData.set(null);
-                                OwlConfig.applyUpdateData();
-                                OwlConfig.saveUpdateStatus(0);
-                                OwlConfig.remindUpdate(-1);
-                                OwlConfig.saveLastUpdateCheck(true);
+                                ColorConfig.updateData.set(null);
+                                ColorConfig.applyUpdateData();
+                                ColorConfig.saveUpdateStatus(0);
+                                ColorConfig.remindUpdate(-1);
+                                ColorConfig.saveLastUpdateCheck(true);
                                 if (!StoreUtils.isDownloadedFromAnyStore()) UpdateManager.deleteUpdate();
                                 NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
                             } else if (which == 13) {
@@ -5338,7 +5338,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             final boolean translateButtonEnabled = MessagesController.getInstance(currentAccount).getTranslateController().isContextTranslateEnabled();
             final boolean[] withTranslate = new boolean[1];
             withTranslate[0] = position == bioRow || position == channelInfoRow || position == userInfoRow;
-            withTranslate[0] &= OwlConfig.showTranslate;
+            withTranslate[0] &= ColorConfig.showTranslate;
             final String toLang = LocaleController.getInstance().getCurrentLocale().getLanguage();
             Runnable showMenu = () -> {
                 if (getParentActivity() == null) {
@@ -5461,7 +5461,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     }
 
     private void translateBio(String bio, AboutLinkCell aboutLinkCell){
-        if (OwlConfig.translatorStyle == BaseTranslator.INLINE_STYLE) {
+        if (ColorConfig.translatorStyle == BaseTranslator.INLINE_STYLE) {
             if(translatingBio) return;
             translatingBio = true;
             Translator.translate(bio, (error, result) -> {
@@ -7078,7 +7078,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     animatingItem.setAlpha(1.0f);
                     animators.add(ObjectAnimator.ofFloat(animatingItem, View.ALPHA, 0.0f));
                 }
-                if (callItemVisible && (chatId != 0 || OwlConfig.searchIconInActionBar)) {
+                if (callItemVisible && (chatId != 0 || ColorConfig.searchIconInActionBar)) {
                     callItem.setAlpha(0.0f);
                     animators.add(ObjectAnimator.ofFloat(callItem, View.ALPHA, 1.0f));
                 }
@@ -7154,7 +7154,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     animatingItem.setAlpha(0.0f);
                     animators.add(ObjectAnimator.ofFloat(animatingItem, View.ALPHA, 1.0f));
                 }
-                if (callItemVisible && (chatId != 0 || OwlConfig.searchIconInActionBar)) {
+                if (callItemVisible && (chatId != 0 || ColorConfig.searchIconInActionBar)) {
                     callItem.setAlpha(1.0f);
                     animators.add(ObjectAnimator.ofFloat(callItem, View.ALPHA, 0.0f));
                 }
@@ -7497,7 +7497,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             TLRPC.User user = getMessagesController().getUser(userId);
 
             if (UserObject.isUserSelf(user)) {
-                if (OwlConfig.buttonStyleType != 5) {
+                if (ColorConfig.buttonStyleType != 5) {
                     actionsSectionRow = rowCount++;
                     actionsSectionDivider = rowCount++;
                 }
@@ -7506,12 +7506,12 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     setAvatarSectionRow = rowCount++;
                 }
                 numberSectionRow = rowCount++;
-                if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
+                if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
                     datacenterRow = rowCount++;
                 }
                 numberRow = rowCount++;
                 setUsernameRow = rowCount++;
-                if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
+                if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
                     datacenterRow = rowCount++;
                 }
                 bioRow = rowCount++;
@@ -7569,7 +7569,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 boolean hasInfo = userInfo != null && !TextUtils.isEmpty(userInfo.about) || user != null && !TextUtils.isEmpty(username);
                 boolean hasPhone = user != null && (!TextUtils.isEmpty(user.phone) || !TextUtils.isEmpty(vcardPhone));
 
-                if (OwlConfig.buttonStyleType != 5) {
+                if (ColorConfig.buttonStyleType != 5) {
                     if(userInfo != null) {
                         actionsSectionRow = rowCount++;
                     } else {
@@ -7579,7 +7579,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 infoHeaderRow = rowCount++;
 
-                if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
+                if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
                     if (currentUser != null || currentChat != null) {
                         datacenterRow = rowCount++;
                     } else {
@@ -7592,7 +7592,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 if (userInfo != null && !TextUtils.isEmpty(userInfo.about)) {
                     userInfoRow = rowCount++;
                 }
-                if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
+                if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
                     datacenterRow = rowCount++;
                 }
                 if (user != null && username != null) {
@@ -7657,7 +7657,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 sharedMediaRow = rowCount++;
             }
         } else if (chatId != 0) {
-            if (OwlConfig.buttonStyleType != 5) {
+            if (ColorConfig.buttonStyleType != 5) {
                 if(currentChat != null) {
                     actionsSectionRow = rowCount++;
                 }else {
@@ -7665,10 +7665,10 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 actionsSectionDivider = rowCount++;
             }
-            if (OwlConfig.showIDAndDC) {
+            if (ColorConfig.showIDAndDC) {
                 infoHeaderRow = rowCount++;
             }
-            if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
+            if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
                 if (currentUser != null || currentChat != null) {
                     datacenterRow = rowCount++;
                 } else {
@@ -7679,7 +7679,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 if (LocaleController.isRTL && ChatObject.isChannel(currentChat) && chatInfo != null && !currentChat.megagroup && chatInfo.linked_chat_id != 0) {
                     emptyRow = rowCount++;
                 }
-                if (!OwlConfig.showIDAndDC) {
+                if (!ColorConfig.showIDAndDC) {
                     infoHeaderRow = rowCount++;
                 }
                 if (chatInfo != null) {
@@ -7690,7 +7690,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         locationRow = rowCount++;
                     }
                 }
-                if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
+                if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
                     datacenterRow = rowCount++;
                 }
                 if (ChatObject.isPublic(currentChat)) {
@@ -7699,7 +7699,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 if (!currentChat.restriction_reason.isEmpty()) {
                     restrictionReasonRow = rowCount++;
                 }
-            } else if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
+            } else if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
                 datacenterRow = rowCount++;
             }
             if (infoHeaderRow != -1) {
@@ -9717,7 +9717,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                             text = LocaleController.getString("PhoneHidden", R.string.PhoneHidden);
                             phoneNumber = null;
                         }
-                        if(OwlConfig.hideContactNumber){
+                        if(ColorConfig.hideContactNumber){
                             text = LocaleController.getString("MobileHidden",R.string.MobileHidden);
                         }
                         isFragmentPhoneNumber = phoneNumber != null && phoneNumber.matches("888\\d{8}");
@@ -9798,7 +9798,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         TLRPC.User user = UserConfig.getInstance(currentAccount).getCurrentUser();
                         String value;
                         if (user != null && user.phone != null && user.phone.length() != 0) {
-                            if(!OwlConfig.hidePhoneNumber){
+                            if(!ColorConfig.hidePhoneNumber){
                                 value = PhoneFormat.getInstance().format("+" + user.phone);
                             }else{
                                 value = LocaleController.getString("MobileHidden",R.string.MobileHidden);
@@ -10441,7 +10441,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             }
         }
         ThemeInfo themeInfo = actionPanelCell.getTheme();
-        if (datacenterCell != null && themeInfo != null && OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
+        if (datacenterCell != null && themeInfo != null && ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
             datacenterCell.setTheme(themeInfo);
         }
         RLottieDrawable photoAnimationDrawable = actionPanelCell.getPhotoAnimationDrawable();
@@ -11327,13 +11327,13 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
 
         // CUSTOM ELEMENTS
-        if (OwlConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
+        if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
             arrayList.add(new ThemeDescription(listView, 0, new Class[]{Datacenter.class}, new String[]{"tv"}, null, null, null, Theme.key_windowBackgroundWhiteBlackText));
             arrayList.add(new ThemeDescription(listView, 0, new Class[]{Datacenter.class}, new String[]{"tv2"}, null, null, null, Theme.key_windowBackgroundWhiteGrayText2));
             arrayList.add(new ThemeDescription(listView,0, new Class[]{Datacenter.class}, new String[]{"iv"}, null, null, null, Theme.key_switch2TrackChecked));
             arrayList.add(new ThemeDescription(listView,0, new Class[]{Datacenter.class}, new String[]{"mainLayout"}, null, null, null, Theme.key_windowBackgroundWhite));
         }
-        if (OwlConfig.buttonStyleType != 5) {
+        if (ColorConfig.buttonStyleType != 5) {
             arrayList.add(new ThemeDescription(listView, 0, new Class[]{ActionPanel.class}, new String[]{"mainLayout"}, null, null, null, Theme.key_switch2TrackChecked));
             arrayList.add(new ThemeDescription(listView, 0, new Class[]{ActionPanel.class}, new String[]{"mainLayout"}, null, null, null, Theme.key_windowBackgroundWhiteRedText4));
             arrayList.add(new ThemeDescription(listView, 0, new Class[]{ActionPanel.class}, new String[]{"mainLayout"}, null, null, null, Theme.key_statisticChartLine_green));

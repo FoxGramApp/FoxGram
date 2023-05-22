@@ -62,7 +62,7 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 
 public class VoIPHelper {
 
@@ -103,7 +103,7 @@ public class VoIPHelper {
 			}
 			return;
 		}
-		if (OwlConfig.confirmCall && !confirmed && activity instanceof LaunchActivity) {
+		if (ColorConfig.confirmCall && !confirmed && activity instanceof LaunchActivity) {
 			final BaseFragment lastFragment = ((LaunchActivity) activity).getActionBarLayout().getLastFragment();
 			if (lastFragment != null) {
 				AlertsCreator.createCallDialogAlert(lastFragment, lastFragment.getMessagesController().getUser(user.id), videoCall);

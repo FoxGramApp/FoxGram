@@ -323,7 +323,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 import it.colorgram.ui.Components.EmojiSetBulletinLayout;
 import it.colorgram.ui.Components.Dialogs.ImportSettingsDialog;
 import it.colorgram.android.CustomEmojiController;
@@ -3136,7 +3136,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         avatarContainer.allowShorterStatus = true;
         avatarContainer.premiumIconHiddable = true;
         avatarContainer.setOnLongClickListener(v -> {
-            if (inPreviewMode || threadMessageId != 0 || UserObject.isReplyUser(currentUser)|| currentUser != null && currentUser.self || OwlConfig.searchIconInActionBar || chatMode == MODE_PINNED) {
+            if (inPreviewMode || threadMessageId != 0 || UserObject.isReplyUser(currentUser)|| currentUser != null && currentUser.self || ColorConfig.searchIconInActionBar || chatMode == MODE_PINNED) {
                 return false;
             }
             openSearchWithText(null);
@@ -5363,7 +5363,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 if (!foundTopView) {
                     scrolled = super.scrollVerticallyBy(dy, recycler, state);
                 }
-                if (OwlConfig.jumpChannel && !inPreviewMode && dy > 0 && scrolled == 0 && ChatObject.isChannel(currentChat) && !currentChat.megagroup && chatListView.getScrollState() == RecyclerView.SCROLL_STATE_DRAGGING && !chatListView.isFastScrollAnimationRunning() && !chatListView.isMultiselect() && reportType < 0) {
+                if (ColorConfig.jumpChannel && !inPreviewMode && dy > 0 && scrolled == 0 && ChatObject.isChannel(currentChat) && !currentChat.megagroup && chatListView.getScrollState() == RecyclerView.SCROLL_STATE_DRAGGING && !chatListView.isFastScrollAnimationRunning() && !chatListView.isMultiselect() && reportType < 0) {
                     if (pullingDownOffset == 0 && pullingDownDrawable != null) {
                         pullingDownDrawable.updateDialog();
                     }
@@ -5481,7 +5481,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         wasManualScroll = true;
                         scrollingChatListView = true;
                     } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                        if (OwlConfig.hideKeyboard) {
+                        if (ColorConfig.hideKeyboard) {
                             AndroidUtilities.hideKeyboard(getParentActivity().getCurrentFocus());
                         }
                         pollHintCell = null;
@@ -7503,7 +7503,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         translateButton = new TranslateButton(getContext(), this, themeDelegate) {
             @Override
             protected void onButtonClick() {
-                if (!getUserConfig().isPremium() && OwlConfig.translationProvider == Translator.PROVIDER_TELEGRAM) {
+                if (!getUserConfig().isPremium() && ColorConfig.translationProvider == Translator.PROVIDER_TELEGRAM) {
                     showDialog(new PremiumFeatureBottomSheet(ChatActivity.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
                 } else {
                     getMessagesController().getTranslateController().toggleTranslatingDialog(getDialogId(), getTopicId());
@@ -7554,7 +7554,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             actionModeViews.add(actionMode.addItemWithWidth(star, R.drawable.msg_fave, AndroidUtilities.dp(54), LocaleController.getString("AddToFavorites", R.string.AddToFavorites)));
             actionModeViews.add(actionMode.addItemWithWidth(copy, R.drawable.msg_copy, AndroidUtilities.dp(54), LocaleController.getString("Copy", R.string.Copy)));
             actionModeViews.add(actionMode.addItemWithWidth(forward_noquote, R.drawable.msg_forward, AndroidUtilities.dp(54), LocaleController.getString("NoQuoteForward", R.string.NoQuoteForward)));
-            actionModeViews.add(actionMode.addItemWithWidth(forward, OwlConfig.contextMenu.noQuoteForward ? R.drawable.msg_forward_quote:R.drawable.msg_forward, AndroidUtilities.dp(54), LocaleController.getString("Forward", R.string.Forward)));
+            actionModeViews.add(actionMode.addItemWithWidth(forward, ColorConfig.contextMenu.noQuoteForward ? R.drawable.msg_forward_quote:R.drawable.msg_forward, AndroidUtilities.dp(54), LocaleController.getString("Forward", R.string.Forward)));
             actionModeViews.add(actionMode.addItemWithWidth(delete, R.drawable.msg_delete, AndroidUtilities.dp(54), LocaleController.getString("Delete", R.string.Delete)));
         } else {
             actionModeViews.add(actionMode.addItemWithWidth(edit, R.drawable.msg_edit, AndroidUtilities.dp(54), LocaleController.getString("Edit", R.string.Edit)));
@@ -13560,7 +13560,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 } else {
                     showSearchAsIcon = false;
                 }
-                showSearchAsIcon |= OwlConfig.searchIconInActionBar && !inPreviewMode && !isComments && !isThreadChat() && !UserObject.isReplyUser(currentUser);
+                showSearchAsIcon |= ColorConfig.searchIconInActionBar && !inPreviewMode && !isComments && !isThreadChat() && !UserObject.isReplyUser(currentUser);
                 if (showSearchAsIcon || showAudioCallAsIcon) {
                     if (avatarContainer != null && avatarContainer.getLayoutParams() != null) {
                         ((ViewGroup.MarginLayoutParams) avatarContainer.getLayoutParams()).rightMargin = AndroidUtilities.dp(96);
@@ -13590,7 +13590,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 }
                 if (headerItem != null) {
                     TLRPC.UserFull userInfo = getCurrentUserInfo();
-                    if (showAudioCallAsIcon && !OwlConfig.searchIconInActionBar) {
+                    if (showAudioCallAsIcon && !ColorConfig.searchIconInActionBar) {
                         headerItem.hideSubItem(call);
                     } else if (userInfo != null && userInfo.phone_calls_available) {
                         headerItem.showSubItem(call, true);
@@ -14216,7 +14216,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                         return 10;
                                     } else if (mime.endsWith("/xml")) {
                                         return 5;
-                                    } else if (messageObject.getDocumentName().toLowerCase().endsWith("owl") && OwlConfig.isValidFileSettings(messageObject) >= OwlConfig.VALID_CONFIGURATION) {
+                                    } else if (messageObject.getDocumentName().toLowerCase().endsWith("owl") && ColorConfig.isValidFileSettings(messageObject) >= ColorConfig.VALID_CONFIGURATION) {
                                         return 207;
                                     } else if (!messageObject.isNewGif() && mime.endsWith("/mp4") || mime.endsWith("/png") || mime.endsWith("/jpg") || mime.endsWith("/jpeg")) {
                                         return 6;
@@ -14501,10 +14501,10 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     }
                 }
                 if (forwardNoQuoteItem != null) {
-                    if ((((canSaveMusicCount > 0 && canSaveDocumentsCount == 0) || (canSaveMusicCount == 0 && canSaveDocumentsCount > 0)) && cantSaveMessagesCount == 0) && canEditMessagesCount > 0 && canForwardMessagesCount > 0 && OwlConfig.contextMenu.noQuoteForward) {
+                    if ((((canSaveMusicCount > 0 && canSaveDocumentsCount == 0) || (canSaveMusicCount == 0 && canSaveDocumentsCount > 0)) && cantSaveMessagesCount == 0) && canEditMessagesCount > 0 && canForwardMessagesCount > 0 && ColorConfig.contextMenu.noQuoteForward) {
                         forwardNoQuoteItem.setVisibility(View.GONE);
                     } else {
-                        forwardNoQuoteItem.setVisibility(OwlConfig.contextMenu.noQuoteForward ? View.VISIBLE:View.GONE);
+                        forwardNoQuoteItem.setVisibility(ColorConfig.contextMenu.noQuoteForward ? View.VISIBLE:View.GONE);
                     }
                 }
                 if (saveItem != null) {
@@ -14529,7 +14529,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 }
                 
                 if (translateItem != null) {
-                    translateItem.setVisibility(selectedMessagesIds[0].size() + selectedMessagesIds[1].size() > 1 && OwlConfig.showTranslate ? View.VISIBLE : View.GONE);
+                    translateItem.setVisibility(selectedMessagesIds[0].size() + selectedMessagesIds[1].size() > 1 && ColorConfig.showTranslate ? View.VISIBLE : View.GONE);
                 }
                 hasUnfavedSelected = false;
                 for (int a = 0; a < 2; a++) {
@@ -14842,18 +14842,18 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         } else if (chatMode == MODE_PINNED) {
             avatarContainer.setTitle(LocaleController.formatPluralString("PinnedMessagesCount", getPinnedMessagesCount()));
         } else if (currentChat != null) {
-            avatarContainer.setTitle(currentChat.title, currentChat.scam, currentChat.fake, currentChat.verified, false, null, animated, OwlConfig.slidingChatTitle);
+            avatarContainer.setTitle(currentChat.title, currentChat.scam, currentChat.fake, currentChat.verified, false, null, animated, ColorConfig.slidingChatTitle);
         } else if (currentUser != null) {
             if (currentUser.self) {
                 avatarContainer.setTitle(LocaleController.getString("SavedMessages", R.string.SavedMessages));
             } else if (!MessagesController.isSupportUser(currentUser) && getContactsController().contactsDict.get(currentUser.id) == null && (getContactsController().contactsDict.size() != 0 || !getContactsController().isLoadingContacts())) {
                 if (!TextUtils.isEmpty(currentUser.phone)) {
-                    avatarContainer.setTitle(PhoneFormat.getInstance().format("+" + currentUser.phone), currentUser.scam, currentUser.fake, currentUser.verified, getMessagesController().isPremiumUser(currentUser), currentUser.emoji_status, animated, OwlConfig.slidingChatTitle);
+                    avatarContainer.setTitle(PhoneFormat.getInstance().format("+" + currentUser.phone), currentUser.scam, currentUser.fake, currentUser.verified, getMessagesController().isPremiumUser(currentUser), currentUser.emoji_status, animated, ColorConfig.slidingChatTitle);
                 } else {
-                    avatarContainer.setTitle(UserObject.getUserName(currentUser), currentUser.scam, currentUser.fake, currentUser.verified, getMessagesController().isPremiumUser(currentUser), currentUser.emoji_status, animated, OwlConfig.slidingChatTitle);
+                    avatarContainer.setTitle(UserObject.getUserName(currentUser), currentUser.scam, currentUser.fake, currentUser.verified, getMessagesController().isPremiumUser(currentUser), currentUser.emoji_status, animated, ColorConfig.slidingChatTitle);
                 }
             } else {
-                avatarContainer.setTitle(UserObject.getUserName(currentUser), currentUser.scam, currentUser.fake, currentUser.verified,  getMessagesController().isPremiumUser(currentUser), currentUser.emoji_status, animated, OwlConfig.slidingChatTitle);
+                avatarContainer.setTitle(UserObject.getUserName(currentUser), currentUser.scam, currentUser.fake, currentUser.verified,  getMessagesController().isPremiumUser(currentUser), currentUser.emoji_status, animated, ColorConfig.slidingChatTitle);
             }
         }
         setParentActivityTitle(avatarContainer.getTitleTextView().getText());
@@ -23687,7 +23687,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             options.add(OPTION_TRANSLATE);
                             icons.add(R.drawable.msg_translate);
                         }*/
-                        if (messageObject != null && messageObject.contentType == 0 && !(editingMessageObject != null && editingMessageObject.getId() == messageObject.getId()) && (messageTextToTranslate != null && messageTextToTranslate.length() > 0 && !messageObject.isAnimatedEmoji() && !messageObject.isDice()) && messageObject.isRestrictedMessage && OwlConfig.showTranslate) {
+                        if (messageObject != null && messageObject.contentType == 0 && !(editingMessageObject != null && editingMessageObject.getId() == messageObject.getId()) && (messageTextToTranslate != null && messageTextToTranslate.length() > 0 && !messageObject.isAnimatedEmoji() && !messageObject.isDice()) && messageObject.isRestrictedMessage && ColorConfig.showTranslate) {
                             if (!TranslatorHelper.isTranslating(messageObject)) {
                                 items.add(messageObject.translated && !messageObject.isVoiceTranscriptionOpen() ? LocaleController.getString("UndoTranslate", R.string.UndoTranslate) : LocaleController.getString("TranslateMessage", R.string.TranslateMessage));
                                 options.add(201);
@@ -23817,7 +23817,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                         items.add(LocaleController.getString("SaveToGallery", R.string.SaveToGallery));
                                         options.add(OPTION_SAVE_TO_GALLERY);
                                         icons.add(R.drawable.msg_gallery);
-                                        if (OwlConfig.contextMenu.clearFromCache) {
+                                        if (ColorConfig.contextMenu.clearFromCache) {
                                             items.add(LocaleController.getString("ClearFromCache", R.string.ClearFromCache));
                                             options.add(205);
                                             icons.add(R.drawable.msg_clear);
@@ -23830,7 +23830,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                     items.add(LocaleController.getString("SaveToMusic", R.string.SaveToMusic));
                                     options.add(OPTION_SAVE_TO_DOWNLOADS_OR_MUSIC);
                                     icons.add(R.drawable.msg_download);
-                                    if (OwlConfig.contextMenu.clearFromCache) {
+                                    if (ColorConfig.contextMenu.clearFromCache) {
                                         items.add(LocaleController.getString("ClearFromCache", R.string.ClearFromCache));
                                         options.add(205);
                                         icons.add(R.drawable.msg_clear);
@@ -23847,7 +23847,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                     items.add(LocaleController.getString("SaveToDownloads", R.string.SaveToDownloads));
                                     options.add(OPTION_SAVE_TO_DOWNLOADS_OR_MUSIC);
                                     icons.add(R.drawable.msg_download);
-                                    if (OwlConfig.contextMenu.clearFromCache && !MessageObject.isNewGifDocument(selectedObject.getDocument())) {
+                                    if (ColorConfig.contextMenu.clearFromCache && !MessageObject.isNewGifDocument(selectedObject.getDocument())) {
                                         items.add(LocaleController.getString("ClearFromCache", R.string.ClearFromCache));
                                         options.add(205);
                                         icons.add(R.drawable.msg_clear);
@@ -23860,7 +23860,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                         items.add(LocaleController.getString("SaveToGallery", R.string.SaveToGallery));
                                         options.add(OPTION_SAVE_TO_GALLERY);
                                         icons.add(R.drawable.msg_gallery);
-                                        if (OwlConfig.contextMenu.copyPhoto) {
+                                        if (ColorConfig.contextMenu.copyPhoto) {
                                             items.add(LocaleController.getString("CopyPhoto", R.string.CopyPhoto));
                                             options.add(209);
                                             icons.add(R.drawable.msg_copy);
@@ -23876,7 +23876,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                 items.add(LocaleController.getString("SaveToDownloads", R.string.SaveToDownloads));
                                 options.add(OPTION_SAVE_TO_DOWNLOADS_OR_MUSIC);
                                 icons.add(R.drawable.msg_download);
-                                if (OwlConfig.contextMenu.clearFromCache) {
+                                if (ColorConfig.contextMenu.clearFromCache) {
                                     items.add(LocaleController.getString("ClearFromCache", R.string.ClearFromCache));
                                     options.add(205);
                                     icons.add(R.drawable.msg_clear);
@@ -23922,7 +23922,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             items.add(LocaleController.getString("SaveToDownloads", R.string.SaveToDownloads));
                             options.add(OPTION_SAVE_TO_DOWNLOADS_OR_MUSIC);
                             icons.add(R.drawable.msg_download);
-                            if (OwlConfig.contextMenu.clearFromCache) {
+                            if (ColorConfig.contextMenu.clearFromCache) {
                                 items.add(LocaleController.getString("ClearFromCache", R.string.ClearFromCache));
                                 options.add(205);
                                 icons.add(R.drawable.msg_clear);
@@ -24002,9 +24002,9 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                 selectedObject.type != MessageObject.TYPE_GIFT_PREMIUM && selectedObject.type != MessageObject.TYPE_SUGGEST_PHOTO) {
                             items.add(LocaleController.getString("Forward", R.string.Forward));
                             options.add(OPTION_FORWARD);
-                            icons.add(OwlConfig.contextMenu.noQuoteForward ? R.drawable.msg_forward_quote:R.drawable.msg_forward);
+                            icons.add(ColorConfig.contextMenu.noQuoteForward ? R.drawable.msg_forward_quote:R.drawable.msg_forward);
                         }
-                        if (OwlConfig.contextMenu.noQuoteForward && !selectedObject.isSponsored() && chatMode != MODE_SCHEDULED && !selectedObject.needDrawBluredPreview() && !selectedObject.isLiveLocation() && selectedObject.type != 16 && !noforwards) {
+                        if (ColorConfig.contextMenu.noQuoteForward && !selectedObject.isSponsored() && chatMode != MODE_SCHEDULED && !selectedObject.needDrawBluredPreview() && !selectedObject.isLiveLocation() && selectedObject.type != 16 && !noforwards) {
                             items.add(LocaleController.getString("NoQuoteForward", R.string.NoQuoteForward));
                             options.add(204);
                             icons.add(R.drawable.msg_forward);
@@ -24013,12 +24013,12 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             long my_user_id = UserConfig.getInstance(currentAccount).getClientUserId();
                             long user_id = selectedObject.messageOwner.from_id.user_id;
                             long chat_id = selectedObject.getChatId();
-                            if (!(chat_id == 0 && user_id == my_user_id) && OwlConfig.contextMenu.saveMessage) {
+                            if (!(chat_id == 0 && user_id == my_user_id) && ColorConfig.contextMenu.saveMessage) {
                                 items.add(LocaleController.getString("AddToSavedMessages", R.string.AddToSavedMessages));
                                 options.add(202);
                                 icons.add(R.drawable.msg_saved);
                             }
-                            if (OwlConfig.contextMenu.repeatMessage) {
+                            if (ColorConfig.contextMenu.repeatMessage) {
                                 if (!selectedObject.isSponsored() && !selectedObject.needDrawBluredPreview() && !selectedObject.isLiveLocation() && selectedObject.type != 16) {
                                     boolean allowRepeat = allowChatActions && (!isThreadChat() || getMessageHelper().getMessageForRepeat(selectedObject, selectedObjectGroup) != null);
                                     if (allowRepeat) {
@@ -24030,7 +24030,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             }
                         }
                         if (chatMode != MODE_SCHEDULED) {
-                            if (OwlConfig.contextMenu.patpat && allowChatActions && selectedObject.isFromUser()) {
+                            if (ColorConfig.contextMenu.patpat && allowChatActions && selectedObject.isFromUser()) {
                                 items.add(LocaleController.getString("Patpat", R.string.Patpat));
                                 options.add(210);
                                 icons.add(R.drawable.msg_paw);
@@ -24055,7 +24055,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             options.add(OPTION_TRANSLATE);
                             icons.add(R.drawable.msg_translate);
                         }*/
-                        if (messageObject != null && messageObject.contentType == 0 && !(editingMessageObject != null && editingMessageObject.getId() == messageObject.getId()) && (messageTextToTranslate != null && messageTextToTranslate.length() > 0 && !messageObject.isAnimatedEmoji() && !messageObject.isDice()) && OwlConfig.showTranslate) {
+                        if (messageObject != null && messageObject.contentType == 0 && !(editingMessageObject != null && editingMessageObject.getId() == messageObject.getId()) && (messageTextToTranslate != null && messageTextToTranslate.length() > 0 && !messageObject.isAnimatedEmoji() && !messageObject.isDice()) && ColorConfig.showTranslate) {
                             if (!TranslatorHelper.isTranslating(messageObject)) {
                                 items.add(messageObject.translated && !messageObject.isVoiceTranscriptionOpen() ? LocaleController.getString("UndoTranslate", R.string.UndoTranslate) : LocaleController.getString("TranslateMessage", R.string.TranslateMessage));
                                 options.add(201);
@@ -24077,7 +24077,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                 items.add(LocaleController.getString("BlockContact", R.string.BlockContact));
                                 options.add(OPTION_REPORT_CHAT);
                                 icons.add(R.drawable.msg_block2);
-                            } else if (OwlConfig.contextMenu.reportMessage){
+                            } else if (ColorConfig.contextMenu.reportMessage){
                                 items.add(LocaleController.getString("ReportChat", R.string.ReportChat));
                                 options.add(OPTION_REPORT_CHAT);
                                 icons.add(R.drawable.msg_report);
@@ -24180,7 +24180,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     }
                 }
 
-                if (OwlConfig.contextMenu.messageDetails) {
+                if (ColorConfig.contextMenu.messageDetails) {
                     items.add(LocaleController.getString("MessageDetails", R.string.MessageDetails));
                     options.add(203);
                     icons.add(R.drawable.menu_info_little);
@@ -24876,7 +24876,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             if (messageObject.isDoneTranslation() && messageObject.translated) {
                                 TranslatorHelper.resetTranslatedMessage(messageObject);
                             } else {
-                                if (OwlConfig.translatorStyle == BaseTranslator.DIALOG_STYLE) {
+                                if (ColorConfig.translatorStyle == BaseTranslator.DIALOG_STYLE) {
                                     TranslateAlert2 alert = TranslateAlert2.showAlert(getParentActivity(), this, currentAccount, null, Translator.getCurrentTranslator().getCurrentTargetLanguage().split("-")[0], getMessageHelper().getPlainText(messageObject), messageObject.messageOwner.entities, noforwards, onLinkPress, () -> dimBehindView(false));
                                     alert.setDimBehind(false);
                                     if (translateButton != null) {
@@ -25359,7 +25359,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         contentView.addView(emptyViewContainer, 1, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER));
 
         int distance = getArguments().getInt("nearby_distance", -1);
-        if (OwlConfig.showGreetings && (distance >= 0 || preloadedGreetingsSticker != null) && currentUser != null && !userBlocked) {
+        if (ColorConfig.showGreetings && (distance >= 0 || preloadedGreetingsSticker != null) && currentUser != null && !userBlocked) {
             greetingsViewContainer = new ChatGreetingsView(getContext(), currentUser, distance, currentAccount, preloadedGreetingsSticker, themeDelegate);
             greetingsViewContainer.setListener((sticker) -> {
                 animatingDocuments.put(sticker, 0);
@@ -25391,7 +25391,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     emptyMessage = LocaleController.getString("GotAQuestion", R.string.GotAQuestion);
                 } else if (currentUser == null || currentUser.self || currentUser.deleted || userBlocked) {
                     emptyMessage = LocaleController.getString("NoMessages", R.string.NoMessages);
-                } else if (!OwlConfig.showGreetings) {
+                } else if (!ColorConfig.showGreetings) {
                     emptyMessage = LocaleController.getString("NoMessages", R.string.NoMessages);
                 }
                 if (emptyMessage == null) {
@@ -25853,7 +25853,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 doneTranslation.await();
             } catch (Exception ignored) {}
             AndroidUtilities.runOnUIThread(() -> {
-                String language = OwlConfig.translationTarget;
+                String language = ColorConfig.translationTarget;
                 CharSequence languageName;
                 if (language.equals("app")) {
                     language = Translator.getCurrentTranslator().getCurrentAppLanguage();
@@ -26062,7 +26062,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                 AndroidUtilities.runOnUIThread(() -> {
                                     progressDialog.dismiss();
                                     if (finalSuccess && finalEmojiPackBase != null) {
-                                        if (finalEmojiPackBase.getPackId().equals(OwlConfig.emojiPackSelected)) {
+                                        if (finalEmojiPackBase.getPackId().equals(ColorConfig.emojiPackSelected)) {
                                             BulletinFactory.of(ChatActivity.this).createErrorBulletin(LocaleController.getString("EmojiSetAlreadyApplied", R.string.EmojiSetAlreadyApplied), themeDelegate).show();
                                         } else {
                                             EmojiSetBulletinLayout bulletinLayout = new EmojiSetBulletinLayout(
@@ -26073,8 +26073,8 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                                     themeDelegate
                                             );
                                             Bulletin.make(ChatActivity.this, bulletinLayout, Bulletin.DURATION_LONG).show();
-                                            OwlConfig.setEmojiPackSelected(finalEmojiPackBase.getPackId());
-                                            if (OwlConfig.useSystemEmoji) OwlConfig.toggleUseSystemEmoji();
+                                            ColorConfig.setEmojiPackSelected(finalEmojiPackBase.getPackId());
+                                            if (ColorConfig.useSystemEmoji) ColorConfig.toggleUseSystemEmoji();
                                             Emoji.reloadEmoji();
                                             NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.emojiLoaded);
                                         }
@@ -26628,8 +26628,8 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 break;
             }
             case 207: {
-                int statusConf = OwlConfig.isValidFileSettings(selectedObject);
-                if (statusConf == OwlConfig.VALID_CONFIGURATION) {
+                int statusConf = ColorConfig.isValidFileSettings(selectedObject);
+                if (statusConf == ColorConfig.VALID_CONFIGURATION) {
                     new ImportSettingsDialog(ChatActivity.this, selectedObject).checkCanShowDialog();
                 } else {
                     AndroidUtilities.runOnUIThread(() -> BulletinFactory.of(ChatActivity.this).createSimpleBulletin(R.raw.gigagroup_convert, LocaleController.getString("UpdateToImport", R.string.UpdateToImport), true).show());
@@ -26658,15 +26658,15 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     ArrayList<TLRPC.MessageEntity> entities = getMediaDataController().getEntities(cs, true);
                     getSendMessagesHelper().sendMessage(spannableString.toString(), dialog_id, selectedObject, threadMessageObject, null, false, entities, null, null, true, 0, null, false);
                 }
-                if (OwlConfig.unlockedSecretIcon >= 4) {
+                if (ColorConfig.unlockedSecretIcon >= 4) {
                     AppIconBulletinLayout layout = new AppIconBulletinLayout(getParentActivity(), LauncherIconController.LauncherIcon.FOXGRAM, getResourceProvider());
                     layout.textView.setText(LocaleController.getString("UnlockedHiddenFoxIcon", R.string.UnlockedHiddenFoxIcon));
                     fireworksOverlay.start();
                     fragmentView.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
                     AndroidUtilities.runOnUIThread(() -> Bulletin.make(this, layout, Bulletin.DURATION_SHORT).show());
-                    OwlConfig.setUnlockedSecretIcon(-1);
-                } else if (OwlConfig.unlockedSecretIcon >= 0) {
-                    OwlConfig.setUnlockedSecretIcon(OwlConfig.unlockedSecretIcon + 1);
+                    ColorConfig.setUnlockedSecretIcon(-1);
+                } else if (ColorConfig.unlockedSecretIcon >= 0) {
+                    ColorConfig.setUnlockedSecretIcon(ColorConfig.unlockedSecretIcon + 1);
                 }
                 break;
             case OPTION_SEND_NOW: {
@@ -30607,9 +30607,9 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         scrollToPositionOnRecreate = -1;
                     }
                 }
-                int statusConf = OwlConfig.isValidFileSettings(message);
-                if (message.getDocumentName().toLowerCase().endsWith("owl") && statusConf >= OwlConfig.VALID_CONFIGURATION) {
-                    if (statusConf == OwlConfig.VALID_CONFIGURATION) {
+                int statusConf = ColorConfig.isValidFileSettings(message);
+                if (message.getDocumentName().toLowerCase().endsWith("owl") && statusConf >= ColorConfig.VALID_CONFIGURATION) {
+                    if (statusConf == ColorConfig.VALID_CONFIGURATION) {
                         new ImportSettingsDialog(ChatActivity.this, message).checkCanShowDialog();
                     } else {
                         BulletinFactory.of(ChatActivity.this).createSimpleBulletin(R.raw.gigagroup_convert, LocaleController.getString("UpdateToImport", R.string.UpdateToImport), true).show();

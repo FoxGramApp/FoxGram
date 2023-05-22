@@ -177,7 +177,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 import it.colorgram.android.PasscodeController;
 
 @SuppressLint("HardwareIds")
@@ -474,7 +474,7 @@ public class LoginActivity extends BaseFragment {
         });
 
         if (UserConfig.getActivatedAccountsCount() == 0) {
-            OwlConfig.updateCurrentVersion();
+            ColorConfig.updateCurrentVersion();
         }
 
         currentDoneType = DONE_TYPE_FLOATING;

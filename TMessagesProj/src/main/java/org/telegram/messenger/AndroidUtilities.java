@@ -196,7 +196,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
-import it.colorgram.android.OwlConfig;
+import it.colorgram.android.ColorConfig;
 import it.colorgram.ui.Components.Dialogs.ImportSettingsDialog;
 
 public class AndroidUtilities {
@@ -1687,7 +1687,7 @@ public class AndroidUtilities {
         synchronized (typefaceCache) {
             if (!typefaceCache.containsKey(assetPath)) {
                 try {
-                    if (OwlConfig.useSystemFont) {
+                    if (ColorConfig.useSystemFont) {
                         Typeface t = null;
                         switch (assetPath) {
                             case "fonts/rmedium.ttf":
@@ -3342,9 +3342,9 @@ public class AndroidUtilities {
             f = FileLoader.getInstance(UserConfig.selectedAccount).getPathToMessage(message.messageOwner);
         }
         if (f != null && f.exists()) {
-            int statusConf = OwlConfig.isValidFileSettings(message);
-            if (parentFragment != null && message.getDocumentName().toLowerCase().endsWith("owl") && statusConf >= OwlConfig.VALID_CONFIGURATION) {
-                if (statusConf == OwlConfig.VALID_CONFIGURATION) {
+            int statusConf = ColorConfig.isValidFileSettings(message);
+            if (parentFragment != null && message.getDocumentName().toLowerCase().endsWith("owl") && statusConf >= ColorConfig.VALID_CONFIGURATION) {
+                if (statusConf == ColorConfig.VALID_CONFIGURATION) {
                     new ImportSettingsDialog(parentFragment, message).checkCanShowDialog();
                 } else {
                     BulletinFactory.of(parentFragment).createSimpleBulletin(R.raw.gigagroup_convert, LocaleController.getString("UpdateToImport", R.string.UpdateToImport), true).show();
