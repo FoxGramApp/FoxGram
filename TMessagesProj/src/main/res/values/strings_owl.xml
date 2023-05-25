@@ -4,7 +4,7 @@
     <string name="TestBackend">Test Backend</string>
     <string name="TestBackendOn">This account will connect to the test backend.</string>
     <string name="TestBackendOff">This account will connect to the production backend.</string>
-    <string name="OwlSetting">colorgram Settings</string>
+    <string name="OwlSetting">Colorgram Settings</string>
     <string name="Chat">Chats</string>
     <string name="OwlUpdates">Updates</string>
     <string name="Experimental">Experimental Settings</string>
@@ -14,12 +14,12 @@
     <string name="ExperimentalDesc">Try experimental features. Some may not work correctly.</string>
     <string name="DisableExperimentalAlert">Are you sure you want to disable experimental settings?\n\nNote that this will disable the Monet Icon.</string>
     <string name="OfficialChannel">Official Channel</string>
-    <string name="ChannelUsername">colorgram</string>
+    <string name="ChannelUsername">SCP_System</string>
     <string name="OfficialGroup">Official Group</string>
-    <string name="GroupUsername">colorgramForum</string>
+    <string name="GroupUsername">chatscpsystem</string>
     <string name="SourceCode">View Source Code</string>
-    <string name="TranslateOwl">Translate colorgram</string>
-    <string name="TranslateOwlDesc">Help us translate colorgram into your language</string>
+    <string name="TranslateOwl">Translate Colorgram</string>
+    <string name="TranslateOwlDesc">Help us translate Colorgram into your language</string>
     <string name="Donate">Donate</string>
     <string name="DonateDesc">Support the development</string>
     <string name="CopyReportDetails">Copy Report Details</string>
