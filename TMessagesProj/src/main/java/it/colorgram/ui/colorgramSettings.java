@@ -3,6 +3,7 @@ package it.colorgram.ui;
 import android.content.DialogInterface;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -96,14 +97,15 @@ public class colorgramSettings extends BaseSettingsActivity {
 
     @Override
     protected void onItemClick(View view, int position, float x, float y) {
+        int duration = Toast.LENGTH_SHORT;
         if (position == channelUpdatesRow) {
             MessagesController.getInstance(currentAccount).openByUserName(LocaleController.getString("ChannelUsername", R.string.ChannelUsername), this, 1);
         } else if (position == groupUpdatesRow) {
             MessagesController.getInstance(currentAccount).openByUserName(LocaleController.getString("GroupUsername", R.string.GroupUsername), this, 1);
         } else if (position == sourceCodeRow) {
-            Browser.openUrl(getParentActivity(), "https://github.com/colorgramDev/colorgram");
+            Browser.openUrl(getParentActivity(), "https://github.com/Pierlu096/color");
         } else if (position == supportTranslationRow) {
-            Browser.openUrl(getParentActivity(), "https://translations.colorgram.org/");
+            Browser.openUrl(getParentActivity(), "https://crowdin.com/project/colorgram");
         } else if (position == generalSettingsRow) {
             presentFragment(new colorgramGeneralSettings());
         } else if (position == chatSettingsRow) {
@@ -113,7 +115,7 @@ public class colorgramSettings extends BaseSettingsActivity {
         } else if (position == experimentalSettingsRow) {
             presentFragment(new colorgramExperimentalSettings());
         } else if (position == supportDonationRow) {
-            Browser.openUrl(getParentActivity(), "https://donations.colorgram.org/");
+            Toast.makeText(context, LocaleController.getString("Disable", R.string.Disable), duration).show();
         } else if (position == appearanceSettingsRow) {
             presentFragment(new colorgramAppearanceSettings());
         } else if (position == bugReportRow) {
