@@ -355,37 +355,37 @@
       android:strokeWidth="1" />
   <path
       android:pathData="M222.5 294L233 294.5L222.5 295L222.5 294Z"
-      android:fillColor="#000"
+      android:fillColor="@color/owl_gram_fm_foreground"
       android:fillAlpha="0.6666667"
       android:strokeColor="#000"
       android:strokeAlpha="0.6666667"
       android:strokeWidth="1" />
   <path
       android:pathData="M206 140L216.5 145L229 155L241 170.5L248 184.5L253 205.5L253 221.5L249 239L251.5 239L259 234.5L258.5 233L260.5 234L263.5 229L263.5 231Q265.8 230.3 265 232.5Q268 236.5 267 244.5L269 248.5L267 252.5L267 259.5L264 268.5Q259.2 280.2 250.5 288L234.5 294L220.5 294Q208.7 291.8 201.5 285L200 285.5L201 284.5L194 277.5Q188 269.5 187 256.5L191 253.5L190.5 252L192.5 253L196 250.5L195.5 249L197.5 250L208 240.5L217 226.5L222 211.5L222 209.5L222 190.5L221 185.5L206 140Z"
-      android:fillColor="#000"
+      android:fillColor="@color/owl_gram_fm_foreground"
       android:fillAlpha="0.9960784"
-      android:strokeColor="#000"
+      android:strokeColor="@color/owl_gram_fm_foreground"
       android:strokeAlpha="0.9960784"
       android:strokeWidth="1" />
   <path
       android:pathData="M201.5 152L214 188.5L215 207.5Q212.2 223.2 204 233.5L204.5 235L203.5 234L194.5 243L188.5 247L188 243.5L189 240L185 242.5Q176.2 252.1 174 267L172.5 267L162.5 257L148 248.5L148 236.5L154 218.5L164 203.5L192 170.5L201.5 152Z"
-      android:fillColor="#000"
+      android:fillColor="@color/owl_gram_fm_foreground"
       android:fillAlpha="0.9960784"
-      android:strokeColor="#000"
+      android:strokeColor="@color/owl_gram_fm_foreground"
       android:strokeAlpha="0.9960784"
       android:strokeWidth="1" />
   <path
       android:pathData="M277.5 204L282.5 215L284 214.5L283 218.5Q286.8 227.2 285 241.5L281 256.5L271.5 272L271 269.5L275 257.5L275 239.5L270 223.5Q276.5 216.5 277.5 204Z"
-      android:fillColor="#000"
+      android:fillColor="@color/owl_gram_fm_foreground"
       android:fillAlpha="0.9960784"
-      android:strokeColor="#000"
+      android:strokeColor="@color/owl_gram_fm_foreground"
       android:strokeAlpha="0.9960784"
       android:strokeWidth="1" />
   <path
       android:pathData="M150 259L153.5 260L166 270.5L173 280.5L173 286.5L175 292.5L173.5 292L159 278.5L150 259Z"
-      android:fillColor="#000"
+      android:fillColor="@color/owl_gram_fm_foreground"
       android:fillAlpha="0.9960784"
-      android:strokeColor="#000"
+      android:strokeColor="@color/owl_gram_fm_foreground"
       android:strokeAlpha="0.9960784"
       android:strokeWidth="1" />
 </vector>
