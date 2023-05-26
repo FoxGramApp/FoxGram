@@ -3724,6 +3724,8 @@ public class LoginActivity extends BaseFragment {
                 if (currentType == AUTH_TYPE_MESSAGE) {
                     if (nextType == AUTH_TYPE_FLASH_CALL || nextType == AUTH_TYPE_CALL || nextType == AUTH_TYPE_MISSED_CALL) {
                         problemText.setText(LocaleController.getString("DidNotGetTheCodePhone", R.string.DidNotGetTheCodePhone));
+                    } else if (nextType == 0) {
+                        problemText.setText(LocaleController.getString("DidNotGetTheCode", R.string.DidNotGetTheCode));
                     } else {
                         problemText.setText(LocaleController.getString("DidNotGetTheCodeSms", R.string.DidNotGetTheCodeSms));
                     }
@@ -3973,9 +3975,11 @@ public class LoginActivity extends BaseFragment {
             } else if (currentType == AUTH_TYPE_FLASH_CALL) {
                 AndroidUtilities.setWaitingForCall(true);
                 NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.didReceiveCall);
-                AndroidUtilities.runOnUIThread(() -> {
-                    CallReceiver.checkLastReceivedCall();
-                });
+                if (restore) {
+                    AndroidUtilities.runOnUIThread(() -> {
+                        CallReceiver.checkLastReceivedCall();
+                    });
+                }
             }
 
             currentParams = params;
@@ -4304,7 +4308,6 @@ public class LoginActivity extends BaseFragment {
                 AndroidUtilities.setWaitingForSms(false);
                 NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.didReceiveSmsCode);
             } else if (currentType == AUTH_TYPE_FLASH_CALL) {
-                AndroidUtilities.setWaitingForCall(false);
                 NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.didReceiveCall);
             }
             waitingForEvent = false;
@@ -4535,6 +4538,9 @@ public class LoginActivity extends BaseFragment {
                                 } else if (currentType == AUTH_TYPE_FLASH_CALL) {
                                     AndroidUtilities.setWaitingForCall(true);
                                     NotificationCenter.getGlobalInstance().addObserver(LoginActivitySmsView.this, NotificationCenter.didReceiveCall);
+                                    AndroidUtilities.runOnUIThread(() -> {
+                                        CallReceiver.checkLastReceivedCall();
+                                    });
                                 }
                                 waitingForEvent = true;
                                 if (currentType != AUTH_TYPE_FLASH_CALL) {
@@ -4568,6 +4574,7 @@ public class LoginActivity extends BaseFragment {
                         if (ok) {
                             if (currentType == AUTH_TYPE_FLASH_CALL) {
                                 AndroidUtilities.endIncomingCall();
+                                AndroidUtilities.setWaitingForCall(false);
                             }
                         }
                     }), ConnectionsManager.RequestFlagFailOnServerErrors | ConnectionsManager.RequestFlagWithoutLogin);
@@ -4579,6 +4586,10 @@ public class LoginActivity extends BaseFragment {
         }
 
         private void animateSuccess(Runnable callback) {
+            if (currentType == AUTH_TYPE_FLASH_CALL) {
+                callback.run();
+                return;
+            }
             for (int i = 0; i < codeFieldContainer.codeField.length; i++) {
                 int finalI = i;
                 codeFieldContainer.postDelayed(()-> codeFieldContainer.codeField[finalI].animateSuccessProgress(1f), i * 75L);
