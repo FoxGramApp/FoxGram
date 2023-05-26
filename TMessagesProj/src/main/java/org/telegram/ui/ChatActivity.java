@@ -14304,7 +14304,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                         return 10;
                                     } else if (mime.endsWith("/xml")) {
                                         return 5;
-                                    } else if (messageObject.getDocumentName().toLowerCase().endsWith("octo") || messageObject.getDocumentName().toLowerCase().endsWith("yuki") || messageObject.getDocumentName().toLowerCase().endsWith("owl") && ColorConfig.isValidFileSettings(messageObject) >= ColorConfig.VALID_CONFIGURATION) {
+                                    } else if (messageObject.getDocumentName().toLowerCase().endsWith("color") || messageObject.getDocumentName().toLowerCase().endsWith("owl") && ColorConfig.isValidFileSettings(messageObject) >= ColorConfig.VALID_CONFIGURATION) {
                                         return 207;
                                     } else if (!messageObject.isNewGif() && mime.endsWith("/mp4") || mime.endsWith("/png") || mime.endsWith("/jpg") || mime.endsWith("/jpeg")) {
                                         return 6;
@@ -30786,7 +30786,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     }
                 }
                 int statusConf = ColorConfig.isValidFileSettings(message);
-                if (message.getDocumentName().toLowerCase().endsWith("octo") || message.getDocumentName().toLowerCase().endsWith("yuki") || message.getDocumentName().toLowerCase().endsWith("owl") && statusConf >= ColorConfig.VALID_CONFIGURATION) {
+                if (message.getDocumentName().toLowerCase().endsWith("color") || message.getDocumentName().toLowerCase().endsWith("owl") && statusConf >= ColorConfig.VALID_CONFIGURATION) {
                     if (statusConf == ColorConfig.VALID_CONFIGURATION) {
                         new ImportSettingsDialog(ChatActivity.this, message).checkCanShowDialog();
                     } else {
