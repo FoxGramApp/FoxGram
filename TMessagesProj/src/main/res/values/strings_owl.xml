@@ -49,7 +49,7 @@
     <string name="ResetItemsOrder">Reset Items Order</string>
     <string name="AddDivider">Add Divider</string>
     <string name="Divider">Divider</string>
-    <string name="Disable">This feature is currently disabled</string>
+    <string name="ColorDisable">This feature is currently disabled</string>
     <string name="DatacenterStatus">Datacenter Status</string>
     <string name="DatacenterStatusDesc">Check the Telegram\'s <![CDATA[<a href="https://core.telegram.org/api/datacenter">Datacenter</a>]]> Status in realtime.</string>
     <string name="WebVersion">Open Web Version</string>

@@ -115,7 +115,7 @@ public class colorgramSettings extends BaseSettingsActivity {
         } else if (position == experimentalSettingsRow) {
             presentFragment(new colorgramExperimentalSettings());
         } else if (position == supportDonationRow) {
-            Toast.makeText(context, LocaleController.getString("Disable", R.string.Disable), duration).show();
+            Toast.makeText(context, LocaleController.getString("ColorDisable", R.string.Disable), duration).show();
         } else if (position == appearanceSettingsRow) {
             presentFragment(new colorgramAppearanceSettings());
         } else if (position == bugReportRow) {
