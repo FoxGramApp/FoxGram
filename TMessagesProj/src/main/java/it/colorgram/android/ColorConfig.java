@@ -55,6 +55,7 @@ public class ColorConfig extends SettingsController {
     public static boolean showGradientColor;
     public static boolean showAvatarImage;
     public static boolean pacmanForced;
+    public static boolean SmoothNav;
     public static boolean smartButtons;
     public static boolean showAppBarShadow;
     public static boolean accentAsNotificationColor;
@@ -160,6 +161,7 @@ public class ColorConfig extends SettingsController {
             showGradientColor = getBoolean("showGradientColor", false);
             showAvatarImage = getBoolean("showAvatarImage", true);
             pacmanForced = getBoolean("pacmanForced", false);
+            SmoothNav = getBoolean("SmoothNav", false);
             smartButtons = getBoolean("smartButtons", false);
             showAppBarShadow = getBoolean("showAppBarShadow", true);
             accentAsNotificationColor = getBoolean("accentAsNotificationColor", false);
@@ -330,6 +332,8 @@ public class ColorConfig extends SettingsController {
     public static void togglePacmanForced() {
         putValue("pacmanForced", pacmanForced ^= true);
     }
+
+    public static void toggleSmoothNav() { putValue("SmoothNav", SmoothNav ^= true);}
 
     public static void toggleSmartButtons() {
         putValue("smartButtons", smartButtons ^= true);

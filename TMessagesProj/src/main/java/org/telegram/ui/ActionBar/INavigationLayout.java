@@ -11,10 +11,13 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import org.telegram.ui.Components.BackButtonMenu;
+import org.telegram.ui.LNavigation.LNavigation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import it.colorgram.android.ColorConfig;
 
 public interface INavigationLayout {
     int REBUILD_FLAG_REBUILD_LAST = 1, REBUILD_FLAG_REBUILD_ONLY_LAST = 2;
@@ -77,7 +80,7 @@ public interface INavigationLayout {
     void setPulledDialogs(List<BackButtonMenu.PulledDialog> pulledDialogs);
 
     static INavigationLayout newLayout(Context context) {
-        return new ActionBarLayout(context);
+        return ColorConfig.SmoothNav ? new LNavigation(context) : new ActionBarLayout(context);
     }
 
     default void removeFragmentFromStack(BaseFragment fragment) {

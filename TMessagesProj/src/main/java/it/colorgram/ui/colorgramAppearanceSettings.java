@@ -50,6 +50,7 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
     private int chatHeaderDividerRow;
     private int appearanceHeaderRow;
     private int forcePacmanRow;
+    private int SmoothNavRow;
     private int showSantaHatRow;
     private int showFallingSnowRow;
     private int messageTimeSwitchRow;
@@ -145,6 +146,11 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
             ColorConfig.togglePacmanForced();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(ColorConfig.pacmanForced);
+            } else if (position == SmoothNavRow) {
+                ColorConfig.toggleSmoothNav();
+                if (view instanceof TextCheckCell) {
+                    ((TextCheckCell) view).setChecked(ColorConfig.SmoothNav);
+                }
             }
         } else if (position == smartButtonsRow) {
             ColorConfig.toggleSmartButtons();
@@ -263,6 +269,7 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
 
         appearanceHeaderRow = rowCount++;
         forcePacmanRow = rowCount++;
+        SmoothNavRow = rowCount++;
         if (((Theme.getEventType() == 0 && ColorConfig.eventType == 0) || ColorConfig.eventType == 1)) {
             showSantaHatRow = rowCount++;
             showFallingSnowRow = rowCount++;
@@ -334,6 +341,8 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("NumberRounding", R.string.NumberRounding), LocaleController.getString("NumberRoundingDesc", R.string.NumberRoundingDesc), ColorConfig.roundedNumbers, true, true);
                     } else if (position == forcePacmanRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("PacManAnimation", R.string.PacManAnimation), ColorConfig.pacmanForced, true);
+                    } else if (position == SmoothNavRow) {
+                        textCheckCell.setTextAndCheck(LocaleController.getString("SmoothNav", R.string.SmoothNav), ColorConfig.SmoothNav, true);
                     } else if (position == smartButtonsRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("ShortcutsForAdmins", R.string.ShortcutsForAdmins), ColorConfig.smartButtons, false);
                     } else if (position == appBarShadowRow) {
@@ -463,7 +472,7 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
             } else if (position == roundedNumberSwitchRow || position == messageTimeSwitchRow ||
                     position == useSystemFontRow || position == drawerAvatarAsBackgroundRow ||
                     position == drawerDarkenBackgroundRow || position == drawerBlurBackgroundRow || position == showGradientRow ||
-                    position == showAvatarRow || position == forcePacmanRow || position == smartButtonsRow ||
+                    position == showAvatarRow || position == forcePacmanRow || position == SmoothNavRow || position == smartButtonsRow ||
                     position == appBarShadowRow || position == showSantaHatRow || position == showFallingSnowRow ||
                     position == slidingTitleRow || position == searchIconInActionBarRow || position == showPencilIconRow ||
                     position == showInActionBarRow) {
