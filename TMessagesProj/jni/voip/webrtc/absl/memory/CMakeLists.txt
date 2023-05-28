@@ -15,27 +15,27 @@
 #
 
 absl_cc_library(
-  NAME
-    memory
-  HDRS
-    "memory.h"
-  COPTS
-    ${ABSL_DEFAULT_COPTS}
-  DEPS
-    absl::core_headers
-    absl::meta
-  PUBLIC
+        NAME
+        memory
+        HDRS
+        "memory.h"
+        COPTS
+        ${ABSL_DEFAULT_COPTS}
+        DEPS
+        absl::core_headers
+        absl::meta
+        PUBLIC
 )
 
 absl_cc_test(
-  NAME
-    memory_test
-  SRCS
-    "memory_test.cc"
-  COPTS
-    ${ABSL_TEST_COPTS}
-  DEPS
-    absl::memory
-    absl::core_headers
-    GTest::gmock_main
+        NAME
+        memory_test
+        SRCS
+        "memory_test.cc"
+        COPTS
+        ${ABSL_TEST_COPTS}
+        DEPS
+        absl::memory
+        absl::core_headers
+        GTest::gmock_main
 )
