@@ -35,7 +35,7 @@ public class BuildVars {
     public static String APP_HASH = "8ebeb77d7170894d560ca40bdeabac3a";
     public static String SAFETYNET_KEY = "";
     public static String SMS_HASH = isStandaloneApp() ? "w0lkcmTZkKh" : (DEBUG_VERSION ? "O2P2z+/jBpJ" : "oLeq9AcOZkT");
-    public static String PLAYSTORE_APP_URL = "";
+    public static String PLAYSTORE_APP_URL = "https://play.google.com/store/apps/details?id=it.colorgram.android";
     public static String GOOGLE_AUTH_CLIENT_ID = "217475623555-jut3eg13m94k6nk7scbucq5h4os3qrfv.apps.googleusercontent.com";
 
     public static String HUAWEI_APP_ID = "101184875";
@@ -51,7 +51,7 @@ public class BuildVars {
     }
 
     public static boolean useInvoiceBilling() {
-        return DEBUG_VERSION || isStandaloneApp() || isBetaApp() || isHuaweiStoreApp() || hasDirectCurrency();
+        return BillingController.billingClientEmpty || DEBUG_VERSION || isStandaloneApp() || isBetaApp() || isHuaweiStoreApp() || hasDirectCurrency();
     }
 
     private static boolean hasDirectCurrency() {

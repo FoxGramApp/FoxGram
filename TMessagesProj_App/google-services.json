@@ -1,73 +1,45 @@
 {
   "project_info": {
-    "project_number": "217475623555",
-    "project_id": "colorgram",
-    "storage_bucket": "colorgram.appspot.com"
+    "project_number": "202131402753",
+    "project_id": "colorgramapp-5a3bf",
+    "storage_bucket": "colorgramapp-5a3bf.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:217475623555:android:bed62b84b1c4bad77ec9b6",
+        "mobilesdk_app_id": "1:202131402753:android:123b81fd5ba2b817c3d000",
         "android_client_info": {
-          "package_name": "It.colorgram.android"
+          "package_name": "it.colorgram.android"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "217475623555-jut3eg13m94k6nk7scbucq5h4os3qrfv.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "It.colorgram.android",
-            "certificate_hash": "48304bfc7069c920ac01b5290c238cfe712e17bf"
-          }
-        },
-        {
-          "client_id": "217475623555-78a16l68d0d2r2uf98875mlq1soo9jn0.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyACAHiEIf6sp5T1F7m_Hv5-HXUxMfIvaIM"
+          "current_key": "AIzaSyBKq6i30CB9Bj4Gn1G4MkXLzlQToUHbhyU"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "217475623555-472ctm32s2cp6ah2bb9sfkmb2bfa4vvi.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:217475623555:android:eb7b1fb5304f83ac7ec9b6",
+        "mobilesdk_app_id": "1:202131402753:android:7686501eb4280f0dc3d000",
         "android_client_info": {
           "package_name": "it.colorgram.android.beta"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "217475623555-78a16l68d0d2r2uf98875mlq1soo9jn0.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyACAHiEIf6sp5T1F7m_Hv5-HXUxMfIvaIM"
+          "current_key": "AIzaSyBKq6i30CB9Bj4Gn1G4MkXLzlQToUHbhyU"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "217475623555-472ctm32s2cp6ah2bb9sfkmb2bfa4vvi.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
