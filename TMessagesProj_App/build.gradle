@@ -84,7 +84,6 @@ android {
 
     defaultConfig {
         versionName APP_VERSION_NAME
-
         multiDexEnabled true
     }
 
