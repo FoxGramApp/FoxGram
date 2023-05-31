@@ -2901,6 +2901,10 @@ public class Theme {
         default void applyServiceShaderMatrix(int w, int h, float translationX, float translationY) {
             Theme.applyServiceShaderMatrix(w, h, translationX, translationY);
         }
+
+        int getColor(int key);
+
+        boolean contains(int key);
     }
 
     private static final Object sync = new Object();
@@ -3792,7 +3796,7 @@ public class Theme {
     public static final String key_chat_BlurAlpha = "chat_BlurAlpha";
 
     public static final String key_voipgroup_listSelector = "voipgroup_listSelector";
-    public static final String key_voipgroup_inviteMembersBackground = "voipgroup_inviteMembersBackground";
+    public static final int key_voipgroup_inviteMembersBackground = "voipgroup_inviteMembersBackground";
     public static final String key_voipgroup_actionBar = "voipgroup_actionBar";
     public static final String key_voipgroup_actionBarItems = "voipgroup_actionBarItems";
     public static final String key_voipgroup_actionBarItemsSelector = "voipgroup_actionBarItemsSelector";

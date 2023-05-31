@@ -116,7 +116,7 @@ public class BottomSheet extends Dialog {
     protected boolean useLightStatusBar = true;
     protected boolean useLightNavBar;
 
-    protected int behindKeyboardColorKey = Theme.key_dialogBackground;
+    protected int behindKeyboardColorKey = Integer.parseInt(Theme.key_dialogBackground);
     protected int behindKeyboardColor;
 
     private boolean canDismissWithSwipe = true;
@@ -164,7 +164,7 @@ public class BottomSheet extends Dialog {
     private boolean disableScroll;
     private float currentPanTranslationY;
 
-    protected int navBarColorKey = Theme.key_windowBackgroundGray;
+    protected int navBarColorKey = Integer.parseInt(Theme.key_windowBackgroundGray);
     protected int navBarColor;
 
     private OnDismissListener onHideListener;
@@ -818,7 +818,7 @@ public class BottomSheet extends Dialog {
 
             imageView = new ImageView(context);
             imageView.setScaleType(ImageView.ScaleType.CENTER);
-            imageView.setColorFilter(new PorterDuffColorFilter(getThemedColor(Theme.key_dialogIcon), PorterDuff.Mode.MULTIPLY));
+            imageView.setColorFilter(new PorterDuffColorFilter(getThemedColor(Integer.parseInt(Theme.key_dialogIcon)), PorterDuff.Mode.MULTIPLY));
             addView(imageView, LayoutHelper.createFrame(56, 48, Gravity.CENTER_VERTICAL | (LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT)));
 
             textView = new TextView(context);
@@ -827,21 +827,21 @@ public class BottomSheet extends Dialog {
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
             textView.setEllipsize(TextUtils.TruncateAt.END);
             if (type == 0) {
-                textView.setTextColor(getThemedColor(Theme.key_dialogTextBlack));
+                textView.setTextColor(getThemedColor(Integer.parseInt(Theme.key_dialogTextBlack)));
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
                 addView(textView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, (LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT) | Gravity.CENTER_VERTICAL));
             } else if (type == 1) {
                 textView.setGravity(Gravity.CENTER);
-                textView.setTextColor(getThemedColor(Theme.key_dialogTextBlack));
+                textView.setTextColor(getThemedColor(Integer.parseInt(Theme.key_dialogTextBlack)));
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
                 textView.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
                 addView(textView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
             } else if (type == 2) {
                 textView.setGravity(Gravity.CENTER);
-                textView.setTextColor(getThemedColor(Theme.key_featuredStickers_buttonText));
+                textView.setTextColor(getThemedColor(Integer.parseInt(Theme.key_featuredStickers_buttonText)));
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
                 textView.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
-                textView.setBackground(Theme.AdaptiveRipple.filledRect(getThemedColor(Theme.key_featuredStickers_addButton), 6));
+                textView.setBackground(Theme.AdaptiveRipple.filledRect(getThemedColor(Integer.parseInt(Theme.key_featuredStickers_addButton)), 6));
                 addView(textView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, 0, 16, 16, 16, 16));
             }
         }
@@ -906,7 +906,7 @@ public class BottomSheet extends Dialog {
         }
 
         protected int getThemedColor(int key) {
-            return Theme.getColor(key, resourcesProvider);
+            return Theme.getColor(String.valueOf(key), resourcesProvider);
         }
 
         public boolean isSelected = false;
@@ -945,7 +945,7 @@ public class BottomSheet extends Dialog {
 
         Rect padding = new Rect();
         shadowDrawable = context.getResources().getDrawable(R.drawable.sheet_shadow_round).mutate();
-        shadowDrawable.setColorFilter(new PorterDuffColorFilter(getThemedColor(Theme.key_dialogBackground), PorterDuff.Mode.MULTIPLY));
+        shadowDrawable.setColorFilter(new PorterDuffColorFilter(getThemedColor(Integer.parseInt(Theme.key_dialogBackground)), PorterDuff.Mode.MULTIPLY));
         shadowDrawable.getPadding(padding);
         backgroundPaddingLeft = padding.left;
         backgroundPaddingTop = padding.top;
@@ -1007,7 +1007,7 @@ public class BottomSheet extends Dialog {
     }
 
     public void fixNavigationBar() {
-        fixNavigationBar(getThemedColor(Theme.key_windowBackgroundGray));
+        fixNavigationBar(getThemedColor(Integer.parseInt(Theme.key_windowBackgroundGray)));
     }
 
     public void fixNavigationBar(int bgColor) {
@@ -1082,12 +1082,12 @@ public class BottomSheet extends Dialog {
             int height = 48;
             titleView.setText(title);
             if (bigTitle) {
-                titleView.setTextColor(getThemedColor(Theme.key_dialogTextBlack));
+                titleView.setTextColor(getThemedColor(Integer.parseInt(Theme.key_dialogTextBlack)));
                 titleView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
                 titleView.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
                 titleView.setPadding(AndroidUtilities.dp(21), AndroidUtilities.dp(multipleLinesTitle ? 14 : 6), AndroidUtilities.dp(21), AndroidUtilities.dp(8));
             } else {
-                titleView.setTextColor(getThemedColor(Theme.key_dialogTextGray2));
+                titleView.setTextColor(getThemedColor(Integer.parseInt(Theme.key_dialogTextGray2)));
                 titleView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
                 titleView.setPadding(AndroidUtilities.dp(16), AndroidUtilities.dp(multipleLinesTitle ? 8 : 0), AndroidUtilities.dp(16), AndroidUtilities.dp(8));
             }
@@ -1873,7 +1873,7 @@ public class BottomSheet extends Dialog {
     }
 
     protected int getThemedColor(int key) {
-        return Theme.getColor(key, resourcesProvider);
+        return Theme.getColor(String.valueOf(key), resourcesProvider);
     }
 
     public void setOpenNoDelay(boolean openNoDelay) {

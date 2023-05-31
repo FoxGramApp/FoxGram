@@ -220,7 +220,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
             rect = new RectF();
 
             searchBackground = new View(context);
-            searchBackground.setBackgroundDrawable(Theme.createRoundRectDrawable(AndroidUtilities.dp(18), getThemedColor(darkTheme ? Theme.key_voipgroup_searchBackground : Theme.key_dialogSearchBackground)));
+            searchBackground.setBackgroundDrawable(Theme.createRoundRectDrawable(AndroidUtilities.dp(18), getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_searchBackground : Theme.key_dialogSearchBackground))));
             addView(searchBackground, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 36, Gravity.LEFT | Gravity.TOP, 14, 0, 14, 0));
 
             slidingView = new View(context) {
@@ -252,7 +252,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
             addView(slidingView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 36, Gravity.LEFT | Gravity.TOP, 14, 0, 14, 0));
 
             leftTab = new SimpleTextView(context);
-            leftTab.setTextColor(getThemedColor(Theme.key_voipgroup_nameText));
+            leftTab.setTextColor(getThemedColor(Integer.parseInt(Theme.key_voipgroup_nameText)));
             leftTab.setTextSize(13);
             leftTab.setLeftDrawable(R.drawable.msg_tabs_mic1);
             leftTab.setText(LocaleController.getString("VoipGroupInviteCanSpeak", R.string.VoipGroupInviteCanSpeak));
@@ -261,7 +261,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
             leftTab.setOnClickListener(v -> switchToTab(0));
 
             rightTab = new SimpleTextView(context);
-            rightTab.setTextColor(getThemedColor(Theme.key_voipgroup_nameText));
+            rightTab.setTextColor(getThemedColor(Integer.parseInt(Theme.key_voipgroup_nameText)));
             rightTab.setTextSize(13);
             rightTab.setLeftDrawable(R.drawable.msg_tabs_mic2);
             rightTab.setText(LocaleController.getString("VoipGroupInviteListenOnly", R.string.VoipGroupInviteListenOnly));
@@ -331,13 +331,13 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
             super(context);
 
             searchBackground = new View(context);
-            searchBackground.setBackgroundDrawable(Theme.createRoundRectDrawable(AndroidUtilities.dp(18), getThemedColor(darkTheme ? Theme.key_voipgroup_searchBackground : Theme.key_dialogSearchBackground)));
+            searchBackground.setBackgroundDrawable(Theme.createRoundRectDrawable(AndroidUtilities.dp(18), getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_searchBackground : Theme.key_dialogSearchBackground))));
             addView(searchBackground, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 36, Gravity.LEFT | Gravity.TOP, 14, 11, 14, 0));
 
             searchIconImageView = new ImageView(context);
             searchIconImageView.setScaleType(ImageView.ScaleType.CENTER);
             searchIconImageView.setImageResource(R.drawable.smiles_inputsearch);
-            searchIconImageView.setColorFilter(new PorterDuffColorFilter(getThemedColor(darkTheme ? Theme.key_voipgroup_mutedIcon : Theme.key_dialogSearchIcon), PorterDuff.Mode.MULTIPLY));
+            searchIconImageView.setColorFilter(new PorterDuffColorFilter(getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_mutedIcon : Theme.key_dialogSearchIcon)), PorterDuff.Mode.MULTIPLY));
             addView(searchIconImageView, LayoutHelper.createFrame(36, 36, Gravity.LEFT | Gravity.TOP, 16, 11, 0, 0));
 
             clearSearchImageView = new ImageView(context);
@@ -345,7 +345,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
             clearSearchImageView.setImageDrawable(progressDrawable = new CloseProgressDrawable2() {
                 @Override
                 protected int getCurrentColor() {
-                    return getThemedColor(darkTheme ? Theme.key_voipgroup_searchPlaceholder : Theme.key_dialogSearchIcon);
+                    return getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_searchPlaceholder : Theme.key_dialogSearchIcon));
                 }
             });
             progressDrawable.setSide(AndroidUtilities.dp(7));
@@ -361,8 +361,8 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
 
             searchEditText = new EditTextBoldCursor(context);
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
-            searchEditText.setHintTextColor(getThemedColor(darkTheme ? Theme.key_voipgroup_searchPlaceholder : Theme.key_dialogSearchHint));
-            searchEditText.setTextColor(getThemedColor(darkTheme ? Theme.key_voipgroup_searchText : Theme.key_dialogSearchText));
+            searchEditText.setHintTextColor(getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_searchPlaceholder : Theme.key_dialogSearchHint)));
+            searchEditText.setTextColor(getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_searchText : Theme.key_dialogSearchText)));
             searchEditText.setBackgroundDrawable(null);
             searchEditText.setPadding(0, 0, 0, 0);
             searchEditText.setMaxLines(1);
@@ -370,7 +370,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
             searchEditText.setSingleLine(true);
             searchEditText.setImeOptions(EditorInfo.IME_ACTION_SEARCH | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
             searchEditText.setHint(LocaleController.getString("ShareSendTo", R.string.ShareSendTo));
-            searchEditText.setCursorColor(getThemedColor(darkTheme ? Theme.key_voipgroup_searchText : Theme.key_featuredStickers_addedIcon));
+            searchEditText.setCursorColor(getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_searchText : Theme.key_featuredStickers_addedIcon)));
             searchEditText.setCursorSize(AndroidUtilities.dp(20));
             searchEditText.setCursorWidth(1.5f);
             addView(searchEditText, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 40, Gravity.LEFT | Gravity.TOP, 16 + 38, 9, 16 + 30, 0));
@@ -473,7 +473,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
 
         parentFragment = fragment;
         shadowDrawable = context.getResources().getDrawable(R.drawable.sheet_shadow_round).mutate();
-        int backgroundColor = getThemedColor(behindKeyboardColorKey = (darkTheme ? Theme.key_voipgroup_inviteMembersBackground : Theme.key_dialogBackground));
+        int backgroundColor = getThemedColor(behindKeyboardColorKey = Integer.parseInt((darkTheme ? Theme.key_voipgroup_inviteMembersBackground : Theme.key_dialogBackground)));
         shadowDrawable.setColorFilter(new PorterDuffColorFilter(backgroundColor, PorterDuff.Mode.MULTIPLY));
         fixNavigationBar(backgroundColor);
 
@@ -862,7 +862,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                 super.requestLayout();
             }
 
-            private boolean lightStatusBar = AndroidUtilities.computePerceivedBrightness(getThemedColor(darkTheme ? Theme.key_voipgroup_inviteMembersBackground : Theme.key_dialogBackground)) > .721f;
+            private boolean lightStatusBar = AndroidUtilities.computePerceivedBrightness(getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_inviteMembersBackground : Theme.key_dialogBackground))) > .721f;
 
             @Override
             protected void onDraw(Canvas canvas) {
@@ -895,14 +895,14 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                 shadowDrawable.draw(canvas);
 
                 if (radProgress != 1.0f) {
-                    Theme.dialogs_onlineCirclePaint.setColor(getThemedColor(darkTheme ? Theme.key_voipgroup_inviteMembersBackground : Theme.key_dialogBackground));
+                    Theme.dialogs_onlineCirclePaint.setColor(getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_inviteMembersBackground : Theme.key_dialogBackground)));
                     rect1.set(backgroundPaddingLeft, backgroundPaddingTop + top, getMeasuredWidth() - backgroundPaddingLeft, backgroundPaddingTop + top + AndroidUtilities.dp(24));
                     canvas.drawRoundRect(rect1, AndroidUtilities.dp(12) * radProgress, AndroidUtilities.dp(12) * radProgress, Theme.dialogs_onlineCirclePaint);
                 }
 
                 int w = AndroidUtilities.dp(36);
                 rect1.set((getMeasuredWidth() - w) / 2, y, (getMeasuredWidth() + w) / 2, y + AndroidUtilities.dp(4));
-                Theme.dialogs_onlineCirclePaint.setColor(getThemedColor(darkTheme ? Theme.key_voipgroup_scrollUp : Theme.key_sheet_scrollUp));
+                Theme.dialogs_onlineCirclePaint.setColor(getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_scrollUp : Theme.key_sheet_scrollUp)));
                 canvas.drawRoundRect(rect1, AndroidUtilities.dp(2), AndroidUtilities.dp(2), Theme.dialogs_onlineCirclePaint);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -937,7 +937,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
         containerView.setPadding(backgroundPaddingLeft, 0, backgroundPaddingLeft, 0);
 
         frameLayout = new FrameLayout(context);
-        frameLayout.setBackgroundColor(getThemedColor(darkTheme ? Theme.key_voipgroup_inviteMembersBackground : Theme.key_dialogBackground));
+        frameLayout.setBackgroundColor(getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_inviteMembersBackground : Theme.key_dialogBackground)));
 
         if (darkTheme && linkToCopy[1] != null) {
             switchView = new SwitchView(context) {
@@ -961,8 +961,8 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
         topicsBackActionBar = new ActionBar(context);
         topicsBackActionBar.setOccupyStatusBar(false);
         topicsBackActionBar.setBackButtonImage(R.drawable.ic_ab_back);
-        topicsBackActionBar.setTitleColor(getThemedColor(Theme.key_dialogTextBlack));
-        topicsBackActionBar.setSubtitleColor(getThemedColor(Theme.key_dialogTextGray2));
+        topicsBackActionBar.setTitleColor(getThemedColor(Integer.parseInt(Theme.key_dialogTextBlack)));
+        topicsBackActionBar.setSubtitleColor(getThemedColor(Integer.parseInt(Theme.key_dialogTextGray2)));
         topicsBackActionBar.setItemsColor(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText2), false);
         topicsBackActionBar.setItemsBackgroundColor(Theme.getColor(Theme.key_actionBarWhiteSelector), false);
         topicsBackActionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
@@ -995,7 +995,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
             }
         });
         topicsGridView.setAdapter(shareTopicsAdapter = new ShareTopicsAdapter(context));
-        topicsGridView.setGlowColor(getThemedColor(darkTheme ? Theme.key_voipgroup_inviteMembersBackground : Theme.key_dialogScrollGlow));
+        topicsGridView.setGlowColor(getThemedColor(Integer.parseInt(darkTheme ? String.valueOf(Theme.key_voipgroup_inviteMembersBackground) : Theme.key_dialogScrollGlow)));
         topicsGridView.setVerticalScrollBarEnabled(false);
         topicsGridView.setHorizontalScrollBarEnabled(false);
         topicsGridView.setOverScrollMode(View.OVER_SCROLL_NEVER);
@@ -1108,7 +1108,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
         });
         containerView.addView(gridView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP | Gravity.LEFT, 0, 0, 0, 0));
         gridView.setAdapter(listAdapter = new ShareDialogsAdapter(context));
-        gridView.setGlowColor(getThemedColor(darkTheme ? Theme.key_voipgroup_inviteMembersBackground : Theme.key_dialogScrollGlow));
+        gridView.setGlowColor(getThemedColor(Integer.parseInt(darkTheme ? String.valueOf(Theme.key_voipgroup_inviteMembersBackground) : Theme.key_dialogScrollGlow)));
         gridView.setOnItemClickListener((view, position) -> {
             if (position < 0) {
                 return;
@@ -1196,21 +1196,21 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
             }
         });
         searchGridView.setAdapter(searchAdapter);
-        searchGridView.setGlowColor(getThemedColor(darkTheme ? Theme.key_voipgroup_inviteMembersBackground : Theme.key_dialogScrollGlow));
+        searchGridView.setGlowColor(getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_inviteMembersBackground : Theme.key_dialogScrollGlow)));
 
         recyclerItemsEnterAnimator = new RecyclerItemsEnterAnimator(searchGridView, true);
 
         FlickerLoadingView flickerLoadingView = new FlickerLoadingView(context, resourcesProvider);
         flickerLoadingView.setViewType(FlickerLoadingView.SHARE_ALERT_TYPE);
         if (darkTheme) {
-            flickerLoadingView.setColors(Theme.key_voipgroup_inviteMembersBackground, Theme.key_voipgroup_searchBackground, -1);
+            flickerLoadingView.setColors(Theme.key_voipgroup_inviteMembersBackground, Integer.parseInt(Theme.key_voipgroup_searchBackground), -1);
         }
         searchEmptyView = new StickerEmptyView(context, flickerLoadingView, StickerEmptyView.STICKER_TYPE_SEARCH, resourcesProvider);
         searchEmptyView.addView(flickerLoadingView, 0);
         searchEmptyView.setAnimateLayoutChange(true);
         searchEmptyView.showProgress(false, false);
         if (darkTheme) {
-            searchEmptyView.title.setTextColor(getThemedColor(Theme.key_voipgroup_nameText));
+            searchEmptyView.title.setTextColor(getThemedColor(Integer.parseInt(Theme.key_voipgroup_nameText)));
         }
         searchEmptyView.title.setText(LocaleController.getString("NoResult", R.string.NoResult));
         searchGridView.setEmptyView(searchEmptyView);
@@ -1222,7 +1222,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
         FrameLayout.LayoutParams frameLayoutParams = new FrameLayout.LayoutParams(LayoutHelper.MATCH_PARENT, AndroidUtilities.getShadowHeight(), Gravity.TOP | Gravity.LEFT);
         frameLayoutParams.topMargin = AndroidUtilities.dp(darkTheme && linkToCopy[1] != null ? 111 : 58);
         shadow[0] = new View(context);
-        shadow[0].setBackgroundColor(getThemedColor(Theme.key_dialogShadowLine));
+        shadow[0].setBackgroundColor(getThemedColor(Integer.parseInt(Theme.key_dialogShadowLine)));
         shadow[0].setAlpha(0.0f);
         shadow[0].setTag(1);
         containerView.addView(shadow[0], frameLayoutParams);
@@ -1232,13 +1232,13 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
         frameLayoutParams = new FrameLayout.LayoutParams(LayoutHelper.MATCH_PARENT, AndroidUtilities.getShadowHeight(), Gravity.BOTTOM | Gravity.LEFT);
         frameLayoutParams.bottomMargin = AndroidUtilities.dp(48);
         shadow[1] = new View(context);
-        shadow[1].setBackgroundColor(getThemedColor(Theme.key_dialogShadowLine));
+        shadow[1].setBackgroundColor(getThemedColor(Integer.parseInt(Theme.key_dialogShadowLine)));
         containerView.addView(shadow[1], frameLayoutParams);
 
         if (isChannel || linkToCopy[0] != null) {
             pickerBottomLayout = new TextView(context);
-            pickerBottomLayout.setBackgroundDrawable(Theme.createSelectorWithBackgroundDrawable(getThemedColor(darkTheme ? Theme.key_voipgroup_inviteMembersBackground : Theme.key_dialogBackground), getThemedColor(darkTheme ? Theme.key_voipgroup_listSelector : Theme.key_listSelector)));
-            pickerBottomLayout.setTextColor(getThemedColor(darkTheme ? Theme.key_voipgroup_listeningText : Theme.key_dialogTextBlue2));
+            pickerBottomLayout.setBackgroundDrawable(Theme.createSelectorWithBackgroundDrawable(getThemedColor(darkTheme ? Theme.key_voipgroup_inviteMembersBackground : Integer.parseInt(Theme.key_dialogBackground)), getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_listSelector : Theme.key_listSelector))));
+            pickerBottomLayout.setTextColor(getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_listeningText : Theme.key_dialogTextBlue2)));
             pickerBottomLayout.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             pickerBottomLayout.setPadding(AndroidUtilities.dp(18), 0, AndroidUtilities.dp(18), 0);
             pickerBottomLayout.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
@@ -1267,19 +1267,19 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                     sharesCountLayout = new LinearLayout(context);
                     sharesCountLayout.setOrientation(LinearLayout.HORIZONTAL);
                     sharesCountLayout.setGravity(Gravity.CENTER_VERTICAL);
-                    sharesCountLayout.setBackgroundDrawable(Theme.createSelectorDrawable(getThemedColor(darkTheme ? Theme.key_voipgroup_listSelector : Theme.key_listSelector), 2));
+                    sharesCountLayout.setBackgroundDrawable(Theme.createSelectorDrawable(getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_listSelector : Theme.key_listSelector)), 2));
                     containerView.addView(sharesCountLayout, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, 48, Gravity.RIGHT | Gravity.BOTTOM, 6, 0, -6, 0));
                     sharesCountLayout.setOnClickListener(view -> parentFragment.presentFragment(new MessageStatisticActivity(messageObject)));
 
                     ImageView imageView = new ImageView(context);
                     imageView.setImageResource(R.drawable.share_arrow);
-                    imageView.setColorFilter(new PorterDuffColorFilter(getThemedColor(darkTheme ? Theme.key_voipgroup_listeningText : Theme.key_dialogTextBlue2), PorterDuff.Mode.MULTIPLY));
+                    imageView.setColorFilter(new PorterDuffColorFilter(getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_listeningText : Theme.key_dialogTextBlue2)), PorterDuff.Mode.MULTIPLY));
                     sharesCountLayout.addView(imageView, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.MATCH_PARENT, Gravity.CENTER_VERTICAL, 20, 0, 0, 0));
 
                     TextView textView = new TextView(context);
                     textView.setText(String.format("%d", messageObject.messageOwner.forwards));
                     textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
-                    textView.setTextColor(getThemedColor(darkTheme ? Theme.key_voipgroup_listeningText : Theme.key_dialogTextBlue2));
+                    textView.setTextColor(getThemedColor(Integer.parseInt(darkTheme ? Theme.key_voipgroup_listeningText : Theme.key_dialogTextBlue2)));
                     textView.setGravity(Gravity.CENTER_VERTICAL);
                     textView.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
                     sharesCountLayout.addView(textView, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.MATCH_PARENT, Gravity.CENTER_VERTICAL, 8, 0, 20, 0));

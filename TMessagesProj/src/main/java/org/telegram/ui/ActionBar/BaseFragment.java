@@ -269,11 +269,11 @@ public abstract class BaseFragment {
 
     public ActionBar createActionBar(Context context) {
         ActionBar actionBar = new ActionBar(context, getResourceProvider());
-        actionBar.setBackgroundColor(getThemedColor(Theme.key_actionBarDefault));
-        actionBar.setItemsBackgroundColor(getThemedColor(Theme.key_actionBarDefaultSelector), false);
-        actionBar.setItemsBackgroundColor(getThemedColor(Theme.key_actionBarActionModeDefaultSelector), true);
-        actionBar.setItemsColor(getThemedColor(Theme.key_actionBarDefaultIcon), false);
-        actionBar.setItemsColor(getThemedColor(Theme.key_actionBarActionModeDefaultIcon), true);
+        actionBar.setBackgroundColor(getThemedColor(Integer.parseInt(Theme.key_actionBarDefault)));
+        actionBar.setItemsBackgroundColor(getThemedColor(Integer.parseInt(Theme.key_actionBarDefaultSelector)), false);
+        actionBar.setItemsBackgroundColor(getThemedColor(Integer.parseInt(Theme.key_actionBarActionModeDefaultSelector)), true);
+        actionBar.setItemsColor(getThemedColor(Integer.parseInt(Theme.key_actionBarDefaultIcon)), false);
+        actionBar.setItemsColor(getThemedColor(Integer.parseInt(Theme.key_actionBarActionModeDefaultIcon)), true);
         if (inPreviewMode || inBubbleMode) {
             actionBar.setOccupyStatusBar(false);
         }
@@ -842,7 +842,7 @@ public abstract class BaseFragment {
     }
 
     public int getThemedColor(int key) {
-        return Theme.getColor(key, getResourceProvider());
+        return Theme.getColor(String.valueOf(key), getResourceProvider());
     }
 
     public Paint getThemedPaint(String paintKey) {
@@ -907,14 +907,14 @@ public abstract class BaseFragment {
         }
         Theme.ResourcesProvider resourcesProvider = getResourceProvider();
         int color;
-        int key = Theme.key_actionBarDefault;
+        int key = Integer.parseInt(Theme.key_actionBarDefault);
         if (actionBar != null && actionBar.isActionModeShowed()) {
-            key = Theme.key_actionBarActionModeDefault;
+            key = Integer.parseInt(Theme.key_actionBarActionModeDefault);
         }
         if (resourcesProvider != null) {
-            color = resourcesProvider.getColorOrDefault(key);
+            color = resourcesProvider.getColorOrDefault(String.valueOf(key));
         } else {
-            color = Theme.getColor(key, null, true);
+            color = Theme.getColor(String.valueOf(key), null, true);
         }
         return ColorUtils.calculateLuminance(color) > 0.7f;
     }

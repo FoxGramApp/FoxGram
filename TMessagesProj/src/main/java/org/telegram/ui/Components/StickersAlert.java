@@ -595,8 +595,8 @@ public class StickersAlert extends BottomSheet implements NotificationCenter.Not
                 if (statusBarOpen != null && statusBarOpen == open) {
                     return;
                 }
-                boolean openBgLight = AndroidUtilities.computePerceivedBrightness(getThemedColor(Theme.key_dialogBackground)) > .721f;
-                boolean closedBgLight = AndroidUtilities.computePerceivedBrightness(Theme.blendOver(getThemedColor(Theme.key_actionBarDefault), 0x33000000)) > .721f;
+                boolean openBgLight = AndroidUtilities.computePerceivedBrightness(getThemedColor(Integer.parseInt(Theme.key_dialogBackground))) > .721f;
+                boolean closedBgLight = AndroidUtilities.computePerceivedBrightness(Theme.blendOver(getThemedColor(Integer.parseInt(Theme.key_actionBarDefault)), 0x33000000)) > .721f;
                 boolean isLight = (statusBarOpen = open) ? openBgLight : closedBgLight;
                 AndroidUtilities.setLightStatusBar(getWindow(), isLight);
             }
@@ -630,7 +630,7 @@ public class StickersAlert extends BottomSheet implements NotificationCenter.Not
                 shadowDrawable.draw(canvas);
 
                 if (radProgress != 1.0f) {
-                    Theme.dialogs_onlineCirclePaint.setColor(getThemedColor(Theme.key_dialogBackground));
+                    Theme.dialogs_onlineCirclePaint.setColor(getThemedColor(Integer.parseInt(Theme.key_dialogBackground)));
                     rect.set(backgroundPaddingLeft, backgroundPaddingTop + top, getMeasuredWidth() - backgroundPaddingLeft, backgroundPaddingTop + top + AndroidUtilities.dp(24));
                     canvas.drawRoundRect(rect, AndroidUtilities.dp(12) * radProgress, AndroidUtilities.dp(12) * radProgress, Theme.dialogs_onlineCirclePaint);
                 }
@@ -639,13 +639,13 @@ public class StickersAlert extends BottomSheet implements NotificationCenter.Not
 
                 int w = AndroidUtilities.dp(36);
                 rect.set((getMeasuredWidth() - w) / 2, y, (getMeasuredWidth() + w) / 2, y + AndroidUtilities.dp(4));
-                Theme.dialogs_onlineCirclePaint.setColor(getThemedColor(Theme.key_sheet_scrollUp));
+                Theme.dialogs_onlineCirclePaint.setColor(getThemedColor(Integer.parseInt(Theme.key_sheet_scrollUp)));
                 Theme.dialogs_onlineCirclePaint.setAlpha((int) (255 * Math.max(0, Math.min(1f, (y - AndroidUtilities.statusBarHeight) / (float) AndroidUtilities.dp(16)))));
                 canvas.drawRoundRect(rect, AndroidUtilities.dp(2), AndroidUtilities.dp(2), Theme.dialogs_onlineCirclePaint);
 
                 updateLightStatusBar(statusBarHeight > AndroidUtilities.statusBarHeight / 2);
                 if (statusBarHeight > 0) {
-                    Theme.dialogs_onlineCirclePaint.setColor(getThemedColor(Theme.key_dialogBackground));
+                    Theme.dialogs_onlineCirclePaint.setColor(getThemedColor(Integer.parseInt(Theme.key_dialogBackground)));
                     canvas.drawRect(backgroundPaddingLeft, AndroidUtilities.statusBarHeight - statusBarHeight, getMeasuredWidth() - backgroundPaddingLeft, AndroidUtilities.statusBarHeight, Theme.dialogs_onlineCirclePaint);
                 }
             }
@@ -656,7 +656,7 @@ public class StickersAlert extends BottomSheet implements NotificationCenter.Not
         FrameLayout.LayoutParams frameLayoutParams = new FrameLayout.LayoutParams(LayoutHelper.MATCH_PARENT, AndroidUtilities.getShadowHeight(), Gravity.TOP | Gravity.LEFT);
         frameLayoutParams.topMargin = AndroidUtilities.dp(48);
         shadow[0] = new View(context);
-        shadow[0].setBackgroundColor(getThemedColor(Theme.key_dialogShadowLine));
+        shadow[0].setBackgroundColor(getThemedColor(Integer.parseInt(Theme.key_dialogShadowLine)));
         shadow[0].setAlpha(0.0f);
         shadow[0].setVisibility(View.INVISIBLE);
         shadow[0].setTag(1);
@@ -707,7 +707,7 @@ public class StickersAlert extends BottomSheet implements NotificationCenter.Not
         gridView.setPadding(AndroidUtilities.dp(10), 0, AndroidUtilities.dp(10), 0);
         gridView.setClipToPadding(false);
         gridView.setEnabled(true);
-        gridView.setGlowColor(getThemedColor(Theme.key_dialogScrollGlow));
+        gridView.setGlowColor(getThemedColor(Integer.parseInt(Theme.key_dialogScrollGlow)));
         gridView.setOnTouchListener((v, event) -> ContentPreviewViewer.getInstance().onTouch(event, gridView, 0, stickersOnItemClickListener, previewDelegate, resourcesProvider));
         gridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -798,20 +798,20 @@ public class StickersAlert extends BottomSheet implements NotificationCenter.Not
         titleTextView = new LinkSpanDrawable.LinksTextView(context);
         titleTextView.setLines(1);
         titleTextView.setSingleLine(true);
-        titleTextView.setTextColor(getThemedColor(Theme.key_dialogTextBlack));
+        titleTextView.setTextColor(getThemedColor(Integer.parseInt(Theme.key_dialogTextBlack)));
         titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        titleTextView.setLinkTextColor(getThemedColor(Theme.key_dialogTextLink));
+        titleTextView.setLinkTextColor(getThemedColor(Integer.parseInt(Theme.key_dialogTextLink)));
         titleTextView.setEllipsize(TextUtils.TruncateAt.END);
         titleTextView.setPadding(AndroidUtilities.dp(18), AndroidUtilities.dp(6), AndroidUtilities.dp(18), AndroidUtilities.dp(6));
         titleTextView.setGravity(Gravity.CENTER_VERTICAL);
         titleTextView.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
         containerView.addView(titleTextView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 50, Gravity.LEFT | Gravity.TOP, 0, 0, 40, 0));
 
-        optionsButton = new ActionBarMenuItem(context, null, 0, getThemedColor(Theme.key_sheet_other), resourcesProvider);
+        optionsButton = new ActionBarMenuItem(context, null, 0, getThemedColor(Integer.parseInt(Theme.key_sheet_other)), resourcesProvider);
         optionsButton.setLongClickEnabled(false);
         optionsButton.setSubMenuOpenSide(2);
         optionsButton.setIcon(R.drawable.ic_ab_other);
-        optionsButton.setBackgroundDrawable(Theme.createSelectorDrawable(getThemedColor(Theme.key_player_actionBarSelector), 1));
+        optionsButton.setBackgroundDrawable(Theme.createSelectorDrawable(getThemedColor(Integer.parseInt(Theme.key_player_actionBarSelector)), 1));
         containerView.addView(optionsButton, LayoutHelper.createFrame(40, 40, Gravity.TOP | Gravity.RIGHT, 0, 5, 5, 0));
         optionsButton.addSubItem(1, R.drawable.msg_share, LocaleController.getString("StickersShare", R.string.StickersShare));
         optionsButton.addSubItem(2, R.drawable.msg_link, LocaleController.getString("CopyLink", R.string.CopyLink));
@@ -826,12 +826,12 @@ public class StickersAlert extends BottomSheet implements NotificationCenter.Not
         frameLayoutParams = new FrameLayout.LayoutParams(LayoutHelper.MATCH_PARENT, AndroidUtilities.getShadowHeight(), Gravity.BOTTOM | Gravity.LEFT);
         frameLayoutParams.bottomMargin = AndroidUtilities.dp(48);
         shadow[1] = new View(context);
-        shadow[1].setBackgroundColor(getThemedColor(Theme.key_dialogShadowLine));
+        shadow[1].setBackgroundColor(getThemedColor(Integer.parseInt(Theme.key_dialogShadowLine)));
         containerView.addView(shadow[1], frameLayoutParams);
 
         pickerBottomLayout = new TextView(context);
-        pickerBottomLayout.setBackground(Theme.createSelectorWithBackgroundDrawable(getThemedColor(Theme.key_dialogBackground), getThemedColor(Theme.key_listSelector)));
-        pickerBottomLayout.setTextColor(getThemedColor(buttonTextColorKey = Theme.key_dialogTextBlue2));
+        pickerBottomLayout.setBackground(Theme.createSelectorWithBackgroundDrawable(getThemedColor(Integer.parseInt(Theme.key_dialogBackground)), getThemedColor(Theme.key_listSelector)));
+        pickerBottomLayout.setTextColor(getThemedColor(buttonTextColorKey = Integer.parseInt(Theme.key_dialogTextBlue2)));
         pickerBottomLayout.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
         pickerBottomLayout.setPadding(AndroidUtilities.dp(18), 0, AndroidUtilities.dp(18), 0);
         pickerBottomLayout.setTypeface(AndroidUtilities.getTypeface(AndroidUtilities.TYPEFACE_ROBOTO_MEDIUM));
@@ -864,8 +864,8 @@ public class StickersAlert extends BottomSheet implements NotificationCenter.Not
 
         previewSendButton = new TextView(context);
         previewSendButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
-        previewSendButton.setTextColor(getThemedColor(Theme.key_dialogTextBlue2));
-        previewSendButton.setBackground(Theme.createSelectorWithBackgroundDrawable(getThemedColor(Theme.key_dialogBackground), getThemedColor(Theme.key_listSelector)));
+        previewSendButton.setTextColor(getThemedColor(Integer.parseInt(Theme.key_dialogTextBlue2)));
+        previewSendButton.setBackground(Theme.createSelectorWithBackgroundDrawable(getThemedColor(Integer.parseInt(Theme.key_dialogBackground)), getThemedColor(Integer.parseInt(Theme.key_listSelector))));
         previewSendButton.setGravity(Gravity.CENTER);
         previewSendButton.setPadding(AndroidUtilities.dp(29), 0, AndroidUtilities.dp(29), 0);
         previewSendButton.setTypeface(AndroidUtilities.getTypeface(AndroidUtilities.TYPEFACE_ROBOTO_MEDIUM));
@@ -884,7 +884,7 @@ public class StickersAlert extends BottomSheet implements NotificationCenter.Not
         frameLayoutParams = new FrameLayout.LayoutParams(LayoutHelper.MATCH_PARENT, AndroidUtilities.getShadowHeight(), Gravity.BOTTOM | Gravity.LEFT);
         frameLayoutParams.bottomMargin = AndroidUtilities.dp(48);
         previewSendButtonShadow = new View(context);
-        previewSendButtonShadow.setBackgroundColor(getThemedColor(Theme.key_dialogShadowLine));
+        previewSendButtonShadow.setBackgroundColor(getThemedColor(Integer.parseInt(Theme.key_dialogShadowLine)));
         stickerPreviewLayout.addView(previewSendButtonShadow, frameLayoutParams);
 
         NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.emojiLoaded);
@@ -918,7 +918,7 @@ public class StickersAlert extends BottomSheet implements NotificationCenter.Not
         int size = (int) (Math.min(AndroidUtilities.displaySize.x, AndroidUtilities.displaySize.y) / 2 / AndroidUtilities.density);
         if (importingStickers != null) {
             previewSendButton.setText(LocaleController.getString("ImportStickersRemove", R.string.ImportStickersRemove));
-            previewSendButton.setTextColor(getThemedColor(Theme.key_text_RedBold));
+            previewSendButton.setTextColor(getThemedColor(Integer.parseInt(Theme.key_text_RedBold)));
             stickerImageView.setLayoutParams(LayoutHelper.createFrame(size, size, Gravity.CENTER, 0, 0, 0, 30));
             stickerEmojiTextView.setLayoutParams(LayoutHelper.createFrame(size, size, Gravity.CENTER, 0, 0, 0, 30));
             previewSendButton.setVisibility(View.VISIBLE);

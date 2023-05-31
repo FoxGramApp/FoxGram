@@ -178,13 +178,13 @@ public class EditTextCaption extends EditTextBoldCursor {
         };
         editText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
         editText.setText("http://");
-        editText.setTextColor(getThemedColor(Theme.key_dialogTextBlack));
+        editText.setTextColor(getThemedColor(Integer.parseInt(Theme.key_dialogTextBlack)));
         editText.setHintText(LocaleController.getString("URL", R.string.URL));
-        editText.setHeaderHintColor(getThemedColor(Theme.key_windowBackgroundWhiteBlueHeader));
+        editText.setHeaderHintColor(getThemedColor(Integer.parseInt(Theme.key_windowBackgroundWhiteBlueHeader)));
         editText.setSingleLine(true);
         editText.setFocusable(true);
         editText.setTransformHintToHeader(true);
-        editText.setLineColors(getThemedColor(Theme.key_windowBackgroundWhiteInputField), getThemedColor(Theme.key_windowBackgroundWhiteInputFieldActivated), getThemedColor(Theme.key_text_RedRegular));
+        editText.setLineColors(getThemedColor(Integer.parseInt(Theme.key_windowBackgroundWhiteInputField)), getThemedColor(Integer.parseInt(Theme.key_windowBackgroundWhiteInputFieldActivated)), getThemedColor(Integer.parseInt(Theme.key_text_RedRegular)));
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editText.setBackgroundDrawable(null);
         editText.requestFocus();

@@ -4667,7 +4667,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                         AlertDialog dialog = new AlertDialog.Builder(parentActivity, resourcesProvider)
                                 .setTitle(LocaleController.getString("SaveGroupMedia", R.string.SaveGroupMedia))
                                 .setMessage(LocaleController.getString("SaveGroupMediaMessage", R.string.SaveGroupMediaMessage))
-                                .setDialogButtonColorKey(Theme.key_voipgroup_listeningText)
+                                .setDialogButtonColorKey(Integer.parseInt(Theme.key_voipgroup_listeningText))
                                 .setNegativeButton((!isVideo ? LocaleController.getString("ThisPhoto", R.string.ThisPhoto) : LocaleController.getString("ThisMedia", R.string.ThisMedia)), (di, a) -> {
                                     if (currentMessageObject == null) {
                                         return;
@@ -4720,17 +4720,17 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                                 .setNeutralButton(LocaleController.getString("Cancel", R.string.Cancel), (di, a) -> {
                                     di.dismiss();
                                 }).create();
-                        dialog.setBackgroundColor(getThemedColor(Theme.key_voipgroup_dialogBackground));
+                        dialog.setBackgroundColor(getThemedColor(Integer.parseInt(Theme.key_voipgroup_dialogBackground)));
                         dialog.show();
                         View neutralButton = dialog.getButton(Dialog.BUTTON_NEUTRAL);
                         if (neutralButton instanceof TextView) {
-                            ((TextView) neutralButton).setTextColor(getThemedColor(Theme.key_text_RedBold));
-                            neutralButton.setBackground(Theme.getRoundRectSelectorDrawable(getThemedColor(Theme.key_text_RedBold)));
+                            ((TextView) neutralButton).setTextColor(getThemedColor(Integer.parseInt(Theme.key_text_RedBold)));
+                            neutralButton.setBackground(Theme.getRoundRectSelectorDrawable(getThemedColor(Integer.parseInt(Theme.key_text_RedBold))));
                             if (dialog.getButtonsLayout() instanceof LinearLayout && ((LinearLayout) dialog.getButtonsLayout()).getOrientation() == LinearLayout.VERTICAL) {
                                 neutralButton.bringToFront();
                             }
                         }
-                        dialog.setTextColor(getThemedColor(Theme.key_voipgroup_actionBarItems));
+                        dialog.setTextColor(getThemedColor(Integer.parseInt(Theme.key_voipgroup_actionBarItems)));
                     }
                 } else if (id == gallery_menu_showall) {
                     if (currentDialogId != 0) {
@@ -4811,7 +4811,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                         AlertDialog dialog = new AlertDialog.Builder(parentActivity, resourcesProvider)
                                 .setTitle(LocaleController.getString("ForwardGroupMedia", R.string.ForwardGroupMedia))
                                 .setMessage(LocaleController.getString("ForwardGroupMediaMessage", R.string.ForwardGroupMediaMessage))
-                                .setDialogButtonColorKey(Theme.key_voipgroup_listeningText)
+                                .setDialogButtonColorKey(Integer.parseInt(Theme.key_voipgroup_listeningText))
                                 .setNegativeButton((photos ? LocaleController.getString("ThisPhoto", R.string.ThisPhoto) : LocaleController.getString("ThisMedia", R.string.ThisMedia)), (di, a) -> {
                                     ArrayList<MessageObject> singleMessage = new ArrayList<>(1);
                                     singleMessage.add(currentMessageObject);
@@ -4823,17 +4823,17 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                                 .setNeutralButton(LocaleController.getString("Cancel", R.string.Cancel), (di, a) -> {
                                     di.dismiss();
                                 }).create();
-                        dialog.setBackgroundColor(getThemedColor(Theme.key_voipgroup_dialogBackground));
+                        dialog.setBackgroundColor(getThemedColor(Integer.parseInt(Theme.key_voipgroup_dialogBackground)));
                         dialog.show();
                         View neutralButton = dialog.getButton(Dialog.BUTTON_NEUTRAL);
                         if (neutralButton instanceof TextView) {
-                            ((TextView) neutralButton).setTextColor(getThemedColor(Theme.key_text_RedBold));
-                            neutralButton.setBackground(Theme.getRoundRectSelectorDrawable(getThemedColor(Theme.key_text_RedBold)));
+                            ((TextView) neutralButton).setTextColor(getThemedColor(Integer.parseInt(Theme.key_text_RedBold)));
+                            neutralButton.setBackground(Theme.getRoundRectSelectorDrawable(getThemedColor(Integer.parseInt(Theme.key_text_RedBold))));
                             if (dialog.getButtonsLayout() instanceof LinearLayout && ((LinearLayout) dialog.getButtonsLayout()).getOrientation() == LinearLayout.VERTICAL) {
                                 neutralButton.bringToFront();
                             }
                         }
-                        dialog.setTextColor(getThemedColor(Theme.key_voipgroup_actionBarItems));
+                        dialog.setTextColor(getThemedColor(Integer.parseInt(Theme.key_voipgroup_actionBarItems)));
                     } else {
                         Bundle args = new Bundle();
                         args.putBoolean("onlySelect", true);
@@ -5090,7 +5090,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                     showAlertDialog(builder);
                     TextView button = (TextView) alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
                     if (button != null) {
-                        button.setTextColor(getThemedColor(Theme.key_text_RedBold));
+                        button.setTextColor(getThemedColor(Integer.parseInt(Theme.key_text_RedBold)));
                     }
                 } else if (id == gallery_menu_share || id == gallery_menu_share2) {
                     onSharePressed();
