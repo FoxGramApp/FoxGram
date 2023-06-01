@@ -375,7 +375,7 @@ public class ActionBar extends FrameLayout {
         subtitleTextView = new SimpleTextView(getContext());
         subtitleTextView.setGravity(Gravity.LEFT);
         subtitleTextView.setVisibility(GONE);
-        subtitleTextView.setTextColor(getThemedColor(Integer.parseInt(Theme.key_actionBarDefaultSubtitle)));
+        subtitleTextView.setTextColor(getThemedColor(Theme.key_actionBarDefaultSubtitle));
         addView(subtitleTextView, 0, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP));
     }
 
@@ -386,7 +386,7 @@ public class ActionBar extends FrameLayout {
         additionalSubtitleTextView = new SimpleTextView(getContext());
         additionalSubtitleTextView.setGravity(Gravity.LEFT);
         additionalSubtitleTextView.setVisibility(GONE);
-        additionalSubtitleTextView.setTextColor(getThemedColor(Integer.parseInt(Theme.key_actionBarDefaultSubtitle)));
+        additionalSubtitleTextView.setTextColor(getThemedColor(Theme.key_actionBarDefaultSubtitle));
         addView(additionalSubtitleTextView, 0, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP));
     }
 
@@ -435,7 +435,7 @@ public class ActionBar extends FrameLayout {
         if (titleColorToSet != 0) {
             titleTextView[i].setTextColor(titleColorToSet);
         } else {
-            titleTextView[i].setTextColor(getThemedColor(Integer.parseInt(Theme.key_actionBarDefaultTitle)));
+            titleTextView[i].setTextColor(getThemedColor(Theme.key_actionBarDefaultTitle));
         }
         titleTextView[i].setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
         titleTextView[i].setDrawablePadding(AndroidUtilities.dp(4));
@@ -635,7 +635,7 @@ public class ActionBar extends FrameLayout {
         };
         actionMode.isActionMode = true;
         actionMode.setClickable(true);
-        actionMode.setBackgroundColor(getThemedColor(Integer.parseInt(Theme.key_actionBarActionModeDefault)));
+        actionMode.setBackgroundColor(getThemedColor(Theme.key_actionBarActionModeDefault));
         addView(actionMode, indexOfChild(backButtonImageView));
         actionMode.setPadding(0, occupyStatusBar ? AndroidUtilities.statusBarHeight : 0, 0, 0);
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) actionMode.getLayoutParams();
@@ -966,7 +966,7 @@ public class ActionBar extends FrameLayout {
     public void showActionModeTop() {
         if (occupyStatusBar && actionModeTop == null) {
             actionModeTop = new View(getContext());
-            actionModeTop.setBackgroundColor(getThemedColor(Integer.parseInt(Theme.key_actionBarActionModeDefaultTop)));
+            actionModeTop.setBackgroundColor(getThemedColor(Theme.key_actionBarActionModeDefaultTop));
             addView(actionModeTop);
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) actionModeTop.getLayoutParams();
             layoutParams.height = AndroidUtilities.statusBarHeight;
@@ -1883,7 +1883,7 @@ public class ActionBar extends FrameLayout {
     }
 
     private int getThemedColor(int key) {
-        return Theme.getColor(String.valueOf(key), resourcesProvider);
+        return Theme.getColor(key, resourcesProvider);
     }
 
     public void setDrawBlurBackground(SizeNotifierFrameLayout contentView) {

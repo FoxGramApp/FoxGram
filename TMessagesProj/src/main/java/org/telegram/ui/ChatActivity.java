@@ -105,6 +105,7 @@ import androidx.core.text.HtmlCompat;
 import androidx.dynamicanimation.animation.FloatValueHolder;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
+import androidx.exifinterface.media.ExifInterface;
 import androidx.recyclerview.widget.ChatListItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManagerFixed;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -114,11 +115,13 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import com.google.android.exoplayer2.util.Log;
 import com.google.zxing.common.detector.MathUtils;
 
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.AnimationNotificationsLocker;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BotWebViewVibrationEffect;
 import org.telegram.messenger.BuildVars;
@@ -196,6 +199,7 @@ import org.telegram.ui.Components.AnimatedEmojiDrawable;
 import org.telegram.ui.Components.AnimatedEmojiSpan;
 import org.telegram.ui.Components.AnimatedFileDrawable;
 import org.telegram.ui.Components.AnimationProperties;
+import org.telegram.ui.Components.AppIconBulletinLayout;
 import org.telegram.ui.Components.AttachBotIntroTopView;
 import org.telegram.ui.Components.AudioPlayerAlert;
 import org.telegram.ui.Components.AutoDeletePopupWrapper;
@@ -325,6 +329,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import it.colorgram.android.ColorConfig;
+import it.colorgram.android.updates.UpdateManager;
 import it.colorgram.ui.Components.EmojiSetBulletinLayout;
 import it.colorgram.ui.Components.Dialogs.ImportSettingsDialog;
 import it.colorgram.android.CustomEmojiController;
@@ -743,11 +748,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     private ColorMatrix skeletonColorMatrix = new ColorMatrix();
     private Theme.MessageDrawable.PathDrawParams skeletonBackgroundCacheParams = new Theme.MessageDrawable.PathDrawParams();
     private Theme.MessageDrawable skeletonBackgroundDrawable = new Theme.MessageDrawable(Theme.MessageDrawable.TYPE_TEXT, false, false, new Theme.ResourcesProvider() {
-        @Override
-        public Integer getColor(String key) {
-            return null;
-        }
-
         @Override
         public int getColor(int key) {
             return getThemedColor(key);

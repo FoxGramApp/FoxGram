@@ -1378,8 +1378,8 @@ public class RecyclerListView extends RecyclerView {
         super(context);
         this.resourcesProvider = resourcesProvider;
 
-        setGlowColor(getThemedColor(Integer.parseInt(Theme.key_actionBarDefault)));
-        selectorDrawable = Theme.getSelectorDrawable(getThemedColor(Integer.parseInt(Theme.key_listSelector)), false);
+        setGlowColor(getThemedColor(Theme.key_actionBarDefault));
+        selectorDrawable = Theme.getSelectorDrawable(getThemedColor(Theme.key_listSelector), false);
         selectorDrawable.setCallback(this);
 
         try {
@@ -1850,7 +1850,7 @@ public class RecyclerListView extends RecyclerView {
     }
 
     public void setListSelectorColor(Integer color) {
-        Theme.setSelectorDrawableColor(selectorDrawable, color == null ? getThemedColor(Integer.parseInt(Theme.key_listSelector)) : color, true);
+        Theme.setSelectorDrawableColor(selectorDrawable, color == null ? getThemedColor(Theme.key_listSelector) : color, true);
     }
 
     private GenericProvider<Integer, Integer> getSelectorColor;
@@ -2854,7 +2854,7 @@ public class RecyclerListView extends RecyclerView {
     }
 
     protected int getThemedColor(int key) {
-        return Theme.getColor(String.valueOf(key), resourcesProvider);
+        return Theme.getColor(key, resourcesProvider);
     }
 
     protected Drawable getThemedDrawable(String key) {
