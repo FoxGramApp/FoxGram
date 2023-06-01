@@ -24,6 +24,10 @@ subprojects {
                 buildToolsVersion '33.0.2'
                 ndkVersion '23.2.8568313'
 
+                tasks.matching { it.name.startsWith('compileReleaseJavaWithJavac') }.configureEach {
+                    enabled = false
+                }
+
                 lint {
                     checkReleaseBuilds false
                     disable 'MissingTranslation', 'ExtraTranslation', 'BlockedPrivateApi'
