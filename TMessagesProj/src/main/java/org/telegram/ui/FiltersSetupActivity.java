@@ -70,7 +70,6 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
 
     private boolean orderChanged;
     private boolean showAllChats;
-
     private int filterHelpRow;
     private int folderStyleHeaderRow;
     private int folderStyleTitlesRow;
@@ -445,7 +444,7 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
         recommendedEndRow = -1;
         recommendedSectionRow = -1;
 
-        ArrayList<TLRPC.TL_dialogFilterSuggested> suggestedFilters = getMessagesController().suggestedFilters;
+        ArrayList<MessagesController.DialogFilter> dialogFilters = getMessagesController().getDialogFilters();
         rowCount = 0;
         filterHelpRow = rowCount++;
         folderStyleHeaderRow = rowCount++;
@@ -823,8 +822,8 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
                             filter.flags |= MessagesController.DIALOG_FILTER_FLAG_EXCLUDE_MUTED;
                         }
                         filter.emoticon = FolderIconController.getEmoticonData(filter.flags)[1];
-                        ignoreUpdates = true;
-                        FilterCreateActivity.saveFilterToServer(filter, filter.flags, filter.emoticon, filter.name, filter.alwaysShow, filter.neverShow, filter.pinnedDialogs, true, true, true, true, false, FiltersSetupActivity.this, () -> {
+                        //ignoreUpdates = true;
+                        FilterCreateActivity.saveFilterToServer(filter, filter.flags, filter.name, filter.emoticon, filter.alwaysShow, filter.neverShow, filter.pinnedDialogs, true, true, true, true, true, FiltersSetupActivity.this, () -> {
                             getNotificationCenter().postNotificationName(NotificationCenter.dialogFiltersUpdated);
                             ignoreUpdates = false;
                             ArrayList<TLRPC.TL_dialogFilterSuggested> suggestedFilters = getMessagesController().suggestedFilters;
@@ -877,13 +876,7 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
             switch (holder.getItemViewType()) {
                 case 0: {
                     HeaderCell headerCell = (HeaderCell) holder.itemView;
-                    if (position == filtersHeaderRow) {
-                        headerCell.setText(LocaleController.getString("Filters", R.string.Filters));
-                    } else if (position == recommendedHeaderRow) {
-                        headerCell.setText(LocaleController.getString("FilterRecommended", R.string.FilterRecommended));
-                    } else if (position == folderStyleHeaderRow) {
-                        headerCell.setText(LocaleController.getString("FoldersType", R.string.FoldersType));
-                    }
+                    headerCell.setText(item.text);
                     break;
                 }
                 case 2: {
