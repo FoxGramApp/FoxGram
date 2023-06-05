@@ -3,13 +3,10 @@ package org.telegram.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -22,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -50,12 +48,18 @@ import org.telegram.ui.Cells.ShadowSectionCell;
 import org.telegram.ui.Components.Bulletin;
 import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.CombinedDrawable;
+import org.telegram.ui.Components.CubicBezierInterpolator;
+import org.telegram.ui.Components.FolderBottomSheet;
+import org.telegram.ui.Components.ItemOptions;
 import org.telegram.ui.Components.LayoutHelper;
+import org.telegram.ui.Components.ListView.AdapterWithDiffUtils;
+import org.telegram.ui.Components.LoadingDrawable;
 import org.telegram.ui.Components.Premium.LimitReachedBottomSheet;
 import org.telegram.ui.Components.Premium.PremiumFeatureBottomSheet;
 import org.telegram.ui.Components.ProgressButton;
 import org.telegram.ui.Components.RLottieImageView;
 import org.telegram.ui.Components.RecyclerListView;
+import org.telegram.ui.Components.UndoView;
 
 import java.util.ArrayList;
 
@@ -307,6 +311,59 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
             valueTextView.setEllipsize(TextUtils.TruncateAt.END);
             addView(valueTextView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, (LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT) | Gravity.TOP, LocaleController.isRTL ? 80 : 64, 35, LocaleController.isRTL ? 64 : 80, 0));
             valueTextView.setVisibility(GONE);
+
+            shareLoadingDrawable = new LoadingDrawable();
+            shareLoadingDrawable.setAppearByGradient(true);
+            shareLoadingDrawable.setGradientScale(2f);
+            int selector = Theme.getColor(Theme.key_listSelector);
+            shareLoadingDrawable.setColors(
+                    Theme.multAlpha(selector, 0.4f),
+                    Theme.multAlpha(selector, 1),
+                    Theme.multAlpha(selector, 0.9f),
+                    Theme.multAlpha(selector, 1.7f)
+            );
+            int stroke = AndroidUtilities.dp(1);
+            shareLoadingDrawable.strokePaint.setStrokeWidth(stroke);
+            shareLoadingDrawable.setRadiiDp(40);
+            shareImageView = new ImageView(context) {
+                @Override
+                protected void onDraw(Canvas canvas) {
+                    super.onDraw(canvas);
+                    if (shareLoading) {
+                        shareLoadingDrawable.setBounds(stroke / 2, stroke / 2, getWidth() - stroke / 2, getHeight() - stroke / 2);
+                        shareLoadingDrawable.draw(canvas);
+                    }
+                }
+
+                @Override
+                protected boolean verifyDrawable(@NonNull Drawable dr) {
+                    return dr == shareLoadingDrawable || super.verifyDrawable(dr);
+                }
+            };
+            shareLoadingDrawable.setCallback(shareImageView);
+            shareImageView.setFocusable(false);
+            shareImageView.setScaleType(ImageView.ScaleType.CENTER);
+            shareImageView.setBackground(Theme.createSelectorDrawable(selector));
+            shareImageView.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_stickers_menu), PorterDuff.Mode.MULTIPLY));
+            shareImageView.setContentDescription(LocaleController.getString("FilterShare", R.string.FilterShare));
+            shareImageView.setVisibility(View.GONE);
+            shareImageView.setImageResource(R.drawable.msg_link_folder);
+            shareImageView.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_stickers_menu), PorterDuff.Mode.MULTIPLY));
+            addView(shareImageView, LayoutHelper.createFrame(40, 40, (LocaleController.isRTL ? Gravity.LEFT : Gravity.RIGHT) | Gravity.CENTER_VERTICAL, LocaleController.isRTL ? 52 : 6, 0, LocaleController.isRTL ? 6 : 52, 0));
+            shareImageView.setOnClickListener(e -> {
+                if (shareLoading && !shareLoadingDrawable.isDisappeared() || currentFilter == null) {
+                    return;
+                }
+                shareLoading = true;
+                shareLoadingDrawable.reset();
+                shareLoadingDrawable.resetDisappear();
+                shareImageView.invalidate();
+                FilterCreateActivity.FilterInvitesBottomSheet.show(FiltersSetupActivity.this, currentFilter, () -> {
+                    shareLoadingDrawable.disappear();
+                    shareImageView.invalidate();
+                    updateRows(true);
+                });
+            });
 
             optionsImageView = new ImageView(context);
             optionsImageView.setFocusable(false);
