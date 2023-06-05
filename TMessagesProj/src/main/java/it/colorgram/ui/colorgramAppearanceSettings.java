@@ -146,11 +146,10 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
             ColorConfig.togglePacmanForced();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(ColorConfig.pacmanForced);
-            } else if (position == SmoothNavRow) {
-                ColorConfig.toggleSmoothNav();
-                if (view instanceof TextCheckCell) {
-                    ((TextCheckCell) view).setChecked(ColorConfig.SmoothNav);
-                }
+        } else if (position == SmoothNavRow) {
+            ColorConfig.toggleSmoothNav();
+            if (view instanceof TextCheckCell) {
+                ((TextCheckCell) view).setChecked(ColorConfig.SmoothNav);
             }
         } else if (position == smartButtonsRow) {
             ColorConfig.toggleSmartButtons();
