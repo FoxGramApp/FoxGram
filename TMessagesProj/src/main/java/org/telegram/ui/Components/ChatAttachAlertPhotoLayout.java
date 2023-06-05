@@ -3553,7 +3553,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
         if (cameraIcon != null) {
             cameraIcon.invalidate();
         }
-        String textColor = forceDarkTheme ? Theme.key_voipgroup_actionBarItems : Theme.key_dialogTextBlack;
+        int textColor = forceDarkTheme ? Theme.key_voipgroup_actionBarItems : Theme.key_dialogTextBlack;
         Theme.setDrawableColor(cameraDrawable, getThemedColor(Theme.key_dialogCameraIcon));
         progressView.setTextColor(getThemedColor(Theme.key_emptyListPlaceholder));
         gridView.setGlowColor(getThemedColor(Theme.key_dialogScrollGlow));

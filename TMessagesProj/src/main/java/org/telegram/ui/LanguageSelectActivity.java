@@ -10,7 +10,6 @@ package org.telegram.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.text.TextUtils;
 import android.view.View;
@@ -632,9 +631,9 @@ public class LanguageSelectActivity extends BaseFragment implements Notification
                         position--;
                     ShadowSectionCell sectionCell = (ShadowSectionCell) holder.itemView;
                     if (!unofficialLanguages.isEmpty() && position == unofficialLanguages.size()) {
-                        sectionCell.setBackgroundDrawable(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
+                        sectionCell.setBackgroundDrawable(Theme.getThemedDrawableByKey(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
                     } else {
-                        sectionCell.setBackgroundDrawable(Theme.getThemedDrawable(mContext, R.drawable.greydivider_bottom, Theme.key_windowBackgroundGrayShadow));
+                        sectionCell.setBackgroundDrawable(Theme.getThemedDrawableByKey(mContext, R.drawable.greydivider_bottom, Theme.key_windowBackgroundGrayShadow));
                     }
                     break;
                 }
@@ -662,7 +661,7 @@ public class LanguageSelectActivity extends BaseFragment implements Notification
                     infoCell.setText(LocaleController.getString("TranslateInfo", R.string.TranslateInfo));
                     /*if (position == (!getMessagesController().premiumLocked && (getContextValue() || getChatValue()) ? 4 : 3)) {
                         infoCell.setText(LocaleController.getString("TranslateMessagesInfo1", R.string.TranslateMessagesInfo1));
-                        infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider_bottom, Theme.key_windowBackgroundGrayShadow));
+                        infoCell.setBackground(Theme.getThemedDrawableByKey(mContext, R.drawable.greydivider_bottom, Theme.key_windowBackgroundGrayShadow));
                         infoCell.setTopPadding(11);
                         infoCell.setBottomPadding(16);
                     } else {
@@ -694,8 +693,8 @@ public class LanguageSelectActivity extends BaseFragment implements Notification
                 if (getChatValue() || getContextValue()) {*/
                 if (i-- == 0) return VIEW_TYPE_INFO;
                 /**}
-                if (i-- == 0) return VIEW_TYPE_INFO;
-                if (i-- == 0) return VIEW_TYPE_INFO;*/
+                 if (i-- == 0) return VIEW_TYPE_INFO;
+                 if (i-- == 0) return VIEW_TYPE_INFO;*/
                 if (i-- == 0) return VIEW_TYPE_HEADER;
                 if (!unofficialLanguages.isEmpty() && (i == unofficialLanguages.size() || i == unofficialLanguages.size() + sortedLanguages.size() + 1) || unofficialLanguages.isEmpty() && i == sortedLanguages.size()) {
                     return VIEW_TYPE_SHADOW;

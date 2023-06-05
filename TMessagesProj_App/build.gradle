@@ -15,6 +15,7 @@ ext.abiCodes = ['universal': 0, 'armeabi-v7a': 1, 'arm64-v8a': 5, x86: 2, x86_64
 
 android {
     namespace 'org.telegram.messenger.regular'
+
     defaultConfig.applicationId = APP_PACKAGE
 
     packagingOptions {
@@ -66,6 +67,7 @@ android {
                 signingConfig signingConfigs.sign
             }
             proguardFiles '../TMessagesProj/proguard-rules.pro'
+            signingConfig signingConfigs.debug
             ndk.debugSymbolLevel 'FULL'
         }
     }
@@ -76,7 +78,7 @@ android {
         variant.outputs.all { output ->
             def abi = output.getFilter('ABI')
             if (abi == null) abi = 'universal'
-            outputFileName = "colorgram-${defaultConfig.versionName}-${defaultConfig.versionCode}-${abi}.apk"
+            outputFileName = "Colorgram-${defaultConfig.versionName}-${defaultConfig.versionCode}-${abi}.apk"
             def abiVersionCode = project.ext.abiCodes.get(abi)
             output.versionCodeOverride = defaultConfig.versionCode * 10 + abiVersionCode
         }

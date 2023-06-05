@@ -30,7 +30,7 @@ public class ThemePreviewDrawable extends BitmapDrawable {
         super(createPreview(pattern, document));
         themeDocument = document;
     }
-    
+
     public DocumentObject.ThemeDocument getThemeDocument() {
         return themeDocument;
     }
@@ -38,7 +38,7 @@ public class ThemePreviewDrawable extends BitmapDrawable {
     private static Bitmap createPreview(File pattern, DocumentObject.ThemeDocument themeDocument) {
         RectF rect = new RectF();
         Paint paint = new Paint();
-        
+
         Bitmap bitmap = Bitmaps.createBitmap(560, 678, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 

@@ -198,7 +198,7 @@ public class BillingController implements PurchasesUpdatedListener, BillingClien
                                 if (purchase.getProducts().contains(productId)) {
                                     productsToBeConsumed.incrementAndGet();
                                     billingClient.consumeAsync(ConsumeParams.newBuilder()
-                                                    .setPurchaseToken(purchase.getPurchaseToken())
+                                            .setPurchaseToken(purchase.getPurchaseToken())
                                             .build(), (billingResult1, s) -> {
                                         if (billingResult1.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                                             productsConsumed.add(productId);
@@ -295,7 +295,7 @@ public class BillingController implements PurchasesUpdatedListener, BillingClien
 
                                         if (req.purpose instanceof TLRPC.TL_inputStorePaymentGiftPremium) {
                                             billingClient.consumeAsync(ConsumeParams.newBuilder()
-                                                            .setPurchaseToken(purchase.getPurchaseToken())
+                                                    .setPurchaseToken(purchase.getPurchaseToken())
                                                     .build(), (billingResult1, s) -> {});
                                         }
                                     }

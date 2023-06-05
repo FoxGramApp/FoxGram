@@ -1572,11 +1572,11 @@ public class Bulletin {
         }
 
         protected int getThemedColor(int key) {
-        if (resourcesProvider != null) {
-            return resourcesProvider.getColor(key);
+            if (resourcesProvider != null) {
+                return resourcesProvider.getColor(key);
+            }
+            return Theme.getColor(key);
         }
-        return Theme.getColor(key);
-    }
     }
 
     // TODO: possibility of loading icon as well
@@ -1710,25 +1710,25 @@ public class Bulletin {
         private BulletinWindow(Context context) {
             super(context);
             setContentView(
-                container = new FrameLayout(context) {
-                    @Override
-                    public void addView(View child) {
-                        super.addView(child);
-                        BulletinWindow.this.show();
-                    }
-
-                    @Override
-                    public void removeView(View child) {
-                        super.removeView(child);
-                        try {
-                            BulletinWindow.this.dismiss();
-                        } catch (Exception ignore) {
-
+                    container = new FrameLayout(context) {
+                        @Override
+                        public void addView(View child) {
+                            super.addView(child);
+                            BulletinWindow.this.show();
                         }
-                        removeDelegate(container);
-                    }
-                },
-                new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+
+                        @Override
+                        public void removeView(View child) {
+                            super.removeView(child);
+                            try {
+                                BulletinWindow.this.dismiss();
+                            } catch (Exception ignore) {
+
+                            }
+                            removeDelegate(container);
+                        }
+                    },
+                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             );
             if (Build.VERSION.SDK_INT >= 21) {
                 container.setFitsSystemWindows(true);

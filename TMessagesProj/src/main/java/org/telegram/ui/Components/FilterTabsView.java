@@ -73,14 +73,15 @@ public class FilterTabsView extends FrameLayout {
         return positionToStableId.get(selectedType, -1);
     }
 
-    public void selectTabWithStableId(int stableId) {
+    public boolean selectTabWithStableId(int stableId) {
         for (int i = 0; i < tabs.size(); i++) {
             if (positionToStableId.get(i, -1) == stableId) {
                 currentPosition = i;
                 selectedTabId = positionToId.get(i);
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     public interface FilterTabsViewDelegate {
@@ -271,8 +272,8 @@ public class FilterTabsView extends FrameLayout {
                 float s = (float) Math.sin((p + (currentPosition % 2)) * Math.PI * 2.5f);
                 float a = (float) (SystemClock.elapsedRealtime() / 400f * Math.PI * (currentPosition % 2 == 0 ? 1.0f : -1.0f));
                 canvas.translate(
-                    (float) (Math.cos(a) * AndroidUtilities.dp(0.33f) * (currentPosition % 2 == 0 ? 1.0f : -1.0f)),
-                    (float) (Math.sin(a) * -AndroidUtilities.dp(0.33f))
+                        (float) (Math.cos(a) * AndroidUtilities.dp(0.33f) * (currentPosition % 2 == 0 ? 1.0f : -1.0f)),
+                        (float) (Math.sin(a) * -AndroidUtilities.dp(0.33f))
                 );
                 canvas.rotate(1.4f * s, getMeasuredWidth() / 2f, getMeasuredHeight() / 2f);
             }
@@ -1165,7 +1166,11 @@ public class FilterTabsView extends FrameLayout {
         return animatingIndicator;
     }
 
-    private void scrollToTab(Tab tab, int position) {
+    public void stopAnimatingIndicator() {
+        animatingIndicator = false;
+    }
+
+    public void scrollToTab(Tab tab, int position) {
         if (tab.isLocked) {
             if (delegate != null) {
                 delegate.onPageSelected(tab, false);
@@ -1204,6 +1209,17 @@ public class FilterTabsView extends FrameLayout {
             return;
         }
         scrollToTab(tabs.get(0), 0);
+    }
+
+    public boolean isFirstTab() {
+        return currentPosition <= 0;
+    }
+
+    public void selectLastTab() {
+        if (tabs.isEmpty()) {
+            return;
+        }
+        scrollToTab(tabs.get(tabs.size() - 1), tabs.size() - 1);
     }
 
     public void setAnimationIdicatorProgress(float value) {
@@ -1261,6 +1277,17 @@ public class FilterTabsView extends FrameLayout {
         tab.isLocked = isLocked;
         allTabsWidth += tab.getWidth(true) + FolderIconController.getPaddingTab();
         tabs.add(tab);
+    }
+
+    public int getTabsCount() {
+        return tabs.size();
+    }
+
+    public Tab getTab(int i) {
+        if (i < 0 || i >= getTabsCount()) {
+            return null;
+        }
+        return tabs.get(i);
     }
 
     public void finishAddingTabs(boolean animated) {
@@ -1582,7 +1609,7 @@ public class FilterTabsView extends FrameLayout {
         if (!isEditing && orderChanged) {
             MessagesStorage.getInstance(UserConfig.selectedAccount).saveDialogFiltersOrder();
             TLRPC.TL_messages_updateDialogFiltersOrder req = new TLRPC.TL_messages_updateDialogFiltersOrder();
-            ArrayList<MessagesController.DialogFilter> filters = MessagesController.getInstance(UserConfig.selectedAccount).dialogFilters;
+            ArrayList<MessagesController.DialogFilter> filters = MessagesController.getInstance(UserConfig.selectedAccount).getDialogFilters();
             for (int a = 0, N = filters.size(); a < N; a++) {
                 MessagesController.DialogFilter filter = filters.get(a);
                 if (filter.isDefault()) {
@@ -1700,7 +1727,7 @@ public class FilterTabsView extends FrameLayout {
             if (idx1 < 0 || idx2 < 0 || idx1 >= count || idx2 >= count) {
                 return;
             }
-            ArrayList<MessagesController.DialogFilter> filters = MessagesController.getInstance(UserConfig.selectedAccount).dialogFilters;
+            ArrayList<MessagesController.DialogFilter> filters = MessagesController.getInstance(UserConfig.selectedAccount).getDialogFilters();
             if (ColorConfig.hideAllTab) {
                 int defaultPosition = 0;
                 for (int i = 0; i < filters.size(); i++) {
@@ -1769,9 +1796,9 @@ public class FilterTabsView extends FrameLayout {
             if (theIndex < 0 || theIndex >= count) {
                 return;
             }
-            ArrayList<MessagesController.DialogFilter> filters = MessagesController.getInstance(UserConfig.selectedAccount).dialogFilters;
+            ArrayList<MessagesController.DialogFilter> filters = MessagesController.getInstance(UserConfig.selectedAccount).getDialogFilters();
             int temp = positionToStableId.get(theIndex),
-                temp2 = tabs.get(theIndex).id;
+                    temp2 = tabs.get(theIndex).id;
             for (int i = theIndex - 1; i >= 0; --i) {
 //                notifyItemMoved(i, i + 1);
                 positionToStableId.put(i + 1, positionToStableId.get(i));

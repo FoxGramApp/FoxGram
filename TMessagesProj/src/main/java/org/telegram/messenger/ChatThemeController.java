@@ -48,7 +48,7 @@ public class ChatThemeController extends BaseController {
         preloadSticker("❌");
         if (!allChatThemes.isEmpty()) {
             for (EmojiThemes chatTheme : allChatThemes) {
-               preloadSticker(chatTheme.getEmoticon());
+                preloadSticker(chatTheme.getEmoticon());
             }
         }
     }
@@ -95,8 +95,8 @@ public class ChatThemeController extends BaseController {
                     }
                     editor.apply();
                 } else if (response instanceof TLRPC.TL_account_themesNotModified) {
-                   // if (allChatThemes == null || allChatThemes.isEmpty()) {
-                        chatThemes = getAllChatThemesFromPrefs();
+                    // if (allChatThemes == null || allChatThemes.isEmpty()) {
+                    chatThemes = getAllChatThemesFromPrefs();
 //                    } else {
 //                   //     return;
 //                    }

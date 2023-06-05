@@ -54,7 +54,7 @@ public class TranslateController extends BaseController {
     private final HashMap<Pair<Long, Integer>, HashMap<Integer, MessageObject>> keptReplyMessageObjects = new HashMap<>();
     private final Set<Pair<Long, Integer>> hideTranslateDialogs = new HashSet<>();
 
-    class TranslatableDecision {
+    static class TranslatableDecision {
         Set<Integer> certainlyTranslatable = new HashSet<>();
         Set<Integer> unknown = new HashSet<>();
         Set<Integer> certainlyNotTranslatable = new HashSet<>();
@@ -73,6 +73,9 @@ public class TranslateController extends BaseController {
         return !(!UserConfig.getInstance(currentAccount).isPremium() && ColorConfig.translationProvider == Translator.PROVIDER_TELEGRAM);
     }
 
+    private Boolean chatTranslateEnabled;
+    private Boolean contextTranslateEnabled;
+
     public boolean isChatTranslateEnabled() {
         return ColorConfig.translateEntireChat;
     }
@@ -83,7 +86,11 @@ public class TranslateController extends BaseController {
     }
 
     public void setContextTranslateEnabled(boolean enable) {
-        MessagesController.getMainSettings(currentAccount).edit().putBoolean("translate_button", enable).apply();
+        messagesController.getMainSettings().edit().putBoolean("translate_button", contextTranslateEnabled = enable).apply();
+    }
+
+    public void setChatTranslateEnabled(boolean enable) {
+        messagesController.getMainSettings().edit().putBoolean("translate_chat_button", chatTranslateEnabled = enable).apply();
     }
 
     public static boolean isTranslatable(MessageObject messageObject) {
@@ -96,7 +103,7 @@ public class TranslateController extends BaseController {
                         !messageObject.isRestrictedMessage &&
                         (!messageObject.isOutOwner() || forceOwner) &&
                         (!TextUtils.isEmpty(messageObject.messageOwner.message) ||
-                        messageObject.type == MessageObject.TYPE_POLL)
+                                messageObject.type == MessageObject.TYPE_POLL)
         );
     }
 
@@ -152,10 +159,10 @@ public class TranslateController extends BaseController {
 
     public boolean isDialogTranslatable(long dialogId, int topicId) {
         return (
-            isFeatureAvailable() &&
-            getUserConfig().getClientUserId() != dialogId &&
-            /* DialogObject.isChatDialog(dialogId) &&*/
-            translatableDialogs.contains(getIdWithTopic(dialogId, topicId))
+                isFeatureAvailable() &&
+                        getUserConfig().getClientUserId() != dialogId &&
+                        /* DialogObject.isChatDialog(dialogId) &&*/
+                        translatableDialogs.contains(getIdWithTopic(dialogId, topicId))
         );
     }
 
@@ -337,11 +344,11 @@ public class TranslateController extends BaseController {
     }
 
     private static List<String> languagesOrder = Arrays.asList(
-        "en", "ar", "zh", "fr", "de", "it", "ja", "ko", "pt", "ru", "es", "uk"
+            "en", "ar", "zh", "fr", "de", "it", "ja", "ko", "pt", "ru", "es", "uk"
     );
 
     private static List<String> allLanguages = Arrays.asList(
-        "af", "sq", "am", "ar", "hy", "az", "eu", "be", "bn", "bs", "bg", "ca", "ceb", "zh-cn", "zh", "zh-tw", "co", "hr", "cs", "da", "nl", "en", "eo", "et", "fi", "fr", "fy", "gl", "ka", "de", "el", "gu", "ht", "ha", "haw", "he", "iw", "hi", "hmn", "hu", "is", "ig", "id", "ga", "it", "ja", "jv", "kn", "kk", "km", "rw", "ko", "ku", "ky", "lo", "la", "lv", "lt", "lb", "mk", "mg", "ms", "ml", "mt", "mi", "mr", "mn", "my", "ne", "no", "ny", "or", "ps", "fa", "pl", "pt", "pa", "ro", "ru", "sm", "gd", "sr", "st", "sn", "sd", "si", "sk", "sl", "so", "es", "su", "sw", "sv", "tl", "tg", "ta", "tt", "te", "th", "tr", "tk", "uk", "ur", "ug", "uz", "vi", "cy", "xh", "yi", "yo", "zu"
+            "af", "sq", "am", "ar", "hy", "az", "eu", "be", "bn", "bs", "bg", "ca", "ceb", "zh-cn", "zh", "zh-tw", "co", "hr", "cs", "da", "nl", "en", "eo", "et", "fi", "fr", "fy", "gl", "ka", "de", "el", "gu", "ht", "ha", "haw", "he", "iw", "hi", "hmn", "hu", "is", "ig", "id", "ga", "it", "ja", "jv", "kn", "kk", "km", "rw", "ko", "ku", "ky", "lo", "la", "lv", "lt", "lb", "mk", "mg", "ms", "ml", "mt", "mi", "mr", "mn", "my", "ne", "no", "ny", "or", "ps", "fa", "pl", "pt", "pa", "ro", "ru", "sm", "gd", "sr", "st", "sn", "sd", "si", "sk", "sl", "so", "es", "su", "sw", "sv", "tl", "tg", "ta", "tt", "te", "th", "tr", "tk", "uk", "ur", "ug", "uz", "vi", "cy", "xh", "yi", "yo", "zu"
     );
 
     public static class Language {
@@ -655,8 +662,14 @@ public class TranslateController extends BaseController {
         });
     }
 
-    public void checkDialogMessages(long dialogId) {
-        if (!isFeatureAvailable()) {
+    public void checkDialogMessage(long dialogId) {
+        if (isFeatureAvailable()) {
+            checkDialogMessageSure(dialogId);
+        }
+    }
+
+    public void checkDialogMessageSure(long dialogId) {
+        if (!translatingDialogs.contains(dialogId)) {
             return;
         }
         getMessagesStorage().getStorageQueue().postRunnable(() -> {
@@ -772,14 +785,14 @@ public class TranslateController extends BaseController {
         }
 
         final boolean isUnknown = isTranslatable(messageObject) && (
-            messageObject.messageOwner.originalLanguage == null ||
-            UNKNOWN_LANGUAGE.equals(messageObject.messageOwner.originalLanguage)
+                messageObject.messageOwner.originalLanguage == null ||
+                        UNKNOWN_LANGUAGE.equals(messageObject.messageOwner.originalLanguage)
         );
         final boolean translatable = (
-            isTranslatable(messageObject) &&
-            messageObject.messageOwner.originalLanguage != null &&
-            !UNKNOWN_LANGUAGE.equals(messageObject.messageOwner.originalLanguage) &&
-            !DoNotTranslateSettings.getRestrictedLanguages().contains(messageObject.messageOwner.originalLanguage)
+                isTranslatable(messageObject) &&
+                        messageObject.messageOwner.originalLanguage != null &&
+                        !UNKNOWN_LANGUAGE.equals(messageObject.messageOwner.originalLanguage) &&
+                        !DoNotTranslateSettings.getRestrictedLanguages().contains(messageObject.messageOwner.originalLanguage)
         );
 
         if (isUnknown) {
@@ -797,9 +810,9 @@ public class TranslateController extends BaseController {
         final int notTranslatableCount = translatableMessages.certainlyNotTranslatable.size();
         final int totalCount = translatableCount + unknownCount + notTranslatableCount;
         if (
-            totalCount >= REQUIRED_TOTAL_MESSAGES_CHECKED &&
-            (translatableCount / (float) (translatableCount + notTranslatableCount)) >= REQUIRED_PERCENTAGE_MESSAGES_TRANSLATABLE &&
-            (unknownCount / (float) totalCount) < REQUIRED_MIN_PERCENTAGE_MESSAGES_UNKNOWN
+                totalCount >= REQUIRED_TOTAL_MESSAGES_CHECKED &&
+                        (translatableCount / (float) (translatableCount + notTranslatableCount)) >= REQUIRED_PERCENTAGE_MESSAGES_TRANSLATABLE &&
+                        (unknownCount / (float) totalCount) < REQUIRED_MIN_PERCENTAGE_MESSAGES_UNKNOWN
         ) {
             translatableDialogs.add(getIdWithTopic(messageObject));
             translatableDialogMessages.remove(getIdWithTopic(messageObject));
@@ -827,6 +840,7 @@ public class TranslateController extends BaseController {
         ArrayList<Utilities.Callback<BaseTranslator.Result>> callbacks = new ArrayList<>();
         String language;
 
+        int delay = GROUPING_TRANSLATIONS_TIMEOUT;
         int symbolsCount;
 
         String token;
@@ -862,7 +876,9 @@ public class TranslateController extends BaseController {
             int messageSymbolsCount = context.getSymbolsCount();
 
             if (pendingTranslation.symbolsCount + messageSymbolsCount >= MAX_SYMBOLS_PER_REQUEST ||
-                pendingTranslation.messageIds.size() + 1 >= MAX_MESSAGES_PER_REQUEST) {
+                    pendingTranslation.messageIds.size() + 1 >= MAX_MESSAGES_PER_REQUEST) {
+                AndroidUtilities.cancelRunOnUIThread(pendingTranslation.runnable);
+                AndroidUtilities.runOnUIThread(pendingTranslation.runnable); // without timeout
                 dialogPendingTranslations.add(pendingTranslation = new PendingTranslation());
             }
 
@@ -913,7 +929,8 @@ public class TranslateController extends BaseController {
                     pendingTranslation1.token = token;
                 }
             };
-            AndroidUtilities.runOnUIThread(pendingTranslation.runnable, GROUPING_TRANSLATIONS_TIMEOUT);
+            AndroidUtilities.runOnUIThread(pendingTranslation.runnable, pendingTranslation.delay);
+            pendingTranslation.delay /= 2;
         }
     }
 

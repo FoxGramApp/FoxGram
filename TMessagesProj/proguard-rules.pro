@@ -133,6 +133,7 @@
 -dontwarn org.jetbrains.annotations.Nullable
 -dontwarn androidx.camera.extensions.**
 -dontwarn javax.script.**
+-dontwarn com.google.android.exoplayer2.util.NonNullApi
 
 -repackageclasses
 -allowaccessmodification

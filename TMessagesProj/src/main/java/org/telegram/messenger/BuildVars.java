@@ -31,16 +31,20 @@ public class BuildVars {
     public static String BUILD_VERSION_STRING = BuildConfig.BUILD_VERSION_STRING;
     public static int TELEGRAM_BUILD_VERSION = 3356;
     public static String TELEGRAM_VERSION_STRING = "9.6.5";
+    // If you want make a fork you have to replace ID and HASH with yours
     public static int APP_ID = 12921654;
     public static String APP_HASH = "8ebeb77d7170894d560ca40bdeabac3a";
+    // You can disable Safety Net Key leaving no text here
     public static String SAFETYNET_KEY = "";
     public static String SMS_HASH = isStandaloneApp() ? "w0lkcmTZkKh" : (DEBUG_VERSION ? "O2P2z+/jBpJ" : "oLeq9AcOZkT");
-    public static String PLAYSTORE_APP_URL = "https://play.google.com/store/apps/details?id=it.colorgram.android";
+    public static String PLAYSTORE_APP_URL = "https://play.google.com/store";
     public static String GOOGLE_AUTH_CLIENT_ID = "217475623555-jut3eg13m94k6nk7scbucq5h4os3qrfv.apps.googleusercontent.com";
 
+    // Add if you have your app published on App Gallery
+    // You can find Huawei part of Telegram's code (TMessagej_Huawei) on official reposity
     public static String HUAWEI_APP_ID = "101184875";
 
-    // You can use this flag to disable Google Play Billing (If you're making fork and want it to be in Google Play)
+    // You can use this flag to disable Google Play Billing
     public static boolean IS_BILLING_UNAVAILABLE = StoreUtils.isFromPlayStore();
 
     static {
