@@ -135,17 +135,17 @@ public class FolderBottomSheet extends BottomSheetWithRecyclerListView {
 
         if (filter != null && filter.isMyChatlist()) {
             AlertDialog alertDialog = new AlertDialog.Builder(fragment.getContext())
-                .setTitle(LocaleController.getString("FilterDelete", R.string.FilterDelete))
-                .setMessage(LocaleController.getString("FilterDeleteAlertLinks", R.string.FilterDeleteAlertLinks))
-                .setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), (d, w) -> {
-                    if (whenDone != null) {
-                        whenDone.run(false);
-                    }
-                })
-                .setPositiveButton(LocaleController.getString("Delete", R.string.Delete), (d, w) -> {
-                    showDeleteAlert.run();
-                })
-                .create();
+                    .setTitle(LocaleController.getString("FilterDelete", R.string.FilterDelete))
+                    .setMessage(LocaleController.getString("FilterDeleteAlertLinks", R.string.FilterDeleteAlertLinks))
+                    .setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), (d, w) -> {
+                        if (whenDone != null) {
+                            whenDone.run(false);
+                        }
+                    })
+                    .setPositiveButton(LocaleController.getString("Delete", R.string.Delete), (d, w) -> {
+                        showDeleteAlert.run();
+                    })
+                    .create();
             fragment.showDialog(alertDialog);
             TextView button = (TextView) alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
             if (button != null) {
@@ -446,24 +446,24 @@ public class FolderBottomSheet extends BottomSheetWithRecyclerListView {
             final Utilities.Callback<BaseFragment> bulletin = (fragment) -> {
                 if (updates != null || invite instanceof TLRPC.TL_chatlists_chatlistInviteAlready) {
                     BulletinFactory.of(fragment)
-                        .createSimpleBulletin(
-                            R.raw.folder_in,
-                            AndroidUtilities.replaceTags(LocaleController.formatString("FolderLinkUpdatedTitle", R.string.FolderLinkUpdatedTitle, escapedTitle)),
-                            inputPeers.size() <= 0 ?
-                                LocaleController.formatPluralString("FolderLinkUpdatedSubtitle", alreadyJoined.size()) :
-                                LocaleController.formatPluralString("FolderLinkUpdatedJoinedSubtitle", inputPeers.size())
-                        )
-                        .setDuration(Bulletin.DURATION_PROLONG)
-                        .show();
+                            .createSimpleBulletin(
+                                    R.raw.folder_in,
+                                    AndroidUtilities.replaceTags(LocaleController.formatString("FolderLinkUpdatedTitle", R.string.FolderLinkUpdatedTitle, escapedTitle)),
+                                    inputPeers.size() <= 0 ?
+                                            LocaleController.formatPluralString("FolderLinkUpdatedSubtitle", alreadyJoined.size()) :
+                                            LocaleController.formatPluralString("FolderLinkUpdatedJoinedSubtitle", inputPeers.size())
+                            )
+                            .setDuration(Bulletin.DURATION_PROLONG)
+                            .show();
                 } else {
                     BulletinFactory.of(fragment)
-                        .createSimpleBulletin(
-                                R.raw.contact_check,
-                                AndroidUtilities.replaceTags(LocaleController.formatString("FolderLinkAddedTitle", R.string.FolderLinkAddedTitle, escapedTitle)),
-                                LocaleController.formatPluralString("FolderLinkAddedSubtitle", inputPeers.size())
-                        )
-                        .setDuration(Bulletin.DURATION_PROLONG)
-                        .show();
+                            .createSimpleBulletin(
+                                    R.raw.contact_check,
+                                    AndroidUtilities.replaceTags(LocaleController.formatString("FolderLinkAddedTitle", R.string.FolderLinkAddedTitle, escapedTitle)),
+                                    LocaleController.formatPluralString("FolderLinkAddedSubtitle", inputPeers.size())
+                            )
+                            .setDuration(Bulletin.DURATION_PROLONG)
+                            .show();
                 }
             };
             if (updates != null) {
@@ -916,10 +916,10 @@ public class FolderBottomSheet extends BottomSheetWithRecyclerListView {
         return new RecyclerListView.SelectionAdapter() {
 
             private static final int
-                VIEW_TYPE_TITLE = 0,
-                VIEW_TYPE_HINT = 1,
-                VIEW_TYPE_USER = 2,
-                VIEW_TYPE_HEADER = 3;
+                    VIEW_TYPE_TITLE = 0,
+                    VIEW_TYPE_HINT = 1,
+                    VIEW_TYPE_USER = 2,
+                    VIEW_TYPE_HEADER = 3;
 
             @Override
             public boolean isEnabled(RecyclerView.ViewHolder holder) {
@@ -1123,9 +1123,9 @@ public class FolderBottomSheet extends BottomSheetWithRecyclerListView {
             this.title = title;
 
             String left2Folder = null,
-                   left1Folder = LocaleController.getString("FolderLinkPreviewLeft"),
-                   right1Folder = LocaleController.getString("FolderLinkPreviewRight"),
-                   right2Folder = null;
+                    left1Folder = LocaleController.getString("FolderLinkPreviewLeft"),
+                    right1Folder = LocaleController.getString("FolderLinkPreviewRight"),
+                    right2Folder = null;
 //            try {
 //                ArrayList<MessagesController.DialogFilter> filters = MessagesController.getInstance(UserConfig.selectedAccount).dialogFilters;
 //                if (filterId >= 0) {
@@ -1195,8 +1195,8 @@ public class FolderBottomSheet extends BottomSheetWithRecyclerListView {
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             super.onMeasure(
-                MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(dp(172), MeasureSpec.EXACTLY)
+                    MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(dp(172), MeasureSpec.EXACTLY)
             );
         }
 
@@ -1226,12 +1226,12 @@ public class FolderBottomSheet extends BottomSheetWithRecyclerListView {
             AnimatedTextView.AnimatedTextDrawable countText;
 
             public FoldersPreview(
-                Context context,
-                CharSequence left2FolderText,
-                CharSequence left1FolderText,
-                CharSequence middleFolderText,
-                CharSequence right1FolderText,
-                CharSequence right2FolderText
+                    Context context,
+                    CharSequence left2FolderText,
+                    CharSequence left1FolderText,
+                    CharSequence middleFolderText,
+                    CharSequence right1FolderText,
+                    CharSequence right2FolderText
             ) {
                 super(context);
 
@@ -1308,10 +1308,10 @@ public class FolderBottomSheet extends BottomSheetWithRecyclerListView {
 
                 if (!isCountEmpty()) {
                     AndroidUtilities.rectTmp2.set(
-                        (int) (cleft + middleFolderWidth + dp(4.66f)),
-                        (int) (cy - dp(9)),
-                        (int) (cleft + middleFolderWidth + dp(4.66f + 5.33f + 5.33f) + countText.getCurrentWidth()),
-                        (int) (cy + dp(9))
+                            (int) (cleft + middleFolderWidth + dp(4.66f)),
+                            (int) (cy - dp(9)),
+                            (int) (cleft + middleFolderWidth + dp(4.66f + 5.33f + 5.33f) + countText.getCurrentWidth()),
+                            (int) (cy + dp(9))
                     );
                     AndroidUtilities.rectTmp.set(AndroidUtilities.rectTmp2);
                     canvas.drawRoundRect(AndroidUtilities.rectTmp, dp(9), dp(9), selectedPaint);
