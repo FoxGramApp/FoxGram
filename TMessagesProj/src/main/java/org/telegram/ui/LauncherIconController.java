@@ -37,7 +37,7 @@ public class LauncherIconController {
         DEFAULT("DefaultIcon", R.drawable.icon_background_sa, R.drawable.icon_launcher_foreground, R.string.AppIconDefault),
         DEVELOPER("DeveloperIcon", R.drawable.iconc_1_background_sa, R.drawable.icon_launcher_foreground, R.string.AppIconDeveloper),
         AQUA("AquaIcon", R.drawable.icon_4_background_sa, R.drawable.icon_launcher_foreground, R.string.AppIconAqua),
-        FOXGRAM("FoxgramIcon", R.drawable.icon_7_launcher_background, R.drawable.icon_7_launcher_foreground, R.string.AppIconFoxgram, false, true),
+//        FOXGRAM("FoxgramIcon", R.drawable.icon_7_launcher_background, R.drawable.icon_7_launcher_foreground, R.string.AppIconFoxgram, false, true),
         RAINBOW("RainbowIcon", R.drawable.icon_8_launcher_background, R.drawable.icon_8_launcher_foreground, R.string.AppIconRainbow),
         MONO_BLACK("MonoBlackIcon", R.drawable.iconc_2_background_sa, R.drawable.icon_launcher_foreground, R.string.AppIconMonoBlack),
         ARCTIC("ArcticIcon", R.drawable.iconc_3_background_sa, R.drawable.iconc_3_launcher_foreground, R.string.AppIconArctic),

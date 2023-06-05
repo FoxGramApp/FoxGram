@@ -163,7 +163,7 @@ public class AppIconsSelectorCell extends RecyclerListView implements Notificati
                 }
             }
         }
-        for (int i = 0; i < availableIcons.size(); i++) {
+/*        for (int i = 0; i < availableIcons.size(); i++) {
             LauncherIconController.LauncherIcon icon = availableIcons.get(i);
             if (icon.hidden && !LauncherIconController.isEnabled(icon)) {
                 if (icon == LauncherIconController.LauncherIcon.FOXGRAM && ColorConfig.unlockedSecretIcon == -1) {
@@ -174,7 +174,7 @@ public class AppIconsSelectorCell extends RecyclerListView implements Notificati
                 availableIcons.remove(i);
                 i--;
             }
-        }
+        } */
         getAdapter().notifyDataSetChanged();
         invalidateItemDecorations();
 
