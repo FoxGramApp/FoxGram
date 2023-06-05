@@ -333,4 +333,5 @@
     <string name="ZeroShutterLagDesc">Riduci al minimo la latenza quando scatti le foto catturando più fotogrammi rapidamente prima e dopo aver premuto il pulsante di scatto</string>
     <string name="BrokenBackupDetail">Impossibile esportare il tuo backup. Contattaci tramite il nostro <![CDATA[<a href="https://t.me/%1$s">Gruppo di Supporto</a>]]>.</string>
     <string name="TranslateInfo">Gestisci le tue preferenze di traduzione e autotraduzione delle impostazioni Colorgram.</string>
+    <string name="SmoothNav">Attiva transizioni fluide</string>
 </resources>
