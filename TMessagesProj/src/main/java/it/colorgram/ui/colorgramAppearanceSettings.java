@@ -15,6 +15,7 @@ import org.telegram.ui.Cells.HeaderCell;
 import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Cells.TextSettingsCell;
+import org.telegram.ui.Components.BulletinFactory;
 
 import it.colorgram.android.CustomEmojiController;
 import it.colorgram.android.ColorConfig;
@@ -146,10 +147,12 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
             ColorConfig.togglePacmanForced();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(ColorConfig.pacmanForced);
+            }
         } else if (position == SmoothNavRow) {
             ColorConfig.toggleSmoothNav();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(ColorConfig.SmoothNav);
+                BulletinFactory.of(colorgramAppearanceSettings.this).createErrorBulletin(LocaleController.getString("RestartAppToApplyChange", R.string.RestartAppToApplyChanges)).show();
             }
         } else if (position == smartButtonsRow) {
             ColorConfig.toggleSmartButtons();
