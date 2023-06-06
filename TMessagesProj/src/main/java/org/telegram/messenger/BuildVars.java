@@ -29,8 +29,8 @@ public class BuildVars {
     public static boolean NO_SCOPED_STORAGE = Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q;
     public static int BUILD_VERSION = BuildConfig.BUILD_VERSION;
     public static String BUILD_VERSION_STRING = BuildConfig.BUILD_VERSION_STRING;
-    public static int TELEGRAM_BUILD_VERSION = 3356;
-    public static String TELEGRAM_VERSION_STRING = "9.6.5";
+    public static int TELEGRAM_BUILD_VERSION = 3362;
+    public static String TELEGRAM_VERSION_STRING = "9.6.6";
     // If you want make a fork you have to replace ID and HASH with yours
     public static int APP_ID = 12921654;
     public static String APP_HASH = "8ebeb77d7170894d560ca40bdeabac3a";
