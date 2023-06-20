@@ -41,6 +41,8 @@ import org.telegram.ui.Components.SimpleThemeDescription;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.colorgram.android.ColorConfig;
+
 public class ReactionsDoubleTapManageActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
     private LinearLayout contentView;
@@ -88,7 +90,7 @@ public class ReactionsDoubleTapManageActivity extends BaseFragment implements No
         listView.setAdapter(listAdapter = new RecyclerListView.SelectionAdapter() {
             @Override
             public boolean isEnabled(RecyclerView.ViewHolder holder) {
-                return holder.getItemViewType() == 3 || holder.getItemViewType() == 2;
+                return holder.getItemViewType() == 3 || holder.getItemViewType() == 2 && !ColorConfig.doubleTapDisabled;
             }
 
             @NonNull
@@ -98,9 +100,7 @@ public class ReactionsDoubleTapManageActivity extends BaseFragment implements No
                 switch (viewType) {
                     case 0:
                         ThemePreviewMessagesCell messagesCell = new ThemePreviewMessagesCell(context, parentLayout, ThemePreviewMessagesCell.TYPE_REACTIONS_DOUBLE_TAP);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                            messagesCell.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
-                        }
+                        messagesCell.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
                         messagesCell.fragment = ReactionsDoubleTapManageActivity.this;
                         view = messagesCell;
                         break;
@@ -298,7 +298,6 @@ public class ReactionsDoubleTapManageActivity extends BaseFragment implements No
                     popup[0].dismiss();
                 }
             }
-
             @Override
             protected void onReactionClick(ImageViewEmoji emoji, ReactionsLayoutInBubble.VisibleReaction reaction) {
                 MediaDataController.getInstance(currentAccount).setDoubleTapReaction(reaction.emojicon);

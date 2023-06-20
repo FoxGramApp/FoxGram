@@ -57,8 +57,8 @@ import it.colorgram.ui.Cells.EmojiSet;
 
 public abstract class BaseSettingsActivity extends BaseFragment {
     protected static final Object PARTIAL = new Object();
-    protected int rowCount;
-    protected BaseListAdapter listAdapter;
+    protected static int rowCount;
+    protected static BaseListAdapter listAdapter;
     protected Context context;
     protected RecyclerListView listView;
     protected ActionBarMenuItem menuItem;

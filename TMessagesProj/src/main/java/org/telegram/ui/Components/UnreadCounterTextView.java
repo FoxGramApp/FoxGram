@@ -305,4 +305,5 @@ public class UnreadCounterTextView extends View {
         this.textColorKey = textColorKey;
         invalidate();
     }
+    public CharSequence getText() { return lastText; }
 }

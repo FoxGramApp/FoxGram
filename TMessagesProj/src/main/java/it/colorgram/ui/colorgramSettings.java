@@ -3,7 +3,6 @@ package it.colorgram.ui;
 import android.content.DialogInterface;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,18 +31,19 @@ import it.colorgram.android.StoreUtils;
 public class colorgramSettings extends BaseSettingsActivity {
 
     private int divisorInfoRow;
+    private static int colorRow;
     private int categoryHeaderRow;
+    private int updatesRow;
+    private int dividerUpdates;
     private int generalSettingsRow;
     private int appearanceSettingsRow;
+    private int updatesCheckView;
     private int chatSettingsRow;
-    private int updateSettingsRow;
     private int experimentalSettingsRow;
     private int infoHeaderRow;
     private int channelUpdatesRow;
-    private int groupUpdatesRow;
     private int sourceCodeRow;
     private int supportTranslationRow;
-    private int supportDonationRow;
     private int bugReportRow;
 
     @Override
@@ -97,11 +97,11 @@ public class colorgramSettings extends BaseSettingsActivity {
 
     @Override
     protected void onItemClick(View view, int position, float x, float y) {
-        int duration = Toast.LENGTH_SHORT;
-        if (position == channelUpdatesRow) {
+        if (position == colorRow) {
+            AndroidUtilities.addToClipboard(BuildConfig.BUILD_VERSION_STRING + " (" + BuildConfig.BUILD_VERSION + ")");
+            BulletinFactory.of(colorgramSettings.this).createCopyBulletin(LocaleController.getString("ReportDetailsCopied", R.string.ReportDetailsCopied)).show();
+        } else if (position == channelUpdatesRow) {
             MessagesController.getInstance(currentAccount).openByUserName(LocaleController.getString("ChannelUsername", R.string.ChannelUsername), this, 1);
-        } else if (position == groupUpdatesRow) {
-            MessagesController.getInstance(currentAccount).openByUserName(LocaleController.getString("GroupUsername", R.string.GroupUsername), this, 1);
         } else if (position == sourceCodeRow) {
             Browser.openUrl(getParentActivity(), "https://github.com/Pierlu096/color");
         } else if (position == supportTranslationRow) {
@@ -110,14 +110,12 @@ public class colorgramSettings extends BaseSettingsActivity {
             presentFragment(new colorgramGeneralSettings());
         } else if (position == chatSettingsRow) {
             presentFragment(new colorgramChatSettings());
-        } else if (position == updateSettingsRow) {
-            presentFragment(new colorgramUpdateSettings());
         } else if (position == experimentalSettingsRow) {
             presentFragment(new colorgramExperimentalSettings());
-        } else if (position == supportDonationRow) {
-            Toast.makeText(context, LocaleController.getString("ColorDisable", R.string.ColorDisable), duration).show();
         } else if (position == appearanceSettingsRow) {
             presentFragment(new colorgramAppearanceSettings());
+        } else if (position == updatesCheckView) {
+            presentFragment(new colorgramUpdateSettings());
         } else if (position == bugReportRow) {
             AndroidUtilities.addToClipboard(Crashlytics.getReportMessage() + "\n\n#bug");
             BulletinFactory.of(colorgramSettings.this).createCopyBulletin(LocaleController.getString("ReportDetailsCopied", R.string.ReportDetailsCopied)).show();
@@ -127,23 +125,28 @@ public class colorgramSettings extends BaseSettingsActivity {
     @Override
     protected void updateRowsId() {
         super.updateRowsId();
-        updateSettingsRow = -1;
+        colorRow = -1;
+        updatesRow = -1;
+        dividerUpdates = -1;
+
+        if (StoreUtils.isFromCheckableStore() || !StoreUtils.isDownloadedFromAnyStore()) {
+            updatesRow = rowCount++;
+            colorRow = rowCount++;
+            updatesCheckView = rowCount++;
+            dividerUpdates = rowCount++;
+        }
 
         categoryHeaderRow = rowCount++;
         generalSettingsRow = rowCount++;
         appearanceSettingsRow = rowCount++;
         chatSettingsRow = rowCount++;
         experimentalSettingsRow = rowCount++;
-        if (StoreUtils.isFromCheckableStore() || !StoreUtils.isDownloadedFromAnyStore()) {
-            updateSettingsRow = rowCount++;
-        }
+
         divisorInfoRow = rowCount++;
         infoHeaderRow = rowCount++;
         channelUpdatesRow = rowCount++;
-        groupUpdatesRow = rowCount++;
         sourceCodeRow = rowCount++;
         supportTranslationRow = rowCount++;
-        supportDonationRow = rowCount++;
         bugReportRow = rowCount++;
     }
 
@@ -153,7 +156,6 @@ public class colorgramSettings extends BaseSettingsActivity {
     }
 
     private class ListAdapter extends BaseListAdapter {
-
         @Override
         protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, boolean partial) {
             switch (ViewType.fromInt(holder.getItemViewType())) {
@@ -167,24 +169,24 @@ public class colorgramSettings extends BaseSettingsActivity {
                         textCell.setTextAndIcon(LocaleController.getString("General", R.string.General), R.drawable.msg_media, true);
                     } else if (position == chatSettingsRow) {
                         textCell.setTextAndIcon(LocaleController.getString("Chat", R.string.Chat), R.drawable.msg_msgbubble3, true);
-                    } else if (position == updateSettingsRow) {
-                        textCell.setTextAndIcon(LocaleController.getString("OwlUpdates", R.string.OwlUpdates), R.drawable.round_update_white_28, false);
                     } else if (position == channelUpdatesRow) {
                         textCell.setTextAndValueAndIcon(LocaleController.getString("OfficialChannel", R.string.OfficialChannel), "@" + LocaleController.getString("ChannelUsername", R.string.ChannelUsername), R.drawable.msg_channel, true);
-                    } else if (position == groupUpdatesRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("OfficialGroup", R.string.OfficialGroup), "@" + LocaleController.getString("GroupUsername", R.string.GroupUsername), R.drawable.msg_groups, true);
                     } else if (position == experimentalSettingsRow) {
                         textCell.setTextAndIcon(LocaleController.getString("Experimental", R.string.Experimental), R.drawable.outline_science_white, true);
                     } else if (position == appearanceSettingsRow) {
                         textCell.setTextAndIcon(LocaleController.getString("Appearance", R.string.Appearance), R.drawable.settings_appearance, true);
+                    } else if (position == updatesCheckView) {
+                        textCell.setTextAndIcon(LocaleController.getString("ViewUpdate", R.string.ViewUpdate), R.drawable.msg_settings, true);
                     }
                     break;
                 case HEADER:
                     HeaderCell headerCell = (HeaderCell) holder.itemView;
-                    if (position == categoryHeaderRow) {
-                        headerCell.setText(LocaleController.getString("Settings", R.string.Settings));
+                    if (position == updatesRow) {
+                        headerCell.setText(LocaleController.getString("AppVersionHeader", R.string.AppVersionHeader));
                     } else if (position == infoHeaderRow) {
                         headerCell.setText(LocaleController.getString("Info", R.string.Info));
+                    } else if (position == categoryHeaderRow) {
+                        headerCell.setText(LocaleController.getString("Categories", R.string.Categories));
                     }
                     break;
                 case DETAILED_SETTINGS:
@@ -192,10 +194,15 @@ public class colorgramSettings extends BaseSettingsActivity {
                     textDetailCell.setMultilineDetail(true);
                     if (position == supportTranslationRow) {
                         textDetailCell.setTextAndValueAndIcon(LocaleController.getString("TranslateOwl", R.string.TranslateOwl), LocaleController.getString("TranslateOwlDesc", R.string.TranslateOwlDesc), R.drawable.round_translate_white_28, true);
-                    } else if (position == supportDonationRow) {
-                        textDetailCell.setTextAndValueAndIcon(LocaleController.getString("Donate", R.string.Donate), LocaleController.getString("DonateDesc", R.string.DonateDesc), R.drawable.round_favorite_border_white, true);
+                    } else if (position == colorRow) {
+                        String updateInfo = LocaleController.getString("UpdateInfo", R.string.UpdateInfo) + " " + BuildConfig.BUILD_VERSION_STRING + " " + "(" + BuildConfig.BUILD_VERSION + ")";
+                        String appName;
+                        if (updateInfo.contains("Beta")) appName = LocaleController.getString("ColorVersionAppNameBeta", R.string.ColorVersionAppNameBeta);
+                        else if (updateInfo.contains("Alpha")) appName = LocaleController.getString("ColorVersionAppNameAlpha", R.string.ColorVersionAppNameAlpha);
+                        else appName = LocaleController.getString("ColorVersionAppName", R.string.ColorVersionAppName);
+                        textDetailCell.setTextAndValueAndIcon(appName, updateInfo, R.drawable.color_logo, false);
                     } else if (position == sourceCodeRow) {
-                        String commitInfo = String.format("%s commit, %s", BuildConfig.GIT_COMMIT_HASH, LocaleController.formatDateAudio(BuildConfig.GIT_COMMIT_DATE, false));
+                        String commitInfo = BuildConfig.GIT_COMMIT_NAME + "\n" +  String.format("%s commit, %s", BuildConfig.GIT_COMMIT_HASH, LocaleController.formatDateAudio(BuildConfig.GIT_COMMIT_DATE, false));
                         textDetailCell.setTextAndValueAndIcon(LocaleController.getString("SourceCode", R.string.SourceCode), commitInfo, R.drawable.outline_source_white_28, true);
                     } else if (position == bugReportRow) {
                         textDetailCell.setTextAndValueAndIcon(LocaleController.getString("CopyReportDetails", R.string.CopyReportDetails), LocaleController.getString("CopyReportDetailsDesc", R.string.CopyReportDetailsDesc), R.drawable.bug_report, false);
@@ -211,15 +218,14 @@ public class colorgramSettings extends BaseSettingsActivity {
 
         @Override
         public ViewType getViewType(int position) {
-            if (position == divisorInfoRow) {
+            if (position == divisorInfoRow || position == dividerUpdates) {
                 return ViewType.SHADOW;
-            } else if (position == generalSettingsRow || position == chatSettingsRow || position == updateSettingsRow ||
-                    position == channelUpdatesRow || position == groupUpdatesRow ||
-                    position == experimentalSettingsRow || position == appearanceSettingsRow) {
+            } else if (position == generalSettingsRow || position == chatSettingsRow ||
+                    position == channelUpdatesRow || position == experimentalSettingsRow || position == appearanceSettingsRow || position == updatesCheckView) {
                 return ViewType.TEXT_CELL;
-            } else if (position == categoryHeaderRow || position == infoHeaderRow) {
+            } else if (position == updatesRow || position == infoHeaderRow || position == categoryHeaderRow) {
                 return ViewType.HEADER;
-            } else if (position == supportTranslationRow || position == supportDonationRow || position == sourceCodeRow || position == bugReportRow) {
+            } else if (position == colorRow || position == supportTranslationRow || position == sourceCodeRow || position == bugReportRow) {
                 return ViewType.DETAILED_SETTINGS;
             }
             throw new IllegalArgumentException("Invalid position");

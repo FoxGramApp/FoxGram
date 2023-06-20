@@ -102,11 +102,12 @@
         android:label="@string/BuildAppName"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:requestLegacyExternalStorage="true"
+        android:enableOnBackInvokedCallback="true"
         android:hasFragileUserData="true"
         android:preserveLegacyExternalStorage="true"
         android:allowAudioPlaybackCapture="true"
         tools:replace="android:supportsRtl"
-        tools:targetApi="r">
+        tools:targetApi="TIRAMISU">
 
         <activity-alias
             android:enabled="true"
@@ -300,7 +301,7 @@
 
         <activity-alias
             android:enabled="false"
-            android:name="org.telegram.messenger.ChupaIcon"
+            android:name="org.telegram.messenger.AriIcon"
             android:targetActivity="org.telegram.ui.LaunchActivity"
             android:icon="@mipmap/icon_9_launcher"
             android:roundIcon="@mipmap/icon_9_launcher_round"

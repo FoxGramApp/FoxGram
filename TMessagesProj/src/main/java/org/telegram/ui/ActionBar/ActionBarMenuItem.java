@@ -306,12 +306,10 @@ public class ActionBarMenuItem extends FrameLayout {
                         } else {
                             child.setPressed(true);
                             child.setSelected(true);
-                            if (Build.VERSION.SDK_INT >= 21) {
-                                if (Build.VERSION.SDK_INT == 21 && child.getBackground() != null) {
-                                    child.getBackground().setVisible(true, false);
-                                }
-                                child.drawableHotspotChanged(x, y - child.getTop());
+                            if (Build.VERSION.SDK_INT == 21 && child.getBackground() != null) {
+                                child.getBackground().setVisible(true, false);
                             }
+                            child.drawableHotspotChanged(x, y - child.getTop());
                             selectedMenuView = child;
                         }
                     }

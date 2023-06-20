@@ -45,12 +45,12 @@ public final class NotificationUtil {
   @Retention(RetentionPolicy.SOURCE)
   @Target(TYPE_USE)
   @IntDef({
-    IMPORTANCE_UNSPECIFIED,
-    IMPORTANCE_NONE,
-    IMPORTANCE_MIN,
-    IMPORTANCE_LOW,
-    IMPORTANCE_DEFAULT,
-    IMPORTANCE_HIGH
+          IMPORTANCE_UNSPECIFIED,
+          IMPORTANCE_NONE,
+          IMPORTANCE_MIN,
+          IMPORTANCE_LOW,
+          IMPORTANCE_DEFAULT,
+          IMPORTANCE_HIGH
   })
   public @interface Importance {}
   /**
@@ -101,17 +101,17 @@ public final class NotificationUtil {
    *     #IMPORTANCE_DEFAULT} and {@link #IMPORTANCE_HIGH}.
    */
   public static void createNotificationChannel(
-      Context context,
-      String id,
-      @StringRes int nameResourceId,
-      @StringRes int descriptionResourceId,
-      @Importance int importance) {
+          Context context,
+          String id,
+          @StringRes int nameResourceId,
+          @StringRes int descriptionResourceId,
+          @Importance int importance) {
     if (Util.SDK_INT >= 26) {
       NotificationManager notificationManager =
-          checkNotNull(
-              (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE));
+              checkNotNull(
+                      (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE));
       NotificationChannel channel =
-          new NotificationChannel(id, context.getString(nameResourceId), importance);
+              new NotificationChannel(id, context.getString(nameResourceId), importance);
       if (descriptionResourceId != 0) {
         channel.setDescription(context.getString(descriptionResourceId));
       }
@@ -132,7 +132,7 @@ public final class NotificationUtil {
    */
   public static void setNotification(Context context, int id, @Nullable Notification notification) {
     NotificationManager notificationManager =
-        checkNotNull((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE));
+            checkNotNull((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE));
     if (notification != null) {
       notificationManager.notify(id, notification);
     } else {

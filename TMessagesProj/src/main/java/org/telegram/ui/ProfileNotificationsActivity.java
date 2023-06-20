@@ -630,13 +630,13 @@ public class ProfileNotificationsActivity extends BaseFragment implements Notifi
 
     private class ListAdapter extends RecyclerListView.SelectionAdapter {
         private final static int VIEW_TYPE_HEADER = 0,
-            VIEW_TYPE_TEXT_SETTINGS = 1,
-            VIEW_TYPE_INFO = 2,
-            VIEW_TYPE_TEXT_COLOR = 3,
-            VIEW_TYPE_RADIO = 4,
-            VIEW_TYPE_USER = 5,
-            VIEW_TYPE_SHADOW = 6,
-            VIEW_TYPE_TEXT_CHECK = 7;
+                VIEW_TYPE_TEXT_SETTINGS = 1,
+                VIEW_TYPE_INFO = 2,
+                VIEW_TYPE_TEXT_COLOR = 3,
+                VIEW_TYPE_RADIO = 4,
+                VIEW_TYPE_USER = 5,
+                VIEW_TYPE_SHADOW = 6,
+                VIEW_TYPE_TEXT_CHECK = 7;
 
         private Context context;
 

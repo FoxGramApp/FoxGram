@@ -1911,7 +1911,7 @@ public class ChannelAdminLogActivity extends BaseFragment implements Notificatio
                                 return 10;
                             } else if (mime.endsWith("/xml")) {
                                 return 5;
-                            } else if (messageObject.getDocumentName().toLowerCase().endsWith("owl") && ColorConfig.isValidFileSettings(messageObject) >= ColorConfig.VALID_CONFIGURATION) {
+                            } else if (messageObject.getDocumentName().toLowerCase().endsWith("color") || messageObject.getDocumentName().toLowerCase().endsWith("owl") && ColorConfig.isValidFileSettings(messageObject) >= ColorConfig.VALID_CONFIGURATION) {
                                 return 207;
                             } else if (mime.endsWith("/png") || mime.endsWith("/jpg") || mime.endsWith("/jpeg")) {
                                 return 6;

@@ -136,7 +136,6 @@ public class SettingsController extends SharedPreferencesHelper {
             case "showNoQuoteForward":
             case "showSaveMessage":
             case "showRepeat":
-            case "showPatpat":
             case "showReportMessage":
             case "showMessageDetails":
                 return false;
@@ -303,8 +302,6 @@ public class SettingsController extends SharedPreferencesHelper {
                     return integerValue >= 20 && integerValue <= 200;
                 case "stickerSizeStack":
                     return integerValue >= 2 && integerValue <= 20;
-                case "unlockedSecretIcon":
-                    return integerValue >= -1 && integerValue <= 4;
             }
         }
         return value instanceof Boolean;
@@ -501,7 +498,7 @@ public class SettingsController extends SharedPreferencesHelper {
         Activity activity = fragment.getParentActivity();
         new FileSettingsNameDialog(activity, fileName -> {
             try {
-                File cacheFile = new File(FileLoader.getDirectory(FileLoader.MEDIA_DIR_CACHE), fileName + ".owl");
+                File cacheFile = new File(FileLoader.getDirectory(FileLoader.MEDIA_DIR_CACHE), fileName + ".color");
                 if (cacheFile.exists()) {
                     cacheFile.delete();
                 }

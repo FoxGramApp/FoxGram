@@ -4,7 +4,14 @@
     <string name="TestBackend">Test Backend</string>
     <string name="TestBackendOn">This account will connect to the test backend.</string>
     <string name="TestBackendOff">This account will connect to the production backend.</string>
+    <string name="ColorVersionAppName">Colorgram</string>
+    <string name="ColorVersionAppNameBeta">Colorgram Beta</string>
+    <string name="ColorVersionAppNameAlpha">Colorgram Alpha</string>
     <string name="OwlSetting">Colorgram Settings</string>
+    <string name="Categories">Categories</string>
+    <string name="UpdateInfo">Version</string>
+    <string name="ViewUpdate">Updates Settings</string>
+    <string name="AppVersionHeader">App Version</string>
     <string name="Chat">Chats</string>
     <string name="OwlUpdates">Updates</string>
     <string name="Experimental">Experimental Settings</string>
@@ -62,12 +69,11 @@
     <string name="SunsetIcon">Sunset</string>
     <string name="AppIconMonoBlack" comment="AppIconMonoBlack">Mono Black</string>
     <string name="AppIconDeveloper" comment="AppIconDeveloper">Developer</string>
+    <string name="AriIcon">Ari</string>
     <string name="AppIconArctic" comment="AppIconArctic">Arctic</string>
     <string name="AppIconFoxgram" comment="AppIconFoxgram">Shy Fox</string>
     <string name="UnlockedHiddenFoxIcon">Oh… Congratulations! You unlocked the little shy fox icon.</string>
     <string name="AppIconRainbow" comment="AppIconRainbow">Rainbow</string>
-    <string name="AppIconChupa" comment="AppIconChupa">Chupa</string>
-    <string name="UnlockedHiddenChupaIcon">You were chuped! Chupa\'s icon is now available in settings.</string>
     <string name="ClassicIcon">Classic</string>
     <string name="HidePhone">Hide Your Phone Number</string>
     <string name="HidePhoneDesc">It will be hidden from settings and side menu</string>
@@ -97,9 +103,8 @@
     <string name="ConfirmCallsDesc">Show confirmation dialog each time you call anyone</string>
     <string name="StickersSize">Stickers Size</string>
     <string name="ResetStickersSize">Reset Stickers Size</string>
-    <!-- HARRY POTTER QUOTE B.1 C.4 -->
     <string name="StickerSizeDialogMessage">What else is missing?</string>
-    <string name="StickerSizeDialogMessage2">Gallopin\' Gorgons, that reminds me.</string>
+    <string name="StickerSizeDialogMessage2">This is so colorful.</string>
     <string name="FlipMediaByTapping">Flip Media by Tapping on Edges</string>
     <string name="JumpToNextChannel">Jump to Next Channel</string>
     <string name="GreetingSticker">Greeting Sticker</string>
@@ -155,7 +160,7 @@
     <string name="TranslateApiUnsupported">The translation provider you selected don\'t support your language.</string>
     <string name="BrokenMLKit">Unavailable Option</string>
     <string name="BrokenMLKitDetail">Google MLKit language identifier is somehow broken on this device.</string>
-    <string name="DC_IDSettings">Datacenter and User ID</string>
+    <string name="DC_IDSettings">User Profile</string>
     <string name="Automatic">Automatic</string>
     <string name="ShowID_DC">Show ID and DC in Profiles</string>
     <string name="IDType">ID Type</string>
@@ -180,15 +185,17 @@
     <string name="FileDC">Datacenter</string>
     <string name="FilePath">Path</string>
     <string name="FileSize">Size</string>
-    <string name="CameraType">Camera Type</string>
+    <string name="CameraType">Camera</string>
     <string name="CameraTypeDefault">Default</string>
     <string name="DefaultCameraDesc">Use the Telegram\'s built-in camera.</string>
     <string name="CameraXDesc">CameraX is only supported on <![CDATA[<a href="https://developer.android.com/training/camerax/devices">selected devices</a>]]>, effects and lenses support depends on your manufacturer.</string>
+    <string name="CameraPreview">Camera Preview in Attachments</string>
     <string name="PerformanceMode">Performance Mode</string>
     <string name="PerformanceModeDesc">CameraX\'s quality will be reduced in favor of performance</string>
     <string name="CameraQuality">Camera Quality</string>
     <string name="CameraTypeSystem">System</string>
     <string name="SystemCameraDesc">Access directly the system camera (not applicable for video messages).</string>
+    <string name="CameraButton">Camera Button in attachments</string>
     <string name="MediaSettings">Media</string>
     <string name="VoiceEnhancements">Voice Enhancements</string>
     <string name="VoiceEnhancementsDesc">Noise Suppression and Voice Normalization</string>
@@ -228,8 +235,8 @@
     <string name="CheckFailed">Unable to Check for Updates</string>
     <string name="InstallBetas">Install Beta Versions</string>
     <string name="InstallBetasDesc">Test new Colorgram updates before their official release</string>
-    <string name="AutoUpdate">Update Automatically</string>
-    <string name="AutoUpdatePrompt">Prompt when available</string>
+    <string name="AutoUpdate">Update Prompt</string>
+    <string name="AutoUpdatePrompt">Show Prompt when an update is available</string>
     <string name="APKsChannel">APKs Channel</string>
     <string name="MediaStreamVoip">Use Media Stream in Video Chats</string>
     <string name="UnlimitedFavoriteStickers">Unlimited Favorite Stickers</string>
@@ -238,6 +245,7 @@
     <string name="UnlimitedPinnedChatsDesc">It allows you to pin unlimited chats by turning off their synchronization with the Telegram server</string>
     <string name="MonetIcon">Force Monet Icon</string>
     <string name="MonetIconDesc">Use Material You\'s dynamic icon on Android 12</string>
+    <string name="MonetIconColor">Monet</string>
     <string name="MaxRecentStickers">Max Recent Stickers</string>
     <string name="DownloadSpeed">Download Speed</string>
     <string name="DownloadSpeedDefault">Default</string>
@@ -301,7 +309,6 @@
     <string name="KeepMarkdownDesc" comment="KeepMarkdownDesc">When translating a message, keep the markdown formatting.</string>
     <string name="ThemeMonetLight">Monet Light</string>
     <string name="ThemeMonetDark">Monet Dark</string>
-    <string name="Patpat">Patpat</string>
     <string name="PrivacyPolicyLogin">By continuing,\nyou agree to the *Privacy Policy*.</string>
     <string name="OwlPrivacyPolicy">Colorgram Privacy Policy</string>
     <string name="HideSendAsChannel">Hide "Send as Channel"</string>
@@ -333,5 +340,20 @@
     <string name="ZeroShutterLagDesc">Minimize latency when taking photos by capturing multiple frames quickly before and after the shutter button is pressed</string>
     <string name="BrokenBackupDetail">Unable to export your backup. Please contact us via our <![CDATA[<a href="https://t.me/%1$s">Support Group</a>]]>.</string>
     <string name="TranslateInfo">Manage your translation and auto-translation preferences in Colorgram settings.</string>
-    <string name="SmoothNav">Enable Smooth Navigation</string>
+    <string name="SmoothNav">Smooth Navigation</string>
+    <string name="HideChannelBottomButton">Hide Bottom Button in Channels</string>
+    <string name="DoubleTapReactions">Quick Reactions</string>
+    <string name="ColorDisabledTap">Quick reactions are disabled from Colorgram\'s Settings.</string>
+    <string name="AccountRegistrationDate">Account Registration Date</string>
+    <string name="ShowDate">Show Registration Date</string>
+    <string name="TitleStep">Step to reproduce:</string>
+    <string name="StepToReproduce">Write here step to reproduce.</string>
+    <string name="AppVersion">App version: </string>
+    <string name="BaseVersion">Telegram version: </string>
+    <string name="DeviceCrashlytics">Device: </string>
+    <string name="OS">OS Version: </string>
+    <string name="Performance">Performance class: </string>
+    <string name="Lang">Language: </string>
+    <string name="DnSc">Download Source: </string>
+    <string name="EnabledCameraDisabled">Camera locked</string>
 </resources>

@@ -57,8 +57,6 @@ import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.IconCompat;
 
-import com.google.android.exoplayer2.util.Log;
-
 import org.telegram.messenger.support.LongSparseIntArray;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
@@ -71,7 +69,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -250,7 +247,7 @@ public class NotificationsController extends BaseController {
                 preferences = ApplicationLoader.applicationContext.getSharedPreferences("Notifications", Activity.MODE_PRIVATE);
             }
             OTHER_NOTIFICATIONS_CHANNEL = "Other" + Utilities.random.nextLong();
-            preferences.edit().putString("OtherKey", OTHER_NOTIFICATIONS_CHANNEL).commit();
+            preferences.edit().putString("OtherKey", OTHER_NOTIFICATIONS_CHANNEL).apply();
         }
         if (notificationChannel == null) {
             notificationChannel = new NotificationChannel(OTHER_NOTIFICATIONS_CHANNEL, "Internal notifications", NotificationManager.IMPORTANCE_DEFAULT);
@@ -342,7 +339,7 @@ public class NotificationsController extends BaseController {
             SharedPreferences preferences = getAccountInstance().getNotificationsSettings();
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();
-            editor.commit();
+            editor.apply();
 
             if (Build.VERSION.SDK_INT >= 26) {
                 try {
@@ -2877,7 +2874,7 @@ public class NotificationsController extends BaseController {
                     }
                 }
             }
-            editor.commit();
+            editor.apply();
         } catch (Exception e) {
             FileLog.e(e);
         }
@@ -2955,7 +2952,7 @@ public class NotificationsController extends BaseController {
                 overwriteKey = "overwrite_private";
             }
             editor.remove(overwriteKey);
-            editor.commit();
+            editor.apply();
         } catch (Exception e) {
             FileLog.e(e);
         }
@@ -2990,7 +2987,7 @@ public class NotificationsController extends BaseController {
                         editor.remove(key);
                     }
                 }
-                editor.commit();
+                editor.apply();
             } catch (Exception e) {
                 FileLog.e(e);
             }
@@ -3118,12 +3115,12 @@ public class NotificationsController extends BaseController {
                     }
                 }
                 if (editor != null) {
-                    editor.commit();
+                    editor.apply();
                 }
             } catch (Exception e) {
                 FileLog.e(e);
             }
-            preferences.edit().putBoolean("groupsCreated4", true).commit();
+            preferences.edit().putBoolean("groupsCreated4", true).apply();
             groupsCreated = true;
         }
         if (!channelGroupsCreated) {
@@ -3301,7 +3298,7 @@ public class NotificationsController extends BaseController {
                                     priority = 0;
                                 }
                                 if (isDefault) {
-                                    editor.putInt(getGlobalNotificationsKey(type), 0).commit();
+                                    editor.putInt(getGlobalNotificationsKey(type), 0).apply();
                                     if (type == TYPE_CHANNEL) {
                                         editor.putInt("priority_channel", priority);
                                     } else if (type == TYPE_GROUP) {
@@ -3359,7 +3356,7 @@ public class NotificationsController extends BaseController {
                             edited = true;
                         }
                         if (editor != null) {
-                            editor.commit();
+                            editor.apply();
                         }
                     }
                 }
@@ -3370,7 +3367,7 @@ public class NotificationsController extends BaseController {
         }
 
         if (edited && newSettingsHash != null) {
-            preferences.edit().putString(key, channelId).putString(key + "_s", newSettingsHash).commit();
+            preferences.edit().putString(key, channelId).putString(key + "_s", newSettingsHash).apply();
             if (BuildVars.LOGS_ENABLED) {
                 FileLog.d("change edited channel " + channelId);
             }
@@ -3436,7 +3433,7 @@ public class NotificationsController extends BaseController {
             }
             lastNotificationChannelCreateTime = SystemClock.elapsedRealtime();
             systemNotificationManager.createNotificationChannel(notificationChannel);
-            preferences.edit().putString(key, channelId).putString(key + "_s", newSettingsHash).commit();
+            preferences.edit().putString(key, channelId).putString(key + "_s", newSettingsHash).apply();
         }
         return channelId;
     }
@@ -4022,7 +4019,7 @@ public class NotificationsController extends BaseController {
                 editor.putString("sound_path_" + NotificationsController.getSharedPrefKey(dialogId, topicId), newSound);
                 deleteNotificationChannelInternal(dialogId, topicId, -1);
             }
-            editor.commit();
+            editor.apply();
             sound = Settings.System.DEFAULT_RINGTONE_URI;
             notificationBuilder.setChannelId(validateChannelId(dialogId, topicId, chatName, vibrationPattern, ledColor, sound, importance, isDefault, isInApp, isSilent, chatType));
             notificationManager.notify(notificationId, notificationBuilder.build());
@@ -4811,7 +4808,7 @@ public class NotificationsController extends BaseController {
         if (dialog != null) {
             dialog.notify_settings = new TLRPC.TL_peerNotifySettings();
         }
-        editor.commit();
+        editor.apply();
         getNotificationsController().updateServerNotificationsSettings(did, topicId,true);
     }
 
@@ -4858,7 +4855,7 @@ public class NotificationsController extends BaseController {
                 dialog.notify_settings.mute_until = untilTime;
             }
         }
-        editor.commit();
+        editor.apply();
         updateServerNotificationsSettings(dialog_id, topicId);
     }
 
@@ -4923,7 +4920,7 @@ public class NotificationsController extends BaseController {
         }
 
         getConnectionsManager().sendRequest(req, (response, error) -> {
-           // FileLog.d("updateServerNotificationsSettings " + dialogId + " " + topicId + " error = " + error);
+            // FileLog.d("updateServerNotificationsSettings " + dialogId + " " + topicId + " error = " + error);
         });
     }
 
@@ -5019,7 +5016,7 @@ public class NotificationsController extends BaseController {
     }
 
     public void setGlobalNotificationsEnabled(int type, int time) {
-        getAccountInstance().getNotificationsSettings().edit().putInt(getGlobalNotificationsKey(type), time).commit();
+        getAccountInstance().getNotificationsSettings().edit().putInt(getGlobalNotificationsKey(type), time).apply();
         updateServerNotificationsSettings(type);
         getMessagesStorage().updateMutedDialogsFiltersCounters();
         deleteNotificationChannelGlobal(type);

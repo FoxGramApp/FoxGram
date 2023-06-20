@@ -22,6 +22,8 @@ import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.AlertsCreator;
 
+import it.colorgram.android.ColorConfig;
+
 public class BasePermissionsActivity extends Activity {
     public final static int REQUEST_CODE_GEOLOCATION = 2,
             REQUEST_CODE_EXTERNAL_STORAGE = 4,
@@ -84,7 +86,7 @@ public class BasePermissionsActivity extends Activity {
             } else if (!cameraGranted) {
                 showPermissionErrorAlert(R.raw.permission_request_camera, LocaleController.getString("PermissionNoCameraWithHint", R.string.PermissionNoCameraWithHint));
             } else {
-                if (SharedConfig.inappCamera) {
+                if (ColorConfig.cameraEnable) {
                     CameraController.getInstance().initCamera(null);
                 }
                 return false;

@@ -197,7 +197,6 @@ public class OWLENC {
         public boolean noQuoteForward;
         public boolean saveMessage;
         public boolean repeatMessage;
-        public boolean patpat;
         public boolean reportMessage = true;
         public boolean messageDetails;
 
@@ -221,9 +220,6 @@ public class OWLENC {
             repeatMessage ^= true;
         }
 
-        public void togglePatpat() {
-            patpat ^= true;
-        }
 
         public void toggleReportMessage() {
             reportMessage ^= true;
@@ -339,7 +335,7 @@ public class OWLENC {
             }
 
             if (settings.containsKey("showDeleteDownloadedFile") || settings.containsKey("showCopyPhoto") || settings.containsKey("showNoQuoteForward") ||
-                    settings.containsKey("showSaveMessage") || settings.containsKey("showRepeat") || settings.containsKey("showPatpat") ||
+                    settings.containsKey("showSaveMessage") || settings.containsKey("showRepeat") ||
                     settings.containsKey("showReportMessage") || settings.containsKey("showMessageDetails")) {
                 ContextMenu contextMenu = new ContextMenu();
                 Object showDeleteDownloadedFile = settings.get("showDeleteDownloadedFile");
@@ -347,7 +343,6 @@ public class OWLENC {
                 Object showNoQuoteForward = settings.get("showNoQuoteForward");
                 Object showSaveMessage = settings.get("showSaveMessage");
                 Object showRepeat = settings.get("showRepeat");
-                Object showPatpat = settings.get("showPatpat");
                 Object showReportMessage = settings.get("showReportMessage");
                 Object showMessageDetails = settings.get("showMessageDetails");
                 if (showDeleteDownloadedFile instanceof Boolean) {
@@ -369,10 +364,6 @@ public class OWLENC {
                 if (showRepeat instanceof Boolean) {
                     contextMenu.repeatMessage = (Boolean) showRepeat;
                     settings.remove("showRepeat");
-                }
-                if (showPatpat instanceof Boolean) {
-                    contextMenu.patpat = (Boolean) showPatpat;
-                    settings.remove("showPatpat");
                 }
                 if (showReportMessage instanceof Boolean) {
                     contextMenu.reportMessage = (Boolean) showReportMessage;

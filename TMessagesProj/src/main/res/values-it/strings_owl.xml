@@ -5,6 +5,13 @@
     <string name="TestBackendOn">Quest\'account si connetterà al server Backend.</string>
     <string name="TestBackendOff">Quest\'account si connetterà al server di produzione Backend.</string>
     <string name="OwlSetting">Impostazioni di Colorgram</string>
+    <string name="ColorVersionAppName">Colorgram</string>
+    <string name="ColorVersionAppNameBeta">Colorgram Beta</string>
+    <string name="ColorVersionAppNameAlpha">Colorgram Alpha</string>
+    <string name="Categories">Categorie</string>
+    <string name="UpdateInfo">Versione</string>
+    <string name="ViewUpdate">Impostazioni aggiornamenti</string>
+    <string name="AppVersionHeader">Versione dell\'app</string>
     <string name="Chat">Chat</string>
     <string name="OwlUpdates">Aggiornamenti</string>
     <string name="Experimental">Impostazioni sperimentali</string>
@@ -66,8 +73,6 @@
     <string name="AppIconFoxgram" comment="AppIconFoxgram">Volpe</string>
     <string name="UnlockedHiddenFoxIcon">Ah… Congratulazioni! Hai sbloccato l\'icona della volpe.</string>
     <string name="AppIconRainbow" comment="AppIconRainbow">Arcobaleno</string>
-    <string name="AppIconChupa" comment="AppIconChupa">Chupa</string>
-    <string name="UnlockedHiddenChupaIcon">Sei stato chupato! L\'icona Chupa è ora disponibile nelle impostazioni.</string>
     <string name="ClassicIcon">Classica</string>
     <string name="HidePhone">Nascondi il tuo numero di telefono</string>
     <string name="HidePhoneDesc">Sarà nascosto dalle impostazioni e dal menu laterale</string>
@@ -97,9 +102,8 @@
     <string name="ConfirmCallsDesc">Mostra una finestra di conferma ogni volta che chiami qualcuno</string>
     <string name="StickersSize">Dimensione Sticker</string>
     <string name="ResetStickersSize">Ripristina dimensione sticker</string>
-    <!-- HARRY POTTER QUOTE B.1 C.4 -->
     <string name="StickerSizeDialogMessage">Cos\'altro manca?</string>
-    <string name="StickerSizeDialogMessage2">Per mille fulmini, l\'avevo dimenticato.</string>
+    <string name="StickerSizeDialogMessage2">Questo è molto colorato.</string>
     <string name="FlipMediaByTapping">Sfoglia i media toccando sui bordi</string>
     <string name="JumpToNextChannel">Passa al canale successivo</string>
     <string name="GreetingSticker">Sticker di benvenuto</string>
@@ -155,7 +159,7 @@
     <string name="TranslateApiUnsupported">Il fornitore di traduzione selezionato non supporta la tua lingua.</string>
     <string name="BrokenMLKit">Opzione non disponibile</string>
     <string name="BrokenMLKitDetail">L\'identificatore della lingua di Google MLKit non sembra funzionare sul tuo dispositivo.</string>
-    <string name="DC_IDSettings">Datacenter e ID utente</string>
+    <string name="DC_IDSettings">Profilo utente</string>
     <string name="Automatic">Automatico</string>
     <string name="ShowID_DC">Mostra ID e DC nei profili</string>
     <string name="IDType">Tipo di ID</string>
@@ -180,15 +184,17 @@
     <string name="FileDC">Datacenter</string>
     <string name="FilePath">Percorso</string>
     <string name="FileSize">Dimensione</string>
-    <string name="CameraType">Tipo di fotocamera</string>
+    <string name="CameraType">Fotocamera</string>
     <string name="CameraTypeDefault">Predefinita</string>
     <string name="DefaultCameraDesc">Usa la fotocamera integrata di Telegram.</string>
     <string name="CameraXDesc">CameraX è supportata solo su alcuni <![CDATA[<a href="https://developer.android.com/training/camerax/devices">dispositivi selezionati</a>]]>, il supporto agli effetti e alle lenti dipende dal produttore.</string>
+    <string name="CameraPreview">Anteprima della fotocamera</string>
     <string name="PerformanceMode">Modalità prestazioni</string>
     <string name="PerformanceModeDesc">La qualità di CameraX sarà ridotta a favore delle prestazioni</string>
     <string name="CameraQuality">Qualità della fotocamera</string>
     <string name="CameraTypeSystem">Sistema</string>
     <string name="SystemCameraDesc">Accedi direttamente alla fotocamera di sistema (non applicabile per i videomessaggi).</string>
+    <string name="CameraButton">Fotocamera negli allegati</string>
     <string name="MediaSettings">Media</string>
     <string name="VoiceEnhancements">Miglioramenti vocali</string>
     <string name="VoiceEnhancementsDesc">Soppressione del rumore e normalizzazione della voce</string>
@@ -228,8 +234,8 @@
     <string name="CheckFailed">Impossibile controllare gli aggiornamenti</string>
     <string name="InstallBetas">Installa versioni Beta</string>
     <string name="InstallBetasDesc">Prova i nuovi aggiornamenti di Colorgram prima del loro rilascio ufficiale</string>
-    <string name="AutoUpdate">Aggiorna automaticamente</string>
-    <string name="AutoUpdatePrompt">Avvisa quando disponibile</string>
+    <string name="AutoUpdate">Popup aggiornamenti</string>
+    <string name="AutoUpdatePrompt">Mostra un popup quando è disponibile un aggiornamento</string>
     <string name="APKsChannel">Canale APK</string>
     <string name="MediaStreamVoip">Usa il flusso multimediale nelle chat video</string>
     <string name="UnlimitedFavoriteStickers">Sticker preferiti illimitati</string>
@@ -301,7 +307,6 @@
     <string name="KeepMarkdownDesc" comment="KeepMarkdownDesc">Mantieni la formattazione markdown, durante la traduzione di un messaggio.</string>
     <string name="ThemeMonetLight">Monet Chiaro</string>
     <string name="ThemeMonetDark">Monet Scuro</string>
-    <string name="Patpat">Patpat</string>
     <string name="PrivacyPolicyLogin">Continuando,\naccetti l\'**Informativa sulla Privacy**.</string>
     <string name="OwlPrivacyPolicy">Informativa della privacy di Colorgram</string>
     <string name="HideSendAsChannel">Nascondi \"Invia come canale\"</string>
@@ -333,5 +338,20 @@
     <string name="ZeroShutterLagDesc">Riduci al minimo la latenza quando scatti le foto catturando più fotogrammi rapidamente prima e dopo aver premuto il pulsante di scatto</string>
     <string name="BrokenBackupDetail">Impossibile esportare il tuo backup. Contattaci tramite il nostro <![CDATA[<a href="https://t.me/%1$s">Gruppo di Supporto</a>]]>.</string>
     <string name="TranslateInfo">Gestisci le tue preferenze di traduzione e autotraduzione delle impostazioni Colorgram.</string>
-    <string name="SmoothNav">Attiva transizioni fluide</string>
+    <string name="SmoothNav">Navigazione fluida</string>
+    <string name="HideChannelBottomButton">Nascondi bottone in basso nei canali</string>
+    <string name="DoubleTapReactions">Reazioni rapide</string>
+    <string name="ColorDisabledTap">Le reazioni rapide sono state disabilitate.</string>
+    <string name="AccountRegistrationDate">Data di registrazione</string>
+    <string name="ShowDate">Mostra data di registrazione</string>
+    <string name="TitleStep">Step per riprodurre:</string>
+    <string name="StepToReproduce">Scrivi qua i step per riprodurre.</string>
+    <string name="AppVersion">Versione dell\'app: </string>
+    <string name="BaseVersion">Versione di Telegram: </string>
+    <string name="DeviceCrashlytics">Dispositivo: </string>
+    <string name="OS">Versione SO: </string>
+    <string name="Performance">Classe performance: </string>
+    <string name="Lang">Lingua: </string>
+    <string name="DnSc">Sorgente di download: </string>
+    <string name="EnabledCameraDisabled">Fotocamera bloccata</string>
 </resources>

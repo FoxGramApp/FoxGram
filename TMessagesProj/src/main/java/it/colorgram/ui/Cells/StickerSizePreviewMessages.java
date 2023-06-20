@@ -65,13 +65,13 @@ public class StickerSizePreviewMessages extends LinearLayout {
         message.media.document.access_hash = 0;
         message.media.document.date = date;
         TLRPC.TL_documentAttributeSticker attributeSticker = new TLRPC.TL_documentAttributeSticker();
-        attributeSticker.alt = "\uD83E\uDD89";
+        attributeSticker.alt = "\uD83C\uDFA8";
         message.media.document.attributes.add(attributeSticker);
         TLRPC.TL_documentAttributeImageSize attributeImageSize = new TLRPC.TL_documentAttributeImageSize();
         attributeImageSize.h = 512;
         attributeImageSize.w = 512;
         message.media.document.attributes.add(attributeImageSize);
-        message.message = "\uD83E\uDD89";
+        message.message = "\uD83C\uDFA8";
         message.out = true;
         message.peer_id = new TLRPC.TL_peerUser();
         message.peer_id.user_id = 0;
@@ -88,7 +88,7 @@ public class StickerSizePreviewMessages extends LinearLayout {
         message.out = false;
         message.peer_id = new TLRPC.TL_peerUser();
         message.peer_id.user_id = 1;
-        messageObjects[0].customReplyName = "Rubeus Hagrid";
+        messageObjects[0].customReplyName = "Pierlu";
         messageObjects[0].replyMessageObject = new MessageObject(UserConfig.selectedAccount, message, true, false);
 
         message = new TLRPC.TL_message();
@@ -102,7 +102,7 @@ public class StickerSizePreviewMessages extends LinearLayout {
         message.peer_id = new TLRPC.TL_peerUser();
         message.peer_id.user_id = 1;
         messageObjects[1] = new MessageObject(UserConfig.selectedAccount, message, true, false);
-        messageObjects[1].customReplyName = "Harry Potter";
+        messageObjects[1].customReplyName = "Sparky";
         messageObjects[1].replyMessageObject = messageObjects[0];
 
         for (int a = 0; a < cells.length; a++) {

@@ -42,9 +42,12 @@ public class ColorConfig extends SettingsController {
     public static boolean gifAsVideo;
     public static boolean showFolderWhenForward;
     public static boolean useRearCamera;
+    public static boolean cameraEnable;
+    public static boolean disableCameraTile;
     public static boolean useSystemFont;
     public static boolean useSystemEmoji;
     public static boolean showGreetings;
+    public static boolean hideChannelBottom;
     public static boolean showTranslate;
     public static boolean betaUpdates;
     public static boolean notifyUpdates;
@@ -71,6 +74,7 @@ public class ColorConfig extends SettingsController {
     public static boolean openArchiveOnPull;
     public static boolean slidingChatTitle;
     public static boolean showIDAndDC;
+    public static boolean showAccountRegistrationDate;
     public static boolean xiaomiBlockedInstaller;
     public static boolean searchIconInActionBar;
     public static boolean autoTranslate;
@@ -79,12 +83,12 @@ public class ColorConfig extends SettingsController {
     public static boolean uploadSpeedBoost;
     public static boolean hideTimeOnSticker;
     public static boolean showStatusInChat;
-    public static boolean unlockedChupa;
     public static boolean hideAllTab;
     public static boolean hideSendAsChannel;
     public static boolean showNameInActionBar;
     public static boolean sendLargePhotos;
     public static boolean reduceCameraXLatency;
+    public static boolean cameraPreview;
     public static boolean translateEntireChat;
     public static String translationTarget = "app";
     public static String translationKeyboardTarget = "app";
@@ -114,8 +118,8 @@ public class ColorConfig extends SettingsController {
     public static int idType;
     public static long lastUpdateCheck = 0;
     public static int downloadSpeedBoost;
-    public static int unlockedSecretIcon;
     public static int lastSelectedCompression;
+    public static boolean doubleTapDisabled;
 
     static {
         loadConfig(true);
@@ -149,9 +153,12 @@ public class ColorConfig extends SettingsController {
             gifAsVideo = getBoolean("gifAsVideo", false);
             showFolderWhenForward = getBoolean("showFolderWhenForward", true);
             useRearCamera = getBoolean("useRearCamera", false);
+            cameraEnable = getBoolean("cameraEnable", true);
+            disableCameraTile = getBoolean("disableCameraTile", false);
             useSystemFont = getBoolean("useSystemFont", false);
             useSystemEmoji = getBoolean("useSystemEmoji", false);
             showGreetings = getBoolean("showGreetings", true);
+            hideChannelBottom = getBoolean("hideChannelBottom", false);
             showTranslate = getBoolean("showTranslate", false);
             betaUpdates = getBoolean("betaUpdates", false);
             notifyUpdates = getBoolean("notifyUpdates", true);
@@ -186,6 +193,7 @@ public class ColorConfig extends SettingsController {
             showSnowFalling = getBoolean("showSnowFalling", true);
             cameraType = getInt("cameraType", CameraXUtils.getDefault());
             cameraResolution = getInt("cameraResolution", CameraXUtils.getCameraResolution());
+            cameraPreview = getBoolean("cameraPreview", true);
             useCameraXOptimizedMode = getBoolean("useCameraXOptimizedMode", SharedConfig.getDevicePerformanceClass() != SharedConfig.PERFORMANCE_CLASS_HIGH);
             disableProximityEvents = getBoolean("disableProximityEvents", false);
             verifyLinkTip = getBoolean("verifyLinkTip", false);
@@ -196,6 +204,7 @@ public class ColorConfig extends SettingsController {
             openArchiveOnPull = getBoolean("openArchiveOnPull", false);
             slidingChatTitle = getBoolean("slidingChatTitle", false);
             showIDAndDC = getBoolean("showIDAndDC", false);
+            showAccountRegistrationDate = getBoolean("showAccountRegistrationDate", true);
             doNotTranslateLanguages.readParams(getByteArray("doNotTranslateLanguages"), magicException, "app");
             dcStyleType = getInt("dcStyleType", 0);
             idType = getInt("idType", 0);
@@ -205,8 +214,6 @@ public class ColorConfig extends SettingsController {
             keepTranslationMarkdown = getBoolean("keepTranslationMarkdown", true);
             hideTimeOnSticker = getBoolean("hideTimeOnSticker", false);
             showStatusInChat = getBoolean("showStatusInChat", false);
-            unlockedSecretIcon = getInt("unlockedSecretIcon", 0);
-            unlockedChupa = getBoolean("unlockedChupa", false);
             hideAllTab = getBoolean("hideAllTab", false);
             hideSendAsChannel = getBoolean("hideSendAsChannel", false);
             showNameInActionBar = getBoolean("showNameInActionBar", false);
@@ -215,6 +222,7 @@ public class ColorConfig extends SettingsController {
             translateEntireChat = getBoolean("translateEntireChat", false);
             confirmSending.readParams(getByteArray("confirmSending"), magicException);
             contextMenu.readParams(getByteArray("contextMenu"), magicException);
+            doubleTapDisabled = getBoolean("doubleTapDisabled", true);
 
             //EXPERIMENTAL OPTIONS
             devOptEnabled = getBoolean("devOptEnabled", false);
@@ -268,11 +276,9 @@ public class ColorConfig extends SettingsController {
     public static void toggleHideKeyboard() {
         putValue("hideKeyboard", hideKeyboard ^= true);
     }
-
     public static void toggleGifAsVideo() {
         putValue("gifAsVideo", gifAsVideo ^= true);
     }
-
     public static void toggleShowFolderWhenForward() {
         putValue("showFolderWhenForward", showFolderWhenForward ^= true);
     }
@@ -280,7 +286,13 @@ public class ColorConfig extends SettingsController {
     public static void toggleUseRearCamera() {
         putValue("useRearCamera", useRearCamera ^= true);
     }
-
+    public static  void toggleCameraEnable() {
+        putValue("cameraEnable", cameraEnable ^= true);
+        putValue("disableCameraTile", disableCameraTile ^= true);
+    }
+    public static void toggleDisableCameraTile() {
+        putValue("disableCameraTile", disableCameraTile ^= true);
+    }
     public static void toggleUseSystemFont() {
         putValue("useSystemFont", useSystemFont ^= true);
     }
@@ -288,10 +300,11 @@ public class ColorConfig extends SettingsController {
     public static void toggleUseSystemEmoji() {
         putValue("useSystemEmoji", useSystemEmoji ^= true);
     }
-
+    public static void toggleDoubleTapDisabled() {putValue("doubleTapDisabled", doubleTapDisabled ^= true);}
     public static void toggleShowGreetings() {
         putValue("showGreetings", showGreetings ^= true);
     }
+    public static void toggleHideChannelBottom() { putValue("hideChannelBottom", hideChannelBottom ^= true); }
 
     public static void toggleShowTranslate() {
         putValue("showTranslate", showTranslate ^= true);
@@ -333,7 +346,9 @@ public class ColorConfig extends SettingsController {
         putValue("pacmanForced", pacmanForced ^= true);
     }
 
-    public static void toggleSmoothNav() { putValue("SmoothNav", SmoothNav ^= true);}
+    public static void toggleSmoothNav() {
+        putValue("SmoothNav", SmoothNav ^= true);
+    }
 
     public static void toggleSmartButtons() {
         putValue("smartButtons", smartButtons ^= true);
@@ -381,6 +396,9 @@ public class ColorConfig extends SettingsController {
     public static void toggleShowIDAndDC() {
         putValue("showIDAndDC", showIDAndDC ^= true);
     }
+    public static void toggleShowAccountRegistrationDate() {
+        putValue("showAccountRegistrationDate", showAccountRegistrationDate ^= true);
+    }
 
     public static void toggleSearchIconInActionBar() {
         putValue("searchIconInActionBar", searchIconInActionBar ^= true);
@@ -400,6 +418,10 @@ public class ColorConfig extends SettingsController {
 
     public static void toggleReduceCameraXLatency() {
         putValue("reduceCameraXLatency", reduceCameraXLatency ^= true);
+    }
+
+    public static void toggleCameraPreview() {
+        putValue("cameraPreview", cameraPreview ^= true);
     }
 
     public static void toggleHideTimeOnSticker() {
@@ -428,14 +450,6 @@ public class ColorConfig extends SettingsController {
 
     public static void toggleSendLargePhotos() {
         putValue("sendLargePhotos", sendLargePhotos ^= true);
-    }
-
-    public static void unlockChupa() {
-        putValue("unlockedChupa", unlockedChupa = true);
-    }
-
-    public static void setUnlockedSecretIcon(int value) {
-        putValue("unlockedSecretIcon", unlockedSecretIcon = value);
     }
 
     public static void setXiaomiBlockedInstaller() {

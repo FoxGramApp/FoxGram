@@ -56,6 +56,7 @@ public class colorgramGeneralSettings extends BaseSettingsActivity {
     private int doNotTranslateSelectRow;
     private int autoTranslateRow;
     private int keepMarkdownRow;
+    private int dateRow;
     private int divisorTranslationRow;
     private int hintTranslation1;
     private int hintTranslation2;
@@ -169,6 +170,12 @@ public class colorgramGeneralSettings extends BaseSettingsActivity {
                 listAdapter.notifyItemChanged(idTypeRow, PARTIAL);
                 reloadInterface();
             });
+        } else if (position == dateRow){
+            ColorConfig.toggleShowAccountRegistrationDate();
+            if (view instanceof TextCheckCell) {
+                ((TextCheckCell) view).setChecked(ColorConfig.showAccountRegistrationDate);
+                reloadInterface();
+            }
         } else if (position == autoTranslateRow) {
             if (!getUserConfig().isPremium() && ColorConfig.translationProvider == Translator.PROVIDER_TELEGRAM) {
                 showDialog(new PremiumFeatureBottomSheet(colorgramGeneralSettings.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
@@ -228,6 +235,7 @@ public class colorgramGeneralSettings extends BaseSettingsActivity {
         dcIdSettingsHeaderRow = rowCount++;
         dcStyleSelectorRow = rowCount++;
         dcIdRow = rowCount++;
+        dateRow = rowCount++;
         idTypeRow = rowCount++;
         divisorDCIdRow = rowCount++;
         hintIdRow = rowCount++;
@@ -274,6 +282,8 @@ public class colorgramGeneralSettings extends BaseSettingsActivity {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("HidePhone", R.string.HidePhone), LocaleController.getString("HidePhoneDesc", R.string.HidePhoneDesc), ColorConfig.hidePhoneNumber, true, true);
                     } else if (position == phoneContactsSwitchRow) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("HidePhoneOthers", R.string.HidePhoneOthers), LocaleController.getString("HidePhoneOthersDesc", R.string.HidePhoneOthersDesc), ColorConfig.hideContactNumber, true, true);
+                    } else if (position == dateRow) {
+                        textCheckCell.setTextAndCheck(LocaleController.getString("AccountRegistrationDate", R.string.AccountRegistrationDate), ColorConfig.showAccountRegistrationDate, true);
                     } else if (position == dcIdRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("ShowID_DC", R.string.ShowID_DC), ColorConfig.showIDAndDC, true);
                     } else if (position == confirmCallSwitchRow) {
@@ -475,7 +485,7 @@ public class colorgramGeneralSettings extends BaseSettingsActivity {
             } else if (position == privacyHeaderRow || position == translationHeaderRow || position == callHeaderRow ||
                     position == dcIdSettingsHeaderRow || position == notificationHeaderRow) {
                 return ViewType.HEADER;
-            } else if (position == phoneNumberSwitchRow || position == phoneContactsSwitchRow || position == dcIdRow ||
+            } else if (position == phoneNumberSwitchRow || position == phoneContactsSwitchRow || position == dateRow || position == dcIdRow ||
                     position == confirmCallSwitchRow || position == notificationAccentRow || position == keepMarkdownRow ||
                     position == showTranslateButtonRow || position == translateEntireChatRow) {
                 return ViewType.SWITCH;
@@ -598,6 +608,7 @@ public class colorgramGeneralSettings extends BaseSettingsActivity {
             put(++pointer, dcIdSettingsHeaderRow, sparseIntArray);
             put(++pointer, dcStyleSelectorRow, sparseIntArray);
             put(++pointer, dcIdRow, sparseIntArray);
+            put(++pointer, dateRow, sparseIntArray);
             put(++pointer, idTypeRow, sparseIntArray);
             put(++pointer, divisorDCIdRow, sparseIntArray);
             put(++pointer, hintIdRow, sparseIntArray);

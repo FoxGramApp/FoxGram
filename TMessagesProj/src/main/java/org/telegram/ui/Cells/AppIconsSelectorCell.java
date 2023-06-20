@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
@@ -49,6 +50,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import it.colorgram.android.ColorConfig;
+import it.colorgram.android.MonetIconController;
 
 public class AppIconsSelectorCell extends RecyclerListView implements NotificationCenter.NotificationCenterDelegate {
     public final static float ICONS_ROUND_RADIUS = 18;
@@ -153,8 +155,22 @@ public class AppIconsSelectorCell extends RecyclerListView implements Notificati
 
     @SuppressLint("NotifyDataSetChanged")
     private void updateIconsVisibility() {
+        /*
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S_V2) {
+            availableIcons.clear();
+            availableIcons.addAll(Arrays.asList(LauncherIconController.LauncherIcon.values()));
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S && !(MonetIconController.isSelectedMonet())) {
+            availableIcons.clear();
+            availableIcons.addAll(Arrays.asList(LauncherIconController.LauncherIcon.values()));
+            availableIcons.remove(LauncherIconController.LauncherIcon.MONET);
+        } else if (MonetIconController.needMonetMigration()) {
+            availableIcons.clear();
+            availableIcons.addAll(Arrays.asList(LauncherIconController.LauncherIcon.values()));
+        }
+        */
         availableIcons.clear();
         availableIcons.addAll(Arrays.asList(LauncherIconController.LauncherIcon.values()));
+        availableIcons.remove(LauncherIconController.LauncherIcon.MONET);
         if (MessagesController.getInstance(currentAccount).premiumLocked) {
             for (int i = 0; i < availableIcons.size(); i++) {
                 if (availableIcons.get(i).premium) {
@@ -163,18 +179,6 @@ public class AppIconsSelectorCell extends RecyclerListView implements Notificati
                 }
             }
         }
-/*        for (int i = 0; i < availableIcons.size(); i++) {
-            LauncherIconController.LauncherIcon icon = availableIcons.get(i);
-            if (icon.hidden && !LauncherIconController.isEnabled(icon)) {
-                if (icon == LauncherIconController.LauncherIcon.FOXGRAM && ColorConfig.unlockedSecretIcon == -1) {
-                    continue;
-                } else if (icon == LauncherIconController.LauncherIcon.CHUPA && ColorConfig.unlockedChupa) {
-                    continue;
-                }
-                availableIcons.remove(i);
-                i--;
-            }
-        } */
         getAdapter().notifyDataSetChanged();
         invalidateItemDecorations();
 

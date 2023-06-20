@@ -48,7 +48,8 @@ public class CameraXUtils {
     private static int cameraResolution = -1;
 
     public static boolean isCameraXSupported() {
-        return SharedConfig.getDevicePerformanceClass() >= SharedConfig.PERFORMANCE_CLASS_AVERAGE;
+        //Performance class AVERAGE is suggested
+        return SharedConfig.getDevicePerformanceClass() >= SharedConfig.PERFORMANCE_CLASS_LOW;
     }
 
     public static int getDefault() {

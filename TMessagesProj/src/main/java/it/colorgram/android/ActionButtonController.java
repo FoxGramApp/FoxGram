@@ -153,16 +153,6 @@ public class ActionButtonController {
     }
 
     private int getColor(String id) {
-        switch (id) {
-            case "leave":
-            case "stop":
-            case "block":
-            case "logout":
-                return Theme.key_dialogTextRed;
-            case "unblock":
-            case "restart":
-                return Theme.key_windowBackgroundWhiteGreenText2;
-        }
         return Theme.key_switch2TrackChecked;
     }
 

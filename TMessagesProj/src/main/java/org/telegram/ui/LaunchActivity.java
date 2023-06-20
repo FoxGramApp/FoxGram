@@ -368,17 +368,15 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         }
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setTheme(R.style.Theme_TMessages);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            try {
-                setTaskDescription(new ActivityManager.TaskDescription(null, null, Theme.getColor(Theme.key_actionBarDefault) | 0xff000000));
-            } catch (Throwable ignore) {
+        try {
+            setTaskDescription(new ActivityManager.TaskDescription(null, null, Theme.getColor(Theme.key_actionBarDefault) | 0xff000000));
+        } catch (Throwable ignore) {
 
-            }
-            try {
-                getWindow().setNavigationBarColor(0xff000000);
-            } catch (Throwable ignore) {
+        }
+        try {
+            getWindow().setNavigationBarColor(0xff000000);
+        } catch (Throwable ignore) {
 
-            }
         }
         getWindow().setBackgroundDrawableResource(R.drawable.transparent);
         if (SharedConfig.passcodeHash.length() > 0 && !SharedConfig.allowScreenCapture) {
@@ -409,10 +407,8 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             }
         };
         setContentView(frameLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        if (Build.VERSION.SDK_INT >= 21) {
-            themeSwitchImageView = new ImageView(this);
-            themeSwitchImageView.setVisibility(View.GONE);
-        }
+        themeSwitchImageView = new ImageView(this);
+        themeSwitchImageView.setVisibility(View.GONE);
 
         drawerLayoutContainer = new DrawerLayoutContainer(this) {
             private boolean wasPortrait;
@@ -454,19 +450,17 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         drawerLayoutContainer.setBehindKeyboardColor(Theme.getColor(Theme.key_windowBackgroundWhite));
         frameLayout.addView(drawerLayoutContainer, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
-        if (Build.VERSION.SDK_INT >= 21) {
-            themeSwitchSunView = new View(this) {
-                @Override
-                protected void onDraw(Canvas canvas) {
-                    if (themeSwitchSunDrawable != null) {
-                        themeSwitchSunDrawable.draw(canvas);
-                        invalidate();
-                    }
+        themeSwitchSunView = new View(this) {
+            @Override
+            protected void onDraw(Canvas canvas) {
+                if (themeSwitchSunDrawable != null) {
+                    themeSwitchSunDrawable.draw(canvas);
+                    invalidate();
                 }
-            };
-            frameLayout.addView(themeSwitchSunView, LayoutHelper.createFrame(48, 48));
-            themeSwitchSunView.setVisibility(View.GONE);
-        }
+            }
+        };
+        frameLayout.addView(themeSwitchSunView, LayoutHelper.createFrame(48, 48));
+        themeSwitchSunView.setVisibility(View.GONE);
         frameLayout.addView(fireworksOverlay = new FireworksOverlay(this) {
             {
                 setVisibility(GONE);
@@ -577,7 +571,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                         presentFragment(new ChannelCreateActivity(args));
                     } else {
                         presentFragment(new ActionIntroActivity(ActionIntroActivity.ACTION_TYPE_CHANNEL_CREATE));
-                        preferences.edit().putBoolean("channel_intro", true).commit();
+                        preferences.edit().putBoolean("channel_intro", true).apply();
                     }
                     drawerLayoutContainer.closeDrawer(false);
                 } else if (id == 6) {
@@ -611,7 +605,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         LocationManager lm = (LocationManager) ApplicationLoader.applicationContext.getSystemService(Context.LOCATION_SERVICE);
                         enabled = lm.isLocationEnabled();
-                    } else if (Build.VERSION.SDK_INT >= 19) {
+                    } else {
                         try {
                             int mode = Settings.Secure.getInt(ApplicationLoader.applicationContext.getContentResolver(), Settings.Secure.LOCATION_MODE, Settings.Secure.LOCATION_MODE_OFF);
                             enabled = (mode != Settings.Secure.LOCATION_MODE_OFF);
@@ -711,9 +705,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     final View view = viewHolder.itemView;
                     sideMenu.cancelClickRunnables(false);
                     view.setBackgroundColor(Theme.getColor(Theme.key_dialogBackground));
-                    if (Build.VERSION.SDK_INT >= 21) {
-                        ObjectAnimator.ofFloat(view, "elevation", AndroidUtilities.dp(1)).setDuration(150).start();
-                    }
+                    ObjectAnimator.ofFloat(view, "elevation", AndroidUtilities.dp(1)).setDuration(150).start();
                 }
             }
 
@@ -728,16 +720,14 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     selectedViewHolder = null;
                     view.setTranslationX(0f);
                     view.setTranslationY(0f);
-                    if (Build.VERSION.SDK_INT >= 21) {
-                        final ObjectAnimator animator = ObjectAnimator.ofFloat(view, "elevation", 0f);
-                        animator.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                view.setBackground(null);
-                            }
-                        });
-                        animator.setDuration(150).start();
-                    }
+                    final ObjectAnimator animator = ObjectAnimator.ofFloat(view, "elevation", 0f);
+                    animator.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            view.setBackground(null);
+                        }
+                    });
+                    animator.setDuration(150).start();
                 }
             }
 
@@ -931,9 +921,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 view.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener = () -> {
                     int height = view.getMeasuredHeight();
                     FileLog.d("height = " + height + " displayHeight = " + AndroidUtilities.displaySize.y);
-                    if (Build.VERSION.SDK_INT >= 21) {
-                        height -= AndroidUtilities.statusBarHeight;
-                    }
+                    height -= AndroidUtilities.statusBarHeight;
                     if (height > AndroidUtilities.dp(100) && height < AndroidUtilities.displaySize.y && height + AndroidUtilities.dp(100) > AndroidUtilities.displaySize.y) {
                         AndroidUtilities.displaySize.y = height;
                         if (BuildVars.LOGS_ENABLED) {
@@ -1336,7 +1324,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 }
             }
         }
-        if ((SharedConfig.noStatusBar || forceLightStatusBar) && Build.VERSION.SDK_INT >= 21 && checkStatusBar) {
+        if ((SharedConfig.noStatusBar || forceLightStatusBar) && checkStatusBar) {
             getWindow().setStatusBarColor(0);
         }
     }
@@ -2624,7 +2612,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                         new StickersUtils().getStickerAsync(currentAccount, "ArcticFox", 7, document -> {
                                             StickerSetBulletinLayout layout = new StickerSetBulletinLayout(fragment.getParentActivity(), null, StickerSetBulletinLayout.TYPE_EMPTY, document, fragment.getResourceProvider());
                                             layout.subtitleTextView.setVisibility(View.GONE);
-                                            String textEaster = "This is not the Fox DEVELOPER you were looking for!";
+                                            String textEaster = "FOX Dev!";
                                             SpannableString spannableEaster = new SpannableString(textEaster);
                                             spannableEaster.setSpan(new StrikethroughSpan(), 16, 19, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                                             spannableEaster.setSpan(new StyleSpan(Typeface.BOLD), 20, 29, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -2635,16 +2623,6 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             Bulletin bulletin = Bulletin.make(fragment, layout, Bulletin.DURATION_LONG);
                                             bulletin.show();
                                         });
-                                    } else if (url.startsWith("tg:chupagram") || url.startsWith("tg://chupagram")) {
-                                        if (!ColorConfig.unlockedChupa) {
-                                            BaseFragment fragment = mainFragmentsStack.get(mainFragmentsStack.size() - 1);
-                                            AppIconBulletinLayout layout = new AppIconBulletinLayout(fragment.getParentActivity(), LauncherIconController.LauncherIcon.CHUPA, null);
-                                            layout.textView.setText(LocaleController.getString("UnlockedHiddenChupaIcon", R.string.UnlockedHiddenChupaIcon));
-                                            fireworksOverlay.start();
-                                            layout.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
-                                            Bulletin.make(fragment, layout, Bulletin.DURATION_SHORT).show();
-                                            ColorConfig.unlockChupa();
-                                        }
                                     } else if (url.startsWith("tg:experimental") || url.startsWith("tg://experimental")) {
                                         AndroidUtilities.runOnUIThread(() -> presentFragment(new colorgramExperimentalSettings(), false, false));
                                         if (AndroidUtilities.isTablet()) {
@@ -3024,12 +3002,12 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     bulletinText = "Locked in release.";
                 } else if (open_settings == 7) {
                     bulletinText = "Logs enabled.";
-                    ApplicationLoader.applicationContext.getSharedPreferences("systemConfig", Context.MODE_PRIVATE).edit().putBoolean("logsEnabled", BuildVars.LOGS_ENABLED = true).commit();
+                    ApplicationLoader.applicationContext.getSharedPreferences("systemConfig", Context.MODE_PRIVATE).edit().putBoolean("logsEnabled", BuildVars.LOGS_ENABLED = true).apply();
                 } else if (open_settings == 8) {
                     ProfileActivity.sendLogs(LaunchActivity.this, false);
                 } else if (open_settings == 9) {
                     bulletinText = "Logs disabled.";
-                    ApplicationLoader.applicationContext.getSharedPreferences("systemConfig", Context.MODE_PRIVATE).edit().putBoolean("logsEnabled", BuildVars.LOGS_ENABLED = false).commit();
+                    ApplicationLoader.applicationContext.getSharedPreferences("systemConfig", Context.MODE_PRIVATE).edit().putBoolean("logsEnabled", BuildVars.LOGS_ENABLED = false).apply();
                 }
 
                 if (bulletinText != null) {
@@ -5346,7 +5324,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                         SharedPreferences.Editor editor = MessagesController.getGlobalMainSettings().edit();
                         editor.putBoolean("proxy_enabled", false);
                         editor.putBoolean("proxy_enabled_calls", false);
-                        editor.commit();
+                        editor.apply();
                         ConnectionsManager.setProxySettings(false, "", 1080, "", "", "");
                         NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.proxySettingsChanged);
                         proxyErrorDialog = null;
@@ -5442,6 +5420,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             final ChatActivity fragment;
             if (dids.size() <= 1) {
                 final long did = dids.get(0).dialogId;
+                final long topicId = dids.get(0).topicId;
 
                 Bundle args = new Bundle();
                 args.putBoolean("scrollToTopOnResume", true);
@@ -5690,7 +5669,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
     }
 
     private void onPowerSaver(boolean applied) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || actionBarLayout == null || !applied || LiteMode.getPowerSaverLevel() >= 100) {
+        if (actionBarLayout == null || !applied || LiteMode.getPowerSaverLevel() >= 100) {
             return;
         }
         BaseFragment lastFragment = actionBarLayout.getLastFragment();
@@ -6317,12 +6296,10 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     sideMenu.setListSelectorColor(Theme.getColor(Theme.key_listSelector));
                     sideMenu.getAdapter().notifyDataSetChanged();
                 }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    try {
-                        setTaskDescription(new ActivityManager.TaskDescription(null, null, Theme.getColor(Theme.key_actionBarDefault) | 0xff000000));
-                    } catch (Exception ignore) {
+                try {
+                    setTaskDescription(new ActivityManager.TaskDescription(null, null, Theme.getColor(Theme.key_actionBarDefault) | 0xff000000));
+                } catch (Exception ignore) {
 
-                    }
                 }
             }
             drawerLayoutContainer.setBehindKeyboardColor(Theme.getColor(Theme.key_windowBackgroundWhite));
@@ -6333,7 +6310,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             checkSystemBarColors(args.length > 2 && (boolean) args[2], true, checkNavigationBarColor && !isNavigationBarColorFrozen && !actionBarLayout.isTransitionAnimationInProgress());
         } else if (id == NotificationCenter.needSetDayNightTheme) {
             boolean instant = false;
-            if (Build.VERSION.SDK_INT >= 21 && args[2] != null) {
+            if (args[2] != null) {
                 if (themeSwitchImageView.getVisibility() == View.VISIBLE) {
                     return;
                 }
@@ -6823,16 +6800,12 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     }
                     long freeSpace;
                     StatFs statFs = new StatFs(path.getAbsolutePath());
-                    if (Build.VERSION.SDK_INT < 18) {
-                        freeSpace = Math.abs(statFs.getAvailableBlocks() * statFs.getBlockSize());
-                    } else {
-                        freeSpace = statFs.getAvailableBlocksLong() * statFs.getBlockSizeLong();
-                    }
+                    freeSpace = statFs.getAvailableBlocksLong() * statFs.getBlockSizeLong();
                     if (force > 0 || freeSpace < 1024 * 1024 * 50) {
                         if (force > 0) {
                             alreadyShownFreeDiscSpaceAlertForced = System.currentTimeMillis();
                         }
-                        preferences.edit().putLong("last_space_check", System.currentTimeMillis()).commit();
+                        preferences.edit().putLong("last_space_check", System.currentTimeMillis()).apply();
                         AndroidUtilities.runOnUIThread(() -> {
                             if (checkFreeDiscSpaceShown) {
                                 return;
@@ -6913,7 +6886,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             });
             localeDialog = showAlertDialog(builder);
             SharedPreferences preferences = MessagesController.getGlobalMainSettings();
-            preferences.edit().putString("language_showed2", systemLang).commit();
+            preferences.edit().putString("language_showed2", systemLang).apply();
         } catch (Exception e) {
             FileLog.e(e);
         }

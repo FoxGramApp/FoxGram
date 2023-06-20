@@ -59,11 +59,11 @@ public abstract class DownloadService extends Service {
    * </ul>
    */
   public static final String ACTION_INIT =
-      "com.google.android.exoplayer.downloadService.action.INIT";
+          "com.google.android.exoplayer.downloadService.action.INIT";
 
   /** Like {@link #ACTION_INIT}, but with {@link #KEY_FOREGROUND} implicitly set to true. */
   private static final String ACTION_RESTART =
-      "com.google.android.exoplayer.downloadService.action.RESTART";
+          "com.google.android.exoplayer.downloadService.action.RESTART";
 
   /**
    * Adds a new download. Extras:
@@ -77,7 +77,7 @@ public abstract class DownloadService extends Service {
    * </ul>
    */
   public static final String ACTION_ADD_DOWNLOAD =
-      "com.google.android.exoplayer.downloadService.action.ADD_DOWNLOAD";
+          "com.google.android.exoplayer.downloadService.action.ADD_DOWNLOAD";
 
   /**
    * Removes a download. Extras:
@@ -88,7 +88,7 @@ public abstract class DownloadService extends Service {
    * </ul>
    */
   public static final String ACTION_REMOVE_DOWNLOAD =
-      "com.google.android.exoplayer.downloadService.action.REMOVE_DOWNLOAD";
+          "com.google.android.exoplayer.downloadService.action.REMOVE_DOWNLOAD";
 
   /**
    * Removes all downloads. Extras:
@@ -98,7 +98,7 @@ public abstract class DownloadService extends Service {
    * </ul>
    */
   public static final String ACTION_REMOVE_ALL_DOWNLOADS =
-      "com.google.android.exoplayer.downloadService.action.REMOVE_ALL_DOWNLOADS";
+          "com.google.android.exoplayer.downloadService.action.REMOVE_ALL_DOWNLOADS";
 
   /**
    * Resumes all downloads except those that have a non-zero {@link Download#stopReason}. Extras:
@@ -108,7 +108,7 @@ public abstract class DownloadService extends Service {
    * </ul>
    */
   public static final String ACTION_RESUME_DOWNLOADS =
-      "com.google.android.exoplayer.downloadService.action.RESUME_DOWNLOADS";
+          "com.google.android.exoplayer.downloadService.action.RESUME_DOWNLOADS";
 
   /**
    * Pauses all downloads. Extras:
@@ -118,7 +118,7 @@ public abstract class DownloadService extends Service {
    * </ul>
    */
   public static final String ACTION_PAUSE_DOWNLOADS =
-      "com.google.android.exoplayer.downloadService.action.PAUSE_DOWNLOADS";
+          "com.google.android.exoplayer.downloadService.action.PAUSE_DOWNLOADS";
 
   /**
    * Sets the stop reason for one or all downloads. To clear the stop reason, pass {@link
@@ -133,7 +133,7 @@ public abstract class DownloadService extends Service {
    * </ul>
    */
   public static final String ACTION_SET_STOP_REASON =
-      "com.google.android.exoplayer.downloadService.action.SET_STOP_REASON";
+          "com.google.android.exoplayer.downloadService.action.SET_STOP_REASON";
 
   /**
    * Sets the requirements that need to be met for downloads to progress. Extras:
@@ -144,7 +144,7 @@ public abstract class DownloadService extends Service {
    * </ul>
    */
   public static final String ACTION_SET_REQUIREMENTS =
-      "com.google.android.exoplayer.downloadService.action.SET_REQUIREMENTS";
+          "com.google.android.exoplayer.downloadService.action.SET_REQUIREMENTS";
 
   /** Key for the {@link DownloadRequest} in {@link #ACTION_ADD_DOWNLOAD} intents. */
   public static final String KEY_DOWNLOAD_REQUEST = "download_request";
@@ -185,7 +185,7 @@ public abstract class DownloadService extends Service {
   // when there's no scheduler, and is often able to restart the service faster than the scheduler
   // even when there is one.
   private static final HashMap<Class<? extends DownloadService>, DownloadManagerHelper>
-      downloadManagerHelpers = new HashMap<>();
+          downloadManagerHelpers = new HashMap<>();
 
   @Nullable private final ForegroundNotificationUpdater foregroundNotificationUpdater;
   @Nullable private final String channelId;
@@ -226,13 +226,13 @@ public abstract class DownloadService extends Service {
    *     {@link #FOREGROUND_NOTIFICATION_ID_NONE}.
    */
   protected DownloadService(
-      int foregroundNotificationId, long foregroundNotificationUpdateInterval) {
+          int foregroundNotificationId, long foregroundNotificationUpdateInterval) {
     this(
-        foregroundNotificationId,
-        foregroundNotificationUpdateInterval,
-        /* channelId= */ null,
-        /* channelNameResourceId= */ 0,
-        /* channelDescriptionResourceId= */ 0);
+            foregroundNotificationId,
+            foregroundNotificationUpdateInterval,
+            /* channelId= */ null,
+            /* channelNameResourceId= */ 0,
+            /* channelDescriptionResourceId= */ 0);
   }
 
   /**
@@ -240,16 +240,16 @@ public abstract class DownloadService extends Service {
    */
   @Deprecated
   protected DownloadService(
-      int foregroundNotificationId,
-      long foregroundNotificationUpdateInterval,
-      @Nullable String channelId,
-      @StringRes int channelNameResourceId) {
+          int foregroundNotificationId,
+          long foregroundNotificationUpdateInterval,
+          @Nullable String channelId,
+          @StringRes int channelNameResourceId) {
     this(
-        foregroundNotificationId,
-        foregroundNotificationUpdateInterval,
-        channelId,
-        channelNameResourceId,
-        /* channelDescriptionResourceId= */ 0);
+            foregroundNotificationId,
+            foregroundNotificationUpdateInterval,
+            channelId,
+            channelNameResourceId,
+            /* channelDescriptionResourceId= */ 0);
   }
 
   /**
@@ -275,11 +275,11 @@ public abstract class DownloadService extends Service {
    *     #FOREGROUND_NOTIFICATION_ID_NONE}.
    */
   protected DownloadService(
-      int foregroundNotificationId,
-      long foregroundNotificationUpdateInterval,
-      @Nullable String channelId,
-      @StringRes int channelNameResourceId,
-      @StringRes int channelDescriptionResourceId) {
+          int foregroundNotificationId,
+          long foregroundNotificationUpdateInterval,
+          @Nullable String channelId,
+          @StringRes int channelNameResourceId,
+          @StringRes int channelDescriptionResourceId) {
     if (foregroundNotificationId == FOREGROUND_NOTIFICATION_ID_NONE) {
       this.foregroundNotificationUpdater = null;
       this.channelId = null;
@@ -287,8 +287,8 @@ public abstract class DownloadService extends Service {
       this.channelDescriptionResourceId = 0;
     } else {
       this.foregroundNotificationUpdater =
-          new ForegroundNotificationUpdater(
-              foregroundNotificationId, foregroundNotificationUpdateInterval);
+              new ForegroundNotificationUpdater(
+                      foregroundNotificationId, foregroundNotificationUpdateInterval);
       this.channelId = channelId;
       this.channelNameResourceId = channelNameResourceId;
       this.channelDescriptionResourceId = channelDescriptionResourceId;
@@ -305,10 +305,10 @@ public abstract class DownloadService extends Service {
    * @return The created intent.
    */
   public static Intent buildAddDownloadIntent(
-      Context context,
-      Class<? extends DownloadService> clazz,
-      DownloadRequest downloadRequest,
-      boolean foreground) {
+          Context context,
+          Class<? extends DownloadService> clazz,
+          DownloadRequest downloadRequest,
+          boolean foreground) {
     return buildAddDownloadIntent(context, clazz, downloadRequest, STOP_REASON_NONE, foreground);
   }
 
@@ -324,14 +324,14 @@ public abstract class DownloadService extends Service {
    * @return The created intent.
    */
   public static Intent buildAddDownloadIntent(
-      Context context,
-      Class<? extends DownloadService> clazz,
-      DownloadRequest downloadRequest,
-      int stopReason,
-      boolean foreground) {
+          Context context,
+          Class<? extends DownloadService> clazz,
+          DownloadRequest downloadRequest,
+          int stopReason,
+          boolean foreground) {
     return getIntent(context, clazz, ACTION_ADD_DOWNLOAD, foreground)
-        .putExtra(KEY_DOWNLOAD_REQUEST, downloadRequest)
-        .putExtra(KEY_STOP_REASON, stopReason);
+            .putExtra(KEY_DOWNLOAD_REQUEST, downloadRequest)
+            .putExtra(KEY_STOP_REASON, stopReason);
   }
 
   /**
@@ -344,9 +344,9 @@ public abstract class DownloadService extends Service {
    * @return The created intent.
    */
   public static Intent buildRemoveDownloadIntent(
-      Context context, Class<? extends DownloadService> clazz, String id, boolean foreground) {
+          Context context, Class<? extends DownloadService> clazz, String id, boolean foreground) {
     return getIntent(context, clazz, ACTION_REMOVE_DOWNLOAD, foreground)
-        .putExtra(KEY_CONTENT_ID, id);
+            .putExtra(KEY_CONTENT_ID, id);
   }
 
   /**
@@ -358,7 +358,7 @@ public abstract class DownloadService extends Service {
    * @return The created intent.
    */
   public static Intent buildRemoveAllDownloadsIntent(
-      Context context, Class<? extends DownloadService> clazz, boolean foreground) {
+          Context context, Class<? extends DownloadService> clazz, boolean foreground) {
     return getIntent(context, clazz, ACTION_REMOVE_ALL_DOWNLOADS, foreground);
   }
 
@@ -371,7 +371,7 @@ public abstract class DownloadService extends Service {
    * @return The created intent.
    */
   public static Intent buildResumeDownloadsIntent(
-      Context context, Class<? extends DownloadService> clazz, boolean foreground) {
+          Context context, Class<? extends DownloadService> clazz, boolean foreground) {
     return getIntent(context, clazz, ACTION_RESUME_DOWNLOADS, foreground);
   }
 
@@ -384,7 +384,7 @@ public abstract class DownloadService extends Service {
    * @return The created intent.
    */
   public static Intent buildPauseDownloadsIntent(
-      Context context, Class<? extends DownloadService> clazz, boolean foreground) {
+          Context context, Class<? extends DownloadService> clazz, boolean foreground) {
     return getIntent(context, clazz, ACTION_PAUSE_DOWNLOADS, foreground);
   }
 
@@ -400,14 +400,14 @@ public abstract class DownloadService extends Service {
    * @return The created intent.
    */
   public static Intent buildSetStopReasonIntent(
-      Context context,
-      Class<? extends DownloadService> clazz,
-      @Nullable String id,
-      int stopReason,
-      boolean foreground) {
+          Context context,
+          Class<? extends DownloadService> clazz,
+          @Nullable String id,
+          int stopReason,
+          boolean foreground) {
     return getIntent(context, clazz, ACTION_SET_STOP_REASON, foreground)
-        .putExtra(KEY_CONTENT_ID, id)
-        .putExtra(KEY_STOP_REASON, stopReason);
+            .putExtra(KEY_CONTENT_ID, id)
+            .putExtra(KEY_STOP_REASON, stopReason);
   }
 
   /**
@@ -421,12 +421,12 @@ public abstract class DownloadService extends Service {
    * @return The created intent.
    */
   public static Intent buildSetRequirementsIntent(
-      Context context,
-      Class<? extends DownloadService> clazz,
-      Requirements requirements,
-      boolean foreground) {
+          Context context,
+          Class<? extends DownloadService> clazz,
+          Requirements requirements,
+          boolean foreground) {
     return getIntent(context, clazz, ACTION_SET_REQUIREMENTS, foreground)
-        .putExtra(KEY_REQUIREMENTS, requirements);
+            .putExtra(KEY_REQUIREMENTS, requirements);
   }
 
   /**
@@ -438,10 +438,10 @@ public abstract class DownloadService extends Service {
    * @param foreground Whether the service is started in the foreground.
    */
   public static void sendAddDownload(
-      Context context,
-      Class<? extends DownloadService> clazz,
-      DownloadRequest downloadRequest,
-      boolean foreground) {
+          Context context,
+          Class<? extends DownloadService> clazz,
+          DownloadRequest downloadRequest,
+          boolean foreground) {
     Intent intent = buildAddDownloadIntent(context, clazz, downloadRequest, foreground);
     startService(context, intent, foreground);
   }
@@ -457,11 +457,11 @@ public abstract class DownloadService extends Service {
    * @param foreground Whether the service is started in the foreground.
    */
   public static void sendAddDownload(
-      Context context,
-      Class<? extends DownloadService> clazz,
-      DownloadRequest downloadRequest,
-      int stopReason,
-      boolean foreground) {
+          Context context,
+          Class<? extends DownloadService> clazz,
+          DownloadRequest downloadRequest,
+          int stopReason,
+          boolean foreground) {
     Intent intent = buildAddDownloadIntent(context, clazz, downloadRequest, stopReason, foreground);
     startService(context, intent, foreground);
   }
@@ -475,7 +475,7 @@ public abstract class DownloadService extends Service {
    * @param foreground Whether the service is started in the foreground.
    */
   public static void sendRemoveDownload(
-      Context context, Class<? extends DownloadService> clazz, String id, boolean foreground) {
+          Context context, Class<? extends DownloadService> clazz, String id, boolean foreground) {
     Intent intent = buildRemoveDownloadIntent(context, clazz, id, foreground);
     startService(context, intent, foreground);
   }
@@ -488,7 +488,7 @@ public abstract class DownloadService extends Service {
    * @param foreground Whether the service is started in the foreground.
    */
   public static void sendRemoveAllDownloads(
-      Context context, Class<? extends DownloadService> clazz, boolean foreground) {
+          Context context, Class<? extends DownloadService> clazz, boolean foreground) {
     Intent intent = buildRemoveAllDownloadsIntent(context, clazz, foreground);
     startService(context, intent, foreground);
   }
@@ -501,7 +501,7 @@ public abstract class DownloadService extends Service {
    * @param foreground Whether the service is started in the foreground.
    */
   public static void sendResumeDownloads(
-      Context context, Class<? extends DownloadService> clazz, boolean foreground) {
+          Context context, Class<? extends DownloadService> clazz, boolean foreground) {
     Intent intent = buildResumeDownloadsIntent(context, clazz, foreground);
     startService(context, intent, foreground);
   }
@@ -514,7 +514,7 @@ public abstract class DownloadService extends Service {
    * @param foreground Whether the service is started in the foreground.
    */
   public static void sendPauseDownloads(
-      Context context, Class<? extends DownloadService> clazz, boolean foreground) {
+          Context context, Class<? extends DownloadService> clazz, boolean foreground) {
     Intent intent = buildPauseDownloadsIntent(context, clazz, foreground);
     startService(context, intent, foreground);
   }
@@ -530,11 +530,11 @@ public abstract class DownloadService extends Service {
    * @param foreground Whether the service is started in the foreground.
    */
   public static void sendSetStopReason(
-      Context context,
-      Class<? extends DownloadService> clazz,
-      @Nullable String id,
-      int stopReason,
-      boolean foreground) {
+          Context context,
+          Class<? extends DownloadService> clazz,
+          @Nullable String id,
+          int stopReason,
+          boolean foreground) {
     Intent intent = buildSetStopReasonIntent(context, clazz, id, stopReason, foreground);
     startService(context, intent, foreground);
   }
@@ -549,10 +549,10 @@ public abstract class DownloadService extends Service {
    * @param foreground Whether the service is started in the foreground.
    */
   public static void sendSetRequirements(
-      Context context,
-      Class<? extends DownloadService> clazz,
-      Requirements requirements,
-      boolean foreground) {
+          Context context,
+          Class<? extends DownloadService> clazz,
+          Requirements requirements,
+          boolean foreground) {
     Intent intent = buildSetRequirementsIntent(context, clazz, requirements, foreground);
     startService(context, intent, foreground);
   }
@@ -597,11 +597,11 @@ public abstract class DownloadService extends Service {
   public void onCreate() {
     if (channelId != null) {
       NotificationUtil.createNotificationChannel(
-          this,
-          channelId,
-          channelNameResourceId,
-          channelDescriptionResourceId,
-          NotificationUtil.IMPORTANCE_LOW);
+              this,
+              channelId,
+              channelNameResourceId,
+              channelDescriptionResourceId,
+              NotificationUtil.IMPORTANCE_LOW);
     }
     Class<? extends DownloadService> clazz = getClass();
     @Nullable DownloadManagerHelper downloadManagerHelper = downloadManagerHelpers.get(clazz);
@@ -611,12 +611,12 @@ public abstract class DownloadService extends Service {
       boolean canStartForegroundServiceFromBackground = Util.SDK_INT < 31;
       @Nullable
       Scheduler scheduler =
-          foregroundAllowed && canStartForegroundServiceFromBackground ? getScheduler() : null;
+              foregroundAllowed && canStartForegroundServiceFromBackground ? getScheduler() : null;
       DownloadManager downloadManager = getDownloadManager();
       downloadManager.resumeDownloads();
       downloadManagerHelper =
-          new DownloadManagerHelper(
-              getApplicationContext(), downloadManager, foregroundAllowed, scheduler, clazz);
+              new DownloadManagerHelper(
+                      getApplicationContext(), downloadManager, foregroundAllowed, scheduler, clazz);
       downloadManagerHelpers.put(clazz, downloadManagerHelper);
     }
     this.downloadManagerHelper = downloadManagerHelper;
@@ -633,14 +633,14 @@ public abstract class DownloadService extends Service {
       intentAction = intent.getAction();
       contentId = intent.getStringExtra(KEY_CONTENT_ID);
       startedInForeground |=
-          intent.getBooleanExtra(KEY_FOREGROUND, false) || ACTION_RESTART.equals(intentAction);
+              intent.getBooleanExtra(KEY_FOREGROUND, false) || ACTION_RESTART.equals(intentAction);
     }
     // intentAction is null if the service is restarted or no action is specified.
     if (intentAction == null) {
       intentAction = ACTION_INIT;
     }
     DownloadManager downloadManager =
-        Assertions.checkNotNull(downloadManagerHelper).downloadManager;
+            Assertions.checkNotNull(downloadManagerHelper).downloadManager;
     switch (intentAction) {
       case ACTION_INIT:
       case ACTION_RESTART:
@@ -649,7 +649,7 @@ public abstract class DownloadService extends Service {
       case ACTION_ADD_DOWNLOAD:
         @Nullable
         DownloadRequest downloadRequest =
-            Assertions.checkNotNull(intent).getParcelableExtra(KEY_DOWNLOAD_REQUEST);
+                Assertions.checkNotNull(intent).getParcelableExtra(KEY_DOWNLOAD_REQUEST);
         if (downloadRequest == null) {
           Log.e(TAG, "Ignored ADD_DOWNLOAD: Missing " + KEY_DOWNLOAD_REQUEST + " extra");
         } else {
@@ -684,7 +684,7 @@ public abstract class DownloadService extends Service {
       case ACTION_SET_REQUIREMENTS:
         @Nullable
         Requirements requirements =
-            Assertions.checkNotNull(intent).getParcelableExtra(KEY_REQUIREMENTS);
+                Assertions.checkNotNull(intent).getParcelableExtra(KEY_REQUIREMENTS);
         if (requirements == null) {
           Log.e(TAG, "Ignored SET_REQUIREMENTS: Missing " + KEY_REQUIREMENTS + " extra");
         } else {
@@ -787,7 +787,7 @@ public abstract class DownloadService extends Service {
    * @return The foreground notification to display.
    */
   protected abstract Notification getForegroundNotification(
-      List<Download> downloads, @RequirementFlags int notMetRequirements);
+          List<Download> downloads, @RequirementFlags int notMetRequirements);
 
   /**
    * Invalidates the current foreground notification and causes {@link
@@ -867,17 +867,17 @@ public abstract class DownloadService extends Service {
 
   private static boolean needsStartedService(@Download.State int state) {
     return state == Download.STATE_DOWNLOADING
-        || state == Download.STATE_REMOVING
-        || state == Download.STATE_RESTARTING;
+            || state == Download.STATE_REMOVING
+            || state == Download.STATE_RESTARTING;
   }
 
   private static Intent getIntent(
-      Context context, Class<? extends DownloadService> clazz, String action, boolean foreground) {
+          Context context, Class<? extends DownloadService> clazz, String action, boolean foreground) {
     return getIntent(context, clazz, action).putExtra(KEY_FOREGROUND, foreground);
   }
 
   private static Intent getIntent(
-      Context context, Class<? extends DownloadService> clazz, String action) {
+          Context context, Class<? extends DownloadService> clazz, String action) {
     return new Intent(context, clazz).setAction(action);
   }
 
@@ -928,7 +928,7 @@ public abstract class DownloadService extends Service {
 
     private void update() {
       DownloadManager downloadManager =
-          Assertions.checkNotNull(downloadManagerHelper).downloadManager;
+              Assertions.checkNotNull(downloadManagerHelper).downloadManager;
       List<Download> downloads = downloadManager.getCurrentDownloads();
       @RequirementFlags int notMetRequirements = downloadManager.getNotMetRequirements();
       Notification notification = getForegroundNotification(downloads, notMetRequirements);
@@ -939,7 +939,7 @@ public abstract class DownloadService extends Service {
         // Update the notification via NotificationManager rather than by repeatedly calling
         // startForeground, since the latter can cause ActivityManager log spam.
         ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
-            .notify(notificationId, notification);
+                .notify(notificationId, notification);
       }
       if (periodicUpdatesStarted) {
         handler.removeCallbacksAndMessages(null);
@@ -960,11 +960,11 @@ public abstract class DownloadService extends Service {
     private @MonotonicNonNull Requirements scheduledRequirements;
 
     private DownloadManagerHelper(
-        Context context,
-        DownloadManager downloadManager,
-        boolean foregroundAllowed,
-        @Nullable Scheduler scheduler,
-        Class<? extends DownloadService> serviceClass) {
+            Context context,
+            DownloadManager downloadManager,
+            boolean foregroundAllowed,
+            @Nullable Scheduler scheduler,
+            Class<? extends DownloadService> serviceClass) {
       this.context = context;
       this.downloadManager = downloadManager;
       this.foregroundAllowed = foregroundAllowed;
@@ -984,8 +984,8 @@ public abstract class DownloadService extends Service {
         // not anticipate the possibility of this method being called before their onCreate
         // implementation has finished executing.
         Util.createHandlerForCurrentOrMainLooper()
-            .postAtFrontOfQueue(
-                () -> downloadService.notifyDownloads(downloadManager.getCurrentDownloads()));
+                .postAtFrontOfQueue(
+                        () -> downloadService.notifyDownloads(downloadManager.getCurrentDownloads()));
       }
     }
 
@@ -1046,7 +1046,7 @@ public abstract class DownloadService extends Service {
 
     @Override
     public void onDownloadChanged(
-        DownloadManager downloadManager, Download download, @Nullable Exception finalException) {
+            DownloadManager downloadManager, Download download, @Nullable Exception finalException) {
       if (downloadService != null) {
         downloadService.notifyDownloadChanged(download);
       }
@@ -1076,18 +1076,18 @@ public abstract class DownloadService extends Service {
 
     @Override
     public void onRequirementsStateChanged(
-        DownloadManager downloadManager,
-        Requirements requirements,
-        @RequirementFlags int notMetRequirements) {
+            DownloadManager downloadManager,
+            Requirements requirements,
+            @RequirementFlags int notMetRequirements) {
       updateScheduler();
     }
 
     @Override
     public void onWaitingForRequirementsChanged(
-        DownloadManager downloadManager, boolean waitingForRequirements) {
+            DownloadManager downloadManager, boolean waitingForRequirements) {
       if (!waitingForRequirements
-          && !downloadManager.getDownloadsPaused()
-          && serviceMayNeedRestart()) {
+              && !downloadManager.getDownloadsPaused()
+              && serviceMayNeedRestart()) {
         // We're no longer waiting for requirements and downloads aren't paused, meaning the manager
         // will be able to resume downloads that are currently queued. If there exist queued
         // downloads then we should ensure the service is started.

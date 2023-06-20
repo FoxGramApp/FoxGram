@@ -38,7 +38,7 @@ public class BuildVars {
     public static String SAFETYNET_KEY = "";
     public static String SMS_HASH = isStandaloneApp() ? "w0lkcmTZkKh" : (DEBUG_VERSION ? "O2P2z+/jBpJ" : "oLeq9AcOZkT");
     public static String PLAYSTORE_APP_URL = "https://play.google.com/store";
-    public static String GOOGLE_AUTH_CLIENT_ID = "217475623555-jut3eg13m94k6nk7scbucq5h4os3qrfv.apps.googleusercontent.com";
+    public static String GOOGLE_AUTH_CLIENT_ID = "202131402753-gtu7gp4c23t9aiq4s149ded2vueiadcf.apps.googleusercontent.com";
 
     // Add if you have your app published on App Gallery
     // You can find Huawei part of Telegram's code (TMessagej_Huawei) on official reposity

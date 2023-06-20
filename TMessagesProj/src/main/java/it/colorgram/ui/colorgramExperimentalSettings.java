@@ -24,6 +24,8 @@ import org.telegram.ui.Cells.TextSettingsCell;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.SlideChooseView;
 import org.telegram.ui.Components.StickerImageView;
+import org.telegram.ui.LauncherIconController;
+import org.telegram.ui.Cells.AppIconsSelectorCell;
 
 import java.util.ArrayList;
 

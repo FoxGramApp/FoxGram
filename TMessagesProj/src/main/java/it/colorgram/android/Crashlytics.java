@@ -10,6 +10,7 @@ import org.telegram.messenger.BuildConfig;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.LocaleController;
+import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 
 import java.io.BufferedReader;
@@ -115,18 +116,18 @@ public class Crashlytics implements Thread.UncaughtExceptionHandler {
                 CameraName = "Unknown";
         }
         String source = StoreUtils.isFromPlayStore() ? "Play Store" : StoreUtils.isFromHuaweiStore() ? "Huawei Store" : "APK";
-        return "Steps to reproduce\n" +
-                "Write here the steps to reproduce\n\n" +
-                "Details\n" +
-                "App Version: " + BuildVars.BUILD_VERSION_STRING + " (" + (BuildVars.DEBUG_PRIVATE_VERSION ? BuildConfig.GIT_COMMIT_HASH:BuildVars.BUILD_VERSION) + ")\n" +
-                "Base Version: " + BuildVars.TELEGRAM_VERSION_STRING + " (" + BuildVars.TELEGRAM_BUILD_VERSION + ")\n" +
-                "Device: " + AndroidUtilities.capitalize(Build.MANUFACTURER) + " " + Build.MODEL + "\n" +
-                "OS Version: " + Build.VERSION.RELEASE + "\n" +
+        return  LocaleController.getString("TitleStep", R.string.TitleStep) + "" + "\n" +
+                LocaleController.getString("StepToReproduce", R.string.StepToReproduce) + "" + "\n\n" +
+                LocaleController.getString("MessageDetails", R.string.MessageDetails) + "\n" +
+                LocaleController.getString("AppVersion", R.string.AppVersion) + ""  + BuildVars.BUILD_VERSION_STRING + " (" + (BuildVars.DEBUG_PRIVATE_VERSION ? BuildConfig.GIT_COMMIT_HASH:BuildVars.BUILD_VERSION) + ")\n" +
+                LocaleController.getString("BaseVersion", R.string.BaseVersion) + "" + BuildVars.TELEGRAM_VERSION_STRING + " (" + BuildVars.TELEGRAM_BUILD_VERSION + ")\n" +
+                LocaleController.getString("DeviceCrashlytics", R.string.DeviceCrashlytics) + "" + AndroidUtilities.capitalize(Build.MANUFACTURER) + " " + Build.MODEL + "\n" +
+                LocaleController.getString("OS", R.string.OS) + "" + Build.VERSION.RELEASE + "\n" +
                 "Google Play Services: " + ApplicationLoader.hasPlayServices + "\n" +
-                "Performance Class: " + getPerformanceClassString() + "\n" +
-                "Locale: " + LocaleController.getSystemLocaleStringIso639() + "\n" +
-                "Download Source: " + source + "\n" +
-                "Camera: " + CameraName;
+                LocaleController.getString("Performance", R.string.Performance) + "" + getPerformanceClassString() + "\n" +
+                LocaleController.getString("Lang", R.string.Lang) + "" + LocaleController.getSystemLocaleStringIso639() + "\n" +
+                LocaleController.getString("DnSc", R.string.DnSc) + "" + source + "\n" +
+                LocaleController.getString("CameraType", R.string.CameraType) + "" + CameraName;
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

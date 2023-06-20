@@ -14,6 +14,7 @@ import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.NotificationCenter;
+import org.telegram.messenger.R;
 import org.telegram.tgnet.TLRPC;
 
 import java.io.File;
@@ -28,6 +29,7 @@ import it.colorgram.android.entities.HTMLKeeper;
 import it.colorgram.android.http.FileDownloader;
 import it.colorgram.android.http.StandardHTTPRequest;
 import it.colorgram.android.magic.OWLENC;
+import it.colorgram.ui.colorgramSettings;
 
 public class UpdateManager {
 
@@ -127,7 +129,7 @@ public class UpdateManager {
                             abi = "universal";
                             break;
                     }
-                    String url = String.format(locale, "https://app.colorgram.org/version?lang=%s&beta=%s&abi=%s", locale.getLanguage(), betaMode, URLEncoder.encode(abi, StandardCharsets.UTF_8.name()));
+                    String url = String.format(locale, "https://api.github.com/repos/Pierlu096/Colorgram/releases/latest", locale.getLanguage(), betaMode, URLEncoder.encode(abi, StandardCharsets.UTF_8.name()));
                     JSONObject obj = new JSONObject(new StandardHTTPRequest(url).request());
                     String update_status = obj.getString("status");
                     if (update_status.equals("no_updates")) {

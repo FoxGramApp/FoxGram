@@ -86,7 +86,7 @@ public class colorgramUpdateSettings extends BaseSettingsActivity {
 
     @Override
     protected String getActionBarTitle() {
-        return LocaleController.getString("OwlUpdates", R.string.OwlUpdates);
+        return LocaleController.getString("ViewUpdate", R.string.ViewUpdate);
     }
 
     @Override
@@ -254,7 +254,7 @@ public class colorgramUpdateSettings extends BaseSettingsActivity {
                 case UPDATE_CHECK:
                     view = new UpdateCheckCell(context, true) {
                         @Override
-                        protected void onCheckUpdate() {
+                        public void onCheckUpdate() {
                             super.onCheckUpdate();
                             if (PlayStoreAPI.updateDownloaded()) {
                                 PlayStoreAPI.installUpdate();

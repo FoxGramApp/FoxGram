@@ -552,9 +552,6 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
-        if (visibility != View.VISIBLE && blurBehindDrawable != null) {
-            blurBehindDrawable.clear();
-        }
         switchCameraButton.setAlpha(0.0f);
         cameraContainer.setAlpha(0.0f);
         textureOverlayView.setAlpha(0.0f);
@@ -588,12 +585,8 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
         }
         camLifecycle = new CameraXController.CameraLifecycle();
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            switchCameraDrawable = (AnimatedVectorDrawable) ContextCompat.getDrawable(getContext(), R.drawable.avd_flip);
-            switchCameraButton.setImageDrawable(switchCameraDrawable);
-        } else {
-            switchCameraButton.setImageResource(R.drawable.vd_flip);
-        }
+        switchCameraDrawable = (AnimatedVectorDrawable) ContextCompat.getDrawable(getContext(), R.drawable.avd_flip);
+        switchCameraButton.setImageDrawable(switchCameraDrawable);
 
         textureOverlayView.setAlpha(1.0f);
         textureOverlayView.invalidate();

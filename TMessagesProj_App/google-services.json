@@ -12,7 +12,20 @@
           "package_name": "it.colorgram.android"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "202131402753-gtu7gp4c23t9aiq4s149ded2vueiadcf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.colorgram.android",
+            "certificate_hash": "a027a652ccc2044e77d6010828f0b4be65c06e12"
+          }
+        },
+        {
+          "client_id": "202131402753-qhthtamlfk8ccq079mhlgj3a7c4pu4gt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBKq6i30CB9Bj4Gn1G4MkXLzlQToUHbhyU"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "202131402753-qhthtamlfk8ccq079mhlgj3a7c4pu4gt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     },
@@ -31,7 +49,20 @@
           "package_name": "it.colorgram.android.beta"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "202131402753-qkl71emshu41pfrid4v084bs8v7scbvt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.colorgram.android.beta",
+            "certificate_hash": "634cf22d66a84fc5cbf11d91ad145894bbdf894b"
+          }
+        },
+        {
+          "client_id": "202131402753-qhthtamlfk8ccq079mhlgj3a7c4pu4gt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBKq6i30CB9Bj4Gn1G4MkXLzlQToUHbhyU"
@@ -39,7 +70,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "202131402753-qhthtamlfk8ccq079mhlgj3a7c4pu4gt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

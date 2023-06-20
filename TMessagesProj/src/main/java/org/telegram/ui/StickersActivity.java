@@ -89,6 +89,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import it.colorgram.android.ColorConfig;
+
 public class StickersActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
     private static final int MENU_ARCHIVE = 0;
@@ -464,7 +466,7 @@ public class StickersActivity extends BaseFragment implements NotificationCenter
             } else if (position == suggestAnimatedEmojiRow) {
                 SharedConfig.toggleSuggestAnimatedEmoji();
                 ((TextCheckCell) view).setChecked(SharedConfig.suggestAnimatedEmoji);
-            } else if (position == reactionsDoubleTapRow) {
+            } else if (position == reactionsDoubleTapRow && ColorConfig.doubleTapDisabled) {
                 presentFragment(new ReactionsDoubleTapManageActivity());
             } else if (position == dynamicPackOrder) {
                 SharedConfig.toggleUpdateStickersOrderOnSend();
@@ -702,10 +704,12 @@ public class StickersActivity extends BaseFragment implements NotificationCenter
             suggestAnimatedEmojiInfoRow = -1;
         }
 
-        if (currentType == MediaDataController.TYPE_IMAGE) {
-            reactionsDoubleTapRow = rowCount++;
-        } else {
-            reactionsDoubleTapRow = -1;
+        if (ColorConfig.doubleTapDisabled) {
+            if (currentType == MediaDataController.TYPE_IMAGE) {
+                reactionsDoubleTapRow = rowCount++;
+            } else {
+                reactionsDoubleTapRow = -1;
+            }
         }
 
         stickersBotInfo = -1;
@@ -1118,12 +1122,14 @@ public class StickersActivity extends BaseFragment implements NotificationCenter
                 case TYPE_INFO:
                     TextInfoPrivacyCell infoPrivacyCell = (TextInfoPrivacyCell) holder.itemView;
                     infoPrivacyCell.setFixedSize(0);
-                    if (position == stickersBotInfo) {
+                    if (position == stickersBotInfo && ColorConfig.doubleTapDisabled) {
                         infoPrivacyCell.setText(addStickersBotSpan(
-                            currentType == MediaDataController.TYPE_EMOJIPACKS ?
-                                LocaleController.getString("EmojiBotInfo", R.string.EmojiBotInfo) :
-                                LocaleController.getString("StickersBotInfo", R.string.StickersBotInfo)
+                                currentType == MediaDataController.TYPE_EMOJIPACKS ?
+                                        LocaleController.getString("EmojiBotInfo", R.string.EmojiBotInfo) :
+                                        LocaleController.getString("StickersBotInfo", R.string.StickersBotInfo)
                         ));
+                    } else if (position == stickersBotInfo && !ColorConfig.doubleTapDisabled) {
+                        infoPrivacyCell.setText(addStickersBotSpan(LocaleController.getString("ColorDisabledTap", R.string.ColorDisabledTap)));
                     } else if (position == archivedInfoRow) {
                         if (currentType == MediaDataController.TYPE_IMAGE) {
                             infoPrivacyCell.setText(LocaleController.getString("ArchivedStickersInfo", R.string.ArchivedStickersInfo));
@@ -1406,7 +1412,7 @@ public class StickersActivity extends BaseFragment implements NotificationCenter
                 return TYPE_SHADOW;
             } else if (i == loopRow || i == largeEmojiRow || i == suggestAnimatedEmojiRow || i == dynamicPackOrder) {
                 return TYPE_SWITCH;
-            } else if (i == reactionsDoubleTapRow) {
+            } else if (i == reactionsDoubleTapRow && ColorConfig.doubleTapDisabled) {
                 return TYPE_DOUBLE_TAP_REACTIONS;
             } else if (i == featuredStickersHeaderRow || i == stickersHeaderRow || i == stickersSettingsRow) {
                 return TYPE_HEADER;

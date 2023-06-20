@@ -214,6 +214,7 @@ public class AndroidUtilities {
     public final static String TYPEFACE_ROBOTO_MONO = "fonts/rmono.ttf";
     public final static String TYPEFACE_MERRIWEATHER_BOLD = "fonts/mw_bold.ttf";
     public final static String TYPEFACE_COURIER_NEW_BOLD = "fonts/courier_new_bold.ttf";
+    public static final String TYPEFACE_ROBOTO_ITALIC = "fonts/ritalic.ttf";
 
     private static final Hashtable<String, Typeface> typefaceCache = new Hashtable<>();
     public static float touchSlop;
