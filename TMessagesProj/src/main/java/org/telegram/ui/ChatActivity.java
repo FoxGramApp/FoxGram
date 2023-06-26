@@ -21154,7 +21154,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 topViewWasVisible = 0;
             }
         }
-        if (isMuteUnmuteButton()) bottomOverlayChat.setVisibility(View.INVISIBLE);
         if (sentBotStart) {
             getMessagesController().sendBotStart(currentUser, botUser);
 
@@ -21162,6 +21161,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             chatActivityEnterView.setVisibility(View.VISIBLE);
             chatActivityEnterView.setBotInfo(botInfo);
         }
+        if (isMuteUnmuteButton()) bottomOverlayChat.setVisibility(View.INVISIBLE);
         checkRaiseSensors();
     }
 
@@ -32860,8 +32860,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     }
 
     private void updatePaddings() {
-        bottomOverlayChat.setVisibility(View.INVISIBLE);
-        chatActivityEnterView.setVisibility(View.INVISIBLE);
         UndoView undoView = getUndoView();
         ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f).setDuration(200);
         animator.addUpdateListener(animation -> {

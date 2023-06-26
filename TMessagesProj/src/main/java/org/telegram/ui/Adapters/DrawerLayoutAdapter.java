@@ -394,6 +394,11 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
                     case "proxy_settings":
                         items.add(new Item(207, data.text, R.drawable.msg2_proxy));
                         break;
+                    case "sticker_emoji":
+                        items.add(new Item(208, data.text, R.drawable.msg_sticker));
+                        break;
+                    case "folders":
+                        items.add(new Item(209, data.text, R.drawable.msg2_folder));
                     case "divider":
                         boolean foundPreviousDivider = false;
                         if (i > 0) {

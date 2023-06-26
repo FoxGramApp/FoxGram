@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
@@ -21,22 +20,16 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityNodeInfo;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import androidx.palette.graphics.Palette;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.AndroidUtilities;
@@ -45,8 +38,6 @@ import org.telegram.messenger.ImageLocation;
 import org.telegram.messenger.ImageReceiver;
 import org.telegram.messenger.Emoji;
 import org.telegram.messenger.FileLog;
-import org.telegram.messenger.ImageLocation;
-import org.telegram.messenger.ImageReceiver;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MediaDataController;
 import org.telegram.messenger.MessageObject;
@@ -75,32 +66,34 @@ import org.telegram.ui.Components.Reactions.ReactionsLayoutInBubble;
 import org.telegram.ui.Components.SnowflakesEffect;
 import org.telegram.ui.ThemeActivity;
 import it.colorgram.android.ColorConfig;
+import it.colorgram.ui.DrawerOrderSettings;
 
 import java.util.ArrayList;
 
+@SuppressLint("ViewConstructor")
 public class DrawerProfileCell extends FrameLayout implements NotificationCenter.NotificationCenterDelegate {
 
-    private BackupImageView avatarImageView;
-    private SimpleTextView nameTextView;
-    private AudioPlayerAlert.ClippingTextViewSwitcher phoneTextView;
-    private ImageView shadowView;
-    private ImageView arrowView;
-    private ImageView gradientBackground;
-    private RLottieImageView darkThemeView;
+    private final BackupImageView avatarImageView;
+    private final SimpleTextView nameTextView;
+    private final AudioPlayerAlert.ClippingTextViewSwitcher phoneTextView;
+    private final ImageView shadowView;
+    private final ImageView arrowView;
+    private final ImageView gradientBackground;
+    private final RLottieImageView darkThemeView;
+    @SuppressLint("StaticFieldLeak")
     private static RLottieDrawable sunDrawable;
     private boolean updateRightDrawable = true;
-    private AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable status;
-    private AnimatedStatusView animatedStatus;
+    private final AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable status;
+    private final AnimatedStatusView animatedStatus;
 
-    private Rect srcRect = new Rect();
-    private Rect destRect = new Rect();
-    private Paint paint = new Paint();
-    private Paint backPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Rect srcRect = new Rect();
+    private final Rect destRect = new Rect();
+    private final Paint paint = new Paint();
+    private final Paint backPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Integer currentColor;
     private Integer currentMoonColor;
-    private SnowflakesEffect snowflakesEffect;
+    private final SnowflakesEffect snowflakesEffect;
     private boolean accountsShown;
-    private int darkThemeBackgroundColor;
     public static boolean switchingTheme;
     public boolean drawPremium;
     public float drawPremiumProgress;
@@ -114,6 +107,7 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
     private Bitmap lastBitmap;
     private boolean avatarAsDrawerBackground = false;
 
+    @SuppressLint("ClickableViewAccessibility")
     public DrawerProfileCell(Context context, DrawerLayoutContainer drawerLayoutContainer) {
         super(context);
 
@@ -233,6 +227,18 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
                 sunDrawable.setCustomEndFrame(36);
             }
         }
+
+        ImageView menuControllerView = new ImageView(context);
+        menuControllerView.setImageResource(R.drawable.msg_newfilter);
+        menuControllerView.setScaleType(ImageView.ScaleType.CENTER);
+        menuControllerView.setVisibility(View.VISIBLE);
+        menuControllerView.setClickable(true);
+        menuControllerView.setOnTouchListener((View view, MotionEvent motionEvent) -> {
+            drawerLayoutContainer.presentFragment(new DrawerOrderSettings());
+            return false;
+        });
+        addView(menuControllerView, LayoutHelper.createFrame(25, 25, Gravity.RIGHT, 0, 60, 65, 0));
+
         darkThemeView = new RLottieImageView(context) {
             @Override
             public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
@@ -255,10 +261,7 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
         sunDrawable.commitApplyLayerColors();
         darkThemeView.setScaleType(ImageView.ScaleType.CENTER);
         darkThemeView.setAnimation(sunDrawable);
-        if (Build.VERSION.SDK_INT >= 21) {
-            darkThemeView.setBackgroundDrawable(Theme.createSelectorDrawable(darkThemeBackgroundColor = Theme.getColor(Theme.key_listSelector), 1, AndroidUtilities.dp(17)));
-            Theme.setRippleDrawableForceSoftware((RippleDrawable) darkThemeView.getBackground());
-        }
+        Theme.setRippleDrawableForceSoftware((RippleDrawable) darkThemeView.getBackground());
         if (!playDrawable && sunDrawable.getCustomEndFrame() != sunDrawable.getCurrentFrame()) {
             darkThemeView.playAnimation();
         }
@@ -327,9 +330,9 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
     }
 
     public static class AnimatedStatusView extends View {
-        private int stateSize;
-        private int effectsSize;
-        private int renderedEffectsSize;
+        private final int stateSize;
+        private final int effectsSize;
+        private final int renderedEffectsSize;
 
         private int animationUniq;
         private ArrayList<Object> animations = new ArrayList<>();

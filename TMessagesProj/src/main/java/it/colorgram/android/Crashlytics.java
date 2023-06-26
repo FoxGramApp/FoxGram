@@ -104,30 +104,30 @@ public class Crashlytics implements Thread.UncaughtExceptionHandler {
         String CameraName;
         switch (ColorConfig.cameraType) {
             case 0:
-                CameraName = "Tg Camera";
+                CameraName = "Telegram";
                 break;
             case 1:
                 CameraName = "CameraX";
                 break;
             case 2:
-                CameraName = "System Camera";
+                CameraName = LocaleController.getString("CameraTypeSystem", R.string.CameraTypeSystem);
                 break;
             default:
                 CameraName = "Unknown";
         }
         String source = StoreUtils.isFromPlayStore() ? "Play Store" : StoreUtils.isFromHuaweiStore() ? "Huawei Store" : "APK";
-        return  LocaleController.getString("TitleStep", R.string.TitleStep) + "" + "\n" +
-                LocaleController.getString("StepToReproduce", R.string.StepToReproduce) + "" + "\n\n" +
+        return  LocaleController.getString("TitleStep", R.string.TitleStep) + "\n" +
+                LocaleController.getString("StepToReproduce", R.string.StepToReproduce) + "\n\n" +
                 LocaleController.getString("MessageDetails", R.string.MessageDetails) + "\n" +
-                LocaleController.getString("AppVersion", R.string.AppVersion) + ""  + BuildVars.BUILD_VERSION_STRING + " (" + (BuildVars.DEBUG_PRIVATE_VERSION ? BuildConfig.GIT_COMMIT_HASH:BuildVars.BUILD_VERSION) + ")\n" +
-                LocaleController.getString("BaseVersion", R.string.BaseVersion) + "" + BuildVars.TELEGRAM_VERSION_STRING + " (" + BuildVars.TELEGRAM_BUILD_VERSION + ")\n" +
-                LocaleController.getString("DeviceCrashlytics", R.string.DeviceCrashlytics) + "" + AndroidUtilities.capitalize(Build.MANUFACTURER) + " " + Build.MODEL + "\n" +
-                LocaleController.getString("OS", R.string.OS) + "" + Build.VERSION.RELEASE + "\n" +
+                LocaleController.getString("AppVersion", R.string.AppVersion) + " "  + BuildVars.BUILD_VERSION_STRING + " (" + (BuildVars.DEBUG_PRIVATE_VERSION ? BuildConfig.GIT_COMMIT_HASH:BuildVars.BUILD_VERSION) + ")\n" +
+                LocaleController.getString("BaseVersion", R.string.BaseVersion) + " " + BuildVars.TELEGRAM_VERSION_STRING + " (" + BuildVars.TELEGRAM_BUILD_VERSION + ")\n" +
+                LocaleController.getString("DeviceCrashlytics", R.string.DeviceCrashlytics) + " " + AndroidUtilities.capitalize(Build.MANUFACTURER) + " " + Build.MODEL + "\n" +
+                LocaleController.getString("OS", R.string.OS) + " " + Build.VERSION.RELEASE + "\n" +
                 "Google Play Services: " + ApplicationLoader.hasPlayServices + "\n" +
-                LocaleController.getString("Performance", R.string.Performance) + "" + getPerformanceClassString() + "\n" +
-                LocaleController.getString("Lang", R.string.Lang) + "" + LocaleController.getSystemLocaleStringIso639() + "\n" +
-                LocaleController.getString("DnSc", R.string.DnSc) + "" + source + "\n" +
-                LocaleController.getString("CameraType", R.string.CameraType) + "" + CameraName;
+                LocaleController.getString("Performance", R.string.Performance) + " " + getPerformanceClassString() + "\n" +
+                LocaleController.getString("Lang", R.string.Lang) + " " + LocaleController.getSystemLocaleStringIso639() + "\n" +
+                LocaleController.getString("DnSc", R.string.DnSc) + " " + source + "\n" +
+                LocaleController.getString("CameraType", R.string.CameraType) + ": " + CameraName;
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

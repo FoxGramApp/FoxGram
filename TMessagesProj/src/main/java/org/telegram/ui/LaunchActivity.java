@@ -338,6 +338,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
 
     public static LaunchActivity instance;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (BuildVars.DEBUG_VERSION) {
@@ -672,9 +673,16 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 } else if (id == 207) {
                     presentFragment(new ProxyListActivity());
                     drawerLayoutContainer.closeDrawer(false);
+                } else if (id == 208) {
+                    presentFragment(new StickersActivity(0, null));
+                    drawerLayoutContainer.closeDrawer(false);
+                } else if (id == 209) {
+                    presentFragment(new FiltersSetupActivity());
+                    drawerLayoutContainer.closeDrawer(false);
                 }
             }
         });
+
         final ItemTouchHelper sideMenuTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
 
             private RecyclerView.ViewHolder selectedViewHolder;

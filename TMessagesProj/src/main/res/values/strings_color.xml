@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="TestBackendNumber">Test Number</string>
-    <string name="TestBackend">Test Backend</string>
-    <string name="TestBackendOn">This account will connect to the test backend.</string>
-    <string name="TestBackendOff">This account will connect to the production backend.</string>
+    <!-- Colorgram Settings -->
     <string name="ColorVersionAppName">Colorgram</string>
     <string name="ColorVersionAppNameBeta">Colorgram Beta</string>
     <string name="ColorVersionAppNameAlpha">Colorgram Alpha</string>
-    <string name="OwlSetting">Colorgram Settings</string>
+    <string name="ColorSetting">Colorgram Settings</string>
     <string name="Categories">Categories</string>
     <string name="UpdateInfo">Version</string>
     <string name="ViewUpdate">Updates Settings</string>
     <string name="AppVersionHeader">App Version</string>
     <string name="Chat">Chats</string>
-    <string name="OwlUpdates">Updates</string>
-    <string name="Experimental">Experimental Settings</string>
+    <string name="ColorUpdates">Updates</string>
+    <string name="Experimental">Experimental</string>
     <string name="OnModeCheckTitle">On</string>
     <string name="OffModeCheckTitle">Off</string>
     <string name="ExperimentalOff">Warning! Those are experimental settings. Some may not work. Others may break the app. Any of them may disappear in the next version without a trace. Use at your own risk.</string>
@@ -25,8 +22,8 @@
     <string name="OfficialGroup">Official Group</string>
     <string name="GroupUsername">chatscpsystem</string>
     <string name="SourceCode">View Source Code</string>
-    <string name="TranslateOwl">Translate Colorgram</string>
-    <string name="TranslateOwlDesc">Help us translate Colorgram into your language</string>
+    <string name="TranslateColor">Translate Colorgram</string>
+    <string name="TranslateColorDesc">Help us translate Colorgram into your language</string>
     <string name="Donate">Donate</string>
     <string name="DonateDesc">Support the development</string>
     <string name="CopyReportDetails">Copy Report Details</string>
@@ -41,6 +38,7 @@
     <string name="UpdateToImport">This backup is not supported by your version of Colorgram. Update the app to import it.</string>
     <string name="ExportSettings">Export Settings</string>
     <string name="BackupName">Backup Name</string>
+    <string name="ResetEmoji">Reset Emoji</string>
     <string name="ResetSettingsAlert">Are you sure you want to reset Colorgram settings?</string>
     <string name="ResetSettingsHint">Settings have been reset.</string>
     <string name="AvatarAsBackground">Profile Photo as Background</string>
@@ -67,14 +65,6 @@
     <string name="ShapeLinear">Linear</string>
     <string name="ShapeStock">Default</string>
     <string name="SunsetIcon">Sunset</string>
-    <string name="AppIconMonoBlack" comment="AppIconMonoBlack">Mono Black</string>
-    <string name="AppIconDeveloper" comment="AppIconDeveloper">Developer</string>
-    <string name="AriIcon">Ari</string>
-    <string name="AppIconArctic" comment="AppIconArctic">Arctic</string>
-    <string name="AppIconFoxgram" comment="AppIconFoxgram">Shy Fox</string>
-    <string name="UnlockedHiddenFoxIcon">Oh… Congratulations! You unlocked the little shy fox icon.</string>
-    <string name="AppIconRainbow" comment="AppIconRainbow">Rainbow</string>
-    <string name="ClassicIcon">Classic</string>
     <string name="HidePhone">Hide Your Phone Number</string>
     <string name="HidePhoneDesc">It will be hidden from settings and side menu</string>
     <string name="HidePhoneOthers">Hide other people\'s Phone Number</string>
@@ -121,7 +111,7 @@
     <string name="AddToSavedMessages">Save Message</string>
     <string name="Repeat">Repeat</string>
     <string name="TranslatorType">Translator Type</string>
-    <string name="TranslatorTypeOwl">In-Message</string>
+    <string name="TranslatorTypeColor">In-Message</string>
     <string name="TranslatorTypeTG">Dialog Popup</string>
     <string name="TranslatorLanguageCode">Translation (%s)</string>
     <string name="MessageTranslateProgress">translating</string>
@@ -162,29 +152,10 @@
     <string name="BrokenMLKitDetail">Google MLKit language identifier is somehow broken on this device.</string>
     <string name="DC_IDSettings">User Profile</string>
     <string name="Automatic">Automatic</string>
-    <string name="ShowID_DC">Show ID and DC in Profiles</string>
+    <string name="ShowID_DC">Show ID and DC</string>
     <string name="IDType">ID Type</string>
     <string name="IDTypeAbout">Telegram\'s API shows IDs as they are, while the Bot API adds a minus sign for groups and -100 for supergroups, broadcast groups and channels.</string>
     <string name="MessageDetails">Details</string>
-    <string name="UserInfo">User</string>
-    <string name="BotInfo">Bot</string>
-    <string name="FullName">Full Name</string>
-    <string name="MessageText">Text</string>
-    <string name="MessageTextLength">Text Length</string>
-    <string name="EditedDate">Edited Date</string>
-    <string name="MessageDate">Date</string>
-    <string name="ForwardsNumber">Forwards</string>
-    <string name="ForwardedFrom">Forwarded from</string>
-    <string name="MessageScheduledDate">Scheduled date</string>
-    <string name="MessageScheduledWhenOnline">When online</string>
-    <string name="MessageInReply">Message in reply</string>
-    <string name="InReplyTo">In reply to</string>
-    <string name="FileName">Name</string>
-    <string name="MimeType">Mime Type</string>
-    <string name="AssociatedEmoji">Associated Emoji</string>
-    <string name="FileDC">Datacenter</string>
-    <string name="FilePath">Path</string>
-    <string name="FileSize">Size</string>
     <string name="CameraType">Camera</string>
     <string name="CameraTypeDefault">Default</string>
     <string name="DefaultCameraDesc">Use the Telegram\'s built-in camera.</string>
@@ -212,31 +183,8 @@
     <string name="HideTimeOnSticker">Hide Time on Stickers</string>
     <string name="OnlineStatus">Show Online Status</string>
     <string name="InAppUpdates">In-App Updates</string>
-    <string name="CheckUpdates">Check</string>
-    <string name="UpdateAvailable">Update Available</string>
-    <string name="Updatecolorgram">Update Colorgram</string>
-    <string name="DownloadUpdate">Download</string>
-    <string name="DownloadingUpdate">Downloading…</string>
-    <string name="InstallUpdate">Install</string>
-    <string name="UpdateNote">Note:</string>
-    <string name="RemindUpdate">Remind me later</string>
-    <string name="InstallingUpdate">Installing Update</string>
-    <string name="InstallationInProgress">Installation in progress…</string>
-    <string name="InstallationWarning">Please keep the app open until the installation is complete.</string>
-    <string name="ErrorDuringInstallation">Error during installation!</string>
-    <string name="InstallationBlocked">The installation was blocked by your device. Please report this issue to Colorgram support.</string>
-    <string name="InstallationFailure">The APK file is corrupted. Please report this issue to Colorgram support.</string>
-    <string name="UnknownInstallationError">Your device raised an unknown error. Please report this issue to Colorgram support.</string>
-    <string name="NoMoreSpace">Your phone has run out of available storage. Please free some space to download and install the update.</string>
-    <string name="NoUpdateAvailable">Colorgram is up to date.</string>
-    <string name="LastCheck">Last Check: %s</string>
-    <string name="NeverChecked">Never Checked</string>
-    <string name="LastCheckNever">Never</string>
-    <string name="CheckFailed">Unable to Check for Updates</string>
-    <string name="InstallBetas">Install Beta Versions</string>
-    <string name="InstallBetasDesc">Test new Colorgram updates before their official release</string>
-    <string name="AutoUpdate">Update Prompt</string>
-    <string name="AutoUpdatePrompt">Show Prompt when an update is available</string>
+    <string name="AutoUpdate">Update Popup</string>
+    <string name="AutoUpdatePrompt">Show a popup when an update is available</string>
     <string name="APKsChannel">APKs Channel</string>
     <string name="MediaStreamVoip">Use Media Stream in Video Chats</string>
     <string name="UnlimitedFavoriteStickers">Unlimited Favorite Stickers</string>
@@ -255,43 +203,8 @@
     <string name="AutoLockInstant">Instant</string>
     <string name="MKVAsVideo">Show MKV as Video</string>
     <string name="StreamAllVideos">Stream All Videos</string>
-    <string name="FoldersType">Folders Type</string>
-    <string name="FoldersTypeTitles">Titles</string>
-    <string name="FoldersTypeIcons">Icons</string>
-    <string name="FoldersTypeIconsTitles">Icons with Titles</string>
-    <string name="ChooseFolderIcon">Choose an Icon</string>
     <string name="colorgramVersion">Colorgram %1$s\nBased on Telegram %2$s</string>
     <string name="MutualContact">Mutual Contact</string>
-    <string name="MutualContactDesc">**%s** and you have added each other in the contacts list.</string>
-    <string name="JumpToBeginning">Jump to Beginning</string>
-    <string name="CreateMention">Create Mention</string>
-    <string name="CopyTitle">Copy Title</string>
-    <string name="CopyCallback">Copy Callback</string>
-    <string name="CopyID">Copy ID</string>
-    <string name="CopyInlineQuery">Copy Inline Query</string>
-    <string name="CallbackCopiedHint">Callback copied to clipboard.</string>
-    <string name="IDCopied">ID copied to clipboard.</string>
-    <string name="InlineQueryCopied">Inline Query copied to clipboard.</string>
-    <string name="StickerSavedHint">Sticker saved to gallery.</string>
-    <string name="SendMediaPermissionStickers">Stickers</string>
-    <string name="SendMediaPermissionGifs">GIFs</string>
-    <string name="SendMediaPermissionGames">Animated Games</string>
-    <string name="SendMediaPermissionInline">Inline Bots</string>
-    <string name="UserRestrictionsNoSendGifs">no GIFs</string>
-    <string name="UserRestrictionsNoSendGames">no games</string>
-    <string name="UserRestrictionsNoSendInlineBots">no inline bots</string>
-    <string name="RestrictionReason">Restriction Reason</string>
-    <string name="AppLinkNotVerifiedTitle">App links not verified</string>
-    <string name="AppLinkNotVerifiedMessage">For Android 12 and newer, you need to manually add link to verified links in order to open t.me links in Colorgram.</string>
-    <string name="SendWithoutMarkdown">Send without markdown</string>
-    <string name="SaveWithoutMarkdown">Save without markdown</string>
-    <string name="SendAsEmoji">Send as emoji</string>
-    <string name="ChangeIcon">Change App Icon</string>
-    <string name="ChangeIconDesc">Since on Android 12 the monet icon was forced and you upgraded to Android 13, you need to change the app icon to the default one for a better support.</string>
-    <string name="CopyPhoto">Copy Photo</string>
-    <string name="PhotoCopied">Photo copied to clipboard.</string>
-    <string name="AccountNameTitleBar">Account Name</string>
-    <string name="ShowPencilIcon">Pencil Icon for Edited Messages</string>
     <string name="AccountProtection">Account Protection</string>
     <string name="AccountProtectionDesc">Protect your accounts with a unique passcode. Tap the lock icon above your chat list to access them.</string>
     <string name="EnableAccountProtection">Enable Account Protection</string>
@@ -303,8 +216,6 @@
     <string name="AccountProtectionHint2">When an account is protected with a passcode, it will be hidden from the side menu.</string>
     <string name="DisableAccountProtection">Disable Account Protection</string>
     <string name="DisableAccountProtectionAlert">Are you sure you want to disable the account protection feature?</string>
-    <string name="AppCrashed">Something went wrong</string>
-    <string name="AppCrashedDesc">Colorgram has stopped working. Please, send logs to the developers so that they can fix this bug as soon as possible.</string>
     <string name="KeepMarkdown" comment="KeepMarkdown">Keep Markdown</string>
     <string name="KeepMarkdownDesc" comment="KeepMarkdownDesc">When translating a message, keep the markdown formatting.</string>
     <string name="ThemeMonetLight">Monet Light</string>
@@ -314,8 +225,10 @@
     <string name="HideSendAsChannel">Hide "Send as Channel"</string>
     <string name="EmojiSets">Emoji Sets</string>
     <string name="MyEmojiSets">My Emoji Sets</string>
-    <string name="InstalledEmojiSet">Installed</string>
+    <string name="InstalledEmojiSet">Added</string>
     <string name="InstallingEmojiSet">Installing…</string>
+    <string name="ShowPencilIcon">Pencil Icon for Edited Messages</string>
+    <string name="AccountNameTitleBar">Account Name</string>
     <string name="UpdateEmojiSet">Update</string>
     <string name="EmojiSetHint">This affects emoji appearance only for you. Others see them based on their preferences.</string>
     <string name="CustomEmojiSet">Custom Emoji Set</string>
@@ -345,7 +258,10 @@
     <string name="DoubleTapReactions">Quick Reactions</string>
     <string name="ColorDisabledTap">Quick reactions are disabled from Colorgram\'s Settings.</string>
     <string name="AccountRegistrationDate">Account Registration Date</string>
-    <string name="ShowDate">Show Registration Date</string>
+    <string name="ShowDate">Show Account Registration Date</string>
+    <string name="ManageStickerAndEmoji">Sticker and Emoji</string>
+    <string name="ManageFolders">Folders</string>
+    <string name="ShowItemManagement">Show icon to Manage Items</string>
     <string name="TitleStep">Step to reproduce:</string>
     <string name="StepToReproduce">Write here step to reproduce.</string>
     <string name="AppVersion">App version: </string>
@@ -355,5 +271,110 @@
     <string name="Performance">Performance class: </string>
     <string name="Lang">Language: </string>
     <string name="DnSc">Download Source: </string>
-    <string name="EnabledCameraDisabled">Camera locked</string>
+    <string name="DevOptDisabled">Off</string>
+    <string name="DevOptEnabled">On</string>
+    <string name="OnDebugClick">Click again for Debug Menu</string>
+    <string name="SendLogsDesc">Send App Logs to Chats</string>
+    <string name="SendLatestLogsDesc">Send Latest Logs to Chats</string>
+    <string name="ClearLogsDesc">Clear previous generated Logs</string>
+    <string name="TranslationsTitle">Translations</string>
+    <string name="TranslateButtonSettings">In-message Translator</string>
+    <string name="EntireTranslations">Entire Chats Translator</string>
+    <string name="TranslationsSettings">Translator Settings</string>
+    <!-- Folders -->
+    <string name="FoldersType">Folders Type</string>
+    <string name="FoldersTypeTitles">Titles</string>
+    <string name="FoldersTypeIcons">Icons</string>
+    <string name="FoldersTypeIconsTitles">Icons with Titles</string>
+    <string name="ChooseFolderIcon">Choose an Icon</string>
+    <!-- Login -->
+    <string name="TestBackendNumber">Test Number</string>
+    <string name="TestBackend">Test Backend</string>
+    <string name="TestBackendOn">This account will connect to the test backend.</string>
+    <string name="TestBackendOff">This account will connect to the production backend.</string>
+    <!-- App Icons -->
+    <string name="AppIconMonoBlack" comment="AppIconMonoBlack">Mono Black</string>
+    <string name="AppIconDeveloper" comment="AppIconDeveloper">Developer</string>
+    <string name="AriIcon">Ari</string>
+    <string name="AppIconArctic" comment="AppIconArctic">Arctic</string>
+    <string name="AppIconFoxgram" comment="AppIconFoxgram">Shy Fox</string>
+    <string name="UnlockedHiddenFoxIcon">Oh… Congratulations! You unlocked the little shy fox icon.</string>
+    <string name="AppIconRainbow" comment="AppIconRainbow">Rainbow</string>
+    <string name="ClassicIcon">Classic</string>
+    <!-- Details Page -->
+    <string name="UserInfo">User</string>
+    <string name="BotInfo">Bot</string>
+    <string name="FullName">Full Name</string>
+    <string name="MessageText">Text</string>
+    <string name="MessageTextLength">Text Length</string>
+    <string name="EditedDate">Edited Date</string>
+    <string name="MessageDate">Date</string>
+    <string name="ForwardsNumber">Forwards</string>
+    <string name="ForwardedFrom">Forwarded from</string>
+    <string name="MessageScheduledDate">Scheduled date</string>
+    <string name="MessageScheduledWhenOnline">When online</string>
+    <string name="MessageInReply">Message in reply</string>
+    <string name="InReplyTo">In reply to</string>
+    <string name="FileName">Name</string>
+    <string name="MimeType">Mime Type</string>
+    <string name="AssociatedEmoji">Associated Emoji</string>
+    <string name="FileDC">Datacenter</string>
+    <string name="FilePath">Path</string>
+    <string name="FileSize">Size</string>
+    <!-- Updates -->
+    <string name="CheckUpdates">Check</string>
+    <string name="UpdateAvailable">Update Available</string>
+    <string name="Updatecolorgram">Update Colorgram</string>
+    <string name="DownloadUpdate">Download</string>
+    <string name="DownloadingUpdate">Downloading…</string>
+    <string name="InstallUpdate">Install</string>
+    <string name="UpdateNote">Note:</string>
+    <string name="RemindUpdate">Remind me later</string>
+    <string name="InstallingUpdate">Installing Update</string>
+    <string name="InstallationInProgress">Installation in progress…</string>
+    <string name="InstallationWarning">Please keep the app open until the installation is complete.</string>
+    <string name="ErrorDuringInstallation">Error during installation!</string>
+    <string name="InstallationBlocked">The installation was blocked by your device. Please report this issue to Colorgram support.</string>
+    <string name="InstallationFailure">The APK file is corrupted. Please report this issue to Colorgram support.</string>
+    <string name="UnknownInstallationError">Your device raised an unknown error. Please report this issue to Colorgram support.</string>
+    <string name="NoMoreSpace">Your phone has run out of available storage. Please free some space to download and install the update.</string>
+    <string name="NoUpdateAvailable">Colorgram is up to date.</string>
+    <string name="LastCheck">Last Check: %s</string>
+    <string name="NeverChecked">Never Checked</string>
+    <string name="LastCheckNever">Never</string>
+    <string name="CheckFailed">Unable to Check for Updates</string>
+    <string name="InstallBetas">Install Beta Versions</string>
+    <string name="InstallBetasDesc">Test new Colorgram updates before their official release</string>
+    <!-- Chats -->
+    <string name="CopyPhoto">Copy Photo</string>
+    <string name="PhotoCopied">Photo copied to clipboard.</string>
+    <string name="SendWithoutMarkdown">Send without markdown</string>
+    <string name="SaveWithoutMarkdown">Save without markdown</string>
+    <string name="SendAsEmoji">Send as emoji</string>
+    <string name="MutualContactDesc">**%s** and you have added each other in the contacts list.</string>
+    <string name="JumpToBeginning">Jump to Beginning</string>
+    <string name="CreateMention">Create Mention</string>
+    <string name="CopyTitle">Copy Title</string>
+    <string name="CopyCallback">Copy Callback</string>
+    <string name="CopyID">Copy ID</string>
+    <string name="CopyInlineQuery">Copy Inline Query</string>
+    <string name="CallbackCopiedHint">Callback copied to clipboard.</string>
+    <string name="IDCopied">ID copied to clipboard.</string>
+    <string name="InlineQueryCopied">Inline Query copied to clipboard.</string>
+    <string name="StickerSavedHint">Sticker saved to gallery.</string>
+    <string name="SendMediaPermissionStickers">Stickers</string>
+    <string name="SendMediaPermissionGifs">GIFs</string>
+    <string name="SendMediaPermissionGames">Animated Games</string>
+    <string name="SendMediaPermissionInline">Inline Bots</string>
+    <string name="UserRestrictionsNoSendGifs">no GIFs</string>
+    <string name="UserRestrictionsNoSendGames">no games</string>
+    <string name="UserRestrictionsNoSendInlineBots">no inline bots</string>
+    <string name="RestrictionReason">Restriction Reason</string>
+    <!-- Popup -->
+    <string name="AppLinkNotVerifiedTitle">App links not verified</string>
+    <string name="AppLinkNotVerifiedMessage">For Android 12 and newer, you need to manually add link to verified links in order to open t.me links in Colorgram.</string>
+    <string name="ChangeIcon">Change App Icon</string>
+    <string name="ChangeIconDesc">Since on Android 12 the monet icon was forced and you upgraded to Android 13, you need to change the app icon to the default one for a better support.</string>
+    <string name="AppCrashed">Something went wrong</string>
+    <string name="AppCrashedDesc">Colorgram has stopped working. Please, send logs to the developers so that they can fix this bug as soon as possible.</string>
 </resources>

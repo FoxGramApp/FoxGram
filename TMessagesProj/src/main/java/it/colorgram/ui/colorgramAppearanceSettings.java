@@ -1,5 +1,6 @@
 package it.colorgram.ui;
 
+import android.content.Intent;
 import android.transition.TransitionManager;
 import android.view.View;
 
@@ -16,9 +17,11 @@ import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Cells.TextSettingsCell;
 import org.telegram.ui.Components.BulletinFactory;
+import org.telegram.ui.LaunchActivity;
 
 import it.colorgram.android.CustomEmojiController;
 import it.colorgram.android.ColorConfig;
+import it.colorgram.android.utils.AppRestartHelper;
 import it.colorgram.ui.Cells.BlurIntensity;
 import it.colorgram.ui.Cells.DrawerProfilePreview;
 import it.colorgram.ui.Cells.DynamicButtonSelector;
@@ -143,6 +146,7 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(ColorConfig.useSystemFont);
             }
+            AppRestartHelper.triggerRebirth(getContext(), new Intent(getContext(), LaunchActivity.class));
         } else if (position == forcePacmanRow) {
             ColorConfig.togglePacmanForced();
             if (view instanceof TextCheckCell) {
@@ -257,6 +261,19 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
         dynamicButtonRow = rowCount++;
         dynamicDividerRow = rowCount++;
 
+        appearanceHeaderRow = rowCount++;
+        SmoothNavRow = rowCount++;
+        showPencilIconRow = rowCount++;
+        if (((Theme.getEventType() == 0 && ColorConfig.eventType == 0) || ColorConfig.eventType == 1)) {
+            showSantaHatRow = rowCount++;
+            showFallingSnowRow = rowCount++;
+        }
+        roundedNumberSwitchRow = rowCount++;
+        messageTimeSwitchRow = rowCount++;
+        smartButtonsRow = rowCount++;
+        forcePacmanRow = rowCount++;
+        appearanceDividerRow = rowCount++;
+
         fontsAndEmojiHeaderRow = rowCount++;
         chooseEmojiPackRow = rowCount++;
         useSystemFontRow = rowCount++;
@@ -265,22 +282,9 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
         chatHeaderRow = rowCount++;
         appBarShadowRow = rowCount++;
         showInActionBarRow = rowCount++;
-        slidingTitleRow = rowCount++;
         searchIconInActionBarRow = rowCount++;
+        slidingTitleRow = rowCount++;
         chatHeaderDividerRow = rowCount++;
-
-        appearanceHeaderRow = rowCount++;
-        forcePacmanRow = rowCount++;
-        SmoothNavRow = rowCount++;
-        if (((Theme.getEventType() == 0 && ColorConfig.eventType == 0) || ColorConfig.eventType == 1)) {
-            showSantaHatRow = rowCount++;
-            showFallingSnowRow = rowCount++;
-        }
-        messageTimeSwitchRow = rowCount++;
-        roundedNumberSwitchRow = rowCount++;
-        showPencilIconRow = rowCount++;
-        smartButtonsRow = rowCount++;
-        appearanceDividerRow = rowCount++;
     }
 
     @Override

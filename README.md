@@ -1,5 +1,3 @@
-<img src="https://ibb.co/ZBrZ6KW" width="100" align="right"/>
-
 # 🎨 **ColorGram**
 ### ColorGram is a _fork_ of [**OwlGram**](<http://github.com/OwlgramDev/OwlGram>), an unofficial Telegram application that uses _Telegram's API_.
 

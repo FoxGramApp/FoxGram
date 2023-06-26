@@ -25,11 +25,13 @@ public class MenuOrderController {
             "invite_friends",
             "telegram_features",
             "archived_messages",
-            "datacenter_status",
+            //"datacenter_status",
             "qr_login",
             "set_status",
             "connected_devices",
             "power_usage",
+            "sticker_emoji",
+            "folders",
             "proxy_settings",
     };
 
@@ -228,7 +230,7 @@ public class MenuOrderController {
             case "settings":
                 return LocaleController.getString("Settings", R.string.Settings);
             case "colorgram_settings":
-                return LocaleController.getString("OwlSetting", R.string.OwlSetting);
+                return LocaleController.getString("ColorSetting", R.string.ColorSetting);
             case "new_channel":
                 return LocaleController.getString("NewChannel", R.string.NewChannel);
             case "new_secret_chat":
@@ -239,14 +241,18 @@ public class MenuOrderController {
                 return LocaleController.getString("TelegramFeatures", R.string.TelegramFeatures);
             case "archived_messages":
                 return LocaleController.getString("ArchivedChats", R.string.ArchivedChats);
-            case "datacenter_status":
-                return LocaleController.getString("DatacenterStatus", R.string.DatacenterStatus);
+            //case "datacenter_status":
+            //    return LocaleController.getString("DatacenterStatus", R.string.DatacenterStatus);
             case "qr_login":
                 return LocaleController.getString("AuthAnotherClient", R.string.AuthAnotherClient);
             case "set_status":
                 return LocaleController.getString("SetEmojiStatus", R.string.SetEmojiStatus);
             case "connected_devices":
                 return LocaleController.getString("Devices", R.string.Devices);
+            case "sticker_emoji":
+                return LocaleController.getString("ManageStickerAndEmoji", R.string.ManageStickerAndEmoji);
+            case "folders":
+                return LocaleController.getString("ManageFolders", R.string.ManageFolders);
             case "power_usage":
                 return LocaleController.getString("PowerUsage", R.string.PowerUsage);
             case "proxy_settings":

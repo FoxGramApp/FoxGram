@@ -2,4 +2,5 @@
 <resources>
     <bool name="useHardwareAcceleration">true</bool>
     <bool name="isChineseUser">false</bool>
+    <bool name="enablePredictiveBack">true</bool>
 </resources>

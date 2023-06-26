@@ -102,7 +102,7 @@
         android:label="@string/BuildAppName"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:requestLegacyExternalStorage="true"
-        android:enableOnBackInvokedCallback="true"
+        android:enableOnBackInvokedCallback="@bool/enablePredictiveBack"
         android:hasFragileUserData="true"
         android:preserveLegacyExternalStorage="true"
         android:allowAudioPlaybackCapture="true"

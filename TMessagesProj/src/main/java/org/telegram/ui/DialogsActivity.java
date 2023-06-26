@@ -856,7 +856,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                             viewPages[a].setTranslationY(0);
                         }
                     }
-                    if ((initialDialogsType == 3 && ColorConfig.showFolderWhenForward) || !onlySelect) {
+                    if (initialDialogsType == 3 || !onlySelect) {
                         actionBar.setTranslationY(0);
                         if (topBulletin != null) {
                             topBulletin.updatePosition();
@@ -1016,7 +1016,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 } else if (child instanceof DatabaseMigrationHint) {
                     childTop = actionBar.getMeasuredHeight();
                 } else if (child instanceof ViewPage) {
-                    if ((initialDialogsType == 3 && ColorConfig.showFolderWhenForward) || !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) {
+                    if (initialDialogsType == 3 || !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) {
                         if (filterTabsView != null && filterTabsView.getVisibility() == VISIBLE) {
                             childTop = AndroidUtilities.dp(44);
                         } else {
@@ -1672,7 +1672,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         @Override
         protected void onMeasure(int widthSpec, int heightSpec) {
             int t = 0;
-            if ((initialDialogsType == 3 && ColorConfig.showFolderWhenForward) || !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) {
+            if (initialDialogsType == 3 || !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) {
                 if (filterTabsView != null && filterTabsView.getVisibility() == VISIBLE) {
                     t = AndroidUtilities.dp(44);
                 } else {
@@ -1693,7 +1693,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     ignoreLayout = false;
                 }
             }
-            if ((initialDialogsType == 3 && ColorConfig.showFolderWhenForward) || !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) {
+            if (initialDialogsType == 3 || !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) {
                 ignoreLayout = true;
                 if (filterTabsView != null && filterTabsView.getVisibility() == VISIBLE) {
                     t = ActionBar.getCurrentActionBarHeight() + (actionBar.getOccupyStatusBar() ? AndroidUtilities.statusBarHeight : 0);
@@ -1716,7 +1716,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 firstLayout = false;
             }
             super.onMeasure(widthSpec, heightSpec);
-            if ((initialDialogsType == 3 && ColorConfig.showFolderWhenForward) || !onlySelect) {
+            if (initialDialogsType == 3 || !onlySelect) {
                 if (appliedPaddingTop != t && viewPages != null && viewPages.length > 1 && !startedTracking && (tabsAnimation == null || !tabsAnimation.isRunning()) && !tabsAnimationInProgress && (filterTabsView == null || !filterTabsView.isAnimatingIndicator())) {
 //                    viewPages[1].setTranslationX(viewPages[0].getMeasuredWidth());
                 }
@@ -2150,7 +2150,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                             SharedPreferences preferences = MessagesController.getGlobalMainSettings();
                             boolean hintShowed = preferences.getBoolean("archivehint_l", false) || SharedConfig.archiveHidden;
                             if (!hintShowed) {
-                                preferences.edit().putBoolean("archivehint_l", true).commit();
+                                preferences.edit().putBoolean("archivehint_l", true).apply();
                             }
                             final UndoView undoView = getUndoView();
                             if (undoView != null) {
@@ -2325,7 +2325,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
             getNotificationCenter().addObserver(this, NotificationCenter.dialogsNeedReload);
             NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.emojiLoaded);
-            if ((initialDialogsType == 3 && ColorConfig.showFolderWhenForward) || !onlySelect) {
+            if (initialDialogsType == 3 || !onlySelect) {
                 NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.closeSearchByActiveAction);
                 NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.proxySettingsChanged);
                 getNotificationCenter().addObserver(this, NotificationCenter.filterSettingsUpdated);
@@ -2450,7 +2450,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         if (searchString == null) {
             getNotificationCenter().removeObserver(this, NotificationCenter.dialogsNeedReload);
             NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.emojiLoaded);
-            if ((initialDialogsType == 3 && ColorConfig.showFolderWhenForward) || !onlySelect) {
+            if (initialDialogsType == 3 || !onlySelect) {
                 NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.closeSearchByActiveAction);
                 NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.proxySettingsChanged);
                 getNotificationCenter().removeObserver(this, NotificationCenter.filterSettingsUpdated);
@@ -2792,7 +2792,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 actionBar.setSupportsHolidayImage(true);
             }
         }
-        if ((initialDialogsType == DIALOGS_TYPE_FORWARD && ColorConfig.showFolderWhenForward) || !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) {
+        if ((initialDialogsType == DIALOGS_TYPE_FORWARD) || !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) {
             actionBar.setAddToContainer(false);
             actionBar.setCastShadows(false);
             actionBar.setClipContent(true);
@@ -3147,7 +3147,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         ContentView contentView = new ContentView(context);
         fragmentView = contentView;
 
-        int pagesCount = (initialDialogsType == DIALOGS_TYPE_FORWARD && ColorConfig.showFolderWhenForward) || folderId == 0 && (initialDialogsType == DIALOGS_TYPE_DEFAULT && !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) ? 2 : 1;
+        int pagesCount = (initialDialogsType == DIALOGS_TYPE_FORWARD) || folderId == 0 && (initialDialogsType == DIALOGS_TYPE_DEFAULT && !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) ? 2 : 1;
         viewPages = new ViewPage[pagesCount];
         for (int a = 0; a < pagesCount; a++) {
             final ViewPage viewPage = new ViewPage(context) {
@@ -4249,7 +4249,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         if (filterTabsView != null) {
             contentView.addView(filterTabsView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 44));
         }
-        if ((initialDialogsType == DIALOGS_TYPE_FORWARD && ColorConfig.showFolderWhenForward) || !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) {
+        if ((initialDialogsType == DIALOGS_TYPE_FORWARD) || !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) {
             final FrameLayout.LayoutParams layoutParams = LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT);
             if (inPreviewMode && Build.VERSION.SDK_INT >= 21) {
                 layoutParams.topMargin = AndroidUtilities.statusBarHeight;
@@ -5056,7 +5056,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     }
 
     private void updateFiltersView(boolean showMediaFilters, ArrayList<Object> users, ArrayList<FiltersView.DateData> dates, boolean archive, boolean animated) {
-        if (!searchIsShowed || onlySelect && !(initialDialogsType == DIALOGS_TYPE_FORWARD && ColorConfig.showFolderWhenForward)) {
+        if (!searchIsShowed || onlySelect && !(initialDialogsType == DIALOGS_TYPE_FORWARD)) {
             return;
         }
         boolean hasMediaFilter = false;
@@ -10807,7 +10807,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
     @Override
     public boolean isSwipeBackEnabled(MotionEvent event) {
-        return !((initialDialogsType == 3 && ColorConfig.showFolderWhenForward) && viewPages[0].selectedType != filterTabsView.getFirstTabId());
+        return !(initialDialogsType == 3 && viewPages[0].selectedType != filterTabsView.getFirstTabId());
     }
 
     @Override

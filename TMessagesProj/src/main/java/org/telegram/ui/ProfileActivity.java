@@ -630,7 +630,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 avatarImage.getLocationInWindow(coords);
                 PhotoViewer.PlaceProviderObject object = new PhotoViewer.PlaceProviderObject();
                 object.viewX = coords[0];
-                object.viewY = coords[1] - (Build.VERSION.SDK_INT >= 21 ? 0 : AndroidUtilities.statusBarHeight);
+                object.viewY = coords[1];
                 object.parentView = avatarImage;
                 object.imageReceiver = avatarImage.getImageReceiver();
                 if (userId != 0) {
@@ -1169,7 +1169,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
     }
 
-    private class NestedFrameLayout extends SizeNotifierFrameLayout implements NestedScrollingParent3 {
+    public class NestedFrameLayout extends SizeNotifierFrameLayout implements NestedScrollingParent3 {
 
         private NestedScrollingParentHelper nestedScrollingParentHelper;
 
@@ -3521,7 +3521,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             public boolean onItemClick(View view, int position) {
                 if (position == versionRow) {
                     pressCount++;
-                    if (pressCount >= 2 || BuildVars.DEBUG_PRIVATE_VERSION) {
+                    if (pressCount >= 2) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity(), resourcesProvider);
                         builder.setTitle(LocaleController.getString("DebugMenu", R.string.DebugMenu));
                         CharSequence[] items;
@@ -3530,24 +3530,23 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                 LocaleController.getString("DebugMenuReloadContacts", R.string.DebugMenuReloadContacts),
                                 LocaleController.getString("DebugMenuResetContacts", R.string.DebugMenuResetContacts),
                                 LocaleController.getString("DebugMenuResetDialogs", R.string.DebugMenuResetDialogs),
-                                BuildVars.DEBUG_VERSION ? null : (BuildVars.LOGS_ENABLED ? LocaleController.getString("DebugMenuDisableLogs", R.string.DebugMenuDisableLogs) : LocaleController.getString("DebugMenuEnableLogs", R.string.DebugMenuEnableLogs)),
-                                //SharedConfig.inappCamera ? LocaleController.getString("DebugMenuDisableCamera", R.string.DebugMenuDisableCamera) : LocaleController.getString("DebugMenuEnableCamera", R.string.DebugMenuEnableCamera),
+                                BuildVars.DEBUG_VERSION ? null : BuildVars.LOGS_ENABLED ? LocaleController.getString("DebugMenuDisableLogs", R.string.DebugMenuDisableLogs) : LocaleController.getString("DebugMenuEnableLogs", R.string.DebugMenuEnableLogs),
                                 LocaleController.getString("DebugMenuClearMediaCache", R.string.DebugMenuClearMediaCache),
                                 LocaleController.getString("DebugMenuCallSettings", R.string.DebugMenuCallSettings),
                                 null,
                                 LocaleController.getString("DebugMenuCheckAppUpdate", R.string.DebugMenuCheckAppUpdate),
                                 LocaleController.getString("DebugMenuReadAllDialogs", R.string.DebugMenuReadAllDialogs),
-                                BuildVars.DEBUG_PRIVATE_VERSION ? (SharedConfig.disableVoiceAudioEffects ? "Enable voip audio effects" : "Disable voip audio effects") : null,
+                                BuildVars.DEBUG_PRIVATE_VERSION ? SharedConfig.disableVoiceAudioEffects ? "Enable voip audio effects" : "Disable voip audio effects" : null,
                                 BuildVars.DEBUG_PRIVATE_VERSION ? "Clean app update" : null,
                                 BuildVars.DEBUG_PRIVATE_VERSION ? "Reset suggestions" : null,
                                 BuildVars.DEBUG_PRIVATE_VERSION ? LocaleController.getString(R.string.DebugMenuClearWebViewCache) : null,
-                                Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? LocaleController.getString(SharedConfig.debugWebView ? R.string.DebugMenuDisableWebViewDebug : R.string.DebugMenuEnableWebViewDebug) : null,
-                                (AndroidUtilities.isTabletInternal() && BuildVars.DEBUG_PRIVATE_VERSION) ? (SharedConfig.forceDisableTabletMode ? "Enable tablet mode" : "Disable tablet mode") : null,
+                                LocaleController.getString(SharedConfig.debugWebView ? R.string.DebugMenuDisableWebViewDebug : R.string.DebugMenuEnableWebViewDebug),
+                                AndroidUtilities.isTabletInternal() && BuildVars.DEBUG_PRIVATE_VERSION ? SharedConfig.forceDisableTabletMode ? "Enable tablet mode" : "Disable tablet mode" : null,
                                 LocaleController.getString(SharedConfig.isFloatingDebugActive ? R.string.FloatingDebugDisable : R.string.FloatingDebugEnable),
                                 BuildVars.DEBUG_PRIVATE_VERSION ? "Force remove premium suggestions" : null,
                                 BuildVars.DEBUG_PRIVATE_VERSION ? "Share device info" : null,
                                 BuildVars.DEBUG_PRIVATE_VERSION ? "Force performance class" : null,
-                                BuildVars.DEBUG_PRIVATE_VERSION && !InstantCameraView.allowBigSizeCameraDebug() ? (!SharedConfig.bigCameraForRound ? "Force big camera for round" : "Disable big camera for round") : null
+                                BuildVars.DEBUG_PRIVATE_VERSION && !InstantCameraView.allowBigSizeCameraDebug() ? !SharedConfig.bigCameraForRound ? "Force big camera for round" : "Disable big camera for round" : null
                         };
 
                         builder.setItems(items, (dialog, which) -> {
@@ -3567,9 +3566,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                 sharedPreferences.edit().putBoolean("logsEnabled", BuildVars.LOGS_ENABLED).commit();
                                 updateRowsIds();
                                 listAdapter.notifyDataSetChanged();
-//                            } else if (which == 5) {
-//                                ColorConfig.toggleCameraEnable();
-                            } else if (which == 6) {
+                            } else if (which == 5) {
                                 getMessagesStorage().clearSentMedia();
                                 SharedConfig.setNoSoundHintShowed(false);
                                 SharedPreferences.Editor editor = MessagesController.getGlobalMainSettings().edit();
@@ -3586,17 +3583,17 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                 ChatThemeController.getInstance(currentAccount).clearCache();
                                 getNotificationCenter().postNotificationName(NotificationCenter.newSuggestionsAvailable);
                                 RestrictedLanguagesSelectActivity.cleanup();
-                            } else if (which == 7) {
+                            } else if (which == 6) {
                                 VoIPHelper.showCallDebugSettings(getParentActivity());
-                            } else if (which == 8) {
+                            } else if (which == 7) {
                                 SharedConfig.toggleRoundCamera16to9();
-                            } else if (which == 9) {
+                            } else if (which == 8) {
                                 ((LaunchActivity) getParentActivity()).checkAppUpdate(true);
-                            } else if (which == 10) {
+                            } else if (which == 9) {
                                 getMessagesStorage().readAllDialogs(-1);
-                            } else if (which == 11) {
+                            } else if (which == 10) {
                                 SharedConfig.toggleDisableVoiceAudioEffects();
-                            } else if (which == 12) {
+                            } else if (which == 11) {
                                 SharedConfig.pendingAppUpdate = null;
                                 SharedConfig.saveConfig();
                                 ColorConfig.updateData.set(null);
@@ -3606,19 +3603,19 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                 ColorConfig.saveLastUpdateCheck(true);
                                 if (!StoreUtils.isDownloadedFromAnyStore()) UpdateManager.deleteUpdate();
                                 NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
-                            } else if (which == 13) {
+                            } else if (which == 12) {
                                 Set<String> suggestions = getMessagesController().pendingSuggestions;
                                 suggestions.add("VALIDATE_PHONE_NUMBER");
                                 suggestions.add("VALIDATE_PASSWORD");
                                 getNotificationCenter().postNotificationName(NotificationCenter.newSuggestionsAvailable);
-                            } else if (which == 14) {
+                            } else if (which == 13) {
                                 ApplicationLoader.applicationContext.deleteDatabase("webview.db");
                                 ApplicationLoader.applicationContext.deleteDatabase("webviewCache.db");
                                 WebStorage.getInstance().deleteAllData();
-                            } else if (which == 15) {
+                            } else if (which == 14) {
                                 SharedConfig.toggleDebugWebView();
                                 Toast.makeText(getParentActivity(), LocaleController.getString(SharedConfig.debugWebView ? R.string.DebugMenuWebViewDebugEnabled : R.string.DebugMenuWebViewDebugDisabled), Toast.LENGTH_SHORT).show();
-                            } else if (which == 16) {
+                            } else if (which == 15) {
                                 SharedConfig.toggleForceDisableTabletMode();
 
                                 Activity activity = AndroidUtilities.findActivity(context);
@@ -3627,9 +3624,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                 activity.finishAffinity(); // Finishes all activities.
                                 activity.startActivity(intent);    // Start the launch activity
                                 System.exit(0);
-                            } else if (which == 17) {
+                            } else if (which == 16) {
                                 FloatingDebugController.setActive((LaunchActivity) getParentActivity(), !FloatingDebugController.isActive());
-                            } else if (which == 18) {
+                            } else if (which == 17) {
                                 getMessagesController().loadAppConfig();
                                 TLRPC.TL_help_dismissSuggestion req = new TLRPC.TL_help_dismissSuggestion();
                                 req.suggestion = "VALIDATE_PHONE_NUMBER";
@@ -3642,7 +3639,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                         getMessagesController().loadAppConfig();
                                     });
                                 });
-                            } else if (which == 19) {
+                            } else if (which == 18) {
                                 int androidVersion = Build.VERSION.SDK_INT;
                                 int cpuCount = ConnectionsManager.CPU_COUNT;
                                 int memoryClass = ((ActivityManager) ApplicationLoader.applicationContext.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
@@ -3739,7 +3736,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                         }, 250);
                                     }
                                 });
-                            } else if (which == 20) {
+                            } else if (which == 19) {
                                 AlertDialog.Builder builder2 = new AlertDialog.Builder(getParentActivity(), resourcesProvider);
                                 builder2.setTitle("Force performance class");
                                 int currentClass = SharedConfig.getDevicePerformanceClass();
@@ -3758,7 +3755,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                 });
                                 builder2.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
                                 builder2.show();
-                            } else if (which == 21) {
+                            } else if (which == 20) {
                                 SharedConfig.toggleRoundCamera();
                             }
                         });
@@ -3771,7 +3768,6 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                             FileLog.e(e);
                         }
                     }
-                    return true;
                 } else if (position >= membersStartRow && position < membersEndRow) {
                     final TLRPC.ChatParticipant participant;
                     if (!sortedUsers.isEmpty()) {
@@ -3783,6 +3779,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 } else {
                     return processOnClickOrPress(position, view, view.getWidth() / 2f, (int) (view.getHeight() * .75f));
                 }
+                return true;
             }
         });
 
@@ -7491,12 +7488,13 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 numberSectionRow = rowCount++;
                 if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
                     datacenterRow = rowCount++;
-                }numberRow = rowCount++;
+                }
+                if (ColorConfig.showAccountRegistrationDate && !isChat()) dateRow = rowCount++;
+                numberRow = rowCount++;
                 setUsernameRow = rowCount++;
                 if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
                     datacenterRow = rowCount++;
                 }
-                if (ColorConfig.showAccountRegistrationDate && !isChat()) dateRow = rowCount++;
                 bioRow = rowCount++;
 
                 settingsSectionRow = rowCount++;
@@ -9841,7 +9839,13 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         detailCell.setImageClickListener(ProfileActivity.this::onTextDetailCellImageClicked);
                     } else if (position == dateRow) {
                         if (!isChat() || currentUser != null) {
+                            Drawable drawable = ContextCompat.getDrawable(detailCell.getContext(), R.drawable.msg_calendar2);
+                            if (drawable != null) {
+                                drawable.setColorFilter(new PorterDuffColorFilter(getThemedColor(Theme.key_switch2TrackChecked), PorterDuff.Mode.SRC_IN));
+                                detailCell.setImage(drawable);
+                            }
                             detailCell.setTextAndValue(AccountRegistrationDateController.getDate(currentUser.id), LocaleController.getString(R.string.AccountRegistrationDate), true);
+                            detailCell.setImageClickListener(ProfileActivity.this::onTextDetailCellImageClicked);
                             break;
                         }
                     }
@@ -10014,7 +10018,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         textCell.setImageLeft(12);
                         setAvatarCell = textCell;
                     }else if (position == owlSettingsRow){
-                        textCell.setTextAndIcon(LocaleController.getString("OwlSetting", R.string.OwlSetting), R.drawable.msg_settings, true);
+                        textCell.setTextAndIcon(LocaleController.getString("ColorSetting", R.string.ColorSetting), R.drawable.msg_settings, true);
                     } else if (position == addToGroupButtonRow) {
                         textCell.setTextAndIcon(LocaleController.getString("AddToGroupOrChannel", R.string.AddToGroupOrChannel), R.drawable.msg_groups_create, false);
                         textCell.setColors(Theme.key_windowBackgroundWhiteBlueIcon, Theme.key_windowBackgroundWhiteBlueButton);

@@ -166,7 +166,7 @@ public class CustomEmojiController {
                     .filter(emojiPackInfo -> Objects.equals(emojiPackInfo.packId, ColorConfig.emojiPackSelected))
                     .findFirst()
                     .map(e -> e.packName)
-                    .orElse("Apple");
+                    .orElse(LocaleController.getString("Default", R.string.Default));
         }
     }
 
@@ -200,6 +200,9 @@ public class CustomEmojiController {
         new Thread() {
             @Override
             public void run() {
+                if (!isSelectedCustomEmojiPack()) {
+                    ColorConfig.setEmojiPackSelected("default");
+                }
                 ArrayList<EmojiPackBase> tmp = loadCustomEmojiPacks();
                 invalidateCache(false);
                 statusLoading = LOADED_LOCAL;

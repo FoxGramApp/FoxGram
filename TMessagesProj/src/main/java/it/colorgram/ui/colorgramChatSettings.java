@@ -24,7 +24,6 @@ import org.telegram.ui.Cells.TextCheckCell2;
 import org.telegram.ui.Cells.TextCheckbox2Cell;
 import org.telegram.ui.Cells.TextInfoPrivacyCell;
 import org.telegram.ui.Cells.TextSettingsCell;
-import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.UndoView;
 
 import java.util.ArrayList;
@@ -55,9 +54,6 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
     private int hideKeyboardRow;
     private int playGifAsVideoRow;
     private int chatDividerRow;
-    private int foldersHeaderRow;
-    private int showFolderWhenForwardRow;
-    private int foldersDividerRow;
     private int messageMenuHeaderRow;
     private int showAddToSMRow;
     private int showRepeatRow;
@@ -73,7 +69,6 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
     private int confirmSendAudioRow;
     private int confirmSendVideoRow;
     private int showDeleteRow;
-    private int hideAllTabRow;
     private int cameraEnabled;
     private int cameraTypeHeaderRow;
     private int cameraTypeSelectorRow;
@@ -137,11 +132,6 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(ColorConfig.gifAsVideo);
             }
-        } else if (position == showFolderWhenForwardRow) {
-            ColorConfig.toggleShowFolderWhenForward();
-            if (view instanceof TextCheckCell) {
-                ((TextCheckCell) view).setChecked(ColorConfig.showFolderWhenForward);
-            }
         } else if (position == showAddToSMRow) {
             ColorConfig.contextMenu.toggleSaveMessage();
             ColorConfig.applyContextMenu();
@@ -184,23 +174,10 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
             if (view instanceof TextCheckbox2Cell) {
                 ((TextCheckbox2Cell) view).setChecked(ColorConfig.contextMenu.copyPhoto);
             }
-        } else if (position == hideAllTabRow) {
-            ColorConfig.toggleHideAllTab();
-            if (view instanceof TextCheckCell) {
-                ((TextCheckCell) view).setChecked(ColorConfig.hideAllTab);
-            }
-            reloadDialogs();
         } else if (position == cameraEnabled) {
             ColorConfig.toggleCameraEnable();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(ColorConfig.cameraEnable);
-            }
-            if (ColorConfig.cameraEnable) {
-                updateRowsId();
-                listAdapter.notifyItemRangeInserted(cameraTypeSelectorRow, 4 + (ColorConfig.cameraEnable ? 3 : 0));
-            } else {
-                listAdapter.notifyItemRangeRemoved(cameraTypeSelectorRow, 4 + (ColorConfig.cameraEnable ? 3 : 0));
-                updateRowsId();
             }
         } else if (position == cameraXOptimizeRow) {
             ColorConfig.toggleCameraXOptimizedMode();
@@ -323,12 +300,6 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
     @Override
     protected void updateRowsId() {
         super.updateRowsId();
-        cameraTypeSelectorRow = -1;
-        cameraXOptimizeRow = -1;
-        cameraXQualityRow = -1;
-        cameraAdviseRow = -1;
-        cameraPreviewRow = -1;
-        rearCameraStartingRow = -1;
         suppressionRow = -1;
         confirmSendGifsRow = -1;
         confirmSendStickersRow = -1;
@@ -341,18 +312,16 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
 
         cameraTypeHeaderRow = rowCount++;
         cameraEnabled = rowCount++;
-        if (ColorConfig.cameraEnable) {
-            if (CameraXUtils.isCameraXSupported()) {
-                cameraTypeSelectorRow = rowCount++;
-                if (ColorConfig.cameraType == 1) {
-                    cameraXOptimizeRow = rowCount++;
-                    cameraXQualityRow = rowCount++;
-                }
-                cameraAdviseRow = rowCount++;
+        if (CameraXUtils.isCameraXSupported()) {
+            cameraTypeSelectorRow = rowCount++;
+            if (ColorConfig.cameraType == 1) {
+                cameraXOptimizeRow = rowCount++;
+                cameraXQualityRow = rowCount++;
             }
-            cameraPreviewRow = rowCount++;
-            rearCameraStartingRow = rowCount++;
+            cameraAdviseRow = rowCount++;
         }
+        cameraPreviewRow = rowCount++;
+        rearCameraStartingRow = rowCount++;
         cameraDividerRow = rowCount++;
 
         chatHeaderRow = rowCount++;
@@ -360,7 +329,6 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
         doubleReactionsRow = rowCount++;
         showGreetings = rowCount++;
         hideChannelBottomRow = rowCount++;
-        playGifAsVideoRow = rowCount++;
         hideKeyboardRow = rowCount++;
         hideSendAsChannelRow = rowCount++;
         openArchiveOnPullRow = rowCount++;
@@ -373,6 +341,7 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
         }
         turnSoundOnVDKeyRow = rowCount++;
         proximitySensorRow = rowCount++;
+        playGifAsVideoRow = rowCount++;
         confirmSendRow = rowCount++;
         if (confirmSendExpanded) {
             confirmSendStickersRow = rowCount++;
@@ -382,11 +351,6 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
         }
         hideTimeOnStickerRow = rowCount++;
         audioVideoDividerRow = rowCount++;
-
-        foldersHeaderRow = rowCount++;
-        hideAllTabRow = rowCount++;
-        showFolderWhenForwardRow = rowCount++;
-        foldersDividerRow = rowCount++;
 
         messageMenuHeaderRow = rowCount++;
         showDeleteRow = rowCount++;
@@ -414,8 +378,6 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
                     HeaderCell headerCell = (HeaderCell) holder.itemView;
                     if (position == chatHeaderRow) {
                         headerCell.setText(LocaleController.getString("Chat", R.string.Chat));
-                    } else if (position == foldersHeaderRow) {
-                        headerCell.setText(LocaleController.getString("Filters", R.string.Filters));
                     } else if (position == audioVideoHeaderRow) {
                         headerCell.setText(LocaleController.getString("MediaSettings", R.string.MediaSettings));
                     } else if (position == messageMenuHeaderRow) {
@@ -431,11 +393,11 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
                     textCheckCell.setEnabled(true, null);
                     if (position == cameraEnabled) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("DebugMenuEnableCamera", R.string.DebugMenuEnableCamera), ColorConfig.cameraEnable, true);
-                    } else if (position == cameraXOptimizeRow && ColorConfig.cameraEnable) {
+                    } else if (position == cameraXOptimizeRow) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("PerformanceMode", R.string.PerformanceMode), LocaleController.getString("PerformanceModeDesc", R.string.PerformanceModeDesc), ColorConfig.useCameraXOptimizedMode, true, true);
-                    } else if (position == cameraPreviewRow && ColorConfig.cameraEnable) {
+                    } else if (position == cameraPreviewRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("CameraPreview"), ColorConfig.cameraPreview, true);
-                    } else if (position == rearCameraStartingRow && ColorConfig.cameraEnable) {
+                    } else if (position == rearCameraStartingRow) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("UseRearRoundVideos", R.string.UseRearRoundVideos), LocaleController.getString("UseRearRoundVideosDesc", R.string.UseRearRoundVideosDesc), ColorConfig.useRearCamera, true, true);
                     } else if (position == jumpChannelRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("JumpToNextChannel", R.string.JumpToNextChannel), ColorConfig.jumpChannel, true);
@@ -449,10 +411,6 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
                         textCheckCell.setTextAndCheck(LocaleController.getString("HideChatKeyboard", R.string.HideChatKeyboard), ColorConfig.hideKeyboard, true);
                     } else if (position == playGifAsVideoRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("GIFsAsVideo", R.string.GIFsAsVideo), ColorConfig.gifAsVideo, true);
-                    } else if (position == showFolderWhenForwardRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("FoldersWhenForwarding", R.string.FoldersWhenForwarding), ColorConfig.showFolderWhenForward, true);
-                    } else if (position == hideAllTabRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("HideAllChatsFolder", R.string.HideAllChatsFolder), ColorConfig.hideAllTab, true);
                     } else if (position == proximitySensorRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("DisableProximityEvents", R.string.DisableProximityEvents), ColorConfig.disableProximityEvents, true);
                     } else if (position == suppressionRow) {
@@ -471,7 +429,7 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
                     break;
                 case TEXT_HINT_WITH_PADDING:
                     TextInfoPrivacyCell textInfoPrivacyCell = (TextInfoPrivacyCell) holder.itemView;
-                    if (position == cameraAdviseRow && ColorConfig.cameraEnable) {
+                    if (position == cameraAdviseRow) {
                         String advise;
                         switch (ColorConfig.cameraType) {
                             case ColorConfig.TELEGRAM_CAMERA:
@@ -492,7 +450,7 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
                 case SETTINGS:
                     TextSettingsCell textSettingsCell = (TextSettingsCell) holder.itemView;
                     textSettingsCell.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
-                    if (position == cameraXQualityRow && ColorConfig.cameraEnable) {
+                    if (position == cameraXQualityRow) {
                         textSettingsCell.setTextAndValue(LocaleController.getString("CameraQuality", R.string.CameraQuality), ColorConfig.cameraResolution + "p", partial,false);
                     }
                     break;
@@ -599,28 +557,26 @@ public class colorgramChatSettings extends BaseSettingsActivity implements Notif
         @Override
         public ViewType getViewType(int position) {
             if (position == chatDividerRow || position == cameraDividerRow ||
-                 position == foldersDividerRow || position == audioVideoDividerRow ||
-                 position == stickerSizeDividerRow) {
+                 position == audioVideoDividerRow || position == stickerSizeDividerRow) {
                 return ViewType.SHADOW;
-            } else if (position == chatHeaderRow || position == foldersHeaderRow || position == audioVideoHeaderRow ||
+            } else if (position == chatHeaderRow || position == audioVideoHeaderRow ||
                     position == messageMenuHeaderRow || position == stickerSizeHeaderRow || position == cameraTypeHeaderRow) {
                 return ViewType.HEADER;
             } else if (position == cameraEnabled || position == cameraXOptimizeRow ||
                     position == cameraPreviewRow || position == rearCameraStartingRow ||
                     position == jumpChannelRow || position == doubleReactionsRow || position == hideKeyboardRow ||
-                    position == playGifAsVideoRow || position == showFolderWhenForwardRow ||
-                    position == showGreetings || position == hideChannelBottomRow ||
+                    position == playGifAsVideoRow || position == showGreetings || position == hideChannelBottomRow ||
                     position == proximitySensorRow || position == suppressionRow || position == turnSoundOnVDKeyRow ||
                     position == openArchiveOnPullRow || position == hideTimeOnStickerRow || position == onlineStatusRow ||
-                    position == hideAllTabRow || position == hideSendAsChannelRow) {
+                    position == hideSendAsChannelRow) {
                 return ViewType.SWITCH;
             } else if (position == stickerSizeRow) {
                 return ViewType.STICKER_SIZE;
-            } else if (position == cameraTypeSelectorRow && ColorConfig.cameraEnable) {
+            } else if (position == cameraTypeSelectorRow) {
                 return ViewType.CAMERA_SELECTOR;
-            } else if (position == cameraAdviseRow && ColorConfig.cameraEnable) {
+            } else if (position == cameraAdviseRow) {
                 return ViewType.TEXT_HINT_WITH_PADDING;
-            } else if (position == cameraXQualityRow && ColorConfig.cameraEnable) {
+            } else if (position == cameraXQualityRow) {
                 return ViewType.SETTINGS;
             } else if (position == showDeleteRow || position == showNoQuoteForwardRow || position == showAddToSMRow ||
                     position == showRepeatRow || position == showReportRow ||

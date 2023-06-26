@@ -40,7 +40,6 @@ public class ColorConfig extends SettingsController {
     public static boolean jumpChannel;
     public static boolean hideKeyboard;
     public static boolean gifAsVideo;
-    public static boolean showFolderWhenForward;
     public static boolean useRearCamera;
     public static boolean cameraEnable;
     public static boolean disableCameraTile;
@@ -151,7 +150,6 @@ public class ColorConfig extends SettingsController {
             jumpChannel = getBoolean("jumpChannel", true);
             hideKeyboard = getBoolean("hideKeyboard", false);
             gifAsVideo = getBoolean("gifAsVideo", false);
-            showFolderWhenForward = getBoolean("showFolderWhenForward", true);
             useRearCamera = getBoolean("useRearCamera", false);
             cameraEnable = getBoolean("cameraEnable", true);
             disableCameraTile = getBoolean("disableCameraTile", false);
@@ -183,7 +181,7 @@ public class ColorConfig extends SettingsController {
             eventType = getInt("eventType", 0);
             buttonStyleType = getInt("buttonStyleType", 0);
             tabMode = getInt("tabMode", 1);
-            translatorStyle = getInt("translatorStyle", BaseTranslator.INLINE_STYLE);
+            translatorStyle = getInt("translatorStyle", BaseTranslator.DIALOG_STYLE);
             blurIntensity = getInt("blurIntensity", 75);
             oldBuildVersion = getString("oldBuildVersion", null);
             stickerSizeStack = getInt("stickerSizeStack", 14);
@@ -204,7 +202,7 @@ public class ColorConfig extends SettingsController {
             openArchiveOnPull = getBoolean("openArchiveOnPull", false);
             slidingChatTitle = getBoolean("slidingChatTitle", false);
             showIDAndDC = getBoolean("showIDAndDC", false);
-            showAccountRegistrationDate = getBoolean("showAccountRegistrationDate", true);
+            showAccountRegistrationDate = getBoolean("showAccountRegistrationDate", false);
             doNotTranslateLanguages.readParams(getByteArray("doNotTranslateLanguages"), magicException, "app");
             dcStyleType = getInt("dcStyleType", 0);
             idType = getInt("idType", 0);
@@ -278,9 +276,6 @@ public class ColorConfig extends SettingsController {
     }
     public static void toggleGifAsVideo() {
         putValue("gifAsVideo", gifAsVideo ^= true);
-    }
-    public static void toggleShowFolderWhenForward() {
-        putValue("showFolderWhenForward", showFolderWhenForward ^= true);
     }
 
     public static void toggleUseRearCamera() {

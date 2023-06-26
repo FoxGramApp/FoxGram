@@ -59,6 +59,7 @@ import java.util.HashSet;
 import java.util.Timer;
 
 import it.colorgram.ui.colorgramGeneralSettings;
+import it.colorgram.ui.colorgramTranslationsSettings;
 
 public class LanguageSelectActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
@@ -231,7 +232,7 @@ public class LanguageSelectActivity extends BaseFragment implements Notification
                     }
                     return;
                 } else if (view instanceof TextCell) {
-                    presentFragment(new colorgramGeneralSettings());
+                    presentFragment(new colorgramTranslationsSettings());
                     return;
                 }
                 if (getParentActivity() == null || parentLayout == null || !(view instanceof TextRadioCell)) {

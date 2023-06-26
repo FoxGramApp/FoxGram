@@ -138,7 +138,7 @@ public class colorgramUpdateSettings extends BaseSettingsActivity {
             betaUpdatesRow = rowCount++;
         }
         notifyWhenAvailableRow = rowCount++;
-        apkChannelRow = rowCount++;
+        //apkChannelRow = rowCount++;
     }
 
     @Override
@@ -254,7 +254,7 @@ public class colorgramUpdateSettings extends BaseSettingsActivity {
                 case UPDATE_CHECK:
                     view = new UpdateCheckCell(context, true) {
                         @Override
-                        public void onCheckUpdate() {
+                        protected void onCheckUpdate() {
                             super.onCheckUpdate();
                             if (PlayStoreAPI.updateDownloaded()) {
                                 PlayStoreAPI.installUpdate();
