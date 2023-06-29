@@ -1,5 +1,6 @@
 package org.telegram.ui.Components;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import it.colorgram.android.ColorConfig;
 import it.colorgram.ui.DoNotTranslateSettings;
 
+@SuppressLint("ViewConstructor")
 public class TranslateButton extends FrameLayout {
 
     private final int currentAccount;
@@ -44,15 +46,15 @@ public class TranslateButton extends FrameLayout {
     private final int topicId;
     private final BaseFragment fragment;
 
-    private Theme.ResourcesProvider resourcesProvider;
+    private final Theme.ResourcesProvider resourcesProvider;
 
-    private AnimatedTextView textView;
+    private final AnimatedTextView textView;
     private final Drawable translateDrawable;
     public final SpannableString translateIcon;
 
-    private ImageView menuView;
+    private final ImageView menuView;
 
-    private boolean[] accusative = new boolean[1];
+    private final boolean[] accusative = new boolean[1];
 
     public TranslateButton(Context context, ChatActivity chatActivity, Theme.ResourcesProvider resourcesProvider) {
         this(context, chatActivity.getCurrentAccount(), chatActivity.getDialogId(), chatActivity.getTopicId(), chatActivity, resourcesProvider);
@@ -126,7 +128,7 @@ public class TranslateButton extends FrameLayout {
         swipeBack.setOrientation(LinearLayout.VERTICAL);
         ScrollView swipeBackScrollView = new ScrollView(getContext()) {
             Drawable topShadowDrawable;
-            AnimatedFloat alphaFloat = new AnimatedFloat(this, 350, CubicBezierInterpolator.EASE_OUT_QUINT);
+            final AnimatedFloat alphaFloat = new AnimatedFloat(this, 350, CubicBezierInterpolator.EASE_OUT_QUINT);
             private boolean wasCanScrollVertically;
 
             @Override

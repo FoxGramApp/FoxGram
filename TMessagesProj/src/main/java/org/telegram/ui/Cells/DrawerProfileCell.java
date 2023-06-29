@@ -97,6 +97,7 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
     public static boolean switchingTheme;
     public boolean drawPremium;
     public float drawPremiumProgress;
+    private ImageView menuControllerSetting;
 
     private float stateX, stateY;
 
@@ -228,16 +229,15 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
             }
         }
 
-        ImageView menuControllerView = new ImageView(context);
-        menuControllerView.setImageResource(R.drawable.msg_newfilter);
-        menuControllerView.setScaleType(ImageView.ScaleType.CENTER);
-        menuControllerView.setVisibility(View.VISIBLE);
-        menuControllerView.setClickable(true);
-        menuControllerView.setOnTouchListener((View view, MotionEvent motionEvent) -> {
+        menuControllerSetting = new ImageView(context);
+        menuControllerSetting.setImageResource(R.drawable.msg_newfilter);
+        menuControllerSetting.setScaleType(ImageView.ScaleType.CENTER);
+        menuControllerSetting.setClickable(true);
+        menuControllerSetting.setOnTouchListener((View view, MotionEvent motionEvent) -> {
             drawerLayoutContainer.presentFragment(new DrawerOrderSettings());
             return false;
         });
-        addView(menuControllerView, LayoutHelper.createFrame(25, 25, Gravity.RIGHT, 0, 60, 65, 0));
+        addView(menuControllerSetting, LayoutHelper.createFrame(48, 48, Gravity.RIGHT | Gravity.BOTTOM, 0, 0, 48, 90));
 
         darkThemeView = new RLottieImageView(context) {
             @Override
@@ -576,6 +576,11 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
         boolean drawCatsShadow = false;
         int color;
         int darkBackColor = 0;
+        if (ColorConfig.showMenuControllerIcon) {
+            menuControllerSetting.setVisibility(View.VISIBLE);
+        } else {
+            menuControllerSetting.setVisibility(View.INVISIBLE);
+        }
         if (!avatarAsDrawerBackground && !useImageBackground && Theme.hasThemeKey(Theme.key_chats_menuTopShadowCats)) {
             color = Theme.getColor(Theme.key_chats_menuTopShadowCats);
             drawCatsShadow = true;
@@ -591,7 +596,7 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
             shadowView.getDrawable().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY));
         }
         int colorBackground = Theme.getColor(Theme.key_chats_menuBackground);
-        GradientDrawable gd2 = new GradientDrawable(
+        @SuppressLint("DrawAllocation") GradientDrawable gd2 = new GradientDrawable(
                 GradientDrawable.Orientation.BOTTOM_TOP,
                 new int[] {colorBackground, AndroidUtilities.getTransparentColor(colorBackground, 0)});
         gradientBackground.setBackground(gd2);
@@ -605,7 +610,7 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
             sunDrawable.setLayerColor("Path 5.**", currentMoonColor);
             sunDrawable.commitApplyLayerColors();
         }
-        if(AndroidUtilities.isLight(colorBackground) && ColorConfig.showGradientColor && ColorConfig.avatarAsDrawerBackground) {
+        if (AndroidUtilities.isLight(colorBackground) && ColorConfig.showGradientColor && ColorConfig.avatarAsDrawerBackground) {
             nameTextView.setTextColor(Theme.getColor(Theme.key_dialogTextBlack));
         } else {
             nameTextView.setTextColor(Theme.getColor(Theme.key_chats_menuName));

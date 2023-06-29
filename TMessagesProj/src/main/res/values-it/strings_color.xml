@@ -181,11 +181,11 @@
     <string name="ConfirmSending">Conferma Invio</string>
     <string name="HideTimeOnSticker">Nascondi l\'orario sugli sticker</string>
     <string name="OnlineStatus">Mostra lo stato online</string>
-    <string name="InstallBetas">Installa versioni Beta</string>
-    <string name="InstallBetasDesc">Prova i nuovi aggiornamenti di Colorgram prima del loro rilascio ufficiale</string>
+    <string name="InstallPreview">Cambia canale aggiornamenti</string>
+    <string name="InstallPreviewDesc">Prova i nuovi aggiornamenti di Colorgram prima del loro rilascio ufficiale</string>
     <string name="AutoUpdate">Popup aggiornamenti</string>
     <string name="AutoUpdatePrompt">Mostra un popup quando è disponibile un aggiornamento</string>
-    <string name="APKsChannel">Canale APK</string>
+    <string name="APKsChannel">Versione aggiornamenti</string>
     <string name="MediaStreamVoip">Usa il flusso multimediale nelle chat video</string>
     <string name="UnlimitedFavoriteStickers">Sticker preferiti illimitati</string>
     <string name="UnlimitedFavoriteStickersDesc">Consente di aggiungere sticker illimitati ai preferiti, ma potrebbero non essere sincronizzati con altri dispositivi</string>
@@ -335,11 +335,12 @@
     <string name="InstallationFailure">Il file APK è corrotto. Per favore segnala questo problema al supporto di Colorgram.</string>
     <string name="UnknownInstallationError">Il tuo dispositivo ha sollevato un errore sconosciuto. Per favore segnala questo problema al supporto di Colorgram.</string>
     <string name="NoMoreSpace">Il tuo telefono ha esaurito la memoria disponibile. Libera dello spazio per scaricare e installare l\'aggiornamento.</string>
-    <string name="NoUpdateAvailable">colorgram è aggiornato.</string>
+    <string name="NoUpdateAvailable">Colorgram è aggiornato.</string>
     <string name="LastCheck">Ultimo controllo: %s</string>
     <string name="NeverChecked">Mai controllato</string>
     <string name="LastCheckNever">Mai</string>
     <string name="CheckFailed">Impossibile controllare gli aggiornamenti</string>
+    <string name="Stable">Stabile</string>
     <!-- Chats -->
     <string name="colorgramVersion">Colorgram %1$s\nBasato su Telegram %2$s</string>
     <string name="MutualContact">Contatto reciproco</string>

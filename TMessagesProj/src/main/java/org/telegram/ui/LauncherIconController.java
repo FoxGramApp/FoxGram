@@ -35,7 +35,7 @@ public class LauncherIconController {
 
     public enum LauncherIcon {
         DEFAULT("DefaultIcon", R.drawable.icon_background_sa, R.drawable.icon_launcher_foreground, R.string.AppIconDefault),
-        MONET("MonetIcon", R.color.owl_gram_fm_background, R.drawable.owl_gram_fm_foreground_my,R.string.MonetIconColor, false, false),
+        MONET("MonetIcon", R.color.color_bg, R.drawable.color_fm_my,R.string.MonetIconColor, false, false),
         DEVELOPER("DeveloperIcon", R.drawable.iconc_1_background_sa, R.drawable.icon_launcher_foreground, R.string.AppIconDeveloper),
         AQUA("AquaIcon", R.drawable.icon_4_background_sa, R.drawable.icon_launcher_foreground, R.string.AppIconAqua),
         RAINBOW("RainbowIcon", R.drawable.icon_8_launcher_background, R.drawable.icon_8_launcher_foreground, R.string.AppIconRainbow),

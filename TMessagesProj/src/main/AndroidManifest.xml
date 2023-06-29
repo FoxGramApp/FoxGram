@@ -255,8 +255,8 @@
             android:enabled="false"
             android:name="org.telegram.messenger.MonetIcon"
             android:targetActivity="org.telegram.ui.LaunchActivity"
-            android:icon="@mipmap/owl_gram_fm"
-            android:roundIcon="@mipmap/owl_gram_fm"
+            android:icon="@mipmap/color_fm"
+            android:roundIcon="@mipmap/color_fm"
             android:exported="true">
 
             <intent-filter>

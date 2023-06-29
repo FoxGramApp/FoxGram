@@ -662,14 +662,8 @@ public class TranslateController extends BaseController {
         });
     }
 
-    public void checkDialogMessage(long dialogId) {
-        if (isFeatureAvailable()) {
-            checkDialogMessageSure(dialogId);
-        }
-    }
-
-    public void checkDialogMessageSure(long dialogId) {
-        if (!translatingDialogs.contains(dialogId)) {
+    public void checkDialogMessages(long dialogId) {
+        if (!isFeatureAvailable()) {
             return;
         }
         getMessagesStorage().getStorageQueue().postRunnable(() -> {
@@ -712,6 +706,7 @@ public class TranslateController extends BaseController {
             });
         });
     }
+
 
 
     public void cleanup() {

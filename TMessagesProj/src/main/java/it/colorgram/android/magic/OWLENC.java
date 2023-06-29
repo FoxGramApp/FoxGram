@@ -1,5 +1,8 @@
 package it.colorgram.android.magic;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -8,6 +11,9 @@ import com.google.android.play.core.appupdate.AppUpdateInfo;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.telegram.messenger.ApplicationLoader;
+import org.telegram.messenger.LocaleController;
+import org.telegram.messenger.R;
 
 import java.io.IOException;
 import java.io.PushbackInputStream;
@@ -15,10 +21,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Objects;
 
 import it.colorgram.android.MenuOrderController;
 import it.colorgram.android.ColorConfig;
 import it.colorgram.android.updates.PlayStoreAPI;
+import it.colorgram.android.updates.UpdateManager;
 
 public class OWLENC {
     public static class DrawerItems extends MagicVector<String> {
@@ -94,20 +102,35 @@ public class OWLENC {
         public String fileLink;
         public long fileSize;
 
-        public UpdateAvailable(JSONObject object) throws JSONException {
+        public UpdateAvailable(JSONObject object) {
             fromJSON(object);
         }
 
         public UpdateAvailable() {}
 
-        public void fromJSON(JSONObject updateInfo) throws JSONException {
-            title = updateInfo.getString("title");
-            description = updateInfo.getString("desc");
-            note = updateInfo.getString("note");
-            banner = updateInfo.getString("banner");
-            version = updateInfo.getInt("version");
-            fileLink = updateInfo.getString("link_file");
-            fileSize = updateInfo.getLong("file_size");
+        public void fromJSON(JSONObject updateInfo) {
+            try {
+                title = updateInfo.getString("name");
+                description = updateInfo.getString("body");
+                note = LocaleController.getString("StickerSizeDialogMessage2", R.string.StickerSizeDialogMessage2);
+                banner = "https://imgur.com/a/dMCiW1Y";
+                version = updateInfo.getInt("tag_name");
+                JSONArray arr = updateInfo.getJSONArray("assets");
+                String[] supportedTypes = {"arm64-v8a", "armeabi-v7a", "x86", "x86_64", "universal"};
+                loop:
+                for (int i = 0; i < arr.length(); i++) {
+                    fileLink = arr.getJSONObject(i).getString("browser_download_url");
+                    fileSize = arr.getJSONObject(i).getLong("size");
+                    for (String type : supportedTypes) {
+                        if (fileLink.contains(type) && Objects.equals(UpdateManager.getAbi(), type)) {
+                            break loop;
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+            } catch (PackageManager.NameNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         @Override

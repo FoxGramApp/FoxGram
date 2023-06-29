@@ -4,8 +4,8 @@
     <color name="splash_navigation_bar">#000</color>
     <color name="splash_fm_background">#1c273b</color>
     <color name="splash_fm_navigation_bar">#000</color>
-    <color name="owl_gram_background">#4285F4</color>
-    <color name="owl_gram_foreground">#FFF</color>
-    <color name="owl_gram_fm_background">#4285F4</color>
-    <color name="owl_gram_fm_foreground">#FFF</color>
+    <color name="color_stock_bg">#4285F4</color>
+    <color name="color_bg_m">#FFF</color>
+    <color name="color_bg">#4285F4</color>
+    <color name="color_night_bg">#FFF</color>
 </resources>

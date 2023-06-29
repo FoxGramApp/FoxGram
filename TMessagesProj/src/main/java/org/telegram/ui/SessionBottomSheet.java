@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -32,8 +31,6 @@ import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.BottomSheet;
 import org.telegram.ui.ActionBar.Theme;
-import org.telegram.ui.Cells.SessionCell;
-import org.telegram.ui.Cells.TextCheckCell2;
 import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.RLottieImageView;
@@ -360,10 +357,10 @@ public class SessionBottomSheet extends BottomSheet {
             colorKey2 = Theme.key_avatar_background2Cyan;
         } else if (platform.contains("android")) {
             iconId = R.raw.android_30;
-            if (app_name.contains("colorgram")) {
+            if (app_name.contains("Colorgram")) {
                 animation = false;
                 colorValue = Color.parseColor("#4285F4");
-                iconId = R.drawable.device_owlgram;
+                iconId = R.drawable.device_colorgram;
             } else {
                 colorKey = Theme.key_avatar_backgroundGreen;
                 colorKey2 = Theme.key_avatar_background2Green;

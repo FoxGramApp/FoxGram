@@ -116,7 +116,7 @@ public class colorgramUpdateSettings extends BaseSettingsActivity {
                 ((TextCheckCell) view).setChecked(ColorConfig.notifyUpdates);
             }
         } else if (position == apkChannelRow) {
-            MessagesController.getInstance(currentAccount).openByUserName(UpdateManager.getApkChannel(), this, 1);
+            checkUpdates();
         }
     }
 
@@ -138,7 +138,7 @@ public class colorgramUpdateSettings extends BaseSettingsActivity {
             betaUpdatesRow = rowCount++;
         }
         notifyWhenAvailableRow = rowCount++;
-        //apkChannelRow = rowCount++;
+        apkChannelRow = rowCount++;
     }
 
     @Override
@@ -193,7 +193,7 @@ public class colorgramUpdateSettings extends BaseSettingsActivity {
                     textCheckCell.setEnabled(!AppDownloader.updateDownloaded() || position != betaUpdatesRow, null);
                     if (position == betaUpdatesRow) {
                         changeBetaMode = textCheckCell;
-                        changeBetaMode.setTextAndValueAndCheck(LocaleController.getString("InstallBetas", R.string.InstallBetas), LocaleController.getString("InstallBetasDesc", R.string.InstallBetasDesc), ColorConfig.betaUpdates, true, true);
+                        changeBetaMode.setTextAndValueAndCheck(LocaleController.getString("InstallPreview", R.string.InstallPreview), LocaleController.getString("InstallPreviewDesc", R.string.InstallPreviewDesc), ColorConfig.betaUpdates, true, true);
                     } else if (position == notifyWhenAvailableRow) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("AutoUpdate", R.string.AutoUpdate), LocaleController.getString("AutoUpdatePrompt", R.string.AutoUpdatePrompt), ColorConfig.notifyUpdates, true, true);
                     }
@@ -201,7 +201,7 @@ public class colorgramUpdateSettings extends BaseSettingsActivity {
                 case TEXT_CELL:
                     TextCell textCell = (TextCell) holder.itemView;
                     if (position == apkChannelRow) {
-                        textCell.setTextAndValue(LocaleController.getString("APKsChannel", R.string.APKsChannel), "@" + UpdateManager.getApkChannel(), partial, false);
+                        textCell.setTextAndValue(LocaleController.getString("APKsChannel", R.string.APKsChannel), UpdateManager.getUpdatesChannel(), partial, false);
                     }
                     break;
             }

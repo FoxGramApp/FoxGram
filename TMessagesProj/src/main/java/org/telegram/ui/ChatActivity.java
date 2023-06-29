@@ -24873,7 +24873,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         }
                         return false;
                     });
-                    if (option == 201) { // colorgram Translate Button
+                    if (option == 201) { // Colorgram Translate Button
                         MessageObject messageObject = getMessageHelper().getMessageForTranslate(selectedObject, selectedObjectGroup);
                         Utilities.CallbackReturn<URLSpan, Boolean> onLinkPress = (link) -> {
                             didPressMessageUrl(link, false, selectedObject, v instanceof ChatMessageCell ? (ChatMessageCell) v : null);

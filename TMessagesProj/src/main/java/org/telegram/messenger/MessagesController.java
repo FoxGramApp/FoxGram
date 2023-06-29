@@ -1795,7 +1795,7 @@ public class  MessagesController extends BaseController implements NotificationC
                                     }
                                 }
                             }
-                            getTranslateController().checkDialogMessage(key);
+                            getTranslateController().checkDialogMessages(key);
                         } else {
                             currentDialog.pinned = newDialog.pinned;
                             currentDialog.pinnedNum = newDialog.pinnedNum;
@@ -1843,7 +1843,7 @@ public class  MessagesController extends BaseController implements NotificationC
                                             }
                                         }
                                     }
-                                    getTranslateController().checkDialogMessage(key);
+                                    getTranslateController().checkDialogMessages(key);
                                 }
                             } else {
 //                                if (newMsg == null || newMsg.messageOwner.date > oldMsg.messageOwner.date) {
@@ -1881,7 +1881,7 @@ public class  MessagesController extends BaseController implements NotificationC
                                         }
                                     }
                                 }
-                                getTranslateController().checkDialogMessage(key);
+                                getTranslateController().checkDialogMessages(key);
                             }
                         }
                     }
@@ -7468,7 +7468,7 @@ public class  MessagesController extends BaseController implements NotificationC
                                             if (promoDialog.last_message_date == 0) {
                                                 promoDialog.last_message_date = messageObject.messageOwner.date;
                                             }
-                                            getTranslateController().checkDialogMessage(did);
+                                            getTranslateController().checkDialogMessages(did);
                                         }
                                         sortDialogs(null);
                                         getNotificationCenter().postNotificationName(NotificationCenter.dialogsNeedReload, true);
@@ -9066,7 +9066,7 @@ public class  MessagesController extends BaseController implements NotificationC
                             }
                         }
                     }
-                    getTranslateController().checkDialogMessage(key);
+                    getTranslateController().checkDialogMessages(key);
                 }
 
                 allDialogs.clear();
@@ -9628,9 +9628,7 @@ public class  MessagesController extends BaseController implements NotificationC
                                 }
                             }
                         }
-                        if (translating) {
-                            getTranslateController().checkDialogMessageSure(key);
-                        }
+                        if (translating) getTranslateController().checkDialogMessages(key);
                     } else {
                         if (loadType != DIALOGS_LOAD_TYPE_CACHE) {
                             currentDialog.notify_settings = value.notify_settings;
@@ -9682,9 +9680,7 @@ public class  MessagesController extends BaseController implements NotificationC
                                         }
                                     }
                                 }
-                                if (translating) {
-                                    getTranslateController().checkDialogMessageSure(key);
-                                }
+                                if (translating) getTranslateController().checkDialogMessages(key);
                             }
                         } else {
 //                            if (newMsg == null && oldMs.getId() > 0 || newMsg != null && newMsg.messageOwner.date > oldMsg.messageOwner.date)
@@ -9722,9 +9718,7 @@ public class  MessagesController extends BaseController implements NotificationC
                                     }
                                 }
                             }
-                            if (translating) {
-                                getTranslateController().checkDialogMessageSure(key);
-                            }
+                            if (translating) getTranslateController().checkDialogMessages(key);
                         }
                     }
                 }
@@ -10184,9 +10178,7 @@ public class  MessagesController extends BaseController implements NotificationC
                                 FileLog.d("processDialogsUpdate new message not null");
                             }
                         }
-                        if (translating) {
-                            getTranslateController().checkDialogMessageSure(key);
-                        }
+                        if (translating) getTranslateController().checkDialogMessages(key);
                     } else {
                         if (BuildVars.LOGS_ENABLED) {
                             FileLog.d("processDialogsUpdate dialog not null");
@@ -10246,9 +10238,7 @@ public class  MessagesController extends BaseController implements NotificationC
                                         }
                                     }
                                 }
-                                if (translating) {
-                                    getTranslateController().checkDialogMessageSure(key);
-                                }
+                                if (translating) getTranslateController().checkDialogMessages(key);
                             }
                             if (fromCache && newMsgs == null) {
                                 checkLastDialogMessage(value, null, 0);
@@ -10295,9 +10285,7 @@ public class  MessagesController extends BaseController implements NotificationC
                                         }
                                     }
                                 }
-                                if (translating) {
-                                    getTranslateController().checkDialogMessageSure(key);
-                                }
+                                if (translating) getTranslateController().checkDialogMessages(key);
                             }
                         }
                     }
@@ -13023,7 +13011,7 @@ public class  MessagesController extends BaseController implements NotificationC
                                         }
                                     }
                                 }
-                                getTranslateController().checkDialogMessage(dialog.id);
+                                getTranslateController().checkDialogMessages(dialog.id);
                             }
 
                             changed = true;
@@ -16858,7 +16846,7 @@ public class  MessagesController extends BaseController implements NotificationC
                 }
             }
             dialogMessage.put(dialogId, arrayList);
-            getTranslateController().checkDialogMessage(dialogId);
+            getTranslateController().checkDialogMessages(dialogId);
             changed = true;
 
             if (filterDialogsChanged) {
@@ -16901,7 +16889,7 @@ public class  MessagesController extends BaseController implements NotificationC
                     }
                 }
                 dialogMessage.put(dialogId, arrayList);
-                getTranslateController().checkDialogMessage(dialogId);
+                getTranslateController().checkDialogMessages(dialogId);
                 if (lastMessage.messageOwner.peer_id.channel_id == 0) {
                     dialogMessagesByIds.put(lastMessage.getId(), lastMessage);
                     if (lastMessage.messageOwner.random_id != 0) {

@@ -53,6 +53,7 @@ public class ColorConfig extends SettingsController {
     public static boolean avatarBackgroundDarken;
     public static boolean avatarBackgroundBlur;
     public static boolean avatarAsDrawerBackground;
+    public static boolean showMenuControllerIcon;
     public static boolean betterAudioQuality;
     public static boolean showGradientColor;
     public static boolean showAvatarImage;
@@ -163,6 +164,7 @@ public class ColorConfig extends SettingsController {
             avatarBackgroundDarken = getBoolean("avatarBackgroundDarken", false);
             avatarBackgroundBlur = getBoolean("avatarBackgroundBlur", false);
             avatarAsDrawerBackground = getBoolean("avatarAsDrawerBackground", false);
+            showMenuControllerIcon = getBoolean("showMenuControllerIcon", false);
             showGradientColor = getBoolean("showGradientColor", false);
             showAvatarImage = getBoolean("showAvatarImage", true);
             pacmanForced = getBoolean("pacmanForced", false);
@@ -315,6 +317,10 @@ public class ColorConfig extends SettingsController {
 
     public static void toggleAvatarAsDrawerBackground() {
         putValue("avatarAsDrawerBackground", avatarAsDrawerBackground ^= true);
+    }
+
+    public static void toggleShowMenuControllerIcon() {
+        putValue("showMenuControllerIcon", showMenuControllerIcon ^= true);
     }
 
     public static void toggleAvatarBackgroundBlur() {

@@ -27,7 +27,7 @@ public class DcStyleSelector extends LinearLayout {
     String[] strings = new String[]{
             LocaleController.getString("Automatic", R.string.Automatic),
             "Telegram",
-            "colorgram",
+            "Colorgram",
     };
     public static int TELEGRAM_DC = 1;
     public static int colorgram_DC = 2;

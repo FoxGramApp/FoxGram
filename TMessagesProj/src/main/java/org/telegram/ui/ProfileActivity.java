@@ -7489,9 +7489,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
                     datacenterRow = rowCount++;
                 }
-                if (ColorConfig.showAccountRegistrationDate && !isChat()) dateRow = rowCount++;
                 numberRow = rowCount++;
                 setUsernameRow = rowCount++;
+                if (ColorConfig.showAccountRegistrationDate && !isChat()) dateRow = rowCount++;
                 if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
                     datacenterRow = rowCount++;
                 }
@@ -9839,13 +9839,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         detailCell.setImageClickListener(ProfileActivity.this::onTextDetailCellImageClicked);
                     } else if (position == dateRow) {
                         if (!isChat() || currentUser != null) {
-                            Drawable drawable = ContextCompat.getDrawable(detailCell.getContext(), R.drawable.msg_calendar2);
-                            if (drawable != null) {
-                                drawable.setColorFilter(new PorterDuffColorFilter(getThemedColor(Theme.key_switch2TrackChecked), PorterDuff.Mode.SRC_IN));
-                                detailCell.setImage(drawable);
-                            }
                             detailCell.setTextAndValue(AccountRegistrationDateController.getDate(currentUser.id), LocaleController.getString(R.string.AccountRegistrationDate), true);
-                            detailCell.setImageClickListener(ProfileActivity.this::onTextDetailCellImageClicked);
                             break;
                         }
                     }
