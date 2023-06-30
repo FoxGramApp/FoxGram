@@ -113,7 +113,7 @@ public class OWLENC {
                 title = updateInfo.getString("name");
                 description = updateInfo.getString("body");
                 note = LocaleController.getString("StickerSizeDialogMessage2", R.string.StickerSizeDialogMessage2);
-                banner = "https://imgur.com/a/dMCiW1Y";
+                banner = "img/color_banner.png";
                 version = updateInfo.getInt("tag_name");
                 JSONArray arr = updateInfo.getJSONArray("assets");
                 String[] supportedTypes = {"arm64-v8a", "armeabi-v7a", "x86", "x86_64", "universal"};

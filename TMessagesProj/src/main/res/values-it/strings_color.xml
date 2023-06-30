@@ -185,7 +185,7 @@
     <string name="InstallPreviewDesc">Prova i nuovi aggiornamenti di Colorgram prima del loro rilascio ufficiale</string>
     <string name="AutoUpdate">Popup aggiornamenti</string>
     <string name="AutoUpdatePrompt">Mostra un popup quando è disponibile un aggiornamento</string>
-    <string name="APKsChannel">Versione aggiornamenti</string>
+    <string name="APKsChannel">Canale aggiornamenti</string>
     <string name="MediaStreamVoip">Usa il flusso multimediale nelle chat video</string>
     <string name="UnlimitedFavoriteStickers">Sticker preferiti illimitati</string>
     <string name="UnlimitedFavoriteStickersDesc">Consente di aggiungere sticker illimitati ai preferiti, ma potrebbero non essere sincronizzati con altri dispositivi</string>

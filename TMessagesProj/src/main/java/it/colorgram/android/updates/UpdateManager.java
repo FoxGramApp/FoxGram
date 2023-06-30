@@ -3,6 +3,7 @@ package it.colorgram.android.updates;
 import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 
 import androidx.core.util.Pair;
 
@@ -10,6 +11,7 @@ import com.google.android.play.core.appupdate.AppUpdateInfo;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildConfig;
@@ -89,8 +91,41 @@ public class UpdateManager {
 
                     JSONObject obj = new JSONObject(textBuilder.toString());
                     String changelog_text = obj.getString("body");
+
+                    String translateURI;
+                    HttpURLConnection connectionTranslate;
+
+                    translateURI = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=";
+                    translateURI += Uri.encode(LocaleController.getInstance().getCurrentLocale().getLanguage());
+                    translateURI += "&dt=t&ie=UTF-8&oe=UTF-8&otf=1&ssel=0&tsel=0&kc=7&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&q=";
+
+                    connectionTranslate = (HttpURLConnection) new URI(translateURI).toURL().openConnection();
+                    connectionTranslate.setRequestMethod("GET");
+                    connectionTranslate.setRequestProperty("User-Agent", getRandomUserAgent());
+                    connectionTranslate.setRequestProperty("Content-Type", "application/json");
+
+                    StringBuilder textBuilder2 = new StringBuilder();
+                    try (Reader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                        int c;
+                        while ((c = reader.read()) != -1) textBuilder2.append((char) c);
+                    }
+
+                    JSONTokener tokener = new JSONTokener(textBuilder2.toString());
+
+                    JSONArray array = new JSONArray(tokener);
+                    JSONArray array1 = array.getJSONArray(0);
+
+                    StringBuilder result = new StringBuilder();
+                    for (int i = 0; i < array1.length(); ++i) {
+                        String blockText = array1.getJSONArray(i).getString(0);
+                        if (blockText != null && !blockText.equals("null")) result.append(blockText);
+                    }
+
+                    if (changelog_text.length() > 0 && changelog_text.charAt(0) == '\n') result.insert(0, "\n");
+                    changelog_text = result.toString();
                     if (!changelog_text.equals("null")) {
-                        AndroidUtilities.runOnUIThread(() -> changelogCallback.onSuccess(HTMLKeeper.htmlToEntities(changelog_text, null, true, false)));
+                        String finalChangelog_text = changelog_text;
+                        AndroidUtilities.runOnUIThread(() -> changelogCallback.onSuccess(HTMLKeeper.htmlToEntities(finalChangelog_text, null, true, false)));
                     }
                 } catch (Exception ignored) {
                 } finally {

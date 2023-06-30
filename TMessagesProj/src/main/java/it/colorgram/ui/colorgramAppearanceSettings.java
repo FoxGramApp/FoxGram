@@ -18,7 +18,6 @@ import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Cells.TextSettingsCell;
 import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.LaunchActivity;
-import org.w3c.dom.Text;
 
 import it.colorgram.android.CustomEmojiController;
 import it.colorgram.android.ColorConfig;

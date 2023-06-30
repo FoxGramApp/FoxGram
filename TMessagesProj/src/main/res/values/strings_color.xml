@@ -185,7 +185,7 @@
     <string name="InAppUpdates">In-App Updates</string>
     <string name="AutoUpdate">Update Popup</string>
     <string name="AutoUpdatePrompt">Show a popup when an update is available</string>
-    <string name="APKsChannel">Updates Version</string>
+    <string name="APKsChannel">Updates Channel</string>
     <string name="MediaStreamVoip">Use Media Stream in Video Chats</string>
     <string name="UnlimitedFavoriteStickers">Unlimited Favorite Stickers</string>
     <string name="UnlimitedFavoriteStickersDesc">It allows you to add unlimited stickers to favorites, but they may not be synced to other devices</string>
