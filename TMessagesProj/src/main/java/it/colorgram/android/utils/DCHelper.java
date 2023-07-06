@@ -178,7 +178,7 @@ public class DCHelper {
                 public void run() {
                 while (isRunning) {
                     try {
-                        String url = "https://app.colorgram.org/dc_status";
+                        String url = "https://raw.githubusercontent.com/Pierlu096/colorgramserver/main/DCStatus/tg_dc_status.json";
                         JSONObject obj = new JSONObject(new StandardHTTPRequest(url).request());
                         JSONArray listDatacenters = obj.getJSONArray("status");
                         int refreshTimeIn = obj.getInt("refresh_in_time");

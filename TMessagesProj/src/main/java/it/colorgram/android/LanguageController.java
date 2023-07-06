@@ -39,21 +39,19 @@ public class LanguageController {
                         LocaleController.addLocaleValue(getLocaleFileStrings(fileFromLang));
                         AndroidUtilities.runOnUIThread(() -> NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.reloadInterface));
                     }
-                    String url = String.format("https://app.colorgram.org/language_version?lang=%s", langCode);
+                    String url = String.format("https://raw.githubusercontent.com/Pierlu096/colorgramserver/main/LanguagePacks/version_%s.json", locale.getLanguage());
                     JSONObject obj = new JSONObject(new StandardHTTPRequest(url).request());
-                    if (!obj.has("error")) {
-                        String remoteMD5 = obj.getString("md5");
-                        if (getFileFromLang(langCode).exists()) {
-                            if (ColorConfig.languagePackVersioning.containsKey(langCode)) {
-                                if (ColorConfig.languagePackVersioning.get(langCode).equals(remoteMD5)) {
-                                    return;
-                                }
+                    String remoteMD5 = obj.getString("md5");
+                    if (getFileFromLang(langCode).exists()) {
+                        if (ColorConfig.languagePackVersioning.containsKey(langCode)) {
+                            if (ColorConfig.languagePackVersioning.get(langCode).equals(remoteMD5)) {
+                                return;
                             }
                         }
-                        loadRemoteLanguage(langCode);
-                        ColorConfig.languagePackVersioning.put(langCode, remoteMD5);
-                        ColorConfig.applyLanguagePackVersioning();
                     }
+                    loadRemoteLanguage(langCode);
+                    ColorConfig.languagePackVersioning.put(langCode, remoteMD5);
+                    ColorConfig.applyLanguagePackVersioning();
                 } catch (Exception ignored) {
                 }
             }
@@ -61,13 +59,13 @@ public class LanguageController {
     }
 
     private static void loadRemoteLanguage(String langCode) throws IOException, JSONException {
-        String url = String.format("https://app.colorgram.org/language_pack?lang=%s", langCode);
+        Locale locale = Locale.getDefault();
+        String url = String.format("https://raw.githubusercontent.com/Pierlu096/colorgramserver/main/LanguagePacks/%s.json", locale.getLanguage());
         JSONObject obj = new JSONObject(new StandardHTTPRequest(url).request());
-        if (!obj.has("error")) {
-            saveInternalFile(langCode, obj);
-            LocaleController.addLocaleValue(getLocaleFileStrings(getFileFromLang(langCode)));
-            AndroidUtilities.runOnUIThread(() -> NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.reloadInterface));
-        }
+
+        saveInternalFile(langCode, obj);
+        LocaleController.addLocaleValue(getLocaleFileStrings(getFileFromLang(langCode)));
+        AndroidUtilities.runOnUIThread(() -> NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.reloadInterface));
     }
 
     private static void saveInternalFile(String langCode, JSONObject object) throws IOException {

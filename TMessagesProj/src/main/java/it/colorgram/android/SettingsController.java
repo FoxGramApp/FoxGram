@@ -38,8 +38,8 @@ import java.util.Objects;
 
 import it.colorgram.android.camera.CameraXUtils;
 import it.colorgram.android.entities.EntitiesHelper;
+import it.colorgram.android.magic.COLORENC;
 import it.colorgram.android.magic.MagicBaseObject;
-import it.colorgram.android.magic.OWLENC;
 import it.colorgram.android.translator.Translator;
 import it.colorgram.android.utils.JavaUtils;
 import it.colorgram.android.utils.SharedPreferencesHelper;
@@ -149,7 +149,7 @@ public class SettingsController extends SharedPreferencesHelper {
         PushbackInputStream stream = null;
         try {
             stream = new PushbackInputStream(new FileInputStream(locFile), (int) locFile.length());
-            return !new OWLENC.SettingsBackup().isNotLegacy(stream);
+            return !new COLORENC.SettingsBackup().isNotLegacy(stream);
         } catch (Exception e) {
             FileLog.e(e);
         } finally {
@@ -171,7 +171,7 @@ public class SettingsController extends SharedPreferencesHelper {
         Map<String, ?> listPreferences = getAll();
         try {
             stream = new PushbackInputStream(new FileInputStream(locFile), (int) locFile.length());
-            OWLENC.SettingsBackup settingsBackup = new OWLENC.SettingsBackup();
+            COLORENC.SettingsBackup settingsBackup = new COLORENC.SettingsBackup();
             if (settingsBackup.isNotLegacy(stream)) {
                 settingsBackup.readParams(stream, true);
             }
@@ -217,7 +217,7 @@ public class SettingsController extends SharedPreferencesHelper {
             PushbackInputStream stream = null;
             try {
                 stream = new PushbackInputStream(new FileInputStream(locFile), (int) locFile.length());
-                OWLENC.SettingsBackup settingsBackup = new OWLENC.SettingsBackup();
+                COLORENC.SettingsBackup settingsBackup = new COLORENC.SettingsBackup();
                 if (settingsBackup.isNotLegacy(stream)) {
                     settingsBackup.readParams(stream, true);
                 }
@@ -318,7 +318,7 @@ public class SettingsController extends SharedPreferencesHelper {
         PushbackInputStream stream = null;
         try {
             stream = new PushbackInputStream(new FileInputStream(inputFile), (int) inputFile.length());
-            OWLENC.SettingsBackup settingsBackup = new OWLENC.SettingsBackup();
+            COLORENC.SettingsBackup settingsBackup = new COLORENC.SettingsBackup();
             if (settingsBackup.isNotLegacy(stream)) {
                 settingsBackup.readParams(stream, true);
             }
@@ -432,8 +432,8 @@ public class SettingsController extends SharedPreferencesHelper {
         NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.reloadInterface);
     }
 
-    private static OWLENC.SettingsBackup getBackup(boolean isInternal) {
-        OWLENC.SettingsBackup settingsBackup = new OWLENC.SettingsBackup();
+    private static COLORENC.SettingsBackup getBackup(boolean isInternal) {
+        COLORENC.SettingsBackup settingsBackup = new COLORENC.SettingsBackup();
         Field[] fields = getFields();
         for (Field field : fields) {
             String key = field.getName();
@@ -454,7 +454,7 @@ public class SettingsController extends SharedPreferencesHelper {
         new Thread() {
             @Override
             public void run() {
-                OWLENC.SettingsBackup settingsBackup = getBackup(true);
+                COLORENC.SettingsBackup settingsBackup = getBackup(true);
                 try {
                     FileOutputStream stream = new FileOutputStream(backupFile());
                     stream.write(settingsBackup.serializeToStream());

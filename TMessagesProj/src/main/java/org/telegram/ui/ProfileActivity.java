@@ -486,7 +486,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private int datacenterRow;
     private int dateRow;
     private int datacenterPlaceholderRow;
-    private int owlSettingsRow;
+    private int colorSettingsRow;
     private int numberSectionRow;
     private int numberRow;
     private int setUsernameRow;
@@ -3506,7 +3506,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 onWriteButtonClick();
             } else if (position == premiumRow) {
                 presentFragment(new PremiumPreviewFragment("settings"));
-            } else if (position == owlSettingsRow) {
+            } else if (position == colorSettingsRow) {
                 presentFragment(new colorgramSettings());
             } else {
                 processOnClickOrPress(position, view, x, y);
@@ -7383,7 +7383,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         actionsSectionDivider = -1;
         datacenterRow = -1;
         dateRow = -1;
-        owlSettingsRow = -1;
+        colorSettingsRow = -1;
         numberSectionRow = -1;
         numberRow = -1;
         setUsernameRow = -1;
@@ -7510,7 +7510,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
 
                 settingsSectionRow2 = rowCount++;
-                owlSettingsRow = rowCount++;
+                colorSettingsRow = rowCount++;
                 chatRow = rowCount++;
                 privacyRow = rowCount++;
                 notificationRow = rowCount++;
@@ -10011,7 +10011,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         textCell.getImageView().setPadding(0, 0, 0, AndroidUtilities.dp(8));
                         textCell.setImageLeft(12);
                         setAvatarCell = textCell;
-                    }else if (position == owlSettingsRow){
+                    }else if (position == colorSettingsRow){
                         textCell.setTextAndIcon(LocaleController.getString("ColorSetting", R.string.ColorSetting), R.drawable.msg_settings, true);
                     } else if (position == addToGroupButtonRow) {
                         textCell.setTextAndIcon(LocaleController.getString("AddToGroupOrChannel", R.string.AddToGroupOrChannel), R.drawable.msg_groups_create, false);
@@ -10320,7 +10320,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         position == faqRow || position == policyRow || position == sendLogsRow || position == sendLastLogsRow ||
                         position == clearLogsRow || position == switchBackendRow || position == setAvatarRow ||
                         position == addToGroupButtonRow || position == premiumRow || position == liteModeRow ||
-                        position == owlSettingsRow || position == datacenterRow || position == dateRow;
+                        position == colorSettingsRow || position == datacenterRow || position == dateRow;
             }
             if (holder.itemView instanceof UserCell) {
                 UserCell userCell = (UserCell) holder.itemView;
@@ -10364,7 +10364,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     position == questionRow || position == devicesRow || position == filtersRow || position == stickersRow ||
                     position == faqRow || position == policyRow || position == sendLogsRow || position == sendLastLogsRow ||
                     position == clearLogsRow || position == switchBackendRow || position == setAvatarRow || position == addToGroupButtonRow ||
-                    position == addToContactsRow || position == liteModeRow || position == owlSettingsRow) {
+                    position == addToContactsRow || position == liteModeRow || position == colorSettingsRow) {
                 return VIEW_TYPE_TEXT;
             } else if (position == notificationsDividerRow) {
                 return VIEW_TYPE_DIVIDER;
@@ -11641,7 +11641,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             put(++pointer, datacenterRow, sparseIntArray);
             put(++pointer, dateRow, sparseIntArray);
             put(++pointer, datacenterPlaceholderRow, sparseIntArray);
-            put(++pointer, owlSettingsRow, sparseIntArray);
+            put(++pointer, colorSettingsRow, sparseIntArray);
             put(++pointer, emptyRow, sparseIntArray);
             put(++pointer, bottomPaddingRow, sparseIntArray);
             put(++pointer, infoHeaderRow, sparseIntArray);

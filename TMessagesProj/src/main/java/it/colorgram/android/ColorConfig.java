@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import it.colorgram.android.camera.CameraXUtils;
-import it.colorgram.android.magic.OWLENC;
+import it.colorgram.android.magic.COLORENC;
 import it.colorgram.android.magic.OptionalMagic;
 import it.colorgram.android.translator.AutoTranslateConfig;
 import it.colorgram.android.translator.BaseTranslator;
@@ -94,12 +94,12 @@ public class ColorConfig extends SettingsController {
     public static String translationKeyboardTarget = "app";
     public static String oldBuildVersion = null;
     public static String emojiPackSelected;
-    public static OptionalMagic<OWLENC.DrawerItems> drawerItems;
-    public static OptionalMagic<OWLENC.UpdateAvailable> updateData;
-    public static OWLENC.LanguagePacksVersions languagePackVersioning = new OWLENC.LanguagePacksVersions();
-    public static OWLENC.ExcludedLanguages doNotTranslateLanguages = new OWLENC.ExcludedLanguages();
-    public static OWLENC.ConfirmSending confirmSending = new OWLENC.ConfirmSending();
-    public static OWLENC.ContextMenu contextMenu = new OWLENC.ContextMenu();
+    public static OptionalMagic<COLORENC.DrawerItems> drawerItems;
+    public static OptionalMagic<COLORENC.UpdateAvailable> updateData;
+    public static COLORENC.LanguagePacksVersions languagePackVersioning = new COLORENC.LanguagePacksVersions();
+    public static COLORENC.ExcludedLanguages doNotTranslateLanguages = new COLORENC.ExcludedLanguages();
+    public static COLORENC.ConfirmSending confirmSending = new COLORENC.ConfirmSending();
+    public static COLORENC.ContextMenu contextMenu = new COLORENC.ContextMenu();
     public static int deepLFormality;
     public static int translationProvider;
     public static int lastUpdateStatus = 0;
@@ -131,7 +131,7 @@ public class ColorConfig extends SettingsController {
             if (configLoaded) {
                 return;
             }
-            boolean magicException = BuildVars.MAGIC_OWL_EXCEPTIONS;
+            boolean magicException = BuildVars.MAGIC_COLOR_EXCEPTIONS;
             //VERSION_CHECK
             if (firstLoad) {
                 boolean backupFileExist = backupFile().exists();

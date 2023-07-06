@@ -24719,6 +24719,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     popupLayout.addView(rateTranscriptionLayout, rateTranscriptionLayoutParams);
                 }
 
+                final boolean translateButtonEnabled = MessagesController.getInstance(currentAccount).getTranslateController().isContextTranslateEnabled();
                 if (selectedObject != null && selectedObject.isSponsored()) {
                     if (selectedObject.sponsoredInfo != null || selectedObject.sponsoredAdditionalInfo != null) {
                         LinearLayout linearLayout = new LinearLayout(getParentActivity());
@@ -24988,7 +24989,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                     (String lang) -> {
                                         fromLang[0] = lang;
                                         if (fromLang[0] != null && (!fromLang[0].equals(toLang) || !fromLang[0].equals(toLangDefault) || fromLang[0].equals(TranslateController.UNKNOWN_LANGUAGE)) && (
-                                                translateEnabled && !RestrictedLanguagesSelectActivity.getRestrictedLanguages().contains(fromLang[0]) ||
+                                                translateButtonEnabled && !RestrictedLanguagesSelectActivity.getRestrictedLanguages().contains(fromLang[0]) ||
                                                         (currentChat != null && (currentChat.has_link || ChatObject.isPublic(currentChat)) || selectedObject.messageOwner.fwd_from != null) && ("uk".equals(fromLang[0]) || "ru".equals(fromLang[0]))
                                         )) {
                                             cell.setVisibility(View.VISIBLE);
@@ -25030,7 +25031,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                     onLangDetectionDone.getAndSet(null).run();
                                 }
                             }, 250);
-                        } else if (translateEnabled) {
+                        } else if (translateButtonEnabled) {
                             cell.setOnClickListener(e -> {
                                 if (selectedObject == null || i >= options.size() || getParentActivity() == null) {
                                     return;

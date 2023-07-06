@@ -1,5 +1,5 @@
-# 🎨 **ColorGram**
-### ColorGram is an unofficial Telegram application that uses _Telegram's API_.
+# 🎨 **Colorgram**
+### Colorgram is an unofficial application that uses _Telegram's API_.
 
 ![Colorgram](img/color_banner.png)
 
@@ -16,6 +16,9 @@ will be used from Homebrew if installed, otherwise it will be used the one in th
 7. Kindly **do not** use our standard logo (white paper plane in a blue circle) as your app's logo.
 8. Please study our [**security guidelines**](https://core.telegram.org/mtproto/security_guidelines) and take good care of your users' data and privacy.
 9. Please remember to publish **your** code too in order to comply with the licences.
+
+## ✨**Colorgram remote assets**
+All remote assets that Colorgram uses are [**here**](https://github.com/Pierlu096/colorgramserver), if you want to visit or made a fork.
 
 ## ✅ Thanks to
 • [**Nekogram**](<https://gitlab.com/Nekogram/Nekogram>)  

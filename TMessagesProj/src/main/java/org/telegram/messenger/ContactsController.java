@@ -354,7 +354,7 @@ public class ContactsController extends BaseController {
     }
 
     public String getInviteText(int contacts) {
-        String link = inviteLink == null ? "https://colorgram.org/" : inviteLink;
+        String link = inviteLink == null ? "https://telegram.org/" : inviteLink;
         if (contacts <= 1) {
             return LocaleController.formatString("InviteText2", R.string.InviteText2, link);
         } else {

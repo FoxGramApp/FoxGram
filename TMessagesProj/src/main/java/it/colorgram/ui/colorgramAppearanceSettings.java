@@ -1,6 +1,5 @@
 package it.colorgram.ui;
 
-import android.content.Intent;
 import android.transition.TransitionManager;
 import android.view.View;
 
@@ -17,11 +16,9 @@ import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Cells.TextSettingsCell;
 import org.telegram.ui.Components.BulletinFactory;
-import org.telegram.ui.LaunchActivity;
 
 import it.colorgram.android.CustomEmojiController;
 import it.colorgram.android.ColorConfig;
-import it.colorgram.android.utils.AppRestartHelper;
 import it.colorgram.ui.Cells.BlurIntensity;
 import it.colorgram.ui.Cells.DrawerProfilePreview;
 import it.colorgram.ui.Cells.DynamicButtonSelector;
@@ -155,7 +152,6 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(ColorConfig.useSystemFont);
             }
-            AppRestartHelper.triggerRebirth(getContext(), new Intent(getContext(), LaunchActivity.class));
         } else if (position == forcePacmanRow) {
             ColorConfig.togglePacmanForced();
             if (view instanceof TextCheckCell) {
@@ -248,13 +244,13 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
 
         drawerRow = rowCount++;
         drawerAvatarAsBackgroundRow = rowCount++;
-        showMenuControllerIcon = rowCount++;
         if (ColorConfig.avatarAsDrawerBackground) {
             showGradientRow = rowCount++;
             showAvatarRow = rowCount++;
             drawerDarkenBackgroundRow = rowCount++;
             drawerBlurBackgroundRow = rowCount++;
         }
+        showMenuControllerIcon = rowCount++;
         drawerDividerRow = rowCount++;
         if (ColorConfig.avatarBackgroundBlur && ColorConfig.avatarAsDrawerBackground) {
             editBlurHeaderRow = rowCount++;

@@ -1,6 +1,5 @@
 package it.colorgram.android.magic;
 
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 import androidx.annotation.NonNull;
@@ -11,9 +10,6 @@ import com.google.android.play.core.appupdate.AppUpdateInfo;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.telegram.messenger.ApplicationLoader;
-import org.telegram.messenger.LocaleController;
-import org.telegram.messenger.R;
 
 import java.io.IOException;
 import java.io.PushbackInputStream;
@@ -25,10 +21,11 @@ import java.util.Objects;
 
 import it.colorgram.android.MenuOrderController;
 import it.colorgram.android.ColorConfig;
+import it.colorgram.android.StoreUtils;
 import it.colorgram.android.updates.PlayStoreAPI;
 import it.colorgram.android.updates.UpdateManager;
 
-public class OWLENC {
+public class COLORENC {
     public static class DrawerItems extends MagicVector<String> {
         public void migrate(String input) {
             try {
@@ -102,18 +99,22 @@ public class OWLENC {
         public String fileLink;
         public long fileSize;
 
-        public UpdateAvailable(JSONObject object) {
-            fromJSON(object);
+        public UpdateAvailable(JSONObject object, JSONObject obj) {
+            fromJSON(object, obj);
         }
 
         public UpdateAvailable() {}
 
-        public void fromJSON(JSONObject updateInfo) {
+        public void fromJSON(JSONObject updateInfo, JSONObject updates) {
             try {
-                title = updateInfo.getString("name");
-                description = updateInfo.getString("body");
-                note = LocaleController.getString("StickerSizeDialogMessage2", R.string.StickerSizeDialogMessage2);
-                banner = "img/color_banner.png";
+                title = updates.getString("title");
+                description = updates.getString("description");
+                note = updates.getString("note");
+                if (ColorConfig.betaUpdates && !StoreUtils.isDownloadedFromAnyStore()) {
+                    banner = "https://raw.githubusercontent.com/Pierlu096/colorgramserver/main/Updates/Previews/color_update.png";
+                } else {
+                    banner = "https://raw.githubusercontent.com/Pierlu096/colorgramserver/main/Updates/color_update.png";
+                }
                 version = updateInfo.getInt("tag_name");
                 JSONArray arr = updateInfo.getJSONArray("assets");
                 String[] supportedTypes = {"arm64-v8a", "armeabi-v7a", "x86", "x86_64", "universal"};
@@ -127,7 +128,7 @@ public class OWLENC {
                         }
                     }
                 }
-            } catch (JSONException e) {
+            } catch (JSONException ignored) {
             } catch (PackageManager.NameNotFoundException e) {
                 throw new RuntimeException(e);
             }

@@ -5,7 +5,7 @@ import org.telegram.messenger.R;
 
 import java.util.ArrayList;
 
-import it.colorgram.android.magic.OWLENC;
+import it.colorgram.android.magic.COLORENC;
 
 public class MenuOrderController {
     private static final Object sync = new Object();
@@ -25,7 +25,7 @@ public class MenuOrderController {
             "invite_friends",
             "telegram_features",
             "archived_messages",
-            //"datacenter_status",
+            "datacenter_status",
             "qr_login",
             "set_status",
             "connected_devices",
@@ -95,7 +95,7 @@ public class MenuOrderController {
     }
 
     private static void loadDefaultItems() {
-        ColorConfig.drawerItems.set(new OWLENC.DrawerItems());
+        ColorConfig.drawerItems.set(new COLORENC.DrawerItems());
         String[] defaultItems = getDefaultItems();
         for (String defaultItem : defaultItems) {
             ColorConfig.drawerItems.get().add(defaultItem);
@@ -241,8 +241,8 @@ public class MenuOrderController {
                 return LocaleController.getString("TelegramFeatures", R.string.TelegramFeatures);
             case "archived_messages":
                 return LocaleController.getString("ArchivedChats", R.string.ArchivedChats);
-            //case "datacenter_status":
-            //    return LocaleController.getString("DatacenterStatus", R.string.DatacenterStatus);
+            case "datacenter_status":
+                return LocaleController.getString("DatacenterStatus", R.string.DatacenterStatus);
             case "qr_login":
                 return LocaleController.getString("AuthAnotherClient", R.string.AuthAnotherClient);
             case "set_status":

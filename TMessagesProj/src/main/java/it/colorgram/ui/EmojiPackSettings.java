@@ -291,7 +291,7 @@ public class EmojiPackSettings extends BaseSettingsActivity implements Notificat
         customEmojiAddRow = rowCount++;
         customEmojiHintRow = rowCount++;
 
-        /*emojiPackHeaderRow = rowCount++;
+        emojiPackHeaderRow = rowCount++;
         if (CustomEmojiController.getLoadingStatus() == CustomEmojiController.LOADED_REMOTE || !emojiPacks.isEmpty()) {
             emojiPacksStartRow = rowCount;
             rowCount += emojiPacks.size();
@@ -299,7 +299,7 @@ public class EmojiPackSettings extends BaseSettingsActivity implements Notificat
         } else {
             placeHolderRow = rowCount++;
         }
-        emojiHintRow = rowCount++;*/
+        emojiHintRow = rowCount++;
     }
 
     public void updatePacks() {
@@ -379,7 +379,7 @@ public class EmojiPackSettings extends BaseSettingsActivity implements Notificat
                     if (position == emojiHintRow) {
                         textInfoPrivacyCell.setText(LocaleController.getString("EmojiSetHint", R.string.EmojiSetHint));
                     } else if (position == customEmojiHintRow) {
-                        textInfoPrivacyCell.setText(LocaleController.getString("CustomEmojiSetHint", R.string.CustomEmojiSetHint)+ " " + LocaleController.getString("Hint Emoji", R.string.EmojiSetHint));
+                        textInfoPrivacyCell.setText(LocaleController.getString("CustomEmojiSetHint", R.string.CustomEmojiSetHint));
                     }
                     break;
                 case SWITCH:

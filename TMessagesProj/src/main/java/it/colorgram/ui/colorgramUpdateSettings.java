@@ -18,7 +18,7 @@ import org.telegram.ui.Cells.TextCheckCell;
 import it.colorgram.android.ColorConfig;
 import it.colorgram.android.StoreUtils;
 import it.colorgram.android.http.FileDownloader;
-import it.colorgram.android.magic.OWLENC;
+import it.colorgram.android.magic.COLORENC;
 import it.colorgram.android.updates.AppDownloader;
 import it.colorgram.android.updates.PlayStoreAPI;
 import it.colorgram.android.updates.UpdateManager;
@@ -37,7 +37,7 @@ public class colorgramUpdateSettings extends BaseSettingsActivity {
     private boolean checkingUpdates;
     private TextCheckCell changeBetaMode;
 
-    private OWLENC.UpdateAvailable updateAvailable;
+    private COLORENC.UpdateAvailable updateAvailable;
     private UpdateCheckCell updateCheckCell;
     private UpdateAvailableCell updateCell;
 
@@ -297,11 +297,11 @@ public class colorgramUpdateSettings extends BaseSettingsActivity {
             public void onSuccess(Object updateResult) {
                 checkingUpdates = false;
                 ColorConfig.saveLastUpdateCheck();
-                if (updateResult instanceof OWLENC.UpdateAvailable) {
+                if (updateResult instanceof COLORENC.UpdateAvailable) {
                     if (updateAvailable == null) {
                         ColorConfig.saveUpdateStatus(1);
                         ColorConfig.remindUpdate(-1);
-                        updateAvailable = (OWLENC.UpdateAvailable) updateResult;
+                        updateAvailable = (COLORENC.UpdateAvailable) updateResult;
                         ColorConfig.updateData.set(updateAvailable);
                         ColorConfig.applyUpdateData();
                         if (StoreUtils.isFromPlayStore()) {

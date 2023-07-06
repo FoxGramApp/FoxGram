@@ -1,5 +1,6 @@
 package it.colorgram.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -60,7 +61,7 @@ import it.colorgram.android.updates.UpdateManager;
 public class colorgramSettings extends BaseSettingsActivity {
 
     private int divisorInfoRow;
-    private static int colorRow;
+    private int colorRow;
     private int categoryHeaderRow;
     private int updatesRow;
     private int dividerUpdates;
@@ -132,10 +133,10 @@ public class colorgramSettings extends BaseSettingsActivity {
     }
 
     private int pressCount = 0;
-    private Theme.ResourcesProvider resourcesProvider;
+    protected Theme.ResourcesProvider resourcesProvider;
+    protected ProfileActivity.NestedFrameLayout contentView;
 
-    private ProfileActivity.NestedFrameLayout contentView;
-
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onItemClick(View view, int position, float x, float y) {
         if (position == colorRow) {

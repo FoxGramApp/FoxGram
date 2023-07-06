@@ -200,9 +200,6 @@ public class CustomEmojiController {
         new Thread() {
             @Override
             public void run() {
-                if (!isSelectedCustomEmojiPack()) {
-                    ColorConfig.setEmojiPackSelected("default");
-                }
                 ArrayList<EmojiPackBase> tmp = loadCustomEmojiPacks();
                 invalidateCache(false);
                 statusLoading = LOADED_LOCAL;
@@ -210,7 +207,7 @@ public class CustomEmojiController {
                     emojiPacksInfo.addAll(tmp);
                     AndroidUtilities.runOnUIThread(listener::onLoaded);
                     try {
-                        String json = new StandardHTTPRequest(String.format("https://app.colorgram.org/emoji_packs?noCache=%s",  Math.random() * 10000)).request();
+                        String json = new StandardHTTPRequest("https://raw.githubusercontent.com/Pierlu096/colorgramserver/main/EmojiPacks/emoji_packs.json").request();
                         preferences.edit().putString("emoji_packs", json).apply();
                         invalidateCache(true);
                         emojiPacksInfo.addAll(loadFromJson(json));

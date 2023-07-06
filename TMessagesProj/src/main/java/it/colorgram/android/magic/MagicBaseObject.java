@@ -156,7 +156,7 @@ public abstract class MagicBaseObject {
     }
 
     private Object readCustomObject(AbstractSerializedData stream, int constructor, boolean exception) throws SkipException {
-        Class<?>[] classes = OWLENC.class.getClasses();
+        Class<?>[] classes = COLORENC.class.getClasses();
         for (Class<?> clazz : classes) {
             try {
                 MagicBaseObject obj = (MagicBaseObject) clazz.newInstance();

@@ -37,15 +37,15 @@ import org.telegram.ui.LaunchActivity;
 
 import it.colorgram.android.ColorConfig;
 import it.colorgram.android.http.FileDownloader;
-import it.colorgram.android.magic.OWLENC;
+import it.colorgram.android.magic.COLORENC;
 import it.colorgram.android.updates.UpdateManager;
 
 public class UpdateAlertDialog extends BottomSheet {
 
-    OWLENC.UpdateAvailable update;
+    COLORENC.UpdateAvailable update;
     private final LaunchActivity parentActivity;
 
-    public UpdateAlertDialog(LaunchActivity activity, OWLENC.UpdateAvailable updateAvailable) {
+    public UpdateAlertDialog(LaunchActivity activity, COLORENC.UpdateAvailable updateAvailable) {
         super(activity, false);
         update = updateAvailable;
         parentActivity = activity;

@@ -209,7 +209,7 @@ import java.util.regex.Pattern;
 
 import it.colorgram.android.StoreUtils;
 import it.colorgram.android.ColorConfig;
-import it.colorgram.android.magic.OWLENC;
+import it.colorgram.android.magic.COLORENC;
 import it.colorgram.ui.Components.Dialogs.UpdateAlertDialog;
 import it.colorgram.android.Crashlytics;
 import it.colorgram.android.CustomEmojiController;
@@ -5005,7 +5005,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 } else {
                     try {
                         if(ColorConfig.updateData.isPresent()) {
-                            OWLENC.UpdateAvailable update = ColorConfig.updateData.get();
+                            COLORENC.UpdateAvailable update = ColorConfig.updateData.get();
                             if (FileDownloader.downloadFile(LaunchActivity.this, "appUpdate", UpdateManager.apkFile(), update.fileLink))
                                 ColorConfig.saveOldVersion(update.version);
                         }
@@ -5154,7 +5154,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 } else {
                     try {
                         if(ColorConfig.updateData.isPresent()) {
-                            OWLENC.UpdateAvailable updateAvailable = ColorConfig.updateData.get();
+                            COLORENC.UpdateAvailable updateAvailable = ColorConfig.updateData.get();
                             if(updateAvailable.version > BuildVars.BUILD_VERSION) {
                                 createUpdateUI();
                                 updateLayoutIcon.setIcon(MediaActionDrawable.ICON_DOWNLOAD, true, true);
@@ -5216,8 +5216,8 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 UpdateManager.checkUpdates(new UpdateManager.UpdateCallback() {
                     @Override
                     public void onSuccess(Object updateResult) {
-                        if(updateResult instanceof OWLENC.UpdateAvailable) {
-                            OWLENC.UpdateAvailable updateAvailable = (OWLENC.UpdateAvailable) updateResult;
+                        if(updateResult instanceof COLORENC.UpdateAvailable) {
+                            COLORENC.UpdateAvailable updateAvailable = (COLORENC.UpdateAvailable) updateResult;
                             long passed_time = (new Date().getTime() - ColorConfig.lastUpdateCheck) / 1000;
                             if(passed_time >= 3600 * 2 || ColorConfig.lastUpdateStatus != 1 && !updateAvailable.isReminded() || force) {
                                 ColorConfig.updateData.set(updateAvailable);
