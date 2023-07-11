@@ -83,7 +83,7 @@ public interface INavigationLayout {
     void setPulledDialogs(List<BackButtonMenu.PulledDialog> pulledDialogs);
 
     static INavigationLayout newLayout(Context context) {
-        return ColorConfig.SmoothNav ? new LNavigation(context) : new ActionBarLayout(context);
+        return ColorConfig.smoothNav ? new LNavigation(context) : new ActionBarLayout(context);
     }
 
     static INavigationLayout newLayout(Context context, Supplier<BottomSheet> supplier) {

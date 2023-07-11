@@ -789,6 +789,7 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
             return items.size();
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view;

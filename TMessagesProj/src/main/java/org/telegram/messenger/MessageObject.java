@@ -366,7 +366,14 @@ public class MessageObject {
     }
 
     public boolean shouldDrawReactionsInLayout() {
-        return true;
+        if (getDialogId() < 0 || UserConfig.getInstance(currentAccount).isPremium()) {
+            return true;
+        }
+        TLRPC.User user = MessagesController.getInstance(currentAccount).getUser(getDialogId());
+        if (user != null && user.premium) {
+            return true;
+        }
+        return false; //getDialogId() < 0 || UserConfig.getInstance(currentAccount).isPremium();
     }
 
     public TLRPC.MessagePeerReaction getRandomUnreadReaction() {
@@ -1179,9 +1186,7 @@ public class MessageObject {
 
         updateMessageText(users, chats, sUsers, sChats);
         setType();
-        if (generateLayout) {
-            updateTranslation(false);
-        }
+        updateTranslation(false);
         measureInlineBotButtons();
 
         Calendar rightNow = new GregorianCalendar();
@@ -2584,15 +2589,7 @@ public class MessageObject {
 
     public boolean updateTranslation(boolean force) {
         boolean replyUpdated = replyMessageObject != null && replyMessageObject.updateTranslation(force);
-        TranslateController translateController = MessagesController.getInstance(currentAccount).getTranslateController();
-        if (
-                TranslateController.isTranslatable(this) &&
-                        translateController.isTranslatingDialog(getDialogId(), 0) &&
-                        messageOwner != null &&
-                        isDoneTranslation() &&
-                        messageOwner.translatedText != null &&
-                        TextUtils.equals(translateController.getDialogTranslateTo(getDialogId()), messageOwner.translatedToLanguage)
-        ) {
+        if (isDoneTranslation()) {
             if (translated) {
                 return replyUpdated || false;
             }

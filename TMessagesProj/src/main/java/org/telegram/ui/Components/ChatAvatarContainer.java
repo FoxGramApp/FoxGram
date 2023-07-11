@@ -131,7 +131,7 @@ public class ChatAvatarContainer extends FrameLayout implements NotificationCent
     public ChatAvatarContainer(Context context, BaseFragment baseFragment, boolean needTime) {
         this(context, baseFragment, needTime, null);
     }
-    
+
     public ChatAvatarContainer(Context context, BaseFragment baseFragment, boolean needTime, Theme.ResourcesProvider resourcesProvider) {
         super(context);
         this.resourcesProvider = resourcesProvider;
@@ -146,9 +146,7 @@ public class ChatAvatarContainer extends FrameLayout implements NotificationCent
                 super.onInitializeAccessibilityNodeInfo(info);
                 if (avatarClickable && getImageReceiver().hasNotThumb()) {
                     info.setText(LocaleController.getString("AccDescrProfilePicture", R.string.AccDescrProfilePicture));
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        info.addAction(new AccessibilityNodeInfo.AccessibilityAction(AccessibilityNodeInfo.ACTION_CLICK, LocaleController.getString("Open", R.string.Open)));
-                    }
+                    info.addAction(new AccessibilityNodeInfo.AccessibilityAction(AccessibilityNodeInfo.ACTION_CLICK, LocaleController.getString("Open", R.string.Open)));
                 } else {
                     info.setVisibleToUser(false);
                 }
@@ -607,7 +605,7 @@ public class ChatAvatarContainer extends FrameLayout implements NotificationCent
 //                titleTextView.setCanHideRightDrawable(!isStatus);
 //            }
             if (titleTextView.getRightDrawable() instanceof AnimatedEmojiDrawable.WrapSizeDrawable &&
-                ((AnimatedEmojiDrawable.WrapSizeDrawable) titleTextView.getRightDrawable()).getDrawable() instanceof AnimatedEmojiDrawable) {
+                    ((AnimatedEmojiDrawable.WrapSizeDrawable) titleTextView.getRightDrawable()).getDrawable() instanceof AnimatedEmojiDrawable) {
                 ((AnimatedEmojiDrawable) ((AnimatedEmojiDrawable.WrapSizeDrawable) titleTextView.getRightDrawable()).getDrawable()).removeView(titleTextView);
             }
             if (emojiStatus instanceof TLRPC.TL_emojiStatus) {
@@ -1085,10 +1083,11 @@ public class ChatAvatarContainer extends FrameLayout implements NotificationCent
         sb.append("\n");
         sb.append(subtitleTextView.getText());
         info.setContentDescription(sb);
-        if (info.isClickable() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        setContentDescription(sb);
+        if (info.isClickable()) {
             info.addAction(new AccessibilityNodeInfo.AccessibilityAction(AccessibilityNodeInfo.ACTION_CLICK, LocaleController.getString("OpenProfile", R.string.OpenProfile)));
         }
-        if (info.isLongClickable() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (info.isLongClickable()) {
             info.addAction(new AccessibilityNodeInfo.AccessibilityAction(AccessibilityNodeInfo.ACTION_LONG_CLICK, LocaleController.getString("Search", R.string.Search)));
         }
     }

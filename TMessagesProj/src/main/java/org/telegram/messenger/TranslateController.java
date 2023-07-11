@@ -73,9 +73,6 @@ public class TranslateController extends BaseController {
         return !(!UserConfig.getInstance(currentAccount).isPremium() && ColorConfig.translationProvider == Translator.PROVIDER_TELEGRAM);
     }
 
-    private Boolean chatTranslateEnabled;
-    private Boolean contextTranslateEnabled;
-
     public boolean isChatTranslateEnabled() {
         return ColorConfig.translateEntireChat;
     }
@@ -86,11 +83,7 @@ public class TranslateController extends BaseController {
     }
 
     public void setContextTranslateEnabled(boolean enable) {
-        messagesController.getMainSettings().edit().putBoolean("translate_button", contextTranslateEnabled = enable).apply();
-    }
-
-    public void setChatTranslateEnabled(boolean enable) {
-        messagesController.getMainSettings().edit().putBoolean("translate_chat_button", chatTranslateEnabled = enable).apply();
+        MessagesController.getMainSettings(currentAccount).edit().putBoolean("translate_button", enable).apply();
     }
 
     public static boolean isTranslatable(MessageObject messageObject) {
@@ -708,7 +701,6 @@ public class TranslateController extends BaseController {
     }
 
 
-
     public void cleanup() {
         cancelAllTranslations();
         resetTranslatingDialogsCache();
@@ -835,7 +827,6 @@ public class TranslateController extends BaseController {
         ArrayList<Utilities.Callback<BaseTranslator.Result>> callbacks = new ArrayList<>();
         String language;
 
-        int delay = GROUPING_TRANSLATIONS_TIMEOUT;
         int symbolsCount;
 
         String token;
@@ -872,8 +863,6 @@ public class TranslateController extends BaseController {
 
             if (pendingTranslation.symbolsCount + messageSymbolsCount >= MAX_SYMBOLS_PER_REQUEST ||
                     pendingTranslation.messageIds.size() + 1 >= MAX_MESSAGES_PER_REQUEST) {
-                AndroidUtilities.cancelRunOnUIThread(pendingTranslation.runnable);
-                AndroidUtilities.runOnUIThread(pendingTranslation.runnable); // without timeout
                 dialogPendingTranslations.add(pendingTranslation = new PendingTranslation());
             }
 
@@ -924,8 +913,7 @@ public class TranslateController extends BaseController {
                     pendingTranslation1.token = token;
                 }
             };
-            AndroidUtilities.runOnUIThread(pendingTranslation.runnable, pendingTranslation.delay);
-            pendingTranslation.delay /= 2;
+            AndroidUtilities.runOnUIThread(pendingTranslation.runnable, GROUPING_TRANSLATIONS_TIMEOUT);
         }
     }
 

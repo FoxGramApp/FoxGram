@@ -40,7 +40,7 @@ import it.colorgram.android.translator.DeepLTranslator;
 import it.colorgram.android.translator.Translator;
 import it.colorgram.android.translator.TranslatorHelper;
 
-public class colorgramTranslationsSettings extends BaseSettingsActivity {
+public class ColorgramTranslationsSettings extends BaseSettingsActivity {
     private final boolean supportLanguageDetector;
 
     private int translationHeaderRow;
@@ -61,7 +61,7 @@ public class colorgramTranslationsSettings extends BaseSettingsActivity {
     private int entireTranslationSettingsDivisor;
     private int translatorSettingsHeader;
 
-    public colorgramTranslationsSettings() {
+    public ColorgramTranslationsSettings() {
         supportLanguageDetector = LanguageDetector.hasSupport();
     }
 
@@ -106,7 +106,7 @@ public class colorgramTranslationsSettings extends BaseSettingsActivity {
             presentFragment(new DoNotTranslateSettings());
         } else if (position == autoTranslateRow) {
             if (!getUserConfig().isPremium() && ColorConfig.translationProvider == Translator.PROVIDER_TELEGRAM) {
-                showDialog(new PremiumFeatureBottomSheet(colorgramTranslationsSettings.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
+                showDialog(new PremiumFeatureBottomSheet(ColorgramTranslationsSettings.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
                 return;
             }
             if (!supportLanguageDetector) {
@@ -116,7 +116,7 @@ public class colorgramTranslationsSettings extends BaseSettingsActivity {
             presentFragment(new AutoTranslateSettings());
         } else if (position == keepMarkdownRow) {
             if (!getUserConfig().isPremium() && ColorConfig.translationProvider == Translator.PROVIDER_TELEGRAM) {
-                showDialog(new PremiumFeatureBottomSheet(colorgramTranslationsSettings.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
+                showDialog(new PremiumFeatureBottomSheet(ColorgramTranslationsSettings.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
                 return;
             }
             ColorConfig.toggleKeepTranslationMarkdown();
@@ -130,7 +130,7 @@ public class colorgramTranslationsSettings extends BaseSettingsActivity {
             }
         } else if (position == translateEntireChatRow) {
             if (!getUserConfig().isPremium() && ColorConfig.translationProvider == Translator.PROVIDER_TELEGRAM) {
-                showDialog(new PremiumFeatureBottomSheet(colorgramTranslationsSettings.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
+                showDialog(new PremiumFeatureBottomSheet(ColorgramTranslationsSettings.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
             } else {
                 ColorConfig.toggleTranslateEntireChat();
                 if (view instanceof TextCheckCell) {
@@ -179,7 +179,7 @@ public class colorgramTranslationsSettings extends BaseSettingsActivity {
 
     @Override
     protected BaseListAdapter createAdapter() {
-        return new colorgramTranslationsSettings.ListAdapter();
+        return new ColorgramTranslationsSettings.ListAdapter();
     }
 
     private class ListAdapter extends BaseListAdapter {
@@ -390,7 +390,7 @@ public class colorgramTranslationsSettings extends BaseSettingsActivity {
             updateRowsId();
             return;
         }
-        colorgramTranslationsSettings.DiffCallback diffCallback = new colorgramTranslationsSettings.DiffCallback();
+        ColorgramTranslationsSettings.DiffCallback diffCallback = new ColorgramTranslationsSettings.DiffCallback();
         diffCallback.oldRowCount = rowCount;
         diffCallback.fillPositions(diffCallback.oldPositionToItem);
         diffCallback.oldFeatures.addAll(diffCallback.getNewFeatures());

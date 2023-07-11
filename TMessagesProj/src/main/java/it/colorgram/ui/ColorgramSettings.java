@@ -58,7 +58,7 @@ import it.colorgram.android.ColorConfig;
 import it.colorgram.android.StoreUtils;
 import it.colorgram.android.updates.UpdateManager;
 
-public class colorgramSettings extends BaseSettingsActivity {
+public class ColorgramSettings extends BaseSettingsActivity {
 
     private int divisorInfoRow;
     private int colorRow;
@@ -121,7 +121,7 @@ public class colorgramSettings extends BaseSettingsActivity {
                     Emoji.reloadEmoji();
                     NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.emojiLoaded);
                 }
-                BulletinFactory.of(colorgramSettings.this).createSimpleBulletin(R.raw.forward, LocaleController.getString("ResetSettingsHint", R.string.ResetSettingsHint)).show();
+                BulletinFactory.of(ColorgramSettings.this).createSimpleBulletin(R.raw.forward, LocaleController.getString("ResetSettingsHint", R.string.ResetSettingsHint)).show();
             });
             AlertDialog alertDialog = builder.create();
             showDialog(alertDialog);
@@ -388,20 +388,20 @@ public class colorgramSettings extends BaseSettingsActivity {
         } else if (position == supportTranslationRow) {
             Browser.openUrl(getParentActivity(), "https://crowdin.com/project/colorgram");
         } else if (position == generalSettingsRow) {
-            presentFragment(new colorgramGeneralSettings());
+            presentFragment(new ColorgramGeneralSettings());
         } else if (position == translateSettingsRow) {
-            presentFragment(new colorgramTranslationsSettings());
+            presentFragment(new ColorgramTranslationsSettings());
         } else if (position == chatSettingsRow) {
-            presentFragment(new colorgramChatSettings());
+            presentFragment(new ColorgramChatSettings());
         } else if (position == experimentalSettingsRow) {
-            presentFragment(new colorgramExperimentalSettings());
+            presentFragment(new ColorgramExperimentalSettings());
         } else if (position == appearanceSettingsRow) {
-            presentFragment(new colorgramAppearanceSettings());
+            presentFragment(new ColorgramAppearanceSettings());
         } else if (position == updatesCheckView) {
-            presentFragment(new colorgramUpdateSettings());
+            presentFragment(new ColorgramUpdateSettings());
         } else if (position == bugReportRow) {
             AndroidUtilities.addToClipboard(Crashlytics.getReportMessage() + "\n\n#bug");
-            BulletinFactory.of(colorgramSettings.this).createCopyBulletin(LocaleController.getString("ReportDetailsCopied", R.string.ReportDetailsCopied)).show();
+            BulletinFactory.of(ColorgramSettings.this).createCopyBulletin(LocaleController.getString("ReportDetailsCopied", R.string.ReportDetailsCopied)).show();
         } else if (position == sendLogsRow) {
             ProfileActivity.sendLogs(getParentActivity(), false);
         } else if (position == sendLastLogsRow) {

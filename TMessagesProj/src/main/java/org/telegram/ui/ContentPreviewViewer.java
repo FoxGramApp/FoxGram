@@ -601,7 +601,7 @@ public class ContentPreviewViewer {
 
                 int insets = 0;
                 int top;
-                if (Build.VERSION.SDK_INT >= 21 && lastInsets != null) {
+                if (lastInsets != null) {
                     insets = lastInsets.getStableInsetBottom() + lastInsets.getStableInsetTop();
                     top = lastInsets.getStableInsetTop();
                 } else {
@@ -1106,6 +1106,7 @@ public class ContentPreviewViewer {
         delegate = contentPreviewViewerDelegate;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public void setParentActivity(Activity activity) {
         currentAccount = UserConfig.selectedAccount;
         centerImage.setCurrentAccount(currentAccount);
@@ -1435,7 +1436,7 @@ public class ContentPreviewViewer {
         int size;
         int insets = 0;
         int top;
-        if (Build.VERSION.SDK_INT >= 21 && lastInsets != null) {
+        if (lastInsets != null) {
             insets = lastInsets.getStableInsetBottom() + lastInsets.getStableInsetTop();
             top = lastInsets.getStableInsetTop();
         } else {

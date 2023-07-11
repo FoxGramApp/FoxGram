@@ -316,7 +316,7 @@ include(${CMAKE_HOME_DIRECTORY}/ping/CMakeLists.txt)
 
 set(NATIVE_LIB "owl.45")
 
-#tmessages
+#color
 add_library(${NATIVE_LIB} SHARED
         jni.c
         audio.c

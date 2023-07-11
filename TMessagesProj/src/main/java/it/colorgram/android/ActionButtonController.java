@@ -38,6 +38,7 @@ public class ActionButtonController {
                 data.add("camera");
                 data.add("edit_name");
                 data.add("logout");
+                data.add("delete");
             } else {
                 boolean isTgUser = userId == 777000 || userId == 42777;
                 data.add("send_message");
@@ -153,6 +154,17 @@ public class ActionButtonController {
     }
 
     private int getColor(String id) {
+        switch (id) {
+            case "leave":
+            case "stop":
+            case "block":
+            case "logout":
+            case "delete":
+                return Theme.key_dialogTextRed;
+            case "unblock":
+            case "restart":
+                return Theme.key_windowBackgroundWhiteGreenText2;
+        }
         return Theme.key_switch2TrackChecked;
     }
 
@@ -174,6 +186,10 @@ public class ActionButtonController {
                 case "logout":
                     text = LocaleController.getString("LogOut", R.string.LogOut);
                     icon = R.drawable.msg_leave;
+                    break;
+                case "delete":
+                    text = LocaleController.getString("DeleteAccount", R.string.DeleteAccount);
+                    icon = R.drawable.msg_delete;
                     break;
                 case "send_message":
                     text = LocaleController.getString("Send", R.string.Send);

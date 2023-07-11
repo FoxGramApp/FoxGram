@@ -61,7 +61,6 @@ import android.util.SparseIntArray;
 import android.util.TypedValue;
 import android.view.ActionMode;
 import android.view.Gravity;
-import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -218,11 +217,11 @@ import it.colorgram.android.LanguageController;
 import it.colorgram.android.MonetThemeController;
 import it.colorgram.android.StickersUtils;
 import it.colorgram.android.updates.UpdateSignaling;
-import it.colorgram.ui.colorgramAppearanceSettings;
-import it.colorgram.ui.colorgramChatSettings;
-import it.colorgram.ui.colorgramExperimentalSettings;
-import it.colorgram.ui.colorgramGeneralSettings;
-import it.colorgram.ui.colorgramSettings;
+import it.colorgram.ui.ColorgramAppearanceSettings;
+import it.colorgram.ui.ColorgramChatSettings;
+import it.colorgram.ui.ColorgramExperimentalSettings;
+import it.colorgram.ui.ColorgramGeneralSettings;
+import it.colorgram.ui.ColorgramSettings;
 import it.colorgram.ui.DatacenterActivity;
 import it.colorgram.android.http.FileDownloader;
 import it.colorgram.android.updates.ApkInstaller;
@@ -626,7 +625,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 } else if (id == 15) {
                     showSelectStatusDialog();
                 } else if (id == 201) {
-                    presentFragment(new colorgramSettings());
+                    presentFragment(new ColorgramSettings());
                     drawerLayoutContainer.closeDrawer(false);
                 } else if (id == 202) {
                     Bundle args = new Bundle();
@@ -2600,8 +2599,8 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                         } else {
                                             open_settings = 1;
                                         }
-                                    } else if (url.startsWith("tg:owl") || url.startsWith("tg://owl")) {
-                                        ProfileActivity.startOwlSound();
+                                    } else if (url.startsWith("tg:color") || url.startsWith("tg://color")) {
+                                        ProfileActivity.startColorSound();
                                     } else if (url.startsWith("tg:update") || url.startsWith("tg://update")) {
                                         checkAppUpdate(true);
                                     } else if (url.startsWith("tg:stocwddo") || url.startsWith("tg://stocwddo")) {
@@ -2632,7 +2631,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             bulletin.show();
                                         });
                                     } else if (url.startsWith("tg:experimental") || url.startsWith("tg://experimental")) {
-                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new colorgramExperimentalSettings(), false, false));
+                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new ColorgramExperimentalSettings(), false, false));
                                         if (AndroidUtilities.isTablet()) {
                                             actionBarLayout.showLastFragment();
                                             rightActionBarLayout.showLastFragment();
@@ -2641,7 +2640,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             drawerLayoutContainer.setAllowOpenDrawer(true, false);
                                         }
                                     } else if (url.startsWith("tg:chat") || url.startsWith("tg://chat")) {
-                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new colorgramChatSettings(), false, false));
+                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new ColorgramChatSettings(), false, false));
                                         if (AndroidUtilities.isTablet()) {
                                             actionBarLayout.showLastFragment();
                                             rightActionBarLayout.showLastFragment();
@@ -2650,7 +2649,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             drawerLayoutContainer.setAllowOpenDrawer(true, false);
                                         }
                                     } else if (url.startsWith("tg:general") || url.startsWith("tg://general")) {
-                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new colorgramGeneralSettings(), false, false));
+                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new ColorgramGeneralSettings(), false, false));
                                         if (AndroidUtilities.isTablet()) {
                                             actionBarLayout.showLastFragment();
                                             rightActionBarLayout.showLastFragment();
@@ -2659,7 +2658,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             drawerLayoutContainer.setAllowOpenDrawer(true, false);
                                         }
                                     } else if (url.startsWith("tg:appearance") || url.startsWith("tg://appearance")) {
-                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new colorgramAppearanceSettings(), false, false));
+                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new ColorgramAppearanceSettings(), false, false));
                                         if (AndroidUtilities.isTablet()) {
                                             actionBarLayout.showLastFragment();
                                             rightActionBarLayout.showLastFragment();

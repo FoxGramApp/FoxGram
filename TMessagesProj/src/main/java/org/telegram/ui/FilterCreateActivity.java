@@ -862,7 +862,7 @@ public class FilterCreateActivity extends BaseFragment {
     }
 
     private void save(boolean progress, Runnable after) {
-        saveFilterToServer(filter, newFilterFlags, newFilterName, filter.emoticon, newAlwaysShow, newNeverShow, newPinned, creatingNew, false, hasUserChanged, true, progress, this, () -> {
+        saveFilterToServer(filter, newFilterFlags, newFilterEmoticon, newFilterName, newAlwaysShow, newNeverShow, newPinned, creatingNew, false, hasUserChanged, true, progress, this, () -> {
 
             hasUserChanged = false;
             creatingNew = false;
@@ -936,7 +936,7 @@ public class FilterCreateActivity extends BaseFragment {
         req.filter.title = newFilterName;
         if (newFilterEmoticon != null) {
             req.filter.emoticon = newFilterEmoticon;
-            req.filter.flags |= ConnectionsManager.FileTypeVideo;
+            req.filter.flags |= 33554432;
         }
         MessagesController messagesController = fragment.getMessagesController();
         ArrayList<Long> pinArray = new ArrayList<>();
@@ -1270,14 +1270,14 @@ public class FilterCreateActivity extends BaseFragment {
                     view = cell;
                     break;
                 }
-                case VIEW_TYPE_EDIT: {
+                case 2: {
                     PollEditTextCell cell = new PollEditTextCell(mContext, false, null, view1 -> {
                         iconSelectorAlert = new IconSelectorAlert(mContext) {
                             @Override
                             protected void onItemClick(String emoticon) {
                                 super.onItemClick(emoticon);
                                 newFilterEmoticon = emoticon;
-                                adapter.notifyItemChanged(nameRow);
+                                ((PollEditTextCell) view1.getParent()).setIcon(FolderIconController.getTabIcon(newFilterEmoticon));
                                 checkDoneButton(true);
                             }
                         };
@@ -1448,7 +1448,6 @@ public class FilterCreateActivity extends BaseFragment {
                     holder.itemView.setBackground(Theme.getThemedDrawableByKey(mContext, divider ? R.drawable.greydivider : R.drawable.greydivider_bottom, Theme.key_windowBackgroundGrayShadow));
                     break;
                 }
-                // TODO: Missing VIEW_TYPE_SET_ICON
                 case VIEW_TYPE_BUTTON: {
                     ButtonCell buttonCell = (ButtonCell) holder.itemView;
                     buttonCell.setRed(item.isRed);
@@ -1469,6 +1468,11 @@ public class FilterCreateActivity extends BaseFragment {
                 case VIEW_TYPE_CREATE_LINK: {
                     createLinkCell = (CreateLinkCell) holder.itemView;
                     createLinkCell.setDivider(divider);
+                    break;
+                }
+                case 2: {
+                    PollEditTextCell cell = (PollEditTextCell) holder.itemView;
+                    cell.setIcon(FolderIconController.getTabIcon(newFilterEmoticon));
                     break;
                 }
             }

@@ -58,8 +58,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Timer;
 
-import it.colorgram.ui.colorgramGeneralSettings;
-import it.colorgram.ui.colorgramTranslationsSettings;
+import it.colorgram.ui.ColorgramTranslationsSettings;
 
 public class LanguageSelectActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
@@ -207,7 +206,7 @@ public class LanguageSelectActivity extends BaseFragment implements Notification
                             showDialog(new PremiumFeatureBottomSheet(LanguageSelectActivity.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
                             return;
                         }
-                        getMessagesController().getTranslateController().setChatTranslateEnabled(value);
+                        getMessagesController().getTranslateController().setContextTranslateEnabled(value);
                         NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.updateSearchSettings);
                         ((TextCheckCell) view).setChecked(value);
                     }
@@ -232,7 +231,7 @@ public class LanguageSelectActivity extends BaseFragment implements Notification
                     }
                     return;
                 } else if (view instanceof TextCell) {
-                    presentFragment(new colorgramTranslationsSettings());
+                    presentFragment(new ColorgramTranslationsSettings());
                     return;
                 }
                 if (getParentActivity() == null || parentLayout == null || !(view instanceof TextRadioCell)) {

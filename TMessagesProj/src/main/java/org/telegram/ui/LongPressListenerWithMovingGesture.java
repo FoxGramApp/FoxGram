@@ -23,12 +23,10 @@ public class LongPressListenerWithMovingGesture implements View.OnTouchListener 
             if (view != null) {
                 view.setPressed(true);
                 view.setSelected(true);
-                if (Build.VERSION.SDK_INT >= 21) {
-                    if (Build.VERSION.SDK_INT == 21 && view.getBackground() != null) {
-                        view.getBackground().setVisible(true, false);
-                    }
-                    view.drawableHotspotChanged(e.getX(), e.getY());
+                if (Build.VERSION.SDK_INT == 21 && view.getBackground() != null) {
+                    view.getBackground().setVisible(true, false);
                 }
+                view.drawableHotspotChanged(e.getX(), e.getY());
             }
             return true;
         }
@@ -125,12 +123,10 @@ public class LongPressListenerWithMovingGesture implements View.OnTouchListener 
                     } else {
                         child.setPressed(true);
                         child.setSelected(true);
-                        if (Build.VERSION.SDK_INT >= 21) {
-                            if (Build.VERSION.SDK_INT == 21 && child.getBackground() != null) {
-                                child.getBackground().setVisible(true, false);
-                            }
-                            child.drawableHotspotChanged(x, y - child.getTop());
+                        if (Build.VERSION.SDK_INT == 21 && child.getBackground() != null) {
+                            child.getBackground().setVisible(true, false);
                         }
+                        child.drawableHotspotChanged(x, y - child.getTop());
                         selectedMenuView = child;
                     }
                 }

@@ -1,7 +1,10 @@
 package it.colorgram.ui;
 
+import android.app.Dialog;
+import android.text.TextUtils;
 import android.transition.TransitionManager;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,12 +13,18 @@ import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
+import org.telegram.messenger.UserConfig;
+import org.telegram.tgnet.TLRPC;
+import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.HeaderCell;
+import org.telegram.ui.Cells.RadioColorCell;
 import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Cells.TextSettingsCell;
-import org.telegram.ui.Components.BulletinFactory;
+import org.telegram.ui.Components.UndoView;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import it.colorgram.android.CustomEmojiController;
 import it.colorgram.android.ColorConfig;
@@ -24,12 +33,12 @@ import it.colorgram.ui.Cells.DrawerProfilePreview;
 import it.colorgram.ui.Cells.DynamicButtonSelector;
 import it.colorgram.ui.Cells.ThemeSelectorDrawer;
 
-public class colorgramAppearanceSettings extends BaseSettingsActivity implements NotificationCenter.NotificationCenterDelegate {
+public class ColorgramAppearanceSettings extends BaseSettingsActivity implements NotificationCenter.NotificationCenterDelegate {
     private DrawerProfilePreview profilePreviewCell;
 
     private int drawerRow;
     private int drawerAvatarAsBackgroundRow;
-    private int showMenuControllerIcon;
+    private int showMenuControllerIconRow;
     private int showGradientRow;
     private int showAvatarRow;
     private int drawerDarkenBackgroundRow;
@@ -52,7 +61,7 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
     private int chatHeaderDividerRow;
     private int appearanceHeaderRow;
     private int forcePacmanRow;
-    private int SmoothNavRow;
+    private int smoothNavRow;
     private int showSantaHatRow;
     private int showFallingSnowRow;
     private int messageTimeSwitchRow;
@@ -135,7 +144,7 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
                 listAdapter.notifyItemRangeRemoved(showGradientRow, 4 + (ColorConfig.avatarBackgroundBlur ? 3 : 0));
                 updateRowsId();
             }
-        } else if (position == showMenuControllerIcon) {
+        } else if (position == showMenuControllerIconRow) {
             ColorConfig.toggleShowMenuControllerIcon();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(ColorConfig.showMenuControllerIcon);
@@ -147,22 +156,22 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
             presentFragment(new DrawerOrderSettings());
         } else if (position == useSystemFontRow) {
             ColorConfig.toggleUseSystemFont();
-            AndroidUtilities.clearTypefaceCache();
-            rebuildAllFragmentsWithLast();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(ColorConfig.useSystemFont);
             }
+            AndroidUtilities.clearTypefaceCache();
+            rebuildAllFragmentsWithLast();
         } else if (position == forcePacmanRow) {
             ColorConfig.togglePacmanForced();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(ColorConfig.pacmanForced);
             }
-        } else if (position == SmoothNavRow) {
+        } else if (position == smoothNavRow) {
             ColorConfig.toggleSmoothNav();
             if (view instanceof TextCheckCell) {
-                ((TextCheckCell) view).setChecked(ColorConfig.SmoothNav);
-                BulletinFactory.of(colorgramAppearanceSettings.this).createErrorBulletin(LocaleController.getString("RestartAppToApplyChange", R.string.RestartAppToApplyChanges)).show();
+                ((TextCheckCell) view).setChecked(ColorConfig.smoothNav);
             }
+            restartTooltip.showWithAction(0, UndoView.ACTION_NEED_RESTART, null, null);
         } else if (position == smartButtonsRow) {
             ColorConfig.toggleSmartButtons();
             if (view instanceof TextCheckCell) {
@@ -170,11 +179,11 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
             }
         } else if (position == appBarShadowRow) {
             ColorConfig.toggleAppBarShadow();
-            parentLayout.setHeaderShadow(ColorConfig.showAppBarShadow ? parentLayout.getView().getResources().getDrawable(R.drawable.header_shadow).mutate():null);
-            rebuildAllFragmentsWithLast();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(ColorConfig.showAppBarShadow);
             }
+            parentLayout.setHeaderShadow(ColorConfig.showAppBarShadow ? parentLayout.getView().getResources().getDrawable(R.drawable.header_shadow).mutate():null);
+            rebuildAllFragmentsWithLast();
         } else if (position == showSantaHatRow) {
             ColorConfig.toggleShowSantaHat();
             if (view instanceof TextCheckCell) {
@@ -219,11 +228,57 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
                 ((TextCheckCell) view).setChecked(ColorConfig.showPencilIcon);
             }
         } else if (position == showInActionBarRow) {
-            ColorConfig.toggleShowNameInActionBar();
-            reloadDialogs();
-            if (view instanceof TextCheckCell) {
-                ((TextCheckCell) view).setChecked(ColorConfig.showNameInActionBar);
+            if (getParentActivity() == null) {
+                return;
             }
+            AtomicReference<Dialog> dialogRef = new AtomicReference<>();
+
+            LinearLayout linearLayout = new LinearLayout(context);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+            TLRPC.User selfUser = UserConfig.getInstance(currentAccount).getCurrentUser();
+            CharSequence[] items;
+            if (!TextUtils.isEmpty(selfUser.username)) {
+                items = new CharSequence[]{
+                        LocaleController.getString("Default", R.string.Default),
+                        LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar),
+                        LocaleController.getString("Username", R.string.Username)
+                };
+            } else {
+                items = new CharSequence[]{
+                        LocaleController.getString("Default", R.string.Default),
+                        LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar)
+                };
+            }
+
+            for (int i = 0; i < items.length; ++i) {
+                final int index = i;
+                RadioColorCell cell = new RadioColorCell(getParentActivity());
+                cell.setPadding(AndroidUtilities.dp(4), 0, AndroidUtilities.dp(4), 0);
+                cell.setCheckColor(Theme.getColor(Theme.key_radioBackground), Theme.getColor(Theme.key_dialogRadioBackgroundChecked));
+                cell.setTextAndValue(items[index], index == ColorConfig.nameType);
+                cell.setBackground(Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector), Theme.RIPPLE_MASK_ALL));
+                linearLayout.addView(cell);
+                cell.setOnClickListener(v -> {
+                    ColorConfig.saveNameType(index);
+                    RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(showInActionBarRow);
+                    if (holder != null) {
+                        listAdapter.onBindViewHolder(holder, showInActionBarRow);
+                    }
+                    dialogRef.get().dismiss();
+                });
+            }
+
+            Dialog dialog = new AlertDialog.Builder(getParentActivity())
+                    .setTitle(LocaleController.getString("TitleBarName", R.string.TitleBarName))
+                    .setView(linearLayout)
+                    .setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null)
+                    .create();
+            dialogRef.set(dialog);
+            showDialog(dialog);
+
+            reloadInterface();
+            reloadMainInfo();
         } else if (position == chooseEmojiPackRow) {
             presentFragment(new EmojiPackSettings());
         }
@@ -250,7 +305,7 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
             drawerDarkenBackgroundRow = rowCount++;
             drawerBlurBackgroundRow = rowCount++;
         }
-        showMenuControllerIcon = rowCount++;
+        showMenuControllerIconRow = rowCount++;
         drawerDividerRow = rowCount++;
         if (ColorConfig.avatarBackgroundBlur && ColorConfig.avatarAsDrawerBackground) {
             editBlurHeaderRow = rowCount++;
@@ -268,7 +323,7 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
         dynamicDividerRow = rowCount++;
 
         appearanceHeaderRow = rowCount++;
-        SmoothNavRow = rowCount++;
+        smoothNavRow = rowCount++;
         showPencilIconRow = rowCount++;
         if (((Theme.getEventType() == 0 && ColorConfig.eventType == 0) || ColorConfig.eventType == 1)) {
             showSantaHatRow = rowCount++;
@@ -286,8 +341,8 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
         fontsAndEmojiDividerRow = rowCount++;
 
         chatHeaderRow = rowCount++;
-        appBarShadowRow = rowCount++;
         showInActionBarRow = rowCount++;
+        appBarShadowRow = rowCount++;
         searchIconInActionBarRow = rowCount++;
         slidingTitleRow = rowCount++;
         chatHeaderDividerRow = rowCount++;
@@ -341,7 +396,7 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
                         textCheckCell.setTextAndCheck(LocaleController.getString("ShowAvatar", R.string.ShowAvatar), ColorConfig.showAvatarImage, drawerBlurBackgroundRow != -1);
                     } else if (position == drawerAvatarAsBackgroundRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("AvatarAsBackground", R.string.AvatarAsBackground), ColorConfig.avatarAsDrawerBackground, ColorConfig.avatarAsDrawerBackground);
-                    } else if (position == showMenuControllerIcon) {
+                    } else if (position == showMenuControllerIconRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("ShowItemManagement", R.string.ShowItemManagement), ColorConfig.showMenuControllerIcon, true);
                     } else if (position == drawerBlurBackgroundRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("AvatarBlur", R.string.AvatarBlur), ColorConfig.avatarBackgroundBlur, !ColorConfig.avatarBackgroundBlur);
@@ -355,8 +410,8 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("NumberRounding", R.string.NumberRounding), LocaleController.getString("NumberRoundingDesc", R.string.NumberRoundingDesc), ColorConfig.roundedNumbers, true, true);
                     } else if (position == forcePacmanRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("PacManAnimation", R.string.PacManAnimation), ColorConfig.pacmanForced, true);
-                    } else if (position == SmoothNavRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("SmoothNav", R.string.SmoothNav), ColorConfig.SmoothNav, true);
+                    } else if (position == smoothNavRow) {
+                        textCheckCell.setTextAndCheck(LocaleController.getString("SmoothNav", R.string.SmoothNav), ColorConfig.smoothNav, true);
                     } else if (position == smartButtonsRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("ShortcutsForAdmins", R.string.ShortcutsForAdmins), ColorConfig.smartButtons, false);
                     } else if (position == appBarShadowRow) {
@@ -371,8 +426,6 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
                         textCheckCell.setTextAndCheck(LocaleController.getString("SearchIconTitleBar", R.string.SearchIconTitleBar), ColorConfig.searchIconInActionBar, false);
                     } else if (position == showPencilIconRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("ShowPencilIcon", R.string.ShowPencilIcon), ColorConfig.showPencilIcon, true);
-                    } else if (position == showInActionBarRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar), ColorConfig.showNameInActionBar, true);
                     }
                     break;
                 case PROFILE_PREVIEW:
@@ -393,6 +446,15 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
                         textSettingsCell.setDrawLoading(CustomEmojiController.isLoading(), 30, partial);
                         String emojiPack = CustomEmojiController.getSelectedPackName();
                         textSettingsCell.setTextAndValue(LocaleController.getString("EmojiSets", R.string.EmojiSets), emojiPack, true);
+                    } else if (position == showInActionBarRow) {
+                        String defaultName = LocaleController.getString("NumberUnknown", R.string.NumberUnknown);
+                        if (ColorConfig.nameType == ColorConfig.DEFAULT_NAME)
+                            defaultName = LocaleController.getString("Default", R.string.Default);
+                        else if (ColorConfig.nameType == ColorConfig.TG_USER_NAME)
+                            defaultName = LocaleController.getString("Username", R.string.Username);
+                        else if (ColorConfig.nameType == ColorConfig.USER_NAME)
+                            defaultName = LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar);
+                        textSettingsCell.setTextAndValue(LocaleController.getString("TitleName", R.string.TitleBarName), defaultName, partial, true);
                     }
                     break;
             }
@@ -484,12 +546,11 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
                     position == fontsAndEmojiHeaderRow || position == appearanceHeaderRow || position == chatHeaderRow) {
                 return ViewType.HEADER;
             } else if (position == roundedNumberSwitchRow || position == messageTimeSwitchRow ||
-                    position == useSystemFontRow || position == drawerAvatarAsBackgroundRow || position == showMenuControllerIcon ||
+                    position == useSystemFontRow || position == drawerAvatarAsBackgroundRow || position == showMenuControllerIconRow ||
                     position == drawerDarkenBackgroundRow || position == drawerBlurBackgroundRow || position == showGradientRow ||
-                    position == showAvatarRow || position == forcePacmanRow || position == SmoothNavRow || position == smartButtonsRow ||
+                    position == showAvatarRow || position == forcePacmanRow || position == smoothNavRow || position == smartButtonsRow ||
                     position == appBarShadowRow || position == showSantaHatRow || position == showFallingSnowRow ||
-                    position == slidingTitleRow || position == searchIconInActionBarRow || position == showPencilIconRow ||
-                    position == showInActionBarRow) {
+                    position == slidingTitleRow || position == searchIconInActionBarRow || position == showPencilIconRow) {
                 return ViewType.SWITCH;
             } else if (position == drawerRow) {
                 return ViewType.PROFILE_PREVIEW;
@@ -501,7 +562,7 @@ public class colorgramAppearanceSettings extends BaseSettingsActivity implements
                 return ViewType.THEME_SELECTOR;
             } else if (position == dynamicButtonRow) {
                 return ViewType.DYNAMIC_BUTTON_SELECTOR;
-            } else if (position == chooseEmojiPackRow) {
+            } else if (position == chooseEmojiPackRow || position == showInActionBarRow) {
                 return ViewType.SETTINGS;
             }
             throw new IllegalArgumentException("Invalid position");

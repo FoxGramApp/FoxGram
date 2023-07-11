@@ -59,12 +59,7 @@ public class UpdateManager {
             @Override
             public void run() {
                 try {
-                    String url;
-                    if (betaMode) {
-                        url = String.format("https://raw.githubusercontent.com/Pierlu096/colorgramserver/main/Updates/Previews/updates_info_%s.json", locale.getLanguage());
-                    } else {
-                        url = String.format("https://raw.githubusercontent.com/Pierlu096/colorgramserver/main/Updates/updates_info_%s.json", locale.getLanguage());
-                    }
+                    String url = betaMode ? String.format("https://raw.githubusercontent.com/Pierlu096/colorgramserver/main/Updates/Previews/updates_info_%s.json", locale.getLanguage()) : String.format("https://raw.githubusercontent.com/Pierlu096/colorgramserver/main/Updates/updates_info_%s.json", locale.getLanguage());
                     JSONObject obj = new JSONObject(new StandardHTTPRequest(url).request());
                     String changelog_text = obj.getString("changelog");
                     if (!changelog_text.equals("null")) {
@@ -131,21 +126,10 @@ public class UpdateManager {
             public void run() {
                 try {
                     PackageInfo pInfo = ApplicationLoader.applicationContext.getPackageManager().getPackageInfo(ApplicationLoader.applicationContext.getPackageName(), 0);
-                    String stableURL = "https://api.github.com/repos/Pierlu096/colorgramserver/releases/latest";
-                    String releasePreviewURL = "https://api.github.com/repos/Pierlu096/ColorBeta/releases/latest";
-                    JSONObject update;
-                    if (betaMode) {
-                        update = new JSONObject(new StandardHTTPRequest(releasePreviewURL).request());
-                    } else {
-                        update = new JSONObject(new StandardHTTPRequest(stableURL).request());
-                    }
+                    String apkUrl = betaMode ? "https://api.github.com/repos/Pierlu096/ColorBeta/releases/latest" : "https://api.github.com/repos/Pierlu096/colorgramserver/releases/latest";
+                    JSONObject update = new JSONObject(new StandardHTTPRequest(apkUrl).request());
 
-                    String url;
-                    if (betaMode) {
-                        url = String.format("https://raw.githubusercontent.com/Pierlu096/colorgramserver/main/Updates/Previews/updates_info_%s.json", locale.getLanguage());
-                    } else {
-                        url = String.format("https://raw.githubusercontent.com/Pierlu096/colorgramserver/main/Updates/updates_info_%s.json", locale.getLanguage());
-                    }
+                    String url = betaMode ? String.format("https://raw.githubusercontent.com/Pierlu096/colorgramserver/main/Updates/Previews/updates_info_%s.json", locale.getLanguage()) : String.format("https://raw.githubusercontent.com/Pierlu096/colorgramserver/main/Updates/updates_info_%s.json", locale.getLanguage());
                     JSONObject update1 = new JSONObject(new StandardHTTPRequest(url).request());
 
                     int remoteVersion = BuildVars.IGNORE_VERSION_CHECK ? Integer.MAX_VALUE : (psAppUpdateInfo != null ? PlayStoreAPI.getVersionCode(psAppUpdateInfo) : update.getInt("tag_name"));

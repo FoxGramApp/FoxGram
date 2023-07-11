@@ -31,6 +31,10 @@ public class ColorConfig extends SettingsController {
     public static final int CAMERA_X = 1;
     public static final int SYSTEM_CAMERA = 2;
 
+    public static final int DEFAULT_NAME = 0;
+    public static final int USER_NAME = 1;
+    public static final int TG_USER_NAME = 2;
+
     private static final Object sync = new Object();
     public static boolean hidePhoneNumber;
     public static boolean hideContactNumber;
@@ -58,7 +62,7 @@ public class ColorConfig extends SettingsController {
     public static boolean showGradientColor;
     public static boolean showAvatarImage;
     public static boolean pacmanForced;
-    public static boolean SmoothNav;
+    public static boolean smoothNav;
     public static boolean smartButtons;
     public static boolean showAppBarShadow;
     public static boolean accentAsNotificationColor;
@@ -85,7 +89,6 @@ public class ColorConfig extends SettingsController {
     public static boolean showStatusInChat;
     public static boolean hideAllTab;
     public static boolean hideSendAsChannel;
-    public static boolean showNameInActionBar;
     public static boolean sendLargePhotos;
     public static boolean reduceCameraXLatency;
     public static boolean cameraPreview;
@@ -111,6 +114,7 @@ public class ColorConfig extends SettingsController {
     public static int buttonStyleType = 0;
     public static int translatorStyle = 0;
     public static int cameraType;
+    public static int nameType;
     public static int cameraResolution;
     public static int maxRecentStickers;
     public static int stickerSizeStack = 0;
@@ -168,7 +172,7 @@ public class ColorConfig extends SettingsController {
             showGradientColor = getBoolean("showGradientColor", false);
             showAvatarImage = getBoolean("showAvatarImage", true);
             pacmanForced = getBoolean("pacmanForced", false);
-            SmoothNav = getBoolean("SmoothNav", false);
+            smoothNav = getBoolean("smoothNav", false);
             smartButtons = getBoolean("smartButtons", false);
             showAppBarShadow = getBoolean("showAppBarShadow", true);
             accentAsNotificationColor = getBoolean("accentAsNotificationColor", false);
@@ -192,6 +196,7 @@ public class ColorConfig extends SettingsController {
             showSantaHat = getBoolean("showSantaHat", true);
             showSnowFalling = getBoolean("showSnowFalling", true);
             cameraType = getInt("cameraType", CameraXUtils.getDefault());
+            nameType = getInt("nameType", DEFAULT_NAME);
             cameraResolution = getInt("cameraResolution", CameraXUtils.getCameraResolution());
             cameraPreview = getBoolean("cameraPreview", true);
             useCameraXOptimizedMode = getBoolean("useCameraXOptimizedMode", SharedConfig.getDevicePerformanceClass() != SharedConfig.PERFORMANCE_CLASS_HIGH);
@@ -216,7 +221,6 @@ public class ColorConfig extends SettingsController {
             showStatusInChat = getBoolean("showStatusInChat", false);
             hideAllTab = getBoolean("hideAllTab", false);
             hideSendAsChannel = getBoolean("hideSendAsChannel", false);
-            showNameInActionBar = getBoolean("showNameInActionBar", false);
             emojiPackSelected = getString("emojiPackSelected", "default");
             lastSelectedCompression = getInt("lastSelectedCompression", 3);
             translateEntireChat = getBoolean("translateEntireChat", false);
@@ -285,7 +289,7 @@ public class ColorConfig extends SettingsController {
     }
     public static  void toggleCameraEnable() {
         putValue("cameraEnable", cameraEnable ^= true);
-        putValue("disableCameraTile", disableCameraTile ^= true);
+        toggleDisableCameraTile();
     }
     public static void toggleDisableCameraTile() {
         putValue("disableCameraTile", disableCameraTile ^= true);
@@ -348,7 +352,7 @@ public class ColorConfig extends SettingsController {
     }
 
     public static void toggleSmoothNav() {
-        putValue("SmoothNav", SmoothNav ^= true);
+        putValue("smoothNav", smoothNav ^= true);
     }
 
     public static void toggleSmartButtons() {
@@ -439,10 +443,6 @@ public class ColorConfig extends SettingsController {
 
     public static void toggleHideSendAsChannel() {
         putValue("hideSendAsChannel", hideSendAsChannel ^= true);
-    }
-
-    public static void toggleShowNameInActionBar() {
-        putValue("showNameInActionBar", showNameInActionBar ^= true);
     }
 
     public static void toggleTranslateEntireChat() {
@@ -544,6 +544,10 @@ public class ColorConfig extends SettingsController {
 
     public static void saveCameraType(int type) {
         putValue("cameraType", cameraType = type);
+    }
+
+    public static void saveNameType(int type) {
+        putValue("nameType", nameType = type);
     }
 
     public static void saveCameraResolution(int resolution) {

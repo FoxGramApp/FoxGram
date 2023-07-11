@@ -24,5 +24,5 @@ All remote assets that Colorgram uses are [**here**](https://github.com/Pierlu09
 • [**Nekogram**](<https://gitlab.com/Nekogram/Nekogram>)  
 • [**CatoGramX**](<https://github.com/CatogramX/CatogramX>)
 
-## 🦉 **Thanks to [**OwlGram**](<http://github.com/OwlgramDev/OwlGram>)**
+## 🦉 **Code based on [**OwlGram**](<http://github.com/OwlgramDev/OwlGram>)**
 [*Licensed under GNU GPL-2.0*](<https://github.com/Pierlu096/Colorgram/blob/dev/LICENSE>)

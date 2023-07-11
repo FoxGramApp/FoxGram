@@ -1517,7 +1517,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             if (!available || !(view instanceof ChatMessageCell)) {
                 return false;
             }
-            if (!ColorConfig.doubleTapDisabled) return false;
 
             ChatMessageCell cell = (ChatMessageCell) view;
             return !cell.getMessageObject().isSending() && !cell.getMessageObject().isEditing() && cell.getMessageObject().type != MessageObject.TYPE_PHONE_CALL && !actionBar.isActionModeShowed() && !isSecretChat() && !isInScheduleMode() && !cell.getMessageObject().isSponsored() && ColorConfig.doubleTapDisabled;
@@ -3103,6 +3102,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         });
         View backButton = actionBar.getBackButton();
         backButton.setOnTouchListener(new LongPressListenerWithMovingGesture() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public void onLongPress() {
                 scrimPopupWindow = BackButtonMenu.show(ChatActivity.this, backButton, dialog_id, getTopicId(), themeDelegate);
@@ -7518,17 +7518,11 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     }
 
     private void createTranslateButton() {
-        if (ColorConfig.translationProvider != Translator.PROVIDER_TELEGRAM && !ColorConfig.translateEntireChat) {
-            return;
-        }
         if (translateButton != null || getContext() == null) {
             return;
         }
 
         createTopPanel();
-        if (topChatPanelView == null) {
-            return;
-        }
         translateButton = new TranslateButton(getContext(), this, themeDelegate) {
             @Override
             protected void onButtonClick() {
@@ -24945,7 +24939,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         });
                     }
                     if (option == OPTION_TRANSLATE) {
-                        final boolean translateEnabled = getMessagesController().getTranslateController().isContextTranslateEnabled();
                         String toLangDefault = LocaleController.getInstance().getCurrentLocale().getLanguage();
                         String toLang = TranslateAlert2.getToLanguage();
                         final CharSequence finalMessageText = messageTextToTranslate;
@@ -24954,33 +24947,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             return true;
                         };
                         TLRPC.InputPeer inputPeer = selectedObject != null && (selectedObject.isPoll() || selectedObject.isVoiceTranscriptionOpen() || selectedObject.isSponsored()) ? null : getMessagesController().getInputPeer(dialog_id);
-                        if (selectedObject != null && selectedObject.messageOwner != null && selectedObject.messageOwner.originalLanguage != null) {
-                            waitForLangDetection.set(false);
-                            String fromLang = selectedObject.messageOwner.originalLanguage;
-                            cell.setVisibility(
-                                    fromLang != null && (!fromLang.equals(toLang) || !fromLang.equals(toLangDefault) || fromLang.equals(TranslateController.UNKNOWN_LANGUAGE)) && (
-                                            translateEnabled && !RestrictedLanguagesSelectActivity.getRestrictedLanguages().contains(fromLang) ||
-                                                    (currentChat != null && (currentChat.has_link || ChatObject.isPublic(currentChat)) || selectedObject.messageOwner.fwd_from != null) && ("uk".equals(fromLang) || "ru".equals(fromLang))
-                                    ) ? View.VISIBLE : View.GONE
-                            );
-                            cell.setOnClickListener(e -> {
-                                if (selectedObject == null || i >= options.size() || getParentActivity() == null) {
-                                    return;
-                                }
-                                String toLangValue = fromLang != null && fromLang.equals(toLang) ? toLangDefault : toLang;
-                                ArrayList<TLRPC.MessageEntity> entities = selectedObject != null && selectedObject.messageOwner != null ? selectedObject.messageOwner.entities : null;
-                                TranslateAlert2 alert = TranslateAlert2.showAlert(getParentActivity(), this, currentAccount, inputPeer, messageIdToTranslate[0], fromLang, toLangValue, finalMessageText, entities, noforwards, onLinkPress, () -> dimBehindView(false));
-                                alert.setDimBehind(false);
-                                closeMenu(false);
-
-                                int hintCount = MessagesController.getNotificationsSettings(currentAccount).getInt("dialog_show_translate_count" + getDialogId(), 5);
-                                if (hintCount > 0) {
-                                    hintCount--;
-                                    MessagesController.getNotificationsSettings(currentAccount).edit().putInt("dialog_show_translate_count" + getDialogId(), hintCount).apply();
-                                    updateTopPanel(true);
-                                }
-                            });
-                        } else if (LanguageDetector.hasSupport()) {
+                        if (LanguageDetector.hasSupport()) {
                             final String[] fromLang = {null};
                             cell.setVisibility(View.GONE);
                             waitForLangDetection.set(true);
@@ -31187,9 +31154,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             }
             if (avatarContainer != null && avatarContainer.getTimeItem() != null) {
                 avatarContainer.getTimeItem().invalidate();
-            }
-            if (translateButton != null) {
-                translateButton.updateColors();
             }
         };
         ArrayList<ThemeDescription> themeDescriptions = new ArrayList<>();

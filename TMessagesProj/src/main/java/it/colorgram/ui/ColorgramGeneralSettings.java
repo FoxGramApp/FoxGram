@@ -19,7 +19,7 @@ import it.colorgram.android.AlertController;
 import it.colorgram.android.ColorConfig;
 import it.colorgram.ui.Cells.DcStyleSelector;
 
-public class colorgramGeneralSettings extends BaseSettingsActivity {
+public class ColorgramGeneralSettings extends BaseSettingsActivity {
     private int divisorPrivacyRow;
     private int privacyHeaderRow;
     private int phoneNumberSwitchRow;

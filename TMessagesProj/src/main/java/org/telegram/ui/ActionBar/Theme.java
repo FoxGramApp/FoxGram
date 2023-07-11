@@ -3506,9 +3506,6 @@ public class Theme {
     public static final int key_chats_tabUnreadActiveBackground = colorsCount++;
     public static final int key_chats_tabUnreadUnactiveBackground = colorsCount++;
 
-    public static final int key_colorgram_purple = colorsCount++;
-    public static final int key_colorgram_purple2 = colorsCount++;
-
     public static final int key_chat_attachCheckBoxCheck = colorsCount++;
     public static final int key_chat_attachCheckBoxBackground = colorsCount++;
     public static final int key_chat_attachPhotoBackground = colorsCount++;
@@ -9457,7 +9454,7 @@ public class Theme {
             return;
         }
         try {
-            Method method = RippleDrawable.class.getDeclaredMethod("setForceSoftware", boolean.class);
+            @SuppressLint("PrivateApi") Method method = RippleDrawable.class.getDeclaredMethod("setForceSoftware", boolean.class);
             method.invoke(drawable, true);
         } catch (Throwable ignore) {
 
@@ -9487,7 +9484,7 @@ public class Theme {
             } catch (Throwable ignore) {
 
             }
-        } else if (Build.VERSION.SDK_INT >= 21 && drawable instanceof RippleDrawable) {
+        } else if (drawable instanceof RippleDrawable) {
             RippleDrawable rippleDrawable = (RippleDrawable) drawable;
             if (selected) {
                 rippleDrawable.setColor(new ColorStateList(

@@ -25,7 +25,7 @@ import it.colorgram.android.updates.UpdateManager;
 import it.colorgram.ui.Cells.UpdateAvailableCell;
 import it.colorgram.ui.Cells.UpdateCheckCell;
 
-public class colorgramUpdateSettings extends BaseSettingsActivity {
+public class ColorgramUpdateSettings extends BaseSettingsActivity {
 
     private int updateSectionAvailableRow;
     private int updateSectionDividerRow;
@@ -155,7 +155,7 @@ public class colorgramUpdateSettings extends BaseSettingsActivity {
                     break;
                 case UPDATE:
                     UpdateAvailableCell updateCell = (UpdateAvailableCell) holder.itemView;
-                    colorgramUpdateSettings.this.updateCell = updateCell;
+                    ColorgramUpdateSettings.this.updateCell = updateCell;
                     updateCell.setUpdate(
                             updateAvailable.title,
                             updateAvailable.description,

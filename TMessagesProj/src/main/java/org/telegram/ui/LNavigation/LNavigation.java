@@ -45,7 +45,9 @@ import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ImageLoader;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessagesController;
+import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
+import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.Utilities;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.ActionBarMenuSubItem;
@@ -70,182 +72,213 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
-/** @noinspection rawtypes*/
-@SuppressLint("ObsoleteSdkInt")
 public class LNavigation extends FrameLayout implements INavigationLayout, FloatingDebugProvider {
     private final static boolean ALLOW_OPEN_STIFFNESS_CONTROL = false;
     private final static boolean USE_ACTIONBAR_CROSSFADE = false;
+    private static float SPRING_STIFFNESS = 1000f;
+    private static float SPRING_DAMPING_RATIO = 1f;
     private final static float SPRING_STIFFNESS_PREVIEW = 650f;
     private final static float SPRING_STIFFNESS_PREVIEW_OUT = 800f;
     private final static float SPRING_STIFFNESS_PREVIEW_EXPAND = 750f;
     private final static float SPRING_MULTIPLIER = 1000f;
-    private static float SPRING_STIFFNESS = 1000f;
-    private static float SPRING_DAMPING_RATIO = 1f;
+    private List<BackButtonMenu.PulledDialog> pulledDialogs = new ArrayList<>();
+
     /**
      * Temp rect to calculate if it's ignored view
      */
-    private final Rect ignoreRect = new Rect();
+    private Rect ignoreRect = new Rect();
+
     /**
      * Temp path for clipping
      */
-    private final Path path = new Path();
+    private Path path = new Path();
+
     /**
      * Darker paint
      */
-    private final Paint dimmPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    /**
-     * Overlay layout for containers like shared ActionBar
-     */
-    private final FrameLayout overlayLayout;
-    /**
-     * Header shadow drawable
-     */
-    private final Drawable headerShadowDrawable;
-    /**
-     * Front view shadow drawable
-     */
-    private final Drawable layerShadowDrawable;
-    /**
-     * Gesture detector for scroll
-     */
-    private final GestureDetectorCompat gestureDetector;
-    /**
-     * Bounds of small preview fragment
-     */
-    private final Rect previewFragmentRect = new Rect();
-    /**
-     * Paint for blurred snapshot
-     */
-    private final Paint blurPaint = new Paint(Paint.DITHER_FLAG | Paint.ANTI_ALIAS_FLAG);
-    /**
-     * Back button drawable
-     */
-    private final MenuDrawable menuDrawable = new MenuDrawable(MenuDrawable.TYPE_DEFAULT);
-    private final StartColorsProvider startColorsProvider = new StartColorsProvider();
-    private final ArrayList<ThemeDescription.ThemeDescriptionDelegate> themeAnimatorDelegate = new ArrayList<>();
-    private final ArrayList<ArrayList<ThemeDescription>> themeAnimatorDescriptions = new ArrayList<>();
-    private final ArrayList<int[]> animateStartColors = new ArrayList<>();
-    private final ArrayList<int[]> animateEndColors = new ArrayList<>();
-    private final LinearLayout stiffnessControl;
-    private final CheckBoxCell openChatCheckbox;
-    private List<BackButtonMenu.PulledDialog> pulledDialogs = new ArrayList<>();
+    private Paint dimmPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
     /**
      * Flag if we should remove extra height for action bar
      */
     private boolean removeActionBarExtraHeight;
+
     /**
      * Current fragment stack
      */
     private List<BaseFragment> fragmentStack = new ArrayList<>();
+
     /**
      * Unmodifiable fragment stack for {@link LNavigation#getFragmentStack()}
      */
     private List<BaseFragment> unmodifiableFragmentStack = Collections.unmodifiableList(fragmentStack);
+
     /**
      * Delegate for this view
      */
     private INavigationLayoutDelegate delegate;
+
     /**
      * A listener when fragment stack is being changed
      */
     private Runnable onFragmentStackChangedListener;
+
     /**
      * Drawer layout container (For the swipe-back-to-drawer feature)
      */
     private DrawerLayoutContainer drawerLayoutContainer;
+
     /**
      * Currently running spring animation
      */
     private SpringAnimation currentSpringAnimation;
+
+    /**
+     * Overlay layout for containers like shared ActionBar
+     */
+    private FrameLayout overlayLayout;
+
     /**
      * Current swipe progress
      */
     private float swipeProgress;
+
     /**
      * Start scroll offset
      */
     private float startScroll;
+
+    /**
+     * Gesture detector for scroll
+     */
+    private GestureDetectorCompat gestureDetector;
+
     /**
      * If there's currently scroll in progress
      */
     private boolean isSwipeInProgress;
+
     /**
      * If swipe back should be disallowed
      */
     private boolean isSwipeDisallowed;
+
     /**
      * If set, should be canceled if trying to open another fragment
      */
     private Runnable delayedPresentAnimation;
+
     /**
      * If navigation is used in bubble mode
      */
     private boolean isInBubbleMode;
+
     /**
      * If device is currently showing action mode over our ActionBar
      */
     private boolean isInActionMode;
+
     /**
      * If menu buttons in preview should be highlighted
      */
     private boolean highlightActionButtons = false;
+
     /**
      * Custom animation in progress
      */
     private AnimatorSet customAnimation;
+
     /**
      * Preview fragment's menu
      */
     private ActionBarPopupWindow.ActionBarPopupWindowLayout previewMenu;
+
     /**
      * A blurred snapshot of background fragment
      */
     private Bitmap blurredBackFragmentForPreview;
+
     /**
      * Snapshot of a small preview fragment
      */
     private Bitmap previewFragmentSnapshot;
+
+    /**
+     * Bounds of small preview fragment
+     */
+    private Rect previewFragmentRect = new Rect();
+
     /**
      * Preview expand progress
      */
     private float previewExpandProgress;
+
+    /**
+     * Paint for blurred snapshot
+     */
+    private Paint blurPaint = new Paint(Paint.DITHER_FLAG | Paint.ANTI_ALIAS_FLAG);
+
+    /**
+     * Back button drawable
+     */
+    private MenuDrawable menuDrawable = new MenuDrawable(MenuDrawable.TYPE_DEFAULT);
+
     /**
      * View that captured current touch input
      */
     private View touchCapturedView;
+
     /**
      * Flag if layout was portrait
      */
     private boolean wasPortrait;
+
     /**
      * Callback after preview fragment is opened
      */
     private Runnable previewOpenCallback;
+
     /**
      * Flag if navigation view should disappear when last fragment closes
      */
     private boolean useAlphaAnimations;
+
     /**
      * Background view for tablets
      */
     private View backgroundView;
+
     /**
      * Flag that indicates that user can press button of the preview menu
      */
     private boolean allowToPressByHover;
+
     /**
      * Flag if menu hover should be allowed (Only first time opening preview)
      */
     private boolean isFirstHoverAllowed;
+
+    // TODO: Split theme logic to another component
     private ValueAnimator themeAnimator;
+    private StartColorsProvider startColorsProvider = new StartColorsProvider();
     private Theme.MessageDrawable messageDrawableOutStart;
     private Theme.MessageDrawable messageDrawableOutMediaStart;
     private ThemeAnimationSettings.onAnimationProgress animationProgressListener;
+    private ArrayList<ThemeDescription.ThemeDescriptionDelegate> themeAnimatorDelegate = new ArrayList<>();
+    int animationIndex = -1;
     private ArrayList<ThemeDescription> presentingFragmentDescriptions;
+
     private float themeAnimationValue;
+    private ArrayList<ArrayList<ThemeDescription>> themeAnimatorDescriptions = new ArrayList<>();
+    private ArrayList<int[]> animateStartColors = new ArrayList<>();
+    private ArrayList<int[]> animateEndColors = new ArrayList<>();
+
     private int fromBackgroundColor;
+
+    private LinearLayout stiffnessControl;
+    private CheckBoxCell openChatCheckbox;
+
     private String titleOverlayTitle;
     private int titleOverlayTitleId;
     private Runnable titleOverlayAction;
@@ -260,9 +293,6 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
         overlayLayout = new FrameLayout(context);
         addView(overlayLayout);
 
-        headerShadowDrawable = getResources().getDrawable(R.drawable.header_shadow).mutate();
-        layerShadowDrawable = getResources().getDrawable(R.drawable.layer_shadow).mutate();
-
         dimmPaint.setColor(0x7a000000);
         setWillNotDraw(false);
 
@@ -271,12 +301,12 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
         int touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         gestureDetector = new GestureDetectorCompat(context, new GestureDetector.SimpleOnGestureListener() {
             @Override
-            public boolean onDown(@NonNull MotionEvent e) {
+            public boolean onDown(MotionEvent e) {
                 return true;
             }
 
             @Override
-            public boolean onScroll(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float distanceX, float distanceY) {
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
                 if (highlightActionButtons && !allowToPressByHover && isFirstHoverAllowed && isInPreviewMode() && (Math.abs(distanceX) >= touchSlop || Math.abs(distanceY) >= touchSlop) && !isSwipeInProgress && previewMenu != null) {
                     allowToPressByHover = true;
                 }
@@ -293,8 +323,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
                                 if (shouldBeEnabled && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
                                     try {
                                         button.performHapticFeedback(HapticFeedbackConstants.TEXT_HANDLE_MOVE, HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING);
-                                    } catch (Exception ignore) {
-                                    }
+                                    } catch (Exception ignore) {}
                                 }
                             }
                         }
@@ -302,7 +331,9 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
                 }
 
                 if (!isSwipeInProgress && !isSwipeDisallowed) {
-                    if (Math.abs(distanceX) >= Math.abs(distanceY) * 1.5f && distanceX <= -touchSlop && !isIgnoredView(getForegroundView(), e2, ignoreRect) && getLastFragment() != null && getLastFragment().canBeginSlide() && getLastFragment().isSwipeBackEnabled(e2) && fragmentStack.size() >= 2 && !isInActionMode && !isInPreviewMode()) {
+                    if (Math.abs(distanceX) >= Math.abs(distanceY) * 1.5f && distanceX <= -touchSlop && !isIgnoredView(getForegroundView(), e2, ignoreRect) &&
+                            getLastFragment() != null && getLastFragment().canBeginSlide() && getLastFragment().isSwipeBackEnabled(e2) && fragmentStack.size() >= 2 && !isInActionMode &&
+                            !isInPreviewMode()) {
                         isSwipeInProgress = true;
 
                         startScroll = swipeProgress - MathUtils.clamp((e2.getX() - e1.getX()) / getWidth(), 0, 1);
@@ -343,7 +374,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
             }
 
             @Override
-            public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 if (isSwipeInProgress) {
                     if (velocityX >= 800) {
                         closeLastFragment(true, false, velocityX / 15f);
@@ -357,9 +388,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
         gestureDetector.setIsLongpressEnabled(false);
 
         stiffnessControl = new LinearLayout(context);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            stiffnessControl.setElevation(AndroidUtilities.dp(12));
-        }
+        stiffnessControl.setElevation(AndroidUtilities.dp(12));
         stiffnessControl.setOrientation(LinearLayout.VERTICAL);
         stiffnessControl.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite));
 
@@ -431,7 +460,6 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
         super.addView(child, index, params);
     }
 
-    /** @noinspection unused*/
     public boolean doShowOpenChat() {
         return openChatCheckbox.isChecked();
     }
@@ -461,13 +489,16 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
         fragment.onTransitionAnimationStart(true, true);
 
         FloatValueHolder valueHolder = new FloatValueHolder(swipeProgress * SPRING_MULTIPLIER);
-        currentSpringAnimation = new SpringAnimation(valueHolder).setSpring(new SpringForce(0f).setStiffness(SPRING_STIFFNESS).setDampingRatio(SPRING_DAMPING_RATIO));
+        currentSpringAnimation = new SpringAnimation(valueHolder)
+                .setSpring(new SpringForce(0f)
+                        .setStiffness(SPRING_STIFFNESS)
+                        .setDampingRatio(SPRING_DAMPING_RATIO));
         currentSpringAnimation.addUpdateListener((animation, value, velocity) -> {
             swipeProgress = value / SPRING_MULTIPLIER;
             invalidateTranslation();
             fragment.onTransitionAnimationProgress(true, 1f - swipeProgress);
         });
-        Runnable onEnd = () -> {
+        Runnable onEnd = ()->{
             fragment.onTransitionAnimationEnd(true, true);
             fragment.prepareFragmentToSlide(true, false);
 
@@ -625,7 +656,8 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
     @Override
     public boolean presentFragment(NavigationParams params) {
         BaseFragment fragment = params.fragment;
-        if (!params.isFromDelay && (fragment == null || checkTransitionAnimation() || delegate != null && params.checkPresentFromDelegate && !delegate.needPresentFragment(this, params) || !fragment.onFragmentCreate() || delayedPresentAnimation != null)) {
+        if (!params.isFromDelay && (fragment == null || checkTransitionAnimation() || delegate != null && params.checkPresentFromDelegate &&
+                !delegate.needPresentFragment(this, params) || !fragment.onFragmentCreate() || delayedPresentAnimation != null)) {
             return false;
         }
 
@@ -648,10 +680,11 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
             fragment.setInMenuMode(previewMenu != null);
             fragment.setParentLayout(this);
         }
-        boolean animate = params.preview || MessagesController.getGlobalMainSettings().getBoolean("view_animations", true) && !params.noAnimation && (useAlphaAnimations || fragmentStack.size() >= 1);
+        boolean animate = params.preview || MessagesController.getGlobalMainSettings().getBoolean("view_animations", true) &&
+                !params.noAnimation && (useAlphaAnimations || fragmentStack.size() >= 1);
 
         BaseFragment prevFragment = params.isFromDelay ? getBackgroundFragment() : getLastFragment();
-        Runnable onFragmentOpened = () -> {
+        Runnable onFragmentOpened = ()->{
             if (params.removeLast && prevFragment != null) {
                 removeFragmentFromStack(prevFragment);
             }
@@ -713,7 +746,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
             }
 
             if (fragment.needDelayOpenAnimation() && !params.delayDone) {
-                AndroidUtilities.runOnUIThread(delayedPresentAnimation = () -> {
+                AndroidUtilities.runOnUIThread(delayedPresentAnimation = ()->{
                     delayedPresentAnimation = null;
 
                     params.isFromDelay = true;
@@ -728,7 +761,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
                 prevFragment.onTransitionAnimationStart(false, false);
             }
 
-            customAnimation = fragment.onCustomTransitionAnimation(true, () -> {
+            customAnimation = fragment.onCustomTransitionAnimation(true, ()-> {
                 customAnimation = null;
                 fragment.onTransitionAnimationEnd(true, false);
                 if (prevFragment != null) {
@@ -749,13 +782,16 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
 
             });
             if (customAnimation != null) {
-                Objects.requireNonNull(getForegroundView()).setTranslationX(0);
+                getForegroundView().setTranslationX(0);
                 return true;
             }
 
             invalidateActionBars();
             FloatValueHolder valueHolder = new FloatValueHolder(SPRING_MULTIPLIER);
-            currentSpringAnimation = new SpringAnimation(valueHolder).setSpring(new SpringForce(0f).setStiffness(params.preview ? SPRING_STIFFNESS_PREVIEW : SPRING_STIFFNESS).setDampingRatio(params.preview ? 0.6f : SPRING_DAMPING_RATIO));
+            currentSpringAnimation = new SpringAnimation(valueHolder)
+                    .setSpring(new SpringForce(0f)
+                            .setStiffness(params.preview ? SPRING_STIFFNESS_PREVIEW : SPRING_STIFFNESS)
+                            .setDampingRatio(params.preview ? 0.6f : SPRING_DAMPING_RATIO));
             currentSpringAnimation.addUpdateListener((animation, value, velocity) -> {
                 swipeProgress = value / SPRING_MULTIPLIER;
                 invalidateTranslation();
@@ -792,7 +828,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
             currentSpringAnimation.start();
         } else if (!params.preview) {
             if (fragment.needDelayOpenAnimation() && !params.delayDone && params.needDelayWithoutAnimation) {
-                AndroidUtilities.runOnUIThread(delayedPresentAnimation = () -> {
+                AndroidUtilities.runOnUIThread(delayedPresentAnimation = ()->{
                     delayedPresentAnimation = null;
 
                     params.isFromDelay = true;
@@ -855,13 +891,13 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
         invalidate();
 
         try {
-            if (bgView != null && fgView != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (bgView != null && fgView != null) {
+                swipeProgress = MathUtils.clamp(swipeProgress, 0f, 1f);
                 int navColor = ColorUtils.blendARGB(fgView.fragment.getNavigationBarColor(), bgView.fragment.getNavigationBarColor(), swipeProgress);
                 getParentActivity().getWindow().setNavigationBarColor(navColor);
                 AndroidUtilities.setLightNavigationBar(getParentActivity().getWindow(), AndroidUtilities.computePerceivedBrightness(navColor) > 0.721f);
             }
-        } catch (Exception ignore) {
-        }
+        } catch (Exception ignore) {}
 
         if (getLastFragment() != null) {
             getLastFragment().onSlideProgressFront(false, swipeProgress);
@@ -916,11 +952,6 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
     }
 
     @Override
-    public void setBackgroundView(View backgroundView) {
-        this.backgroundView = backgroundView;
-    }
-
-    @Override
     public boolean checkTransitionAnimation() {
         return isTransitionAnimationInProgress();
     }
@@ -953,16 +984,17 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
             FragmentHolderView holderView = onCreateHolderView(fragment);
             addView(holderView, getChildCount() - 1);
 
-            fragment.setPaused(false);
-            fragment.onTransitionAnimationStart(true, false);
-            fragment.onTransitionAnimationEnd(true, false);
-            fragment.onBecomeFullyVisible();
+            if (position != INavigationLayout.FORCE_NOT_ATTACH_VIEW) {
+                fragment.setPaused(false);
+                fragment.onTransitionAnimationStart(true, false);
+                fragment.onTransitionAnimationEnd(true, false);
+                fragment.onBecomeFullyVisible();
+            }
 
             if (getBackgroundView() != null) {
                 getBackgroundView().setVisibility(GONE);
             }
-            Objects.requireNonNull(getForegroundView()).setVisibility(VISIBLE);
-
+            getForegroundView().setVisibility(VISIBLE);
         } else {
             fragmentStack.add(position, fragment);
             notifyFragmentStackChanged();
@@ -970,8 +1002,8 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
             if (position == fragmentStack.size() - 2) {
                 FragmentHolderView holderView = onCreateHolderView(fragment);
                 addView(holderView, getChildCount() - 2);
-                Objects.requireNonNull(getBackgroundView()).setVisibility(GONE);
-                Objects.requireNonNull(getForegroundView()).setVisibility(VISIBLE);
+                getBackgroundView().setVisibility(GONE);
+                getForegroundView().setVisibility(VISIBLE);
             }
         }
         invalidateTranslation();
@@ -985,7 +1017,6 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
         } else {
             holderView = new FragmentHolderView(getContext());
         }
-        assert holderView != null;
         holderView.setFragment(fragment);
         if (holderView.getParent() != null) {
             holderView.setVisibility(VISIBLE);
@@ -1124,13 +1155,13 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
     @Override
     public void rebuildFragments(int flags) {
         if (currentSpringAnimation != null && currentSpringAnimation.isRunning()) {
-            currentSpringAnimation.addEndListener((animation, canceled, value, velocity) -> AndroidUtilities.runOnUIThread(() -> rebuildFragments(flags)));
+            currentSpringAnimation.addEndListener((animation, canceled, value, velocity) -> AndroidUtilities.runOnUIThread(()-> rebuildFragments(flags)));
             return;
         } else if (customAnimation != null && customAnimation.isRunning()) {
             customAnimation.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    AndroidUtilities.runOnUIThread(() -> rebuildFragments(flags));
+                    AndroidUtilities.runOnUIThread(()-> rebuildFragments(flags));
                 }
             });
             return;
@@ -1213,10 +1244,6 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
             int widthNoPaddings = getWidth() - getPaddingLeft() - getPaddingRight();
             dimmPaint.setAlpha((int) (0x7a * (1f - swipeProgress)));
             canvas.drawRect(getPaddingLeft(), top, widthNoPaddings * swipeProgress + getPaddingLeft(), getHeight() - getPaddingBottom(), dimmPaint);
-
-            layerShadowDrawable.setAlpha((int) (0xFF * (1f - swipeProgress)));
-            layerShadowDrawable.setBounds((int) (widthNoPaddings * swipeProgress - layerShadowDrawable.getIntrinsicWidth()) + getPaddingLeft(), top, (int) (widthNoPaddings * swipeProgress) + getPaddingLeft(), getHeight() - getPaddingBottom());
-            layerShadowDrawable.draw(canvas);
         }
         if (useAlphaAnimations) {
             canvas.restore();
@@ -1309,6 +1336,11 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
     }
 
     @Override
+    public void setBackgroundView(View backgroundView) {
+        this.backgroundView = backgroundView;
+    }
+
+    @Override
     public void closeLastFragment(boolean animated, boolean forceNoAnimation) {
         closeLastFragment(animated, forceNoAnimation, 0);
     }
@@ -1337,18 +1369,16 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
             lastFragment.onTransitionAnimationStart(false, true);
             if (newLastFragment != null) {
                 newLastFragment.setPaused(false);
-                newLastFragment.onTransitionAnimationStart(true, false);
             }
 
             if (swipeProgress == 0) {
                 customAnimation = lastFragment.onCustomTransitionAnimation(false, () -> {
-                    lastFragment.onTransitionAnimationEnd(false, true);
                     onCloseAnimationEnd(lastFragment, newLastFragment);
 
                     customAnimation = null;
                 });
                 if (customAnimation != null) {
-                    Objects.requireNonNull(getForegroundView()).setTranslationX(0);
+                    getForegroundView().setTranslationX(0);
                     if (getBackgroundView() != null) {
                         getBackgroundView().setTranslationX(0);
                     }
@@ -1357,7 +1387,10 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
             }
 
             FloatValueHolder valueHolder = new FloatValueHolder(swipeProgress * SPRING_MULTIPLIER);
-            currentSpringAnimation = new SpringAnimation(valueHolder).setSpring(new SpringForce(SPRING_MULTIPLIER).setStiffness(isInPreviewMode() ? SPRING_STIFFNESS_PREVIEW_OUT : SPRING_STIFFNESS).setDampingRatio(SPRING_DAMPING_RATIO));
+            currentSpringAnimation = new SpringAnimation(valueHolder)
+                    .setSpring(new SpringForce(SPRING_MULTIPLIER)
+                            .setStiffness(isInPreviewMode() ? SPRING_STIFFNESS_PREVIEW_OUT : SPRING_STIFFNESS)
+                            .setDampingRatio(SPRING_DAMPING_RATIO));
             if (velocityX != 0) {
                 currentSpringAnimation.setStartVelocity(velocityX);
             }
@@ -1382,6 +1415,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
             swipeProgress = 0f;
             removeFragmentFromStack(getLastFragment());
         }
+        getLastFragment().onFragmentClosed();
     }
 
     private void onCloseAnimationEnd(BaseFragment lastFragment, BaseFragment newLastFragment) {
@@ -1586,6 +1620,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
                     return;
                 }
                 Theme.setAnimatingColor(true);
+                setThemeAnimationValue(0f);
                 if (settings.beforeAnimationRunnable != null) {
                     settings.beforeAnimationRunnable.run();
                 }
@@ -1593,12 +1628,16 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
                 if (animationProgressListener != null) {
                     animationProgressListener.setProgress(0);
                 }
+                int currentAccount = UserConfig.selectedAccount;
+                animationIndex = NotificationCenter.getInstance(currentAccount).setAnimationInProgress(animationIndex, null);
+
                 fromBackgroundColor = getBackground() instanceof ColorDrawable ? ((ColorDrawable) getBackground()).getColor() : 0;
                 themeAnimator = ValueAnimator.ofFloat(0, 1).setDuration(settings.duration);
                 themeAnimator.addUpdateListener(animation -> setThemeAnimationValue((float) animation.getAnimatedValue()));
                 themeAnimator.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
+                        NotificationCenter.getInstance(currentAccount).onAnimationFinish(animationIndex);
                         if (animation.equals(themeAnimator)) {
                             themeAnimatorDescriptions.clear();
                             animateStartColors.clear();
@@ -1649,11 +1688,6 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
         } else {
             next.run();
         }
-    }
-
-    @Override
-    public float getThemeAnimationValue() {
-        return themeAnimationValue;
     }
 
     private void setThemeAnimationValue(float value) {
@@ -1707,6 +1741,11 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
     }
 
     @Override
+    public float getThemeAnimationValue() {
+        return themeAnimationValue;
+    }
+
+    @Override
     public void setFragmentStackChangedListener(Runnable onFragmentStackChanged) {
         this.onFragmentStackChangedListener = onFragmentStackChanged;
     }
@@ -1722,13 +1761,13 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
     }
 
     @Override
-    public boolean isInBubbleMode() {
-        return isInBubbleMode;
+    public void setInBubbleMode(boolean bubbleMode) {
+        this.isInBubbleMode = bubbleMode;
     }
 
     @Override
-    public void setInBubbleMode(boolean bubbleMode) {
-        this.isInBubbleMode = bubbleMode;
+    public boolean isInBubbleMode() {
+        return isInBubbleMode;
     }
 
     @Override
@@ -1768,8 +1807,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
 
         try {
             performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
 
         BaseFragment fragment = getLastFragment();
         View bgView = getBackgroundView();
@@ -1792,10 +1830,12 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
         }
 
         FloatValueHolder valueHolder = new FloatValueHolder(0);
-        currentSpringAnimation = new SpringAnimation(valueHolder).setSpring(new SpringForce(SPRING_MULTIPLIER).setStiffness(SPRING_STIFFNESS_PREVIEW_EXPAND).setDampingRatio(0.6f));
+        currentSpringAnimation = new SpringAnimation(valueHolder)
+                .setSpring(new SpringForce(SPRING_MULTIPLIER)
+                        .setStiffness(SPRING_STIFFNESS_PREVIEW_EXPAND)
+                        .setDampingRatio(0.6f));
         currentSpringAnimation.addUpdateListener((animation, value, velocity) -> {
             previewExpandProgress = value / SPRING_MULTIPLIER;
-            assert bgView != null;
             bgView.invalidate();
 
             fgView.setPivotX(previewFragmentRect.centerX());
@@ -1877,7 +1917,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
 
     @Override
     public float getCurrentPreviewFragmentAlpha() {
-        return isInPreviewMode() ? Objects.requireNonNull(getForegroundView()).getAlpha() : 0f;
+        return isInPreviewMode() ? getForegroundView().getAlpha() : 0f;
     }
 
     @Override
@@ -1907,7 +1947,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
                 blurPaint.setAlpha((int) (0xFF * (1f - Math.max(swipeProgress, 0f))));
             }
 
-            canvas.scale(child.getWidth() / (float) blurredBackFragmentForPreview.getWidth(), child.getHeight() / (float) blurredBackFragmentForPreview.getHeight());
+            canvas.scale(child.getWidth() / (float)blurredBackFragmentForPreview.getWidth(), child.getHeight() / (float)blurredBackFragmentForPreview.getHeight());
             canvas.drawBitmap(blurredBackFragmentForPreview, 0, 0, blurPaint);
             canvas.restore();
         }
@@ -1942,7 +1982,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
                     Rect rect = new Rect();
                     child.getLocalVisibleRect(rect);
                     rect.offset(lp.leftMargin, lp.topMargin);
-                    rect.top += Build.VERSION.SDK_INT >= 21 ? AndroidUtilities.statusBarHeight - 1 : 0;
+                    rect.top += AndroidUtilities.statusBarHeight - 1;
                     foregroundDrawable.setAlpha((int) (v.getAlpha() * 255));
                     foregroundDrawable.setBounds(rect);
                     foregroundDrawable.draw(canvas);
@@ -1961,11 +2001,11 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
             if (previewFragmentSnapshot != null) {
                 alpha = 1f - Math.min(previewExpandProgress, 1f);
             }
-            canvas.drawColor(Color.argb((int) (0x2e * alpha), 0, 0, 0));
+            canvas.drawColor(Color.argb((int)(0x2e * alpha), 0, 0, 0));
             if (previewMenu == null) {
                 int width = AndroidUtilities.dp(32), height = width / 2;
                 int x = (getMeasuredWidth() - width) / 2;
-                int y = (int) (params.topMargin + containerView.getTranslationY() - AndroidUtilities.dp(12 + (Build.VERSION.SDK_INT < 21 ? 20 : 0)));
+                int y = (int) (params.topMargin + containerView.getTranslationY() - AndroidUtilities.dp(12));
                 Theme.moveUpDrawable.setAlpha((int) (alpha * 0xFF));
                 Theme.moveUpDrawable.setBounds(x, y, x + width, y + height);
                 Theme.moveUpDrawable.draw(canvas);
@@ -1975,17 +2015,11 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
 
     @Override
     public void drawHeaderShadow(Canvas canvas, int alpha, int y) {
-        if (headerShadowDrawable != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                if (headerShadowDrawable.getAlpha() != alpha) {
-                    headerShadowDrawable.setAlpha(alpha);
-                }
-            } else {
-                headerShadowDrawable.setAlpha(alpha);
-            }
-            headerShadowDrawable.setBounds(0, y, getMeasuredWidth(), y + headerShadowDrawable.getIntrinsicHeight());
-            headerShadowDrawable.draw(canvas);
-        }
+        int a = Theme.dividerPaint.getAlpha();
+        if (alpha > a) alpha = a;
+        Theme.dividerPaint.setAlpha(alpha);
+        canvas.drawLine(0, y, getMeasuredWidth(), y, Theme.dividerPaint);
+        Theme.dividerPaint.setAlpha(a);
     }
 
     @Override
@@ -2124,41 +2158,10 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
         wasPortrait = isPortrait;
     }
 
-    private boolean isIgnoredView(ViewGroup root, MotionEvent e, Rect rect) {
-        if (root == null) return false;
-        for (int i = 0; i < root.getChildCount(); i++) {
-            View ch = root.getChildAt(i);
-            if (isIgnoredView0(ch, e, rect)) {
-                return true;
-            }
-
-            if (ch instanceof ViewGroup) {
-                if (isIgnoredView((ViewGroup) ch, e, rect)) {
-                    return true;
-                }
-            }
-        }
-        return isIgnoredView0(root, e, rect);
-    }
-
-    private boolean isIgnoredView0(View v, MotionEvent e, Rect rect) {
-        v.getGlobalVisibleRect(rect);
-        if (v.getVisibility() != View.VISIBLE || !rect.contains((int) e.getX(), (int) e.getY())) {
-            return false;
-        }
-
-        if (v instanceof ViewPager) {
-            ViewPager vp = (ViewPager) v;
-            return vp.getCurrentItem() != 0;
-        }
-
-        return v.canScrollHorizontally(-1) || v instanceof SeekBarView;
-    }
-
     private final class FragmentHolderView extends FrameLayout {
-        private final Paint backgroundPaint = new Paint();
         private BaseFragment fragment;
         private int fragmentPanTranslationOffset;
+        private Paint backgroundPaint = new Paint();
         private int backgroundColor;
 
         public FragmentHolderView(@NonNull Context context) {
@@ -2213,7 +2216,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
                 if (!(child instanceof ActionBar)) {
-                    LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
+                    FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) child.getLayoutParams();
                     if (child.getFitsSystemWindows()) {
                         child.layout(layoutParams.leftMargin, layoutParams.topMargin, layoutParams.leftMargin + child.getMeasuredWidth(), layoutParams.topMargin + child.getMeasuredHeight());
                     } else {
@@ -2252,7 +2255,6 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
                 return super.drawChild(canvas, child, drawingTime);
             } else {
                 int actionBarHeight = 0;
-                int actionBarY = 0;
                 int childCount = getChildCount();
                 for (int i = 0; i < childCount; i++) {
                     View view = getChildAt(i);
@@ -2262,7 +2264,6 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
                     if (view instanceof ActionBar && view.getVisibility() == VISIBLE) {
                         if (((ActionBar) view).getCastShadows()) {
                             actionBarHeight = (int) (view.getMeasuredHeight() * view.getScaleY());
-                            actionBarY = (int) view.getY();
                         }
                         break;
                     }
@@ -2280,10 +2281,8 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
                 if (clipRoundForeground) {
                     canvas.restore();
                 }
-                if (actionBarHeight != 0 && headerShadowDrawable != null) {
-                    headerShadowDrawable.setBounds(0, actionBarY + actionBarHeight, getMeasuredWidth(), actionBarY + actionBarHeight + headerShadowDrawable.getIntrinsicHeight());
-                    headerShadowDrawable.draw(canvas);
-                }
+                if (actionBarHeight != 0)
+                    canvas.drawLine(0, actionBarHeight + 1, getMeasuredWidth(), actionBarHeight + 1, Theme.dividerPaint);
                 return result;
             }
         }
@@ -2308,6 +2307,9 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
             if (v != null && v.getParent() instanceof ViewGroup) {
                 ((ViewGroup) v.getParent()).removeView(v);
             }
+            if (!fragment.hasOwnBackground() && v.getBackground() == null) {
+                v.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite));
+            }
             addView(v);
 
             if (removeActionBarExtraHeight) {
@@ -2323,5 +2325,36 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
 
             invalidateBackgroundColor();
         }
+    }
+
+    private boolean isIgnoredView(ViewGroup root, MotionEvent e, Rect rect) {
+        if (root == null) return false;
+        for (int i = 0; i < root.getChildCount(); i++) {
+            View ch = root.getChildAt(i);
+            if (isIgnoredView0(ch, e, rect)) {
+                return true;
+            }
+
+            if (ch instanceof ViewGroup) {
+                if (isIgnoredView((ViewGroup) ch, e, rect)) {
+                    return true;
+                }
+            }
+        }
+        return isIgnoredView0(root, e, rect);
+    }
+
+    private boolean isIgnoredView0(View v, MotionEvent e, Rect rect) {
+        v.getGlobalVisibleRect(rect);
+        if (v.getVisibility() != View.VISIBLE || !rect.contains((int)e.getX(), (int)e.getY())) {
+            return false;
+        }
+
+        if (v instanceof ViewPager) {
+            ViewPager vp = (ViewPager) v;
+            return vp.getCurrentItem() != 0;
+        }
+
+        return v.canScrollHorizontally(-1) || v instanceof SeekBarView;
     }
 }

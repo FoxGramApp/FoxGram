@@ -445,7 +445,7 @@ public abstract class TextSelectionHelper<Cell extends TextSelectionHelper.Selec
             }
 
             magnifier.show(
-                magnifierXanimated, magnifierYanimated + lineHeight * 1.5f + AndroidUtilities.dp(8)
+                    magnifierXanimated, magnifierYanimated + lineHeight * 1.5f + AndroidUtilities.dp(8)
             );
             magnifier.update();
         }
@@ -1606,17 +1606,17 @@ public abstract class TextSelectionHelper<Cell extends TextSelectionHelper.Selec
         for (int i = 0; i < tempPath2.rectsCount; ++i) {
             RectF rect = tempPath2.rects.get(i);
             rect.set(
-                (int) (rect.left - (padAtStart ? cornerRadius / 2 : 0)),
-                (int) ((rect.top - cy) * sy + cy),
-                (int) (rect.right + (padAtEnd ? cornerRadius / 2 : 0)),
-                (int) ((rect.bottom - cy) * sy + cy)
+                    (int) (rect.left - (padAtStart ? cornerRadius / 2 : 0)),
+                    (int) ((rect.top - cy) * sy + cy),
+                    (int) (rect.right + (padAtEnd ? cornerRadius / 2 : 0)),
+                    (int) ((rect.bottom - cy) * sy + cy)
             );
             selectionPath.addRect(rect.left, rect.top, rect.right, rect.bottom, Path.Direction.CW);
         }
 
         if (tempPath2.rectsCount == 0 && !padAtEnd) {
             int left = (int) layout.getPrimaryHorizontal(start),
-                right = (int) layout.getPrimaryHorizontal(end);
+                    right = (int) layout.getPrimaryHorizontal(end);
             int top = layout.getLineTop(line), bottom = layout.getLineBottom(line);
             selectionPath.addRect(left - cornerRadius / 2, top, right + cornerRadius / 4, bottom, Path.Direction.CW);
         }

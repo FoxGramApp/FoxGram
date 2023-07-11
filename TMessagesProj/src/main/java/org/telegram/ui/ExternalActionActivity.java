@@ -8,6 +8,7 @@
 
 package org.telegram.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -68,6 +69,7 @@ public class ExternalActionActivity extends Activity implements INavigationLayou
 
     private Runnable lockRunnable;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ApplicationLoader.postInitApplication();

@@ -31,7 +31,7 @@ import it.colorgram.android.AlertController;
 import it.colorgram.android.MonetIconController;
 import it.colorgram.android.ColorConfig;
 
-public class colorgramExperimentalSettings extends BaseSettingsActivity {
+public class ColorgramExperimentalSettings extends BaseSettingsActivity {
 
     private int checkBoxExperimentalRow;
     private int headerImageRow;

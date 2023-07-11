@@ -15,23 +15,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.PopupWindow;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.core.graphics.ColorUtils;
 
 import org.telegram.messenger.AndroidUtilities;
-import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.ActionBarMenuSubItem;
 import org.telegram.ui.ActionBar.ActionBarPopupWindow;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
-import org.telegram.ui.Cells.ManageChatUserCell;
 import org.telegram.ui.Cells.UserCell;
 import org.telegram.ui.ProfileActivity;
+
+import it.colorgram.android.ColorConfig;
 
 public class ItemOptions {
     public static ItemOptions makeOptions(@NonNull BaseFragment fragment, @NonNull View scrimView) {
@@ -229,34 +227,36 @@ public class ItemOptions {
             @Override
             protected void onDraw(Canvas canvas) {
                 super.onDraw(canvas);
-                canvas.drawColor(dim);
+                if (!ColorConfig.smoothNav) {
+                    canvas.drawColor(dim);
 
-                if (cachedBitmap != null && scrimView.getParent() instanceof View) {
-                    canvas.save();
-                    if (clipTop < 1) {
-                        canvas.clipRect(0, point[1] - clipTop + 1, getMeasuredWidth(), getMeasuredHeight());
-                    }
-                    canvas.translate(point[0], point[1]);
+                    if (cachedBitmap != null && scrimView.getParent() instanceof View) {
+                        canvas.save();
+                        if (clipTop < 1) {
+                            canvas.clipRect(0, point[1] - clipTop + 1, getMeasuredWidth(), getMeasuredHeight());
+                        }
+                        canvas.translate(point[0], point[1]);
 
-                    if (scrimViewBackground != null) {
-                        scrimViewBackground.setBounds(0, 0, cachedBitmap.getWidth(), cachedBitmap.getHeight());
-                        scrimViewBackground.draw(canvas);
-                    }
-                    canvas.drawBitmap(cachedBitmap, 0, 0, cachedBitmapPaint);
-                    canvas.restore();
-                } else if (scrimView != null && scrimView.getParent() instanceof View) {
-                    canvas.save();
-                    if (clipTop < 1) {
-                        canvas.clipRect(0, point[1] - clipTop + 1, getMeasuredWidth(), getMeasuredHeight());
-                    }
-                    canvas.translate(point[0], point[1]);
+                        if (scrimViewBackground != null) {
+                            scrimViewBackground.setBounds(0, 0, cachedBitmap.getWidth(), cachedBitmap.getHeight());
+                            scrimViewBackground.draw(canvas);
+                        }
+                        canvas.drawBitmap(cachedBitmap, 0, 0, cachedBitmapPaint);
+                        canvas.restore();
+                    } else if (scrimView != null && scrimView.getParent() instanceof View) {
+                        canvas.save();
+                        if (clipTop < 1) {
+                            canvas.clipRect(0, point[1] - clipTop + 1, getMeasuredWidth(), getMeasuredHeight());
+                        }
+                        canvas.translate(point[0], point[1]);
 
-                    if (scrimViewBackground != null) {
-                        scrimViewBackground.setBounds(0, 0, scrimView.getWidth(), scrimView.getHeight());
-                        scrimViewBackground.draw(canvas);
+                        if (scrimViewBackground != null) {
+                            scrimViewBackground.setBounds(0, 0, scrimView.getWidth(), scrimView.getHeight());
+                            scrimViewBackground.draw(canvas);
+                        }
+                        scrimView.draw(canvas);
+                        canvas.restore();
                     }
-                    scrimView.draw(canvas);
-                    canvas.restore();
                 }
             }
         };
@@ -272,22 +272,21 @@ public class ItemOptions {
         layout.measure(View.MeasureSpec.makeMeasureSpec(container.getMeasuredWidth(), View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(container.getMeasuredHeight(), View.MeasureSpec.UNSPECIFIED));
 
         actionBarPopupWindow = new ActionBarPopupWindow(layout, LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT);
-        actionBarPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                actionBarPopupWindow = null;
-                dimView.animate().cancel();
-                dimView.animate().alpha(0).setDuration(150).setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        if (dimView.getParent() != null) {
-                            container.removeView(dimView);
-                        }
-                        container.getViewTreeObserver().removeOnPreDrawListener(preDrawListener);
+        actionBarPopupWindow.setOnDismissListener(() -> {
+            actionBarPopupWindow = null;
+            dimView.animate().cancel();
+            dimView.animate().alpha(0).setDuration(150).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (dimView.getParent() != null) {
+                        container.removeView(dimView);
                     }
-                });
-            }
+                    container.getViewTreeObserver().removeOnPreDrawListener(preDrawListener);
+                }
+            });
         });
+        actionBarPopupWindow.setClippingEnabled(true);
+        actionBarPopupWindow.getContentView().setFocusableInTouchMode(true);
         actionBarPopupWindow.setOutsideTouchable(true);
         actionBarPopupWindow.setFocusable(true);
         actionBarPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
