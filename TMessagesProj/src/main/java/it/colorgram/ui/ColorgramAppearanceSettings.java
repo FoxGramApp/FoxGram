@@ -261,6 +261,7 @@ public class ColorgramAppearanceSettings extends BaseSettingsActivity implements
                 linearLayout.addView(cell);
                 cell.setOnClickListener(v -> {
                     ColorConfig.saveNameType(index);
+                    reloadDialogs();
                     RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(showInActionBarRow);
                     if (holder != null) {
                         listAdapter.onBindViewHolder(holder, showInActionBarRow);
@@ -276,9 +277,6 @@ public class ColorgramAppearanceSettings extends BaseSettingsActivity implements
                     .create();
             dialogRef.set(dialog);
             showDialog(dialog);
-
-            reloadInterface();
-            reloadMainInfo();
         } else if (position == chooseEmojiPackRow) {
             presentFragment(new EmojiPackSettings());
         }
@@ -454,7 +452,7 @@ public class ColorgramAppearanceSettings extends BaseSettingsActivity implements
                             defaultName = LocaleController.getString("Username", R.string.Username);
                         else if (ColorConfig.nameType == ColorConfig.USER_NAME)
                             defaultName = LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar);
-                        textSettingsCell.setTextAndValue(LocaleController.getString("TitleName", R.string.TitleBarName), defaultName, partial, true);
+                        textSettingsCell.setTextAndValue(LocaleController.getString("TitleBarName", R.string.TitleBarName), defaultName, partial, true);
                     }
                     break;
             }

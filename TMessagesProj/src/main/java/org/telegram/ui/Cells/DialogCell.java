@@ -519,7 +519,7 @@ public class DialogCell extends BaseCell {
 
         if (needCheck) {
             checkBox = new CheckBox2(context, 21, resourcesProvider);
-            checkBox.setColor(0, Theme.key_windowBackgroundWhite, Theme.key_checkboxCheck);
+            checkBox.setColor(-1, Theme.key_windowBackgroundWhite, Theme.key_checkboxCheck);
             checkBox.setDrawUnchecked(false);
             checkBox.setDrawBackgroundAsArc(3);
             addView(checkBox);

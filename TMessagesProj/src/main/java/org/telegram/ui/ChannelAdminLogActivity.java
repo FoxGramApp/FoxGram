@@ -3076,6 +3076,11 @@ public class ChannelAdminLogActivity extends BaseFragment implements Notificatio
     }
 
     @Override
+    public int getNavigationBarColor() {
+        return Theme.getColor(Theme.key_chat_messagePanelBackground);
+    }
+
+    @Override
     public ArrayList<ThemeDescription> getThemeDescriptions() {
         ArrayList<ThemeDescription> themeDescriptions = new ArrayList<>();
 
