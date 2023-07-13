@@ -204,7 +204,7 @@ public class ChatEditActivity extends BaseFragment implements ImageUpdater.Image
                 avatarImage.getLocationInWindow(coords);
                 PhotoViewer.PlaceProviderObject object = new PhotoViewer.PlaceProviderObject();
                 object.viewX = coords[0];
-                object.viewY = coords[1] - (Build.VERSION.SDK_INT >= 21 ? 0 : AndroidUtilities.statusBarHeight);
+                object.viewY = coords[1];
                 object.parentView = avatarImage;
                 object.imageReceiver = avatarImage.getImageReceiver();
                 object.dialogId = userId != 0 ? userId : -chatId;

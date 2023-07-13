@@ -411,7 +411,7 @@ public class Bulletin {
     }
 
     private static boolean isTransitionsEnabled() {
-        return MessagesController.getGlobalMainSettings().getBoolean("view_animations", true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
+        return MessagesController.getGlobalMainSettings().getBoolean("view_animations", true);
     }
 
     public void updatePosition() {
@@ -1730,22 +1730,20 @@ public class Bulletin {
                     },
                     new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             );
-            if (Build.VERSION.SDK_INT >= 21) {
-                container.setFitsSystemWindows(true);
-                container.setOnApplyWindowInsetsListener((v, insets) -> {
-                    applyInsets(insets);
-                    v.requestLayout();
-                    if (Build.VERSION.SDK_INT >= 30) {
-                        return WindowInsets.CONSUMED;
-                    } else {
-                        return insets.consumeSystemWindowInsets();
-                    }
-                });
+            container.setFitsSystemWindows(true);
+            container.setOnApplyWindowInsetsListener((v, insets) -> {
+                applyInsets(insets);
+                v.requestLayout();
                 if (Build.VERSION.SDK_INT >= 30) {
-                    container.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |  View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+                    return WindowInsets.CONSUMED;
                 } else {
-                    container.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                    return insets.consumeSystemWindowInsets();
                 }
+            });
+            if (Build.VERSION.SDK_INT >= 30) {
+                container.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |  View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+            } else {
+                container.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             }
 
             addDelegate(container, new Delegate() {
@@ -1770,15 +1768,11 @@ public class Bulletin {
                 params.dimAmount = 0;
                 params.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
                 params.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    params.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
-                }
+                params.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
                 params.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-                if (Build.VERSION.SDK_INT >= 21) {
-                    params.flags |= WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
-                            WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR |
-                            WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
-                }
+                params.flags |= WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
+                        WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR |
+                        WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
                 params.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
                 params.height = ViewGroup.LayoutParams.MATCH_PARENT;
                 if (Build.VERSION.SDK_INT >= 28) {

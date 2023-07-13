@@ -39,7 +39,7 @@ import it.colorgram.android.entities.EntitiesHelper;
 import it.colorgram.android.utils.DCHelper;
 import it.colorgram.ui.Cells.DetailsPreviewMessages;
 import it.colorgram.ui.Cells.TextDetailCellMultiline;
-import it.colorgram.android.utils.AccountRegistrationDateController;
+import it.colorgram.android.AccountRegistrationDateController;
 
 public class DetailsActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
     private int rowCount;

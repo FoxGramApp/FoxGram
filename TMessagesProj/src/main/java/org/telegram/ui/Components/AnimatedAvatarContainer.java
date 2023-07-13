@@ -55,7 +55,7 @@ public class AnimatedAvatarContainer extends FrameLayout {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         int actionBarHeight = ActionBar.getCurrentActionBarHeight();
-        int viewTop = (actionBarHeight - AndroidUtilities.dp(42)) / 2 + (Build.VERSION.SDK_INT >= 21 && occupyStatusBar ? AndroidUtilities.statusBarHeight : 0);
+        int viewTop = (actionBarHeight - AndroidUtilities.dp(42)) / 2 + (occupyStatusBar ? AndroidUtilities.statusBarHeight : 0);
         int l = leftPadding;
         if (subtitleTextView.getVisibility() != GONE) {
             titleTextView.layout(l, viewTop + AndroidUtilities.dp(1f) - titleTextView.getPaddingTop(), l + titleTextView.getMeasuredWidth(), viewTop + titleTextView.getTextHeight() + AndroidUtilities.dp(1.3f) - titleTextView.getPaddingTop() + titleTextView.getPaddingBottom());

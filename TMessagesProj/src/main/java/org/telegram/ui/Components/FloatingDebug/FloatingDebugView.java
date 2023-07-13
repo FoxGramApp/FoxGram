@@ -325,7 +325,7 @@ public class FloatingDebugView extends FrameLayout implements NotificationCenter
         mPrefs.edit()
                 .putFloat("x", fabXSpring.getSpring().getFinalPosition())
                 .putFloat("y", fabYSpring.getSpring().getFinalPosition())
-                .commit();
+                .apply();
     }
 
     private void updateDrawables() {
@@ -421,7 +421,7 @@ public class FloatingDebugView extends FrameLayout implements NotificationCenter
         }
 
         Window window = ((Activity) getContext()).getWindow();
-        if (show && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (show) {
             wasStatusBar = window.getStatusBarColor();
         }
         float startX = floatingButtonContainer.getTranslationX();
@@ -451,9 +451,7 @@ public class FloatingDebugView extends FrameLayout implements NotificationCenter
                     floatingButtonContainer.setTranslationY(AndroidUtilities.lerp(startY, getHeight() / 2f - AndroidUtilities.dp(28), value));
                     floatingButtonContainer.setAlpha(1f - value);
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        window.setStatusBarColor(ColorUtils.blendARGB(wasStatusBar, 0x7A000000, value));
-                    }
+                    window.setStatusBarColor(ColorUtils.blendARGB(wasStatusBar, 0x7A000000, value));
 
                     invalidate();
                 })
@@ -484,12 +482,10 @@ public class FloatingDebugView extends FrameLayout implements NotificationCenter
     private List<FloatingDebugController.DebugItem> getBuiltInDebugItems() {
         List<FloatingDebugController.DebugItem> items = new ArrayList<>();
         items.add(new FloatingDebugController.DebugItem(LocaleController.getString(R.string.DebugGeneral)));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            items.add(new FloatingDebugController.DebugItem(LocaleController.getString(SharedConfig.debugWebView ? R.string.DebugMenuDisableWebViewDebug : R.string.DebugMenuEnableWebViewDebug), ()->{
-                SharedConfig.toggleDebugWebView();
-                Toast.makeText(getContext(), LocaleController.getString(SharedConfig.debugWebView ? R.string.DebugMenuWebViewDebugEnabled : R.string.DebugMenuWebViewDebugDisabled), Toast.LENGTH_SHORT).show();
-            }));
-        }
+        items.add(new FloatingDebugController.DebugItem(LocaleController.getString(SharedConfig.debugWebView ? R.string.DebugMenuDisableWebViewDebug : R.string.DebugMenuEnableWebViewDebug), ()->{
+            SharedConfig.toggleDebugWebView();
+            Toast.makeText(getContext(), LocaleController.getString(SharedConfig.debugWebView ? R.string.DebugMenuWebViewDebugEnabled : R.string.DebugMenuWebViewDebugDisabled), Toast.LENGTH_SHORT).show();
+        }));
         items.add(new FloatingDebugController.DebugItem(Theme.isCurrentThemeDark() ? "Switch to day theme" : "Switch to dark theme", () -> {
             boolean toDark;
 

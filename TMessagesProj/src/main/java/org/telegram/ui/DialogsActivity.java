@@ -1698,7 +1698,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 if (filterTabsView != null && filterTabsView.getVisibility() == VISIBLE) {
                     t = ActionBar.getCurrentActionBarHeight() + (actionBar.getOccupyStatusBar() ? AndroidUtilities.statusBarHeight : 0);
                 } else {
-                    t = inPreviewMode && Build.VERSION.SDK_INT >= 21 ? AndroidUtilities.statusBarHeight : 0;
+                    t = inPreviewMode ? AndroidUtilities.statusBarHeight : 0;
                 }
                 setTopGlowOffset(t);
                 setPadding(0, t, 0, 0);
@@ -2780,23 +2780,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             } else {
                 statusDrawable = new AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable(null, AndroidUtilities.dp(26));
                 statusDrawable.center = true;
-                if (ColorConfig.nameType == ColorConfig.USER_NAME) {
-                    TLRPC.User selfUser = UserConfig.getInstance(currentAccount).getCurrentUser();
-                    actionBar.setTitle(actionBarDefaultTitle = (selfUser.first_name + " " + (selfUser.last_name != null ? selfUser.last_name : "")), statusDrawable);
-                } else if (ColorConfig.nameType == ColorConfig.DEFAULT_NAME) {
-                    String title;
-                    if (BuildConfig.BUILD_VERSION_STRING.contains("Beta")) {
-                        title = LocaleController.getString("ColorVersionAppNameBeta", R.string.ColorVersionAppNameBeta);
-                    } else if (BuildConfig.BUILD_VERSION_STRING.contains("Alpha")) {
-                        title = LocaleController.getString("ColorVersionAppNameAlpha", R.string.ColorVersionAppNameAlpha);
-                    } else {
-                        title = LocaleController.getString("ColorVersionAppName", R.string.ColorVersionAppName);
-                    }
-                    actionBar.setTitle(actionBarDefaultTitle = title, statusDrawable);
-                } else {
-                    TLRPC.User selfUser = UserConfig.getInstance(currentAccount).getCurrentUser();
-                    actionBar.setTitle(actionBarDefaultTitle = selfUser.username, statusDrawable);
-                }
+                actionBar.setTitle(actionBarDefaultTitle = ColorConfig.getTitleText(), statusDrawable);
                 updateStatus(UserConfig.getInstance(currentAccount).getCurrentUser(), false);
             }
             if (folderId == 0) {
@@ -3094,26 +3078,12 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     showDeleteAlert(getMessagesController().getDialogFilters().get(id));
                 }
 
+                private int lastNameStatus = ColorConfig.nameType;
                 @Override
                 public void onTabSelected(FilterTabsView.Tab tab, boolean forward, boolean animated) {
-                    if (ColorConfig.tabMode != ColorConfig.TAB_TYPE_ICON) {
-                        if (ColorConfig.nameType == ColorConfig.USER_NAME) {
-                            TLRPC.User selfUser = UserConfig.getInstance(currentAccount).getCurrentUser();
-                            actionBar.setTitle(actionBarDefaultTitle = (selfUser.first_name + " " + (selfUser.last_name != null ? selfUser.last_name : "")), statusDrawable);
-                        } else if (ColorConfig.nameType == ColorConfig.TG_USER_NAME) {
-                            TLRPC.User selfUser = UserConfig.getInstance(currentAccount).getCurrentUser();
-                            actionBar.setTitle(actionBarDefaultTitle = selfUser.username, statusDrawable);
-                        } else {
-                            String title;
-                            if (BuildConfig.BUILD_VERSION_STRING.contains("Beta")) {
-                                title = LocaleController.getString("ColorVersionAppNameBeta", R.string.ColorVersionAppNameBeta);
-                            } else if (BuildConfig.BUILD_VERSION_STRING.contains("Alpha")) {
-                                title = LocaleController.getString("ColorVersionAppNameAlpha", R.string.ColorVersionAppNameAlpha);
-                            } else {
-                                title = LocaleController.getString("ColorVersionAppName", R.string.ColorVersionAppName);
-                            }
-                            actionBar.setTitle(actionBarDefaultTitle = title, statusDrawable);
-                        }
+                    if (ColorConfig.tabMode != ColorConfig.TAB_TYPE_ICON || lastNameStatus != ColorConfig.nameType) {
+                        actionBar.setTitle(actionBarDefaultTitle = ColorConfig.getTitleText(), statusDrawable);
+                        lastNameStatus = ColorConfig.nameType;
                         if (ColorConfig.tabMode != ColorConfig.TAB_TYPE_ICON) return;
                     }
                     if (!selectedDialogs.isEmpty()) {
@@ -3903,7 +3873,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
         floatingButtonContainer = new FrameLayout(context);
         floatingButtonContainer.setVisibility(onlySelect && initialDialogsType != 10 || folderId != 0 ? View.GONE : View.VISIBLE);
-        contentView.addView(floatingButtonContainer, LayoutHelper.createFrame((Build.VERSION.SDK_INT >= 21 ? 56 : 60), (Build.VERSION.SDK_INT >= 21 ? 56 : 60), (LocaleController.isRTL ? Gravity.LEFT : Gravity.RIGHT) | Gravity.BOTTOM, LocaleController.isRTL ? 14 : 0, 0, LocaleController.isRTL ? 0 : 14, 14));
+        contentView.addView(floatingButtonContainer, LayoutHelper.createFrame(56, 56, (LocaleController.isRTL ? Gravity.LEFT : Gravity.RIGHT) | Gravity.BOTTOM, LocaleController.isRTL ? 14 : 0, 0, LocaleController.isRTL ? 0 : 14, 14));
         floatingButtonContainer.setOnClickListener(v -> {
             if (parentLayout != null && parentLayout.isInPreviewMode()) {
                 finishPreviewFragment();
@@ -4206,7 +4176,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
 
             FrameLayout writeButtonBackground = new FrameLayout(context);
-            Drawable writeButtonDrawable = Theme.createSimpleSelectorCircleDrawable(AndroidUtilities.dp(56), getThemedColor(Theme.key_dialogFloatingButton), getThemedColor(Build.VERSION.SDK_INT >= 21 ? Theme.key_dialogFloatingButtonPressed : Theme.key_dialogFloatingButton));
+            Drawable writeButtonDrawable = Theme.createSimpleSelectorCircleDrawable(AndroidUtilities.dp(56), getThemedColor(Theme.key_dialogFloatingButton), getThemedColor(Theme.key_dialogFloatingButtonPressed));
             writeButtonBackground.setBackgroundDrawable(writeButtonDrawable);
             writeButtonBackground.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
             writeButtonBackground.setOutlineProvider(new ViewOutlineProvider() {
@@ -5163,33 +5133,31 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             animatorSet.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) speedItem.getIconView().getDrawable();
-                        if (visible) {
-                            drawable.start();
+                    AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) speedItem.getIconView().getDrawable();
+                    if (visible) {
+                        drawable.start();
 
-                            if (SharedConfig.getDevicePerformanceClass() != SharedConfig.PERFORMANCE_CLASS_LOW) {
-                                TLRPC.TL_help_premiumPromo premiumPromo = MediaDataController.getInstance(currentAccount).getPremiumPromo();
-                                String typeString = PremiumPreviewFragment.featureTypeToServerString(PremiumPreviewFragment.PREMIUM_FEATURE_DOWNLOAD_SPEED);
-                                if (premiumPromo != null) {
-                                    int index = -1;
-                                    for (int i = 0; i < premiumPromo.video_sections.size(); i++) {
-                                        if (premiumPromo.video_sections.get(i).equals(typeString)) {
-                                            index = i;
-                                            break;
-                                        }
-                                    }
-                                    if (index != -1) {
-                                        FileLoader.getInstance(currentAccount).loadFile(premiumPromo.videos.get(index), premiumPromo, FileLoader.PRIORITY_HIGH, 0);
+                        if (SharedConfig.getDevicePerformanceClass() != SharedConfig.PERFORMANCE_CLASS_LOW) {
+                            TLRPC.TL_help_premiumPromo premiumPromo = MediaDataController.getInstance(currentAccount).getPremiumPromo();
+                            String typeString = PremiumPreviewFragment.featureTypeToServerString(PremiumPreviewFragment.PREMIUM_FEATURE_DOWNLOAD_SPEED);
+                            if (premiumPromo != null) {
+                                int index = -1;
+                                for (int i = 0; i < premiumPromo.video_sections.size(); i++) {
+                                    if (premiumPromo.video_sections.get(i).equals(typeString)) {
+                                        index = i;
+                                        break;
                                     }
                                 }
+                                if (index != -1) {
+                                    FileLoader.getInstance(currentAccount).loadFile(premiumPromo.videos.get(index), premiumPromo, FileLoader.PRIORITY_HIGH, 0);
+                                }
                             }
+                        }
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            drawable.reset();
                         } else {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                drawable.reset();
-                            } else {
-                                drawable.setVisible(false, true);
-                            }
+                            drawable.setVisible(false, true);
                         }
                     }
                 }
@@ -8099,7 +8067,6 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 canDeleteCount++;
             }
         }
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            TransitionSet transition = new TransitionSet();
 //            transition.addTransition(new Visibility() {
 //                @Override
@@ -8130,7 +8097,6 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 //            transition.setInterpolator(CubicBezierInterpolator.EASE_OUT);
 //            transition.setDuration(150);
 //            TransitionManager.beginDelayedTransition(actionBar.getActionMode(), transition);
-//        }
         if (canDeleteCount != count) {
             deleteItem.setVisibility(View.GONE);
         } else {

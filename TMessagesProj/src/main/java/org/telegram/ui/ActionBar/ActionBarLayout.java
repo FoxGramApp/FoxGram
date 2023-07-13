@@ -274,9 +274,7 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
             if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                 if (previewMenu != null && highlightActionButtons) {
                     int alpha = 255;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        alpha = Theme.moveUpDrawable.getAlpha();
-                    }
+                    alpha = Theme.moveUpDrawable.getAlpha();
                     ValueAnimator arrowAlphaUpdate = ValueAnimator.ofFloat(alpha, 0);
                     arrowAlphaUpdate.addUpdateListener(a -> {
                         Theme.moveUpDrawable.setAlpha(((Float) a.getAnimatedValue()).intValue());
@@ -466,11 +464,7 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
     @Override
     public void drawHeaderShadow(Canvas canvas, int alpha, int y) {
         if (headerShadowDrawable != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                if (headerShadowDrawable.getAlpha() != alpha) {
-                    headerShadowDrawable.setAlpha(alpha);
-                }
-            } else {
+            if (headerShadowDrawable.getAlpha() != alpha) {
                 headerShadowDrawable.setAlpha(alpha);
             }
             headerShadowDrawable.setBounds(0, y, getMeasuredWidth(), y + headerShadowDrawable.getIntrinsicHeight());
@@ -663,7 +657,7 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
                     final Rect rect = new Rect();
                     child.getLocalVisibleRect(rect);
                     rect.offset(lp.leftMargin, lp.topMargin);
-                    rect.top += Build.VERSION.SDK_INT >= 21 ? AndroidUtilities.statusBarHeight - 1 : 0;
+                    rect.top += AndroidUtilities.statusBarHeight - 1;
                     foregroundDrawable.setAlpha((int) (v.getAlpha() * 255));
                     foregroundDrawable.setBounds(rect);
                     foregroundDrawable.draw(canvas);
@@ -681,7 +675,7 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
             if (previewMenu == null) {
                 int width = AndroidUtilities.dp(32), height = width / 2;
                 int x = (getMeasuredWidth() - width) / 2;
-                int y = (int) (view.getTop() + containerView.getTranslationY() - AndroidUtilities.dp(12 + (Build.VERSION.SDK_INT < 21 ? 20 : 0)));
+                int y = (int) (view.getTop() + containerView.getTranslationY() - AndroidUtilities.dp(12));
                 Theme.moveUpDrawable.setBounds(x, y, x + width, y + height);
                 Theme.moveUpDrawable.draw(canvas);
             }
@@ -1247,7 +1241,7 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
         layoutParams.height = LayoutHelper.MATCH_PARENT;
         if (preview) {
             int height = fragment.getPreviewHeight();
-            int statusBarHeight = (Build.VERSION.SDK_INT >= 21 ? AndroidUtilities.statusBarHeight : 0);
+            int statusBarHeight = AndroidUtilities.statusBarHeight;
             if (height > 0 && height < getMeasuredHeight() - statusBarHeight) {
                 layoutParams.height = height;
                 layoutParams.topMargin = statusBarHeight + (getMeasuredHeight() - statusBarHeight - height) / 2;
@@ -1293,17 +1287,15 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
         containerView.setTranslationY(0);
 
         if (preview) {
-            if (Build.VERSION.SDK_INT >= 21) {
-                fragmentView.setOutlineProvider(new ViewOutlineProvider() {
-                    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-                    @Override
-                    public void getOutline(View view, Outline outline) {
-                        outline.setRoundRect(0, AndroidUtilities.statusBarHeight, view.getMeasuredWidth(), view.getMeasuredHeight(), AndroidUtilities.dp(6));
-                    }
-                });
-                fragmentView.setClipToOutline(true);
-                fragmentView.setElevation(AndroidUtilities.dp(4));
-            }
+            fragmentView.setOutlineProvider(new ViewOutlineProvider() {
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    outline.setRoundRect(0, AndroidUtilities.statusBarHeight, view.getMeasuredWidth(), view.getMeasuredHeight(), AndroidUtilities.dp(6));
+                }
+            });
+            fragmentView.setClipToOutline(true);
+            fragmentView.setElevation(AndroidUtilities.dp(4));
             if (previewBackgroundDrawable == null) {
                 previewBackgroundDrawable = new ColorDrawable(0x2e000000);
             }
@@ -1617,10 +1609,8 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
         BaseFragment prevFragment = fragmentsStack.get(fragmentsStack.size() - 2);
         BaseFragment fragment = fragmentsStack.get(fragmentsStack.size() - 1);
 
-        if (Build.VERSION.SDK_INT >= 21) {
-            fragment.fragmentView.setOutlineProvider(null);
-            fragment.fragmentView.setClipToOutline(false);
-        }
+        fragment.fragmentView.setOutlineProvider(null);
+        fragment.fragmentView.setClipToOutline(false);
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) fragment.fragmentView.getLayoutParams();
         layoutParams.topMargin = layoutParams.bottomMargin = layoutParams.rightMargin = layoutParams.leftMargin = 0;
         layoutParams.height = LayoutHelper.MATCH_PARENT;

@@ -969,7 +969,7 @@ public class FilterChatlistActivity extends BaseFragment {
             optionsIcon.setVisibility(GONE);
             optionsIcon.setContentDescription(LocaleController.getString("AccDescrMoreOptions", R.string.AccDescrMoreOptions));
             optionsIcon.setOnClickListener(e -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && linkBox.getBackground() instanceof RippleDrawable) {
+                if (linkBox.getBackground() instanceof RippleDrawable) {
                     linkBox.getBackground().setState(new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled });
                     postDelayed(() -> linkBox.getBackground().setState(new int[] {}), 180);
                 }

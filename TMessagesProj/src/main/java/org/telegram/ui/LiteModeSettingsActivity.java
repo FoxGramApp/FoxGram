@@ -137,7 +137,7 @@ public class LiteModeSettingsActivity extends BaseFragment {
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putBoolean("view_animations", !animations);
                     SharedConfig.setAnimationsEnabled(!animations);
-                    editor.commit();
+                    editor.apply();
                     ((TextCell) view).setChecked(!animations);
                 }
             }
@@ -223,16 +223,14 @@ public class LiteModeSettingsActivity extends BaseFragment {
         oldItems.addAll(items);
 
         items.clear();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            items.add(Item.asSlider());
-            items.add(Item.asInfo(
-                LiteMode.getPowerSaverLevel() <= 0 ?
-                    LocaleController.getString(R.string.LiteBatteryInfoDisabled) :
-                LiteMode.getPowerSaverLevel() >= 100 ?
-                    LocaleController.getString(R.string.LiteBatteryInfoEnabled) :
-                    LocaleController.formatString(R.string.LiteBatteryInfoBelow, String.format("%d%%", LiteMode.getPowerSaverLevel()))
-            ));
-        }
+        items.add(Item.asSlider());
+        items.add(Item.asInfo(
+            LiteMode.getPowerSaverLevel() <= 0 ?
+                LocaleController.getString(R.string.LiteBatteryInfoDisabled) :
+            LiteMode.getPowerSaverLevel() >= 100 ?
+                LocaleController.getString(R.string.LiteBatteryInfoEnabled) :
+                LocaleController.formatString(R.string.LiteBatteryInfoBelow, String.format("%d%%", LiteMode.getPowerSaverLevel()))
+        ));
 
         items.add(Item.asHeader(LocaleController.getString("LiteOptionsTitle")));
         items.add(Item.asSwitch(R.drawable.msg2_sticker, LocaleController.getString("LiteOptionsStickers", R.string.LiteOptionsStickers), LiteMode.FLAGS_ANIMATED_STICKERS));
@@ -270,9 +268,6 @@ public class LiteModeSettingsActivity extends BaseFragment {
     }
 
     private void updateInfo() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return;
-        }
 
         if (items.isEmpty()) {
             updateItems();

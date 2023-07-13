@@ -261,12 +261,12 @@ public class ColorgramAppearanceSettings extends BaseSettingsActivity implements
                 linearLayout.addView(cell);
                 cell.setOnClickListener(v -> {
                     ColorConfig.saveNameType(index);
-                    reloadDialogs();
                     RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(showInActionBarRow);
                     if (holder != null) {
                         listAdapter.onBindViewHolder(holder, showInActionBarRow);
                     }
                     dialogRef.get().dismiss();
+                    reloadDialogs();
                 });
             }
 

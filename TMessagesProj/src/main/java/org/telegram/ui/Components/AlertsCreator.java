@@ -1001,7 +1001,7 @@ public class AlertsCreator {
                             editor.putInt("notify2_" + did, 0);
                         }
                         MessagesStorage.getInstance(currentAccount).setDialogFlags(did, 0);
-                        editor.commit();
+                        editor.apply();
                         TLRPC.Dialog dialog = MessagesController.getInstance(currentAccount).dialogs_dict.get(did);
                         if (dialog != null) {
                             dialog.notify_settings = new TLRPC.TL_peerNotifySettings();
@@ -1290,7 +1290,7 @@ public class AlertsCreator {
                         SerializedData data = new SerializedData();
                         res.user.serializeToStream(data);
                         editor.putString("support_user", Base64.encodeToString(data.toByteArray(), Base64.DEFAULT));
-                        editor.commit();
+                        editor.apply();
                         data.cleanup();
                         try {
                             progressDialog.dismiss();
@@ -4629,7 +4629,7 @@ public class AlertsCreator {
                 }
                 NotificationsController.getInstance(UserConfig.selectedAccount).deleteNotificationChannelGlobal(globalType);
             }
-            editor.commit();
+            editor.apply();
             if (onSelect != null) {
                 onSelect.run();
             }
@@ -4646,7 +4646,7 @@ public class AlertsCreator {
             } else {
                 editor.putInt("ChannelLed", 0);
             }
-            editor.commit();
+            editor.apply();
             if (onSelect != null) {
                 onSelect.run();
             }
@@ -4656,7 +4656,7 @@ public class AlertsCreator {
                 final SharedPreferences preferences13 = MessagesController.getNotificationsSettings(UserConfig.selectedAccount);
                 SharedPreferences.Editor editor = preferences13.edit();
                 editor.remove("color_" + key);
-                editor.commit();
+                editor.apply();
                 if (onSelect != null) {
                     onSelect.run();
                 }
@@ -4765,7 +4765,7 @@ public class AlertsCreator {
                         NotificationsController.getInstance(UserConfig.selectedAccount).deleteNotificationChannelGlobal(NotificationsController.TYPE_PRIVATE);
                     }
                 }
-                editor.commit();
+                editor.apply();
                 builder.getDismissRunnable().run();
                 if (onSelect != null) {
                     onSelect.run();
@@ -4889,15 +4889,13 @@ public class AlertsCreator {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         String svg = RLottieDrawable.readRes(null, R.raw.gigagroup);
         FrameLayout frameLayout = new FrameLayout(activity);
-        if (Build.VERSION.SDK_INT >= 21) {
-            frameLayout.setClipToOutline(true);
-            frameLayout.setOutlineProvider(new ViewOutlineProvider() {
-                @Override
-                public void getOutline(View view, Outline outline) {
-                    outline.setRoundRect(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight() + AndroidUtilities.dp(6), AndroidUtilities.dp(6));
-                }
-            });
-        }
+        frameLayout.setClipToOutline(true);
+        frameLayout.setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                outline.setRoundRect(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight() + AndroidUtilities.dp(6), AndroidUtilities.dp(6));
+            }
+        });
         float aspectRatio = 372f / 936f;
         View background = new View(activity);
         background.setBackground(new BitmapDrawable(SvgHelper.getBitmap(svg, AndroidUtilities.dp(320), AndroidUtilities.dp(320 * aspectRatio), false)));
@@ -5135,7 +5133,7 @@ public class AlertsCreator {
                     }
                     NotificationsController.getInstance(UserConfig.selectedAccount).deleteNotificationChannelGlobal(globalType);
                 }
-                editor.commit();
+                editor.apply();
                 builder.getDismissRunnable().run();
                 if (onSelect != null) {
                     onSelect.run();
@@ -5188,7 +5186,7 @@ public class AlertsCreator {
                 } else {
                     editor.putInt("popupChannel", selected[0]);
                 }
-                editor.commit();
+                editor.apply();
                 builder.getDismissRunnable().run();
                 if (onSelect != null) {
                     onSelect.run();
@@ -5825,7 +5823,7 @@ public class AlertsCreator {
         if (preferences.getBoolean("themehint", false)) {
             return;
         }
-        preferences.edit().putBoolean("themehint", true).commit();
+        preferences.edit().putBoolean("themehint", true).apply();
         try {
             Toast.makeText(fragment.getParentActivity(), LocaleController.getString("CreateNewThemeHelp", R.string.CreateNewThemeHelp), Toast.LENGTH_LONG).show();
         } catch (Exception e) {
@@ -6176,11 +6174,7 @@ public class AlertsCreator {
     public static ActionBarPopupWindow showPopupMenu(ActionBarPopupWindow.ActionBarPopupWindowLayout popupLayout, View anchorView, int offsetX, int offsetY) {
         Rect rect = new Rect();
         ActionBarPopupWindow popupWindow = new ActionBarPopupWindow(popupLayout, LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT);
-        if (Build.VERSION.SDK_INT >= 19) {
-            popupWindow.setAnimationStyle(0);
-        } else {
-            popupWindow.setAnimationStyle(R.style.PopupAnimation);
-        }
+        popupWindow.setAnimationStyle(0);
 
         popupWindow.setAnimationEnabled(true);
 

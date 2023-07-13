@@ -677,13 +677,7 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
                         sampleStep = (float) len / 2 / (float) newPart;
                         for (int i = 0; i < len / 2; i++) {
                             short peak = buffer.getShort();
-                            if (Build.VERSION.SDK_INT < 21) {
-                                if (peak > 2500) {
-                                    sum += peak * peak;
-                                }
-                            } else {
-                                sum += peak * peak;
-                            }
+                            sum += peak * peak;
                             if (i == (int) nextNum && currentNum < recordSamples.length) {
                                 recordSamples[currentNum] = peak;
                                 nextNum += sampleStep;
@@ -1159,7 +1153,7 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
                                         lastSaveTime = SystemClock.elapsedRealtime();
                                         Utilities.globalQueue.postRunnable(() -> {
                                             SharedPreferences.Editor editor = ApplicationLoader.applicationContext.getSharedPreferences("media_saved_pos", Activity.MODE_PRIVATE).edit();
-                                            editor.putFloat(saveFor, value).commit();
+                                            editor.putFloat(saveFor, value).apply();
                                         });
                                     }
                                     NotificationCenter.getInstance(currentPlayingMessageObject.currentAccount).postNotificationName(NotificationCenter.messagePlayingProgressDidChanged, currentPlayingMessageObject.getId(), value);
@@ -2658,7 +2652,7 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
         MessagesController.getGlobalMainSettings().edit()
                 .putFloat(music ? "musicPlaybackSpeed" : "playbackSpeed", speed)
                 .putFloat(music ? "fastMusicPlaybackSpeed" : "fastPlaybackSpeed", music ? fastMusicPlaybackSpeed : fastPlaybackSpeed)
-                .commit();
+                .apply();
         NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.messagePlayingSpeedChanged);
     }
 

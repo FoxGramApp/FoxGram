@@ -499,7 +499,7 @@ public class ConnectionsManager extends BaseController {
 
     public void switchBackend(boolean restart) {
         SharedPreferences preferences = MessagesController.getGlobalMainSettings();
-        preferences.edit().remove("language_showed2").commit();
+        preferences.edit().remove("language_showed2").apply();
         native_switchBackend(currentAccount, restart);
     }
 
@@ -816,9 +816,6 @@ public class ConnectionsManager extends BaseController {
 
     @SuppressLint("NewApi")
     protected byte getIpStrategy() {
-        if (Build.VERSION.SDK_INT < 19) {
-            return USE_IPV4_ONLY;
-        }
         if (BuildVars.LOGS_ENABLED) {
             try {
                 NetworkInterface networkInterface;

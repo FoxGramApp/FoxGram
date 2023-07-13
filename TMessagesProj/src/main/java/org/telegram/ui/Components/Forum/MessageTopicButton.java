@@ -343,9 +343,7 @@ public class MessageTopicButton {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (hit) {
                 if (topicSelectorDrawable != null) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        topicSelectorDrawable.setHotspot(event.getX() - topicHitRect.left, event.getY() - topicHitRect.top);
-                    }
+                    topicSelectorDrawable.setHotspot(event.getX() - topicHitRect.left, event.getY() - topicHitRect.top);
                     topicSelectorDrawable.setState(pressedState);
                 }
                 topicPressed = true;

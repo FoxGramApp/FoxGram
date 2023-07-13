@@ -56,47 +56,45 @@ public class CanvasButton {
     public CanvasButton(View parent) {
         this.parent = parent;
         paint.setPathEffect(pathEffect = new CornerPathEffect(roundRadius));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            maskPaint.setFilterBitmap(true);
-            maskPaint.setPathEffect(new CornerPathEffect(AndroidUtilities.dp(12)));
-            maskPaint.setColor(0xffffffff);
+        maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        maskPaint.setFilterBitmap(true);
+        maskPaint.setPathEffect(new CornerPathEffect(AndroidUtilities.dp(12)));
+        maskPaint.setColor(0xffffffff);
 
-            final Paint maskPaint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
-            maskPaint2.setFilterBitmap(true);
-            maskPaint2.setColor(0xffffffff);
-            Drawable maskDrawable = new Drawable() {
+        final Paint maskPaint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        maskPaint2.setFilterBitmap(true);
+        maskPaint2.setColor(0xffffffff);
+        Drawable maskDrawable = new Drawable() {
 
-                @Override
-                public void draw(Canvas canvas) {
-                    if (usingRectCount > 1) {
-                        drawInternal(canvas, maskPaint);
-                    } else {
-                        drawInternal(canvas, maskPaint2);
-                    }
+            @Override
+            public void draw(Canvas canvas) {
+                if (usingRectCount > 1) {
+                    drawInternal(canvas, maskPaint);
+                } else {
+                    drawInternal(canvas, maskPaint2);
                 }
+            }
 
-                @Override
-                public void setAlpha(int alpha) {
+            @Override
+            public void setAlpha(int alpha) {
 
-                }
+            }
 
-                @Override
-                public void setColorFilter(ColorFilter colorFilter) {
+            @Override
+            public void setColorFilter(ColorFilter colorFilter) {
 
-                }
+            }
 
-                @Override
-                public int getOpacity() {
-                    return PixelFormat.TRANSPARENT;
-                }
-            };
-            ColorStateList colorStateList = new ColorStateList(
-                    new int[][]{StateSet.WILD_CARD},
-                    new int[]{Theme.getColor(Theme.key_listSelector) & 0x19ffffff}
-            );
-            selectorDrawable = new RippleDrawable(colorStateList, null, maskDrawable);
-        }
+            @Override
+            public int getOpacity() {
+                return PixelFormat.TRANSPARENT;
+            }
+        };
+        ColorStateList colorStateList = new ColorStateList(
+                new int[][]{StateSet.WILD_CARD},
+                new int[]{Theme.getColor(Theme.key_listSelector) & 0x19ffffff}
+        );
+        selectorDrawable = new RippleDrawable(colorStateList, null, maskDrawable);
     }
 
 
@@ -169,7 +167,7 @@ public class CanvasButton {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (contains(x, y)) {
                 buttonPressed = true;
-                if (Build.VERSION.SDK_INT >= 21 && selectorDrawable != null) {
+                if (selectorDrawable != null) {
                     selectorDrawable.setHotspot(x, y);
                     selectorDrawable.setState(pressedState);
                 }
@@ -186,7 +184,7 @@ public class CanvasButton {
                     delegate.run();
                 }
                 parent.playSoundEffect(SoundEffectConstants.CLICK);
-                if (Build.VERSION.SDK_INT >= 21 && selectorDrawable != null) {
+                if (selectorDrawable != null) {
                     selectorDrawable.setState(StateSet.NOTHING);
                 }
                 buttonPressed = false;
@@ -194,7 +192,7 @@ public class CanvasButton {
             }
             AndroidUtilities.cancelRunOnUIThread(longPressRunnableInner);
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            if (buttonPressed && Build.VERSION.SDK_INT >= 21 && selectorDrawable != null) {
+            if (buttonPressed && selectorDrawable != null) {
                 selectorDrawable.setHotspot(x, y);
             }
         }
@@ -216,7 +214,7 @@ public class CanvasButton {
 
     public void setColor(int color, int selectorColor) {
         paint.setColor(color);
-        if (selectorDrawable != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (selectorDrawable != null) {
             Theme.setSelectorDrawableColor(selectorDrawable, selectorColor, true);
         }
     }
@@ -262,7 +260,7 @@ public class CanvasButton {
     }
 
     public void cancelRipple() {
-        if (Build.VERSION.SDK_INT >= 21 && selectorDrawable != null) {
+        if (selectorDrawable != null) {
             selectorDrawable.setState(StateSet.NOTHING);
             selectorDrawable.jumpToCurrentState();
         }

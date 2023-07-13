@@ -4000,15 +4000,13 @@ public class SelectAnimatedEmojiDialog extends FrameLayout implements Notificati
 
             box = new FrameLayout(context);
             box.setBackground(Theme.createRoundRectDrawable(dp(18), Theme.getColor(Theme.key_chat_emojiPanelBackground, resourcesProvider)));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                box.setClipToOutline(true);
-                box.setOutlineProvider(new ViewOutlineProvider() {
-                    @Override
-                    public void getOutline(View view, Outline outline) {
-                        outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), (int) dp(18));
-                    }
-                });
-            }
+            box.setClipToOutline(true);
+            box.setOutlineProvider(new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), (int) dp(18));
+                }
+            });
             addView(box, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 36, Gravity.TOP | Gravity.FILL_HORIZONTAL, 8, 8 + 4, 8, 8));
 
             search = new ImageView(context);
@@ -4710,16 +4708,14 @@ public class SelectAnimatedEmojiDialog extends FrameLayout implements Notificati
                 params.dimAmount = 0;
                 params.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
                 params.flags |= WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM;
-                if (Build.VERSION.SDK_INT >= 21) {
-                    params.flags |= WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
-                            WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR |
-                            WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
-                    contentView.setOnApplyWindowInsetsListener((v, insets) -> {
-                        lastInsets = insets;
-                        v.requestLayout();
-                        return Build.VERSION.SDK_INT >= 30 ? WindowInsets.CONSUMED : insets.consumeSystemWindowInsets();
-                    });
-                }
+                params.flags |= WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
+                        WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR |
+                        WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
+                contentView.setOnApplyWindowInsetsListener((v, insets) -> {
+                    lastInsets = insets;
+                    v.requestLayout();
+                    return Build.VERSION.SDK_INT >= 30 ? WindowInsets.CONSUMED : insets.consumeSystemWindowInsets();
+                });
                 params.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
                 contentView.setFitsSystemWindows(true);
                 contentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN);

@@ -106,9 +106,6 @@ public class Camera2Enumerator implements CameraEnumerator {
    * Checks if API is supported and all cameras have better than legacy support.
    */
   public static boolean isSupported(Context context) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-      return false;
-    }
 
     CameraManager cameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
     try {

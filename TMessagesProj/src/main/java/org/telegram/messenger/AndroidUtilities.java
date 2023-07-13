@@ -1972,20 +1972,18 @@ public class AndroidUtilities {
 
     public static ArrayList<File> getDataDirs() {
         ArrayList<File> result = null;
-        if (Build.VERSION.SDK_INT >= 19) {
-            File[] dirs = ApplicationLoader.applicationContext.getExternalFilesDirs(null);
-            if (dirs != null) {
-                for (int a = 0; a < dirs.length; a++) {
-                    if (dirs[a] == null) {
-                        continue;
-                    }
-                    String path = dirs[a].getAbsolutePath();
-
-                    if (result == null) {
-                        result = new ArrayList<>();
-                    }
-                    result.add(dirs[a]);
+        File[] dirs = ApplicationLoader.applicationContext.getExternalFilesDirs(null);
+        if (dirs != null) {
+            for (int a = 0; a < dirs.length; a++) {
+                if (dirs[a] == null) {
+                    continue;
                 }
+                String path = dirs[a].getAbsolutePath();
+
+                if (result == null) {
+                    result = new ArrayList<>();
+                }
+                result.add(dirs[a]);
             }
         }
         if (result == null) {
@@ -2000,29 +1998,27 @@ public class AndroidUtilities {
     public static ArrayList<File> getRootDirs() {
         HashSet<String> pathes = new HashSet<>();
         ArrayList<File> result = null;
-        if (Build.VERSION.SDK_INT >= 19) {
-            File[] dirs = ApplicationLoader.applicationContext.getExternalFilesDirs(null);
-            if (dirs != null) {
-                for (int a = 0; a < dirs.length; a++) {
-                    if (dirs[a] == null) {
-                        continue;
+        File[] dirs = ApplicationLoader.applicationContext.getExternalFilesDirs(null);
+        if (dirs != null) {
+            for (int a = 0; a < dirs.length; a++) {
+                if (dirs[a] == null) {
+                    continue;
+                }
+                String path = dirs[a].getAbsolutePath();
+                int idx = path.indexOf("/Android");
+                if (idx >= 0) {
+                    if (result == null) {
+                        result = new ArrayList<>();
                     }
-                    String path = dirs[a].getAbsolutePath();
-                    int idx = path.indexOf("/Android");
-                    if (idx >= 0) {
-                        if (result == null) {
-                            result = new ArrayList<>();
+                    File file = new File(path.substring(0, idx));
+                    for (int i = 0; i < result.size(); i++) {
+                        if (result.get(i).getPath().equals(file.getPath())) {
+                            continue;
                         }
-                        File file = new File(path.substring(0, idx));
-                        for (int i = 0; i < result.size(); i++) {
-                            if (result.get(i).getPath().equals(file.getPath())) {
-                                continue;
-                            }
-                        }
-                        if (file != null && !pathes.contains(file.getAbsolutePath())) {
-                            pathes.add(file.getAbsolutePath());
-                            result.add(file);
-                        }
+                    }
+                    if (file != null && !pathes.contains(file.getAbsolutePath())) {
+                        pathes.add(file.getAbsolutePath());
+                        result.add(file);
                     }
                 }
             }
@@ -2465,7 +2461,7 @@ public class AndroidUtilities {
     private static Field mStableInsetsField;
 
     public static int getViewInset(View view) {
-        if (view == null || Build.VERSION.SDK_INT < 21 || view.getHeight() == AndroidUtilities.displaySize.y || view.getHeight() == AndroidUtilities.displaySize.y - statusBarHeight) {
+        if (view == null || view.getHeight() == AndroidUtilities.displaySize.y || view.getHeight() == AndroidUtilities.displaySize.y - statusBarHeight) {
             return 0;
         }
         try {
@@ -2497,18 +2493,7 @@ public class AndroidUtilities {
         Point size = new Point();
         try {
             WindowManager windowManager = (WindowManager) ApplicationLoader.applicationContext.getSystemService(Context.WINDOW_SERVICE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                windowManager.getDefaultDisplay().getRealSize(size);
-            } else {
-                try {
-                    Method mGetRawW = Display.class.getMethod("getRawWidth");
-                    Method mGetRawH = Display.class.getMethod("getRawHeight");
-                    size.set((Integer) mGetRawW.invoke(windowManager.getDefaultDisplay()), (Integer) mGetRawH.invoke(windowManager.getDefaultDisplay()));
-                } catch (Exception e) {
-                    size.set(windowManager.getDefaultDisplay().getWidth(), windowManager.getDefaultDisplay().getHeight());
-                    FileLog.e(e);
-                }
-            }
+            windowManager.getDefaultDisplay().getRealSize(size);
         } catch (Exception e) {
             FileLog.e(e);
         }
@@ -2565,31 +2550,29 @@ public class AndroidUtilities {
     }
 
     public static void setViewPagerEdgeEffectColor(ViewPager viewPager, int color) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            try {
-                Field field = ViewPager.class.getDeclaredField("mLeftEdge");
-                field.setAccessible(true);
-                EdgeEffect mLeftEdge = (EdgeEffect) field.get(viewPager);
-                if (mLeftEdge != null) {
-                    mLeftEdge.setColor(color);
-                }
-
-                field = ViewPager.class.getDeclaredField("mRightEdge");
-                field.setAccessible(true);
-                EdgeEffect mRightEdge = (EdgeEffect) field.get(viewPager);
-                if (mRightEdge != null) {
-                    mRightEdge.setColor(color);
-                }
-            } catch (Exception ignore) {
-
+        try {
+            Field field = ViewPager.class.getDeclaredField("mLeftEdge");
+            field.setAccessible(true);
+            EdgeEffect mLeftEdge = (EdgeEffect) field.get(viewPager);
+            if (mLeftEdge != null) {
+                mLeftEdge.setColor(color);
             }
+
+            field = ViewPager.class.getDeclaredField("mRightEdge");
+            field.setAccessible(true);
+            EdgeEffect mRightEdge = (EdgeEffect) field.get(viewPager);
+            if (mRightEdge != null) {
+                mRightEdge.setColor(color);
+            }
+        } catch (Exception ignore) {
+
         }
     }
 
     public static void setScrollViewEdgeEffectColor(HorizontalScrollView scrollView, int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             scrollView.setEdgeEffectColor(color);
-        } else if (Build.VERSION.SDK_INT >= 21) {
+        } else {
             try {
                 Field field = HorizontalScrollView.class.getDeclaredField("mEdgeGlowLeft");
                 field.setAccessible(true);
@@ -2614,7 +2597,7 @@ public class AndroidUtilities {
         if (Build.VERSION.SDK_INT >= 29) {
             scrollView.setTopEdgeEffectColor(color);
             scrollView.setBottomEdgeEffectColor(color);
-        } else if (Build.VERSION.SDK_INT >= 21) {
+        } else {
             try {
                 Field field = ScrollView.class.getDeclaredField("mEdgeGlowTop");
                 field.setAccessible(true);
@@ -2637,7 +2620,7 @@ public class AndroidUtilities {
 
     @SuppressLint("NewApi")
     public static void clearDrawableAnimation(View view) {
-        if (Build.VERSION.SDK_INT < 21 || view == null) {
+        if (view == null) {
             return;
         }
         Drawable drawable;
@@ -2945,7 +2928,7 @@ public class AndroidUtilities {
     @SuppressLint("NewApi")
     public static String getPath(final Uri uri) {
         try {
-            final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+            final boolean isKitKat = true;
             if (isKitKat && DocumentsContract.isDocumentUri(ApplicationLoader.applicationContext, uri)) {
                 if (isExternalStorageDocument(uri)) {
                     final String docId = DocumentsContract.getDocumentId(uri);
@@ -3115,11 +3098,7 @@ public class AndroidUtilities {
     }
 
     public static boolean isAirplaneModeOn() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return Settings.System.getInt(ApplicationLoader.applicationContext.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
-        } else {
-            return Settings.Global.getInt(ApplicationLoader.applicationContext.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, 0) != 0;
-        }
+        return Settings.Global.getInt(ApplicationLoader.applicationContext.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, 0) != 0;
     }
 
     public static File generateVideoPath() {
@@ -3999,7 +3978,7 @@ public class AndroidUtilities {
                 editor.putString("proxy_secret", secret);
                 info = new SharedConfig.ProxyInfo(address, p, "", "", secret);
             }
-            editor.commit();
+            editor.apply();
 
             SharedConfig.currentProxy = SharedConfig.addProxy(info);
 
@@ -4543,51 +4522,49 @@ public class AndroidUtilities {
         if (window == null) {
             return;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (navigationBarColorAnimators != null) {
-                ValueAnimator animator = navigationBarColorAnimators.get(window);
-                if (animator != null) {
-                    animator.cancel();
-                    navigationBarColorAnimators.remove(window);
-                }
+        if (navigationBarColorAnimators != null) {
+            ValueAnimator animator = navigationBarColorAnimators.get(window);
+            if (animator != null) {
+                animator.cancel();
+                navigationBarColorAnimators.remove(window);
             }
+        }
 
-            if (!animated) {
+        if (!animated) {
+            if (onUpdate != null) {
+                onUpdate.run(color);
+            }
+            try {
+                window.setNavigationBarColor(color);
+            } catch (Exception ignore) {
+            }
+        } else {
+            ValueAnimator animator = ValueAnimator.ofArgb(window.getNavigationBarColor(), color);
+            animator.addUpdateListener(a -> {
+                int tcolor = (int) a.getAnimatedValue();
                 if (onUpdate != null) {
-                    onUpdate.run(color);
+                    onUpdate.run(tcolor);
                 }
                 try {
-                    window.setNavigationBarColor(color);
+                    window.setNavigationBarColor(tcolor);
                 } catch (Exception ignore) {
                 }
-            } else {
-                ValueAnimator animator = ValueAnimator.ofArgb(window.getNavigationBarColor(), color);
-                animator.addUpdateListener(a -> {
-                    int tcolor = (int) a.getAnimatedValue();
-                    if (onUpdate != null) {
-                        onUpdate.run(tcolor);
+            });
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (navigationBarColorAnimators != null) {
+                        navigationBarColorAnimators.remove(window);
                     }
-                    try {
-                        window.setNavigationBarColor(tcolor);
-                    } catch (Exception ignore) {
-                    }
-                });
-                animator.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        if (navigationBarColorAnimators != null) {
-                            navigationBarColorAnimators.remove(window);
-                        }
-                    }
-                });
-                animator.setDuration(200);
-                animator.setInterpolator(CubicBezierInterpolator.DEFAULT);
-                animator.start();
-                if (navigationBarColorAnimators == null) {
-                    navigationBarColorAnimators = new HashMap<>();
                 }
-                navigationBarColorAnimators.put(window, animator);
+            });
+            animator.setDuration(200);
+            animator.setInterpolator(CubicBezierInterpolator.DEFAULT);
+            animator.start();
+            if (navigationBarColorAnimators == null) {
+                navigationBarColorAnimators = new HashMap<>();
             }
+            navigationBarColorAnimators.put(window, animator);
         }
     }
 
@@ -4963,20 +4940,11 @@ public class AndroidUtilities {
 
     // detect Error NO SPaCe left on device :(
     public static boolean isENOSPC(Exception e) {
-        return (
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-                        e instanceof IOException &&
-                        (e.getCause() instanceof ErrnoException &&
-                                ((ErrnoException) e.getCause()).errno == OsConstants.ENOSPC) ||
-                        (e.getMessage() != null && e.getMessage().equalsIgnoreCase("no space left on device"))
-        );
+        return e instanceof IOException && e.getCause() instanceof ErrnoException && ((ErrnoException) e.getCause()).errno == OsConstants.ENOSPC || e.getMessage() != null && e.getMessage().equalsIgnoreCase("no space left on device");
     }
 
     public static boolean isEROFS(Exception e) {
-        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && e instanceof IOException &&
-                (e.getCause() instanceof ErrnoException && ((ErrnoException) e.getCause()).errno == OsConstants.EROFS) ||
-                (e.getMessage() != null && e.getMessage().toLowerCase().contains("read-only file system"))
-        );
+        return e instanceof IOException && e.getCause() instanceof ErrnoException && ((ErrnoException) e.getCause()).errno == OsConstants.EROFS || e.getMessage() != null && e.getMessage().toLowerCase().contains("read-only file system");
     }
 
     public static CharSequence replaceCharSequence(String what, CharSequence from, CharSequence obj) {
@@ -5036,7 +5004,7 @@ public class AndroidUtilities {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 views = WindowInspector.getGlobalWindowViews();
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            } else {
                 Class wmgClass = Class.forName("android.view.WindowManagerGlobal");
                 Object wmgInstance = wmgClass.getMethod("getInstance").invoke(null, (Object[]) null);
 
@@ -5047,19 +5015,6 @@ public class AndroidUtilities {
                 views = new ArrayList<>();
                 for (String viewName : rootViewNames) {
                     views.add((View) getRootView.invoke(wmgInstance, viewName));
-                }
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH && Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                Class wmiClass = Class.forName("android.view.WindowManagerImpl");
-                Object wmiInstance = wmiClass.getMethod("getDefault").invoke(null);
-
-                Field viewsField = wmiClass.getDeclaredField("mViews");
-                viewsField.setAccessible(true);
-                Object viewsObject = viewsField.get(wmiInstance);
-
-                if (viewsObject instanceof List) {
-                    views = (List<View>) viewsField.get(wmiInstance);
-                } else if (viewsObject instanceof View[]) {
-                    views = Arrays.asList((View[]) viewsField.get(wmiInstance));
                 }
             }
         } catch (Exception e) {
@@ -5263,11 +5218,7 @@ public class AndroidUtilities {
             return false;
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return !activity.isDestroyed() && !activity.isFinishing();
-        } else {
-            return !activity.isFinishing();
-        }
+        return !activity.isDestroyed() && !activity.isFinishing();
     }
 
     public static Pair<Integer, Integer> getImageOrientation(InputStream is) {

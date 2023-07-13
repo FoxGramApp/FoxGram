@@ -1,4 +1,4 @@
-package it.colorgram.android.utils;
+package it.colorgram.android;
 
 import android.content.Context;
 

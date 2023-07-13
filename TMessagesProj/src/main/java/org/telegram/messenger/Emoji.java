@@ -842,12 +842,12 @@ public class Emoji {
             stringBuilder.append("=");
             stringBuilder.append(entry.getValue());
         }
-        preferences.edit().putString("emojis2", stringBuilder.toString()).commit();
+        preferences.edit().putString("emojis2", stringBuilder.toString()).apply();
     }
 
     public static void clearRecentEmoji() {
         SharedPreferences preferences = MessagesController.getGlobalEmojiSettings();
-        preferences.edit().putBoolean("filled_default", true).commit();
+        preferences.edit().putBoolean("filled_default", true).apply();
         emojiUseHistory.clear();
         recentEmoji.clear();
         saveRecentEmoji();
@@ -884,7 +884,7 @@ public class Emoji {
                         }
                     }
                 }
-                preferences.edit().remove("emojis").commit();
+                preferences.edit().remove("emojis").apply();
                 saveRecentEmoji();
             } else {
                 str = preferences.getString("emojis2", "");
@@ -901,7 +901,7 @@ public class Emoji {
                     for (int i = 0; i < DEFAULT_RECENT.length; i++) {
                         emojiUseHistory.put(DEFAULT_RECENT[i], DEFAULT_RECENT.length - i);
                     }
-                    preferences.edit().putBoolean("filled_default", true).commit();
+                    preferences.edit().putBoolean("filled_default", true).apply();
                     saveRecentEmoji();
                 }
             }
@@ -936,6 +936,6 @@ public class Emoji {
             stringBuilder.append("=");
             stringBuilder.append(entry.getValue());
         }
-        preferences.edit().putString("color", stringBuilder.toString()).commit();
+        preferences.edit().putString("color", stringBuilder.toString()).apply();
     }
 }

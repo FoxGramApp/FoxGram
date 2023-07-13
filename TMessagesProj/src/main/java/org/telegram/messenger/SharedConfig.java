@@ -533,7 +533,7 @@ public class SharedConfig {
             configLoaded = true;
 
             try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && debugWebView) {
+                if (debugWebView) {
                     WebView.setWebContentsDebuggingEnabled(true);
                 }
             } catch (Exception e) {
@@ -864,9 +864,7 @@ public class SharedConfig {
 
     public static void toggleDebugWebView() {
         debugWebView = !debugWebView;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(debugWebView);
-        }
+        WebView.setWebContentsDebuggingEnabled(debugWebView);
         SharedPreferences preferences = MessagesController.getGlobalMainSettings();
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("debugWebView", debugWebView);

@@ -91,9 +91,6 @@ public class HardwareVideoEncoderFactory implements VideoEncoderFactory {
   @Override
   public VideoEncoder createEncoder(VideoCodecInfo input) {
     // HW encoding is not supported below Android Kitkat.
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-      return null;
-    }
 
     VideoCodecMimeType type = VideoCodecMimeType.valueOf(input.name);
     MediaCodecInfo info = findCodecForType(type);
@@ -132,7 +129,7 @@ public class HardwareVideoEncoderFactory implements VideoEncoderFactory {
   @Override
   public VideoCodecInfo[] getSupportedCodecs() {
     // HW encoding is not supported below Android Kitkat.
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT || VoIPService.getSharedInstance() != null && VoIPService.getSharedInstance().groupCall != null) {
+    if (VoIPService.getSharedInstance() != null && VoIPService.getSharedInstance().groupCall != null) {
       return new VideoCodecInfo[0];
     }
 
@@ -236,15 +233,10 @@ public class HardwareVideoEncoderFactory implements VideoEncoderFactory {
     }
     String name = info.getName();
     // QCOM Vp8 encoder is supported in KITKAT or later.
-    if ((name.startsWith(QCOM_PREFIX) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-        // Hisi VP8 encoder seems to be supported. Needs more testing.
-        || (name.startsWith(HISI_PREFIX) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-        // Exynos VP8 encoder is supported in M or later.
-        || (name.startsWith(EXYNOS_PREFIX) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        // Intel Vp8 encoder is supported in LOLLIPOP or later, with the intel encoder enabled.
-        || (name.startsWith(INTEL_PREFIX) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-               && enableIntelVp8Encoder)
-        || ((name.startsWith(EXYNOS_PREFIX_C2)  && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M))) {
+    // Hisi VP8 encoder seems to be supported. Needs more testing.
+    // Exynos VP8 encoder is supported in M or later.
+    // Intel Vp8 encoder is supported in LOLLIPOP or later, with the intel encoder enabled.
+    if (name.startsWith(QCOM_PREFIX) || name.startsWith(HISI_PREFIX) || name.startsWith(EXYNOS_PREFIX) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M || name.startsWith(INTEL_PREFIX) && enableIntelVp8Encoder) {
       return true;
     }
     if (!ensureHardwareSupproted) {
@@ -283,10 +275,8 @@ public class HardwareVideoEncoderFactory implements VideoEncoderFactory {
     }
     String name = info.getName();
     // QCOM H264 encoder is supported in KITKAT or later.
-    return (name.startsWith(QCOM_PREFIX) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-        // Exynos H264 encoder is supported in LOLLIPOP or later.
-        || (name.startsWith(EXYNOS_PREFIX)
-               && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
+    // Exynos H264 encoder is supported in LOLLIPOP or later.
+    return name.startsWith(QCOM_PREFIX) || name.startsWith(EXYNOS_PREFIX);
   }
 
   private boolean isHardwareSupportedInCurrentSdkH265(MediaCodecInfo info) {
@@ -295,12 +285,10 @@ public class HardwareVideoEncoderFactory implements VideoEncoderFactory {
     }
     String name = info.getName();
     // QCOM H265 encoder is supported in KITKAT or later.
-    return (name.startsWith(QCOM_PREFIX) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-           // Exynos H265 encoder is supported in LOLLIPOP or later.
-           || (name.startsWith(EXYNOS_PREFIX)
-               && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+    // Exynos H265 encoder is supported in LOLLIPOP or later.
+    return name.startsWith(QCOM_PREFIX) || name.startsWith(EXYNOS_PREFIX)
            // Hisi VP8 encoder seems to be supported. Needs more testing.
-           /*|| (name.startsWith(HISI_PREFIX) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)*/;
+           /*(name.startsWith(HISI_PREFIX)*/;
   }
 
   private boolean isMediaCodecAllowed(MediaCodecInfo info) {

@@ -2,9 +2,13 @@ package it.colorgram.android;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
+import org.telegram.messenger.BuildConfig;
 import org.telegram.messenger.BuildVars;
+import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
+import org.telegram.messenger.UserConfig;
+import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.Theme;
 
 import java.util.Calendar;
@@ -612,6 +616,26 @@ public class ColorConfig extends SettingsController {
         } else {
             return 0xff11acfa;
         }
+    }
+
+    public static String getTitleText() {
+        int currentAccount = UserConfig.selectedAccount;
+        TLRPC.User selfUser = UserConfig.getInstance(currentAccount).getCurrentUser();
+        switch (nameType) {
+            case DEFAULT_NAME:
+                if (BuildConfig.BUILD_VERSION_STRING.contains("Beta")) {
+                    return LocaleController.getString("ColorVersionAppNameBeta", R.string.ColorVersionAppNameBeta);
+                } else if (BuildConfig.BUILD_VERSION_STRING.contains("Alpha")) {
+                    return LocaleController.getString("ColorVersionAppNameAlpha", R.string.ColorVersionAppNameAlpha);
+                } else {
+                    return LocaleController.getString("ColorVersionAppName", R.string.ColorVersionAppName);
+                }
+            case USER_NAME:
+                return selfUser.first_name + " " + (selfUser.last_name != null ? selfUser.last_name : "");
+            case TG_USER_NAME:
+                return selfUser.username;
+        }
+        return null;
     }
 
     public static void toggleDevOpt() {

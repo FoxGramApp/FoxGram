@@ -54,7 +54,7 @@ public class BuildVars {
     // Huawei
     // Add if you have your app published on App Gallery
     // The Huawei part of code is available in Telegram's repo
-    public static String HUAWEI_APP_ID = "101184875";
+    // public static String HUAWEI_APP_ID = "101184875";
 
     // Billing
     // You can use this flag to disable Google Play Billing
@@ -65,6 +65,27 @@ public class BuildVars {
             SharedPreferences sharedPreferences = ApplicationLoader.applicationContext.getSharedPreferences("systemConfig", Context.MODE_PRIVATE);
             LOGS_ENABLED = DEBUG_VERSION || sharedPreferences.getBoolean("logsEnabled", DEBUG_VERSION);
         }
+    }
+
+    private static Boolean standaloneApp;
+    private static Boolean betaApp;
+
+    public static boolean isStandaloneApp() {
+        if (standaloneApp == null) {
+            standaloneApp = ApplicationLoader.applicationContext != null && "it.colorgram.android".equals(ApplicationLoader.applicationContext.getPackageName());
+        }
+        return standaloneApp;
+    }
+
+    public static boolean isBetaApp() {
+        if (betaApp == null) {
+            betaApp = ApplicationLoader.applicationContext != null && "it.colorgram.android.beta".equals(ApplicationLoader.applicationContext.getPackageName());
+        }
+        return betaApp;
+    }
+
+    public static boolean isHuaweiStoreApp() {
+        return ApplicationLoader.isHuaweiStoreBuild();
     }
 
     public static boolean useInvoiceBilling() {
@@ -85,26 +106,5 @@ public class BuildVars {
             }
         }
         return false;
-    }
-
-    private static Boolean standaloneApp;
-    public static boolean isStandaloneApp() {
-        if (standaloneApp == null) {
-            standaloneApp = ApplicationLoader.applicationContext != null && "it.colorgram.android".equals(ApplicationLoader.applicationContext.getPackageName());
-        }
-        return standaloneApp;
-    }
-
-    private static Boolean betaApp;
-    public static boolean isBetaApp() {
-        if (betaApp == null) {
-            betaApp = ApplicationLoader.applicationContext != null && "it.colorgram.android.beta".equals(ApplicationLoader.applicationContext.getPackageName());
-        }
-        return betaApp;
-    }
-
-
-    public static boolean isHuaweiStoreApp() {
-        return ApplicationLoader.isHuaweiStoreBuild();
     }
 }

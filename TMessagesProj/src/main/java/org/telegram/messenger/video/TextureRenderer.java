@@ -683,19 +683,7 @@ public class TextureRenderer {
                             entity.framesPerDraw = videoFps / 30f;
                             entity.currentFrame = 0;
                         } else {
-                            if (Build.VERSION.SDK_INT >= 19) {
-                                entity.bitmap = BitmapFactory.decodeFile(entity.text);
-                            } else {
-                                File path = new File(entity.text);
-                                RandomAccessFile file = new RandomAccessFile(path, "r");
-                                ByteBuffer buffer = file.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, path.length());
-                                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                                bmOptions.inJustDecodeBounds = true;
-                                Utilities.loadWebpImage(null, buffer, buffer.limit(), bmOptions, true);
-                                entity.bitmap = Bitmaps.createBitmap(bmOptions.outWidth, bmOptions.outHeight, Bitmap.Config.ARGB_8888);
-                                Utilities.loadWebpImage(entity.bitmap, buffer, buffer.limit(), null, true);
-                                file.close();
-                            }
+                            entity.bitmap = BitmapFactory.decodeFile(entity.text);
                             if (entity.bitmap != null) {
                                 float aspect = entity.bitmap.getWidth() / (float) entity.bitmap.getHeight();
                                 if (aspect > 1) {
@@ -756,22 +744,20 @@ public class TextureRenderer {
                         }
 
                         editText.setGravity(gravity);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            int textAlign;
-                            switch (entity.textAlign) {
-                                default:
-                                case PaintTextOptionsView.ALIGN_LEFT:
-                                    textAlign = LocaleController.isRTL ? View.TEXT_ALIGNMENT_TEXT_END : View.TEXT_ALIGNMENT_TEXT_START;
-                                    break;
-                                case PaintTextOptionsView.ALIGN_CENTER:
-                                    textAlign = View.TEXT_ALIGNMENT_CENTER;
-                                    break;
-                                case PaintTextOptionsView.ALIGN_RIGHT:
-                                    textAlign = LocaleController.isRTL ? View.TEXT_ALIGNMENT_TEXT_START : View.TEXT_ALIGNMENT_TEXT_END;
-                                    break;
-                            }
-                            editText.setTextAlignment(textAlign);
+                        int textAlign;
+                        switch (entity.textAlign) {
+                            default:
+                            case PaintTextOptionsView.ALIGN_LEFT:
+                                textAlign = LocaleController.isRTL ? View.TEXT_ALIGNMENT_TEXT_END : View.TEXT_ALIGNMENT_TEXT_START;
+                                break;
+                            case PaintTextOptionsView.ALIGN_CENTER:
+                                textAlign = View.TEXT_ALIGNMENT_CENTER;
+                                break;
+                            case PaintTextOptionsView.ALIGN_RIGHT:
+                                textAlign = LocaleController.isRTL ? View.TEXT_ALIGNMENT_TEXT_START : View.TEXT_ALIGNMENT_TEXT_END;
+                                break;
                         }
+                        editText.setTextAlignment(textAlign);
 
                         editText.setHorizontallyScrolling(false);
                         editText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);

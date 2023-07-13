@@ -1118,7 +1118,7 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
         if ((child == renderView || child == renderInputView || child == entitiesView || child == selectionContainerView) && currentCropState != null) {
             canvas.save();
 
-            int status = (Build.VERSION.SDK_INT >= 21 && !inBubbleMode ? AndroidUtilities.statusBarHeight : 0);
+            int status = !inBubbleMode ? AndroidUtilities.statusBarHeight : 0;
             int actionBarHeight = ActionBar.getCurrentActionBarHeight();
             int actionBarHeight2 = actionBarHeight + status;
 
@@ -1434,7 +1434,7 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
             emojiView.layout(childLeft, childTop, childLeft + emojiView.getMeasuredWidth(), childTop + emojiView.getMeasuredHeight());
         }
 
-        int status = (Build.VERSION.SDK_INT >= 21 && !inBubbleMode ? AndroidUtilities.statusBarHeight : 0);
+        int status = !inBubbleMode ? AndroidUtilities.statusBarHeight : 0;
         int actionBarHeight = ActionBar.getCurrentActionBarHeight();
         int actionBarHeight2 = actionBarHeight + status;
 
@@ -2362,22 +2362,20 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
         }
 
         textPaintView.getEditText().setGravity(gravity);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            int textAlign;
-            switch (align) {
-                default:
-                case PaintTextOptionsView.ALIGN_LEFT:
-                    textAlign = LocaleController.isRTL ? TEXT_ALIGNMENT_TEXT_END : TEXT_ALIGNMENT_TEXT_START;
-                    break;
-                case PaintTextOptionsView.ALIGN_CENTER:
-                    textAlign = TEXT_ALIGNMENT_CENTER;
-                    break;
-                case PaintTextOptionsView.ALIGN_RIGHT:
-                    textAlign = LocaleController.isRTL ? TEXT_ALIGNMENT_TEXT_START : TEXT_ALIGNMENT_TEXT_END;
-                    break;
-            }
-            textPaintView.getEditText().setTextAlignment(textAlign);
+        int textAlign;
+        switch (align) {
+            default:
+            case PaintTextOptionsView.ALIGN_LEFT:
+                textAlign = LocaleController.isRTL ? TEXT_ALIGNMENT_TEXT_END : TEXT_ALIGNMENT_TEXT_START;
+                break;
+            case PaintTextOptionsView.ALIGN_CENTER:
+                textAlign = TEXT_ALIGNMENT_CENTER;
+                break;
+            case PaintTextOptionsView.ALIGN_RIGHT:
+                textAlign = LocaleController.isRTL ? TEXT_ALIGNMENT_TEXT_START : TEXT_ALIGNMENT_TEXT_END;
+                break;
         }
+        textPaintView.getEditText().setTextAlignment(textAlign);
     }
 
     @Override
@@ -3078,10 +3076,10 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
         if (height > AndroidUtilities.dp(50) && keyboardVisible && !AndroidUtilities.isInMultiwindow && !AndroidUtilities.isTablet()) {
             if (isWidthGreater) {
                 keyboardHeightLand = height;
-                MessagesController.getGlobalEmojiSettings().edit().putInt("kbd_height_land3", keyboardHeightLand).commit();
+                MessagesController.getGlobalEmojiSettings().edit().putInt("kbd_height_land3", keyboardHeightLand).apply();
             } else {
                 keyboardHeight = height;
-                MessagesController.getGlobalEmojiSettings().edit().putInt("kbd_height", keyboardHeight).commit();
+                MessagesController.getGlobalEmojiSettings().edit().putInt("kbd_height", keyboardHeight).apply();
             }
         }
 

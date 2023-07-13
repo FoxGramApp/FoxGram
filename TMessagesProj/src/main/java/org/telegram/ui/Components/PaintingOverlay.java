@@ -230,22 +230,20 @@ public class PaintingOverlay extends FrameLayout {
                     }
 
                     editText.setGravity(gravity);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        int textAlign;
-                        switch (entity.textAlign) {
-                            default:
-                            case PaintTextOptionsView.ALIGN_LEFT:
-                                textAlign = LocaleController.isRTL ? View.TEXT_ALIGNMENT_TEXT_END : View.TEXT_ALIGNMENT_TEXT_START;
-                                break;
-                            case PaintTextOptionsView.ALIGN_CENTER:
-                                textAlign = View.TEXT_ALIGNMENT_CENTER;
-                                break;
-                            case PaintTextOptionsView.ALIGN_RIGHT:
-                                textAlign = LocaleController.isRTL ? View.TEXT_ALIGNMENT_TEXT_START : View.TEXT_ALIGNMENT_TEXT_END;
-                                break;
-                        }
-                        editText.setTextAlignment(textAlign);
+                    int textAlign;
+                    switch (entity.textAlign) {
+                        default:
+                        case PaintTextOptionsView.ALIGN_LEFT:
+                            textAlign = LocaleController.isRTL ? View.TEXT_ALIGNMENT_TEXT_END : View.TEXT_ALIGNMENT_TEXT_START;
+                            break;
+                        case PaintTextOptionsView.ALIGN_CENTER:
+                            textAlign = View.TEXT_ALIGNMENT_CENTER;
+                            break;
+                        case PaintTextOptionsView.ALIGN_RIGHT:
+                            textAlign = LocaleController.isRTL ? View.TEXT_ALIGNMENT_TEXT_START : View.TEXT_ALIGNMENT_TEXT_END;
+                            break;
                     }
+                    editText.setTextAlignment(textAlign);
                     editText.setHorizontallyScrolling(false);
                     editText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
                     editText.setFocusableInTouchMode(true);

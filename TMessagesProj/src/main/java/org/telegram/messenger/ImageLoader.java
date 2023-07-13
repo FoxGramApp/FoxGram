@@ -1112,35 +1112,6 @@ public class ImageLoader {
                 boolean canDeleteFile = true;
                 boolean useNativeWebpLoader = false;
 
-                if (Build.VERSION.SDK_INT < 19) {
-                    RandomAccessFile randomAccessFile = null;
-                    try {
-                        randomAccessFile = new RandomAccessFile(cacheFileFinal, "r");
-                        byte[] bytes;
-                        if (cacheImage.type == ImageReceiver.TYPE_THUMB) {
-                            bytes = headerThumb;
-                        } else {
-                            bytes = header;
-                        }
-                        randomAccessFile.readFully(bytes, 0, bytes.length);
-                        String str = new String(bytes).toLowerCase();
-                        str = str.toLowerCase();
-                        if (str.startsWith("riff") && str.endsWith("webp")) {
-                            useNativeWebpLoader = true;
-                        }
-                    } catch (Exception e) {
-                        FileLog.e(e);
-                    } finally {
-                        if (randomAccessFile != null) {
-                            try {
-                                randomAccessFile.close();
-                            } catch (Exception e) {
-                                FileLog.e(e);
-                            }
-                        }
-                    }
-                }
-
                 String mediaThumbPath = null;
                 if (cacheImage.imageLocation.path != null) {
                     String location = cacheImage.imageLocation.path;
@@ -1166,10 +1137,6 @@ public class ImageLoader {
 
                 BitmapFactory.Options opts = new BitmapFactory.Options();
                 opts.inSampleSize = 1;
-
-                if (Build.VERSION.SDK_INT < 21) {
-                    opts.inPurgeable = true;
-                }
 
                 float w_filter = 0;
                 float h_filter = 0;
@@ -1401,7 +1368,7 @@ public class ImageLoader {
                         if (mediaId != null) {
                             delay = 0;
                         }
-                        if (delay != 0 && lastCacheOutTime != 0 && lastCacheOutTime > SystemClock.elapsedRealtime() - delay && Build.VERSION.SDK_INT < 21) {
+                        if (delay != 0 && lastCacheOutTime != 0 && lastCacheOutTime > SystemClock.elapsedRealtime() - delay) {
                             Thread.sleep(delay);
                         }
                         lastCacheOutTime = SystemClock.elapsedRealtime();
@@ -2333,7 +2300,7 @@ public class ImageLoader {
                 }
                 telegramPath.mkdirs();
 
-                if (Build.VERSION.SDK_INT >= 19 && !telegramPath.isDirectory()) {
+                if (!telegramPath.isDirectory()) {
                     ArrayList<File> dirs = AndroidUtilities.getDataDirs();
                     for (int a = 0, N = dirs.size(); a < N; a++) {
                         File dir = dirs.get(a);
@@ -3738,7 +3705,7 @@ public class ImageLoader {
             }
             bmOptions.inSampleSize = sample;
         }
-        bmOptions.inPurgeable = Build.VERSION.SDK_INT < 21;
+        bmOptions.inPurgeable = false;
 
         Matrix matrix = null;
         try {

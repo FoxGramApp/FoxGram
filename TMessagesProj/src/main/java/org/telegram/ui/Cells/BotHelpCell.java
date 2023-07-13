@@ -284,9 +284,7 @@ public class BotHelpCell extends View {
         if (selectorDrawable != null) {
             if (!result && y > 0 && event.getAction() == MotionEvent.ACTION_DOWN && isClickable()) {
                 selectorDrawable.setState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled});
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    selectorDrawable.setHotspot(event.getX(), event.getY());
-                }
+                selectorDrawable.setHotspot(event.getX(), event.getY());
                 invalidate();
                 result = true;
             } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {

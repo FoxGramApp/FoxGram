@@ -1994,9 +1994,7 @@ public class FilterCreateActivity extends BaseFragment {
                 textPaint.setTextSize(dp(10));
                 textPaint.setStyle(Paint.Style.FILL_AND_STROKE);
                 textPaint.setStrokeWidth(AndroidUtilities.dpf2(0.2f));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    textPaint.setLetterSpacing(.03f);
-                }
+                textPaint.setLetterSpacing(.03f);
             } else {
                 bgPaint.setStyle(Paint.Style.FILL);
                 textPaint.setTextSize(dp(12));

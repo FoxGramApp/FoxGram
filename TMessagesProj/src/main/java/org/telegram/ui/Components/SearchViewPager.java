@@ -630,17 +630,15 @@ public class SearchViewPager extends ViewPagerFixed implements FilteredSearchVie
                 if (speedItem.getVisibility() != v) {
                     speedItem.setVisibility(v);
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) speedItem.getIconView().getDrawable();
-                        drawable.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_actionBarActionModeDefaultIcon), PorterDuff.Mode.SRC_IN));
-                        if (visible) {
-                            drawable.start();
+                    AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) speedItem.getIconView().getDrawable();
+                    drawable.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_actionBarActionModeDefaultIcon), PorterDuff.Mode.SRC_IN));
+                    if (visible) {
+                        drawable.start();
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            drawable.reset();
                         } else {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                drawable.reset();
-                            } else {
-                                drawable.setVisible(false, true);
-                            }
+                            drawable.setVisible(false, true);
                         }
                     }
                 }

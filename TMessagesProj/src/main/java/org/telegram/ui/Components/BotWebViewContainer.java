@@ -326,14 +326,7 @@ public class BotWebViewContainer extends FrameLayout implements NotificationCent
                 }
 
                 mFilePathCallback = filePathCallback;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    activity.startActivityForResult(fileChooserParams.createIntent(), REQUEST_CODE_WEB_VIEW_FILE);
-                } else {
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    intent.setType("*/*");
-                    activity.startActivityForResult(Intent.createChooser(intent, LocaleController.getString(R.string.BotWebViewFileChooserTitle)), REQUEST_CODE_WEB_VIEW_FILE);
-                }
+                activity.startActivityForResult(fileChooserParams.createIntent(), REQUEST_CODE_WEB_VIEW_FILE);
 
                 return true;
             }
@@ -457,9 +450,7 @@ public class BotWebViewContainer extends FrameLayout implements NotificationCent
         addView(webView);
 
         // We can't use javascript interface because of minSDK 16, it can be exploited because of reflection access
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            webView.addJavascriptInterface(new WebViewProxy(), "TelegramWebviewProxy");
-        }
+        webView.addJavascriptInterface(new WebViewProxy(), "TelegramWebviewProxy");
     }
 
     private void onOpenUri(Uri uri) {
@@ -888,15 +879,7 @@ public class BotWebViewContainer extends FrameLayout implements NotificationCent
             return;
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            webView.evaluateJavascript(script, value -> {});
-        } else {
-            try {
-                webView.loadUrl("javascript:" + URLEncoder.encode(script, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                webView.loadUrl("javascript:" + URLEncoder.encode(script));
-            }
-        }
+        webView.evaluateJavascript(script, value -> {});
     }
 
     @Override

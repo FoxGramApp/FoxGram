@@ -89,7 +89,7 @@ public class ActionBar extends FrameLayout {
     private ActionBarMenu actionMode;
     private String actionModeTag;
     private boolean ignoreLayoutRequest;
-    private boolean occupyStatusBar = Build.VERSION.SDK_INT >= 21;
+    private boolean occupyStatusBar = true;
     private boolean actionModeVisible;
     private boolean addToContainer = true;
     private boolean clipContent;
@@ -1817,7 +1817,7 @@ public class ActionBar extends FrameLayout {
     }
 
     public void beginDelayedTransition() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !LocaleController.isRTL) {
+        if (!LocaleController.isRTL) {
             TransitionSet transitionSet = new TransitionSet();
             transitionSet.setOrdering(TransitionSet.ORDERING_TOGETHER);
             transitionSet.addTransition(new Fade());
