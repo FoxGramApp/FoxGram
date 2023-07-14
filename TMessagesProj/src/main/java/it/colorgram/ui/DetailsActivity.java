@@ -506,8 +506,7 @@ public class DetailsActivity extends BaseFragment implements NotificationCenter.
                     } else if (position == usernameRow) {
                         textDetailCell.setTextAndValue("@" + UserObject.getPublicUsername(fromUser), LocaleController.getString("Username", R.string.Username), true);
                     } else if (position == dateRow) {
-                        String accDate = AccountRegistrationDateController.getDate(fromUserInfo.tID);
-                        textDetailCell.setTextWithEmojiAndValue(accDate, LocaleController.getString("RegistrationDate", R.string.AccountRegistrationDate), true);
+                        textDetailCell.setTextWithEmojiAndValue(AccountRegistrationDateController.getDate(fromUserInfo.tID), LocaleController.getString("AccountRegistrationDate", R.string.AccountRegistrationDate), true);
                     } else if (position == messageIdRow) {
                         textDetailCell.setTextAndValue(String.valueOf(messageObject.getId()), "ID", true);
                     } else if (position == messageTextRow) {

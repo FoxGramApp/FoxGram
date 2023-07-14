@@ -2922,7 +2922,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
         }
         gridView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_AUTO);
 
-        if (!ColorConfig.cameraPreview || !LiteMode.isEnabled(LiteMode.FLAGS_CHAT) || ColorConfig.disableCameraTile && cameraView != null) {
+        if (ColorConfig.cameraPreview || !LiteMode.isEnabled(LiteMode.FLAGS_CHAT) || ColorConfig.disableCameraTile && cameraView != null) {
             cameraView.showTexture(false, animated);
         }
     }
