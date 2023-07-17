@@ -16,7 +16,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -65,8 +64,8 @@ import org.telegram.ui.Components.Reactions.AnimatedEmojiEffect;
 import org.telegram.ui.Components.Reactions.ReactionsLayoutInBubble;
 import org.telegram.ui.Components.SnowflakesEffect;
 import org.telegram.ui.ThemeActivity;
-import it.colorgram.android.ColorConfig;
-import it.colorgram.ui.DrawerOrderSettings;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.ui.DrawerOrderSettings;
 
 import java.util.ArrayList;
 
@@ -116,28 +115,28 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
         imageReceiver.setCrossfadeWithOldImage(true);
         imageReceiver.setForceCrossfade(true);
         imageReceiver.setDelegate((imageReceiver, set, thumb, memCache) -> {
-            if (ColorConfig.avatarBackgroundDarken || ColorConfig.avatarBackgroundBlur) {
+            if (FoxConfig.avatarBackgroundDarken || FoxConfig.avatarBackgroundBlur) {
                 if (thumb) {
                     return;
                 }
                 ImageReceiver.BitmapHolder bmp = imageReceiver.getBitmapSafe();
                 if (bmp != null) {
                     new Thread(() -> {
-                        int width_percentage = ((bmp.bitmap.getWidth()) * (100 - ColorConfig.blurIntensity)) / 100;
-                        int height_percentage = ((bmp.bitmap.getHeight()) * (100 - ColorConfig.blurIntensity)) / 100;
-                        int width = ColorConfig.avatarBackgroundBlur ? width_percentage : bmp.bitmap.getWidth();
-                        int height = ColorConfig.avatarBackgroundBlur ? height_percentage : bmp.bitmap.getHeight();
+                        int width_percentage = ((bmp.bitmap.getWidth()) * (100 - FoxConfig.blurIntensity)) / 100;
+                        int height_percentage = ((bmp.bitmap.getHeight()) * (100 - FoxConfig.blurIntensity)) / 100;
+                        int width = FoxConfig.avatarBackgroundBlur ? width_percentage : bmp.bitmap.getWidth();
+                        int height = FoxConfig.avatarBackgroundBlur ? height_percentage : bmp.bitmap.getHeight();
                         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                         Canvas canvas = new Canvas(bitmap);
                         canvas.drawBitmap(bmp.bitmap, null, new Rect(0, 0, width, height), new Paint(Paint.FILTER_BITMAP_FLAG));
-                        if (ColorConfig.avatarBackgroundBlur) {
+                        if (FoxConfig.avatarBackgroundBlur) {
                             try {
                                 Utilities.stackBlurBitmap(bitmap, 3);
                             } catch (Exception e) {
                                 FileLog.e(e);
                             }
                         }
-                        if (ColorConfig.avatarBackgroundDarken) {
+                        if (FoxConfig.avatarBackgroundDarken) {
                             final Palette palette = Palette.from(bmp.bitmap).generate();
                             Paint paint = new Paint();
                             paint.setColor((palette.getDarkMutedColor(0xFF547499) & 0x00FFFFFF) | 0x44000000);
@@ -567,7 +566,7 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
         boolean drawCatsShadow = false;
         int color;
         int darkBackColor = 0;
-        if (ColorConfig.showMenuControllerIcon) {
+        if (FoxConfig.showMenuControllerIcon) {
             menuControllerSetting.setVisibility(View.VISIBLE);
         } else {
             menuControllerSetting.setVisibility(View.INVISIBLE);
@@ -601,13 +600,13 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
             sunDrawable.setLayerColor("Path 5.**", currentMoonColor);
             sunDrawable.commitApplyLayerColors();
         }
-        if (AndroidUtilities.isLight(colorBackground) && ColorConfig.showGradientColor && ColorConfig.avatarAsDrawerBackground) {
+        if (AndroidUtilities.isLight(colorBackground) && FoxConfig.showGradientColor && FoxConfig.avatarAsDrawerBackground) {
             nameTextView.setTextColor(Theme.getColor(Theme.key_dialogTextBlack));
         } else {
             nameTextView.setTextColor(Theme.getColor(Theme.key_chats_menuName));
         }
         if (avatarAsDrawerBackground || useImageBackground) {
-            if(AndroidUtilities.isLight(colorBackground) && ColorConfig.showGradientColor && ColorConfig.avatarAsDrawerBackground) {
+            if(AndroidUtilities.isLight(colorBackground) && FoxConfig.showGradientColor && FoxConfig.avatarAsDrawerBackground) {
                 phoneTextView.getTextView().setTextColor(AndroidUtilities.getTransparentColor(Theme.getColor(Theme.key_dialogTextBlack), 0.4f));
             } else {
                 phoneTextView.getTextView().setTextColor(Theme.getColor(Theme.key_chats_menuPhone));
@@ -646,7 +645,7 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
             if (shadowView.getVisibility() != visibility) {
                 shadowView.setVisibility(visibility);
             }
-            if(AndroidUtilities.isLight(colorBackground) && ColorConfig.showGradientColor && ColorConfig.avatarAsDrawerBackground) {
+            if(AndroidUtilities.isLight(colorBackground) && FoxConfig.showGradientColor && FoxConfig.avatarAsDrawerBackground) {
                 phoneTextView.getTextView().setTextColor(AndroidUtilities.getTransparentColor(Theme.getColor(Theme.key_dialogTextBlack), 0.4f));
             } else {
                 phoneTextView.getTextView().setTextColor(Theme.getColor(Theme.key_chats_menuPhoneCats));
@@ -688,7 +687,7 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
             }
             invalidate();
         }
-        if (((Theme.getEventType() == 0 && ColorConfig.eventType == 0) || ColorConfig.eventType == 1) && ColorConfig.showSnowFalling) {
+        if (((Theme.getEventType() == 0 && FoxConfig.eventType == 0) || FoxConfig.eventType == 1) && FoxConfig.showSnowFalling) {
             snowflakesEffect.onDraw(this, canvas);
         }
     }
@@ -763,7 +762,7 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
         }
         animatedStatus.setColor(Theme.getColor(Theme.isCurrentThemeDark() ? Theme.key_chats_verifiedBackground : Theme.key_chats_menuPhoneCats));
         status.setColor(Theme.getColor(Theme.isCurrentThemeDark() ? Theme.key_chats_verifiedBackground : Theme.key_chats_menuPhoneCats));
-        if (!ColorConfig.hidePhoneNumber) {
+        if (!FoxConfig.hidePhoneNumber) {
             phoneTextView.setText(PhoneFormat.getInstance().format("+" + user.phone));
         } else if (!TextUtils.isEmpty(user.username)) {
             phoneTextView.setText("@" + user.username);
@@ -773,16 +772,16 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
         AvatarDrawable avatarDrawable = new AvatarDrawable(user);
         avatarDrawable.setColor(Theme.getColor(Theme.key_avatar_backgroundInProfileBlue));
         avatarImageView.setForUserOrChat(user, avatarDrawable);
-        if (ColorConfig.avatarAsDrawerBackground) {
+        if (FoxConfig.avatarAsDrawerBackground) {
             ImageLocation imageLocation = ImageLocation.getForUser(user, ImageLocation.TYPE_BIG);
             avatarAsDrawerBackground = imageLocation != null;
             imageReceiver.setImage(imageLocation, "512_512", null, null, new ColorDrawable(0x00000000), 0, null, user, 1);
-            if(ColorConfig.showGradientColor) {
+            if(FoxConfig.showGradientColor) {
                 gradientBackground.setVisibility(VISIBLE);
             } else {
                 gradientBackground.setVisibility(INVISIBLE);
             }
-            if(ColorConfig.showAvatarImage) {
+            if(FoxConfig.showAvatarImage) {
                 avatarImageView.setVisibility(VISIBLE);
             } else {
                 avatarImageView.setVisibility(INVISIBLE);
@@ -807,7 +806,7 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
     }
 
     public void updateColors() {
-        if (Theme.getEventType() == 0 && ColorConfig.eventType == 0 || ColorConfig.eventType == 1) {
+        if (Theme.getEventType() == 0 && FoxConfig.eventType == 0 || FoxConfig.eventType == 1) {
             snowflakesEffect.updateColors();
         }
         if (animatedStatus != null) {

@@ -314,9 +314,9 @@ include(${CMAKE_HOME_DIRECTORY}/voip/CMakeLists.txt)
 #ping
 include(${CMAKE_HOME_DIRECTORY}/ping/CMakeLists.txt)
 
-set(NATIVE_LIB "owl.45")
+set(NATIVE_LIB "fox.45")
 
-#color
+#fox
 add_library(${NATIVE_LIB} SHARED
         jni.c
         audio.c

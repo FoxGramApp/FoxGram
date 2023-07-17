@@ -183,7 +183,6 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -200,8 +199,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.ui.Components.Dialogs.ImportSettingsDialog;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.ui.Components.Dialogs.ImportSettingsDialog;
 
 public class AndroidUtilities {
     public final static int LIGHT_STATUS_BAR_OVERLAY = 0x0f000000, DARK_STATUS_BAR_OVERLAY = 0x33000000;
@@ -1765,7 +1764,7 @@ public class AndroidUtilities {
         synchronized (typefaceCache) {
             if (!typefaceCache.containsKey(assetPath)) {
                 try {
-                    if (ColorConfig.useSystemFont) {
+                    if (FoxConfig.useSystemFont) {
                         Typeface t = null;
                         switch (assetPath) {
                             case "fonts/rmedium.ttf":
@@ -3398,9 +3397,9 @@ public class AndroidUtilities {
             f = FileLoader.getInstance(UserConfig.selectedAccount).getPathToMessage(message.messageOwner);
         }
         if (f != null && f.exists()) {
-            int statusConf = ColorConfig.isValidFileSettings(message);
-            if (parentFragment != null && message.getDocumentName().toLowerCase().endsWith("color") && statusConf >= ColorConfig.VALID_CONFIGURATION) {
-                if (statusConf == ColorConfig.VALID_CONFIGURATION) {
+            int statusConf = FoxConfig.isValidFileSettings(message);
+            if (parentFragment != null && message.getDocumentName().toLowerCase().endsWith("color") && statusConf >= FoxConfig.VALID_CONFIGURATION) {
+                if (statusConf == FoxConfig.VALID_CONFIGURATION) {
                     new ImportSettingsDialog(parentFragment, message).checkCanShowDialog();
                 } else {
                     BulletinFactory.of(parentFragment).createSimpleBulletin(R.raw.gigagroup_convert, LocaleController.getString("UpdateToImport", R.string.UpdateToImport), true).show();

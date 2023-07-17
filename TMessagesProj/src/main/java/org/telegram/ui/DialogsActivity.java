@@ -84,7 +84,6 @@ import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.AnimationNotificationsLocker;
 import org.telegram.messenger.ApplicationLoader;
-import org.telegram.messenger.BuildConfig;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.ChatObject;
 import org.telegram.messenger.ContactsController;
@@ -161,7 +160,6 @@ import org.telegram.ui.Components.Bulletin;
 import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.ChatActivityEnterView;
 import org.telegram.ui.Components.ChatAvatarContainer;
-import org.telegram.ui.Components.CombinedDrawable;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.DialogsItemAnimator;
 import org.telegram.ui.Components.EditTextBoldCursor;
@@ -205,17 +203,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.ui.Components.Dialogs.AppLinkVerifyBottomSheet;
-import it.colorgram.ui.Components.Dialogs.CrashReportBottomSheet;
-import it.colorgram.ui.Components.Dialogs.MonetAndroidFixDialog;
-import it.colorgram.ui.Components.SendOptionsMenuLayout;
-import it.colorgram.android.Crashlytics;
-import it.colorgram.android.utils.ForwardContext;
-import it.colorgram.android.MonetIconController;
-import it.colorgram.android.PasscodeController;
-import it.colorgram.android.updates.AppDownloader;
-import it.colorgram.android.updates.UpdateManager;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.ui.Components.Dialogs.AppLinkVerifyBottomSheet;
+import it.foxgram.ui.Components.Dialogs.CrashReportBottomSheet;
+import it.foxgram.ui.Components.Dialogs.MonetAndroidFixDialog;
+import it.foxgram.ui.Components.SendOptionsMenuLayout;
+import it.foxgram.android.Crashlytics;
+import it.foxgram.android.utils.ForwardContext;
+import it.foxgram.android.MonetIconController;
+import it.foxgram.android.PasscodeController;
+import it.foxgram.android.updates.AppDownloader;
+import it.foxgram.android.updates.UpdateManager;
 
 public class DialogsActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, FloatingDebugProvider {
 
@@ -1864,7 +1862,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                                 if (AndroidUtilities.isAccessibilityScreenReaderEnabled()) {
                                     AndroidUtilities.makeAccessibilityAnnouncement(LocaleController.getString(R.string.AccDescrArchivedChatsShown));
                                 }
-                                if (ColorConfig.openArchiveOnPull) {
+                                if (FoxConfig.openArchiveOnPull) {
                                     AndroidUtilities.runOnUIThread(() -> {
                                         Bundle args = new Bundle();
                                         args.putInt("folderId", 1);
@@ -2193,7 +2191,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     }
                 };
                 setDialogsListFrozen(true);
-                if (Utilities.random.nextInt(1000) == 1 || ColorConfig.pacmanForced) {
+                if (Utilities.random.nextInt(1000) == 1 || FoxConfig.pacmanForced) {
                     if (pacmanAnimation == null) {
                         pacmanAnimation = new PacmanAnimation(parentPage.listView);
                     }
@@ -2780,7 +2778,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             } else {
                 statusDrawable = new AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable(null, AndroidUtilities.dp(26));
                 statusDrawable.center = true;
-                actionBar.setTitle(actionBarDefaultTitle = ColorConfig.getTitleText(), statusDrawable);
+                actionBar.setTitle(actionBarDefaultTitle = FoxConfig.getTitleText(), statusDrawable);
                 updateStatus(UserConfig.getInstance(currentAccount).getCurrentUser(), false);
             }
             if (folderId == 0) {
@@ -3078,13 +3076,13 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     showDeleteAlert(getMessagesController().getDialogFilters().get(id));
                 }
 
-                private int lastNameStatus = ColorConfig.nameType;
+                private int lastNameStatus = FoxConfig.nameType;
                 @Override
                 public void onTabSelected(FilterTabsView.Tab tab, boolean forward, boolean animated) {
-                    if (ColorConfig.tabMode != ColorConfig.TAB_TYPE_ICON || lastNameStatus != ColorConfig.nameType) {
-                        actionBar.setTitle(actionBarDefaultTitle = ColorConfig.getTitleText(), statusDrawable);
-                        lastNameStatus = ColorConfig.nameType;
-                        if (ColorConfig.tabMode != ColorConfig.TAB_TYPE_ICON) return;
+                    if (FoxConfig.tabMode != FoxConfig.TAB_TYPE_ICON || lastNameStatus != FoxConfig.nameType) {
+                        actionBar.setTitle(actionBarDefaultTitle = FoxConfig.getTitleText(), statusDrawable);
+                        lastNameStatus = FoxConfig.nameType;
+                        if (FoxConfig.tabMode != FoxConfig.TAB_TYPE_ICON) return;
                     }
                     if (!selectedDialogs.isEmpty()) {
                         return;
@@ -5459,12 +5457,12 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 filterTabsView.removeTabs();
                 for (int a = 0, N = filters.size(); a < N; a++) {
                     if (filters.get(a).isDefault()) {
-                        if (!ColorConfig.hideAllTab) filterTabsView.addTab(a, 0, LocaleController.getString("FilterAllChats", R.string.FilterAllChats), true,  filters.get(a).locked, filters.get(a).emoticon);
+                        if (!FoxConfig.hideAllTab) filterTabsView.addTab(a, 0, LocaleController.getString("FilterAllChats", R.string.FilterAllChats), true,  filters.get(a).locked, filters.get(a).emoticon);
                     } else {
                         filterTabsView.addTab(a, filters.get(a).localId, filters.get(a).name, false,  filters.get(a).locked, filters.get(a).emoticon);
                     }
                 }
-                if (ColorConfig.hideAllTab && stableId <= 0) {
+                if (FoxConfig.hideAllTab && stableId <= 0) {
                     id = filterTabsView.getFirstTabId();
                     updateCurrentTab = true;
                     viewPages[0].selectedType = id;
@@ -5500,7 +5498,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 if (filterTabsView.isLocked(filterTabsView.getCurrentTabId())) {
                     filterTabsView.selectFirstTab();
                 }
-                if (ColorConfig.hideAllTab) {
+                if (FoxConfig.hideAllTab) {
                     int newPage = -1, defaultPage = -1;
                     for (int a = 0, N = filters.size(); a < N; a++) {
                         if (filters.get(a).isDefault()) {

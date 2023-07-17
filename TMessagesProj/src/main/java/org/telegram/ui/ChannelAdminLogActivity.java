@@ -13,7 +13,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +23,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -135,8 +133,8 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.ui.Components.Dialogs.ImportSettingsDialog;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.ui.Components.Dialogs.ImportSettingsDialog;
 
 public class ChannelAdminLogActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
@@ -1711,8 +1709,8 @@ public class ChannelAdminLogActivity extends BaseFragment implements Notificatio
                 break;
             }
             case 207: {
-                int statusConf = ColorConfig.isValidFileSettings(selectedObject);
-                if (statusConf == ColorConfig.VALID_CONFIGURATION) {
+                int statusConf = FoxConfig.isValidFileSettings(selectedObject);
+                if (statusConf == FoxConfig.VALID_CONFIGURATION) {
                     new ImportSettingsDialog(ChannelAdminLogActivity.this, selectedObject).checkCanShowDialog();
                 } else {
                     BulletinFactory.of(ChannelAdminLogActivity.this).createSimpleBulletin(R.raw.gigagroup_convert, LocaleController.getString("UpdateToImport", R.string.UpdateToImport), true).show();
@@ -1871,7 +1869,7 @@ public class ChannelAdminLogActivity extends BaseFragment implements Notificatio
                                 return 10;
                             } else if (mime.endsWith("/xml")) {
                                 return 5;
-                            } else if (messageObject.getDocumentName().toLowerCase().endsWith("color") || messageObject.getDocumentName().toLowerCase().endsWith("owl") && ColorConfig.isValidFileSettings(messageObject) >= ColorConfig.VALID_CONFIGURATION) {
+                            } else if (messageObject.getDocumentName().toLowerCase().endsWith("fox") || messageObject.getDocumentName().toLowerCase().endsWith("owl") && FoxConfig.isValidFileSettings(messageObject) >= FoxConfig.VALID_CONFIGURATION) {
                                 return 207;
                             } else if (mime.endsWith("/png") || mime.endsWith("/jpg") || mime.endsWith("/jpeg")) {
                                 return 6;
@@ -2612,9 +2610,9 @@ public class ChannelAdminLogActivity extends BaseFragment implements Notificatio
                                     scrollToPositionOnRecreate = -1;
                                 }
                             }
-                            int statusConf = ColorConfig.isValidFileSettings(message);
-                            if (message.getDocumentName().toLowerCase().endsWith("owl") && statusConf >= ColorConfig.VALID_CONFIGURATION) {
-                                if (statusConf == ColorConfig.VALID_CONFIGURATION) {
+                            int statusConf = FoxConfig.isValidFileSettings(message);
+                            if (message.getDocumentName().toLowerCase().endsWith("owl") && statusConf >= FoxConfig.VALID_CONFIGURATION) {
+                                if (statusConf == FoxConfig.VALID_CONFIGURATION) {
                                     new ImportSettingsDialog(ChannelAdminLogActivity.this, message).checkCanShowDialog();
                                 } else {
                                     BulletinFactory.of(ChannelAdminLogActivity.this).createSimpleBulletin(R.raw.gigagroup_convert, LocaleController.getString("UpdateToImport", R.string.UpdateToImport), true).show();

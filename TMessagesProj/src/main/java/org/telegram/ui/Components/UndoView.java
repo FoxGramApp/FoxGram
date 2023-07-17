@@ -60,7 +60,7 @@ import org.telegram.ui.LaunchActivity;
 import org.telegram.ui.PaymentFormActivity;
 
 import java.util.ArrayList;
-import it.colorgram.android.utils.AppRestartHelper;
+import it.foxgram.android.utils.AppRestartHelper;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class UndoView extends FrameLayout {

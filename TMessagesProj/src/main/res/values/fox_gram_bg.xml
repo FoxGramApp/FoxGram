@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="splash_background">#1c273b</color>
+    <color name="splash_navigation_bar">#000</color>
+    <color name="splash_fm_background">#1c273b</color>
+    <color name="splash_fm_navigation_bar">#000</color>
+    <color name="fox_stock_background">#008BF7</color>
+    <color name="fox_gram_m">#FFF</color>
+    <color name="fox_gram_background">#008BF7</color>
+    <color name="fox_night_background">#FFF</color>
+</resources>

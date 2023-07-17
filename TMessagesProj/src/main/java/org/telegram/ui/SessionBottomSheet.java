@@ -357,10 +357,10 @@ public class SessionBottomSheet extends BottomSheet {
             colorKey2 = Theme.key_avatar_background2Cyan;
         } else if (platform.contains("android")) {
             iconId = R.raw.android_30;
-            if (app_name.contains("colorgram")) {
+            if (app_name.contains("foxgram") || app_name.contains("fox")) {
                 animation = false;
-                colorValue = Color.parseColor("#4285F4");
-                iconId = R.drawable.device_colorgram;
+                colorValue = Color.parseColor("#008BF7");
+                iconId = R.drawable.fox_logo;
             } else {
                 colorKey = Theme.key_avatar_backgroundGreen;
                 colorKey2 = Theme.key_avatar_background2Green;

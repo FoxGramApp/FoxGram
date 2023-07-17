@@ -24,13 +24,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.android.entities.HTMLKeeper;
-import it.colorgram.android.MessageHelper;
-import it.colorgram.ui.DoNotTranslateSettings;
-import it.colorgram.android.translator.BaseTranslator;
-import it.colorgram.android.translator.Translator;
-import it.colorgram.android.translator.TranslatorHelper;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.android.entities.HTMLKeeper;
+import it.foxgram.android.MessageHelper;
+import it.foxgram.ui.DoNotTranslateSettings;
+import it.foxgram.android.translator.BaseTranslator;
+import it.foxgram.android.translator.Translator;
+import it.foxgram.android.translator.TranslatorHelper;
 
 public class TranslateController extends BaseController {
 
@@ -70,11 +70,11 @@ public class TranslateController extends BaseController {
     }
 
     public boolean isFeatureAvailable() {
-        return !(!UserConfig.getInstance(currentAccount).isPremium() && ColorConfig.translationProvider == Translator.PROVIDER_TELEGRAM);
+        return !(!UserConfig.getInstance(currentAccount).isPremium() && FoxConfig.translationProvider == Translator.PROVIDER_TELEGRAM);
     }
 
     public boolean isChatTranslateEnabled() {
-        return ColorConfig.translateEntireChat;
+        return FoxConfig.translateEntireChat;
     }
 
     public boolean isContextTranslateEnabled() {
@@ -233,11 +233,11 @@ public class TranslateController extends BaseController {
             lang = "no";
         }
         return lang;*/
-        return Translator.getTranslator(ColorConfig.translationProvider).getCurrentTargetLanguage();
+        return Translator.getTranslator(FoxConfig.translationProvider).getCurrentTargetLanguage();
     }
 
     public void setDialogTranslateTo(long dialogId, int topicId, String language) {
-        if (TextUtils.equals(ColorConfig.translationTarget, language)) {
+        if (TextUtils.equals(FoxConfig.translationTarget, language)) {
             return;
         }
 
@@ -262,7 +262,7 @@ public class TranslateController extends BaseController {
             translatingDialogs.remove(getIdWithTopic(dialogId, topicId));
         }
         NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.dialogTranslate, dialogId, false);
-        ColorConfig.setTranslationTarget(language);
+        FoxConfig.setTranslationTarget(language);
     }
 
     public void updateDialogFull(long dialogId) {
@@ -507,7 +507,7 @@ public class TranslateController extends BaseController {
     public void applyTranslationResult(MessageObject messageObject, BaseTranslator.Result result) {
         messageObject.messageOwner.originalLanguage = result.sourceLanguage;
         messageObject.messageOwner.translatedToLanguage = getDialogTranslateTo(messageObject.getDialogId());
-        messageObject.messageOwner.translationProvider = ColorConfig.translationProvider;
+        messageObject.messageOwner.translationProvider = FoxConfig.translationProvider;
         if (result.translation instanceof String || result.translation instanceof TLRPC.TL_textWithEntities) {
             TLRPC.TL_textWithEntities textWithEntities;
             if (result.translation instanceof String) {
@@ -536,8 +536,8 @@ public class TranslateController extends BaseController {
     }
 
     public static boolean isValidTranslation(TLRPC.Message messageOwner) {
-        return TextUtils.equals(Translator.getTranslator(ColorConfig.translationProvider).getCurrentTargetLanguage(), messageOwner.translatedToLanguage)
-                && ColorConfig.translationProvider == messageOwner.translationProvider;
+        return TextUtils.equals(Translator.getTranslator(FoxConfig.translationProvider).getCurrentTargetLanguage(), messageOwner.translatedToLanguage)
+                && FoxConfig.translationProvider == messageOwner.translationProvider;
     }
 
     private boolean isRestrictedLanguage(MessageObject messageObject) {

@@ -14,7 +14,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.text.Editable;
 import android.text.Layout;
 import android.text.SpannableString;
@@ -92,8 +91,8 @@ import org.telegram.ui.Components.UndoView;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import it.colorgram.ui.Components.Dialogs.IconSelectorAlert;
-import it.colorgram.android.FolderIconController;
+import it.foxgram.ui.Components.Dialogs.IconSelectorAlert;
+import it.foxgram.android.FolderIconController;
 
 public class FilterCreateActivity extends BaseFragment {
 

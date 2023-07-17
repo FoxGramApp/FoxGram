@@ -95,11 +95,11 @@
 -keep class com.huawei.updatesdk.**{ *; }
 -keep class com.huawei.hms.**{ *; }
 
-# Keep ColorConfig fields name
--keepnames class it.colorgram.android.ColorConfig { <fields>; }
+# Keep FoxConfig fields name
+-keepnames class it.foxgram.android.FoxConfig { <fields>; }
 
 # Keep all classes and fiels name of Magic Objects
--keepattributes InnerClasses, EnclosingMethod -keepnames class it.colorgram.android.magic.** { <fields>; }
+-keepattributes InnerClasses, EnclosingMethod -keepnames class it.foxgram.android.magic.** { <fields>; }
 
 # Keep all classes of Apache Commons
 -keep class org.apache.commons.text.** { *; }

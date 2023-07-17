@@ -113,7 +113,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 
-import it.colorgram.android.CustomEmojiController;
+import it.foxgram.android.CustomEmojiController;
 
 public class CacheControlActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 

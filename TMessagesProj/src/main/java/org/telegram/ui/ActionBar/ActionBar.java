@@ -23,7 +23,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -60,7 +59,7 @@ import org.telegram.ui.Components.SnowflakesEffect;
 
 import java.util.ArrayList;
 
-import it.colorgram.android.ColorConfig;
+import it.foxgram.android.FoxConfig;
 
 public class ActionBar extends FrameLayout {
 
@@ -322,12 +321,12 @@ public class ActionBar extends FrameLayout {
                     }
                 }
             }
-            if (Theme.canStartHolidayAnimation() && (ColorConfig.eventType == 0 || ColorConfig.eventType == 1)) {
+            if (Theme.canStartHolidayAnimation() && (FoxConfig.eventType == 0 || FoxConfig.eventType == 1)) {
                 if (snowflakesEffect == null) {
                     fireworksEffect = null;
                     snowflakesEffect = new SnowflakesEffect(0);
                 }
-            } else if ((Theme.getEventType() == 3 && ColorConfig.eventType == 0) || ColorConfig.eventType == 4 && ColorConfig.canShowFireworks()) {
+            } else if ((Theme.getEventType() == 3 && FoxConfig.eventType == 0) || FoxConfig.eventType == 4 && FoxConfig.canShowFireworks()) {
                 if (fireworksEffect == null || snowflakesEffect != null ) {
                     snowflakesEffect = null;
                     fireworksEffect = new FireworksEffect();

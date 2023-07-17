@@ -206,28 +206,28 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import it.colorgram.android.StoreUtils;
-import it.colorgram.android.ColorConfig;
-import it.colorgram.android.magic.COLORENC;
-import it.colorgram.ui.Components.Dialogs.UpdateAlertDialog;
-import it.colorgram.android.Crashlytics;
-import it.colorgram.android.CustomEmojiController;
-import it.colorgram.android.utils.ForwardContext;
-import it.colorgram.android.LanguageController;
-import it.colorgram.android.MonetThemeController;
-import it.colorgram.android.StickersUtils;
-import it.colorgram.android.updates.UpdateSignaling;
-import it.colorgram.ui.ColorgramAppearanceSettings;
-import it.colorgram.ui.ColorgramChatSettings;
-import it.colorgram.ui.ColorgramExperimentalSettings;
-import it.colorgram.ui.ColorgramGeneralSettings;
-import it.colorgram.ui.ColorgramSettings;
-import it.colorgram.ui.DatacenterActivity;
-import it.colorgram.android.http.FileDownloader;
-import it.colorgram.android.updates.ApkInstaller;
-import it.colorgram.android.updates.AppDownloader;
-import it.colorgram.android.updates.PlayStoreAPI;
-import it.colorgram.android.updates.UpdateManager;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.android.StoreUtils;
+import it.foxgram.android.magic.FOXENC;
+import it.foxgram.ui.Components.Dialogs.UpdateAlertDialog;
+import it.foxgram.android.Crashlytics;
+import it.foxgram.android.CustomEmojiController;
+import it.foxgram.android.utils.ForwardContext;
+import it.foxgram.android.LanguageController;
+import it.foxgram.android.MonetThemeController;
+import it.foxgram.android.StickersUtils;
+import it.foxgram.android.updates.UpdateSignaling;
+import it.foxgram.ui.FoxGramAppearanceSettings;
+import it.foxgram.ui.FoxGramChatSettings;
+import it.foxgram.ui.FoxGramExperimentalSettings;
+import it.foxgram.ui.FoxGramGeneralSettings;
+import it.foxgram.ui.FoxGramSettings;
+import it.foxgram.ui.DatacenterActivity;
+import it.foxgram.android.http.FileDownloader;
+import it.foxgram.android.updates.ApkInstaller;
+import it.foxgram.android.updates.AppDownloader;
+import it.foxgram.android.updates.PlayStoreAPI;
+import it.foxgram.android.updates.UpdateManager;
 
 public class LaunchActivity extends BasePermissionsActivity implements INavigationLayout.INavigationLayoutDelegate, NotificationCenter.NotificationCenterDelegate, DialogsActivity.DialogsActivityDelegate {
     public final static String EXTRA_FORCE_NOT_INTERNAL_APPS = "force_not_internal_apps";
@@ -625,7 +625,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 } else if (id == 15) {
                     showSelectStatusDialog();
                 } else if (id == 201) {
-                    presentFragment(new ColorgramSettings());
+                    presentFragment(new FoxGramSettings());
                     drawerLayoutContainer.closeDrawer(false);
                 } else if (id == 202) {
                     Bundle args = new Bundle();
@@ -2599,8 +2599,8 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                         } else {
                                             open_settings = 1;
                                         }
-                                    } else if (url.startsWith("tg:color") || url.startsWith("tg://color")) {
-                                        ProfileActivity.startColorSound();
+                                    } else if (url.startsWith("tg:fox") || url.startsWith("tg://fox")) {
+                                        ProfileActivity.startFoxSound();
                                     } else if (url.startsWith("tg:update") || url.startsWith("tg://update")) {
                                         checkAppUpdate(true);
                                     } else if (url.startsWith("tg:stocwddo") || url.startsWith("tg://stocwddo")) {
@@ -2631,7 +2631,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             bulletin.show();
                                         });
                                     } else if (url.startsWith("tg:experimental") || url.startsWith("tg://experimental")) {
-                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new ColorgramExperimentalSettings(), false, false));
+                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new FoxGramExperimentalSettings(), false, false));
                                         if (AndroidUtilities.isTablet()) {
                                             actionBarLayout.showLastFragment();
                                             rightActionBarLayout.showLastFragment();
@@ -2640,7 +2640,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             drawerLayoutContainer.setAllowOpenDrawer(true, false);
                                         }
                                     } else if (url.startsWith("tg:chat") || url.startsWith("tg://chat")) {
-                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new ColorgramChatSettings(), false, false));
+                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new FoxGramChatSettings(), false, false));
                                         if (AndroidUtilities.isTablet()) {
                                             actionBarLayout.showLastFragment();
                                             rightActionBarLayout.showLastFragment();
@@ -2649,7 +2649,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             drawerLayoutContainer.setAllowOpenDrawer(true, false);
                                         }
                                     } else if (url.startsWith("tg:general") || url.startsWith("tg://general")) {
-                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new ColorgramGeneralSettings(), false, false));
+                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new FoxGramGeneralSettings(), false, false));
                                         if (AndroidUtilities.isTablet()) {
                                             actionBarLayout.showLastFragment();
                                             rightActionBarLayout.showLastFragment();
@@ -2658,7 +2658,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             drawerLayoutContainer.setAllowOpenDrawer(true, false);
                                         }
                                     } else if (url.startsWith("tg:appearance") || url.startsWith("tg://appearance")) {
-                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new ColorgramAppearanceSettings(), false, false));
+                                        AndroidUtilities.runOnUIThread(() -> presentFragment(new FoxGramAppearanceSettings(), false, false));
                                         if (AndroidUtilities.isTablet()) {
                                             actionBarLayout.showLastFragment();
                                             rightActionBarLayout.showLastFragment();
@@ -2797,9 +2797,9 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             NotificationCenter.getInstance(intentAccount[0]).postNotificationName(NotificationCenter.closeChats);
                                             push_user_id = userId;
                                             @SuppressLint("Range") String mimeType = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE));
-                                            if (TextUtils.equals(mimeType, "vnd.android.cursor.item/vnd.it.colorgram.android.android.call")) {
+                                            if (TextUtils.equals(mimeType, "vnd.android.cursor.item/vnd.it.foxgram.android.android.call")) {
                                                 audioCallUser = true;
-                                            } else if (TextUtils.equals(mimeType, "vnd.android.cursor.item/vnd.it.colorgram.android.android.call.video")) {
+                                            } else if (TextUtils.equals(mimeType, "vnd.android.cursor.item/vnd.it.foxgram.android.android.call.video")) {
                                                 videoCallUser = true;
                                             }
                                         }
@@ -5003,10 +5003,10 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     UpdateManager.installUpdate(LaunchActivity.this);
                 } else {
                     try {
-                        if(ColorConfig.updateData.isPresent()) {
-                            COLORENC.UpdateAvailable update = ColorConfig.updateData.get();
+                        if(FoxConfig.updateData.isPresent()) {
+                            FOXENC.UpdateAvailable update = FoxConfig.updateData.get();
                             if (FileDownloader.downloadFile(LaunchActivity.this, "appUpdate", UpdateManager.apkFile(), update.fileLink))
-                                ColorConfig.saveOldVersion(update.version);
+                                FoxConfig.saveOldVersion(update.version);
                         }
                     } catch (Exception ignored){}
                 }
@@ -5152,8 +5152,8 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     updateSizeTextView.animate().alpha(0.0f).scaleX(0.0f).scaleY(0.0f).setDuration(180).start();
                 } else {
                     try {
-                        if(ColorConfig.updateData.isPresent()) {
-                            COLORENC.UpdateAvailable updateAvailable = ColorConfig.updateData.get();
+                        if(FoxConfig.updateData.isPresent()) {
+                            FOXENC.UpdateAvailable updateAvailable = FoxConfig.updateData.get();
                             if(updateAvailable.version > BuildVars.BUILD_VERSION) {
                                 createUpdateUI();
                                 updateLayoutIcon.setIcon(MediaActionDrawable.ICON_DOWNLOAD, true, true);
@@ -5185,7 +5185,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
     }
 
     public void checkAppUpdate(boolean force) {
-        if((!ColorConfig.notifyUpdates && !force) || UserConfig.getActivatedAccountsCount() == 0 || !StoreUtils.isFromCheckableStore() && StoreUtils.isDownloadedFromAnyStore()) {
+        if((!FoxConfig.notifyUpdates && !force) || UserConfig.getActivatedAccountsCount() == 0 || !StoreUtils.isFromCheckableStore() && StoreUtils.isDownloadedFromAnyStore()) {
             return;
         }
         UpdateManager.isDownloadedUpdate(result -> {
@@ -5215,29 +5215,29 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 UpdateManager.checkUpdates(new UpdateManager.UpdateCallback() {
                     @Override
                     public void onSuccess(Object updateResult) {
-                        if(updateResult instanceof COLORENC.UpdateAvailable) {
-                            COLORENC.UpdateAvailable updateAvailable = (COLORENC.UpdateAvailable) updateResult;
-                            long passed_time = (new Date().getTime() - ColorConfig.lastUpdateCheck) / 1000;
-                            if(passed_time >= 3600 * 2 || ColorConfig.lastUpdateStatus != 1 && !updateAvailable.isReminded() || force) {
-                                ColorConfig.updateData.set(updateAvailable);
-                                ColorConfig.applyUpdateData();
-                                ColorConfig.applyUpdateData();
-                                ColorConfig.remindUpdate(-1);
+                        if(updateResult instanceof FOXENC.UpdateAvailable) {
+                            FOXENC.UpdateAvailable updateAvailable = (FOXENC.UpdateAvailable) updateResult;
+                            long passed_time = (new Date().getTime() - FoxConfig.lastUpdateCheck) / 1000;
+                            if(passed_time >= 3600 * 2 || FoxConfig.lastUpdateStatus != 1 && !updateAvailable.isReminded() || force) {
+                                FoxConfig.updateData.set(updateAvailable);
+                                FoxConfig.applyUpdateData();
+                                FoxConfig.applyUpdateData();
+                                FoxConfig.remindUpdate(-1);
                                 NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
                                 if (StoreUtils.isFromPlayStore()) {
                                     PlayStoreAPI.openUpdatePopup(LaunchActivity.this);
                                 } else {
                                     new UpdateAlertDialog(LaunchActivity.this, updateAvailable).show();
                                 }
-                                ColorConfig.saveUpdateStatus(1);
-                                ColorConfig.saveLastUpdateCheck();
+                                FoxConfig.saveUpdateStatus(1);
+                                FoxConfig.saveLastUpdateCheck();
                                 updateAppUpdateViews();
                             }
                         } else {
                             if (updateResult instanceof UpdateManager.UpdateNotAvailable && force) {
                                 NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.showBulletin, Bulletin.TYPE_ERROR, LocaleController.formatString("NoUpdateAvailable", R.string.NoUpdateAvailable));
                             }
-                            ColorConfig.saveUpdateStatus(0);
+                            FoxConfig.saveUpdateStatus(0);
                         }
                     }
 
@@ -7323,7 +7323,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                         showVoiceChatTooltip(mute ? UndoView.ACTION_VOIP_SOUND_MUTED : UndoView.ACTION_VOIP_SOUND_UNMUTED);
                     }
                 }
-            } else if ((ColorConfig.turnSoundOnVDKey || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP) && (!mainFragmentsStack.isEmpty() && (!PhotoViewer.hasInstance() || !PhotoViewer.getInstance().isVisible()) && event.getRepeatCount() == 0)) {
+            } else if ((FoxConfig.turnSoundOnVDKey || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP) && (!mainFragmentsStack.isEmpty() && (!PhotoViewer.hasInstance() || !PhotoViewer.getInstance().isVisible()) && event.getRepeatCount() == 0)) {
                 BaseFragment fragment = mainFragmentsStack.get(mainFragmentsStack.size() - 1);
                 if (fragment instanceof ChatActivity) {
                     if (((ChatActivity) fragment).maybePlayVisibleVideo()) {

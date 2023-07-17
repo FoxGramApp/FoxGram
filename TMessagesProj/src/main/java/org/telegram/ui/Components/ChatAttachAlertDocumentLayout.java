@@ -90,7 +90,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
-import it.colorgram.android.CustomEmojiController;
+import it.foxgram.android.CustomEmojiController;
 
 public class ChatAttachAlertDocumentLayout extends ChatAttachAlert.AttachAlertLayout {
 

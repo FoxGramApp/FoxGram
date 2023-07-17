@@ -29,7 +29,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipException;
 
-import it.colorgram.android.ColorConfig;
+import it.foxgram.android.FoxConfig;
 
 public class FileLoadOperation {
 
@@ -233,11 +233,11 @@ public class FileLoadOperation {
     }
 
     private void updateParams() {
-        if (ColorConfig.downloadSpeedBoost == ColorConfig.DOWNLOAD_BOOST_FAST || MessagesController.getInstance(currentAccount).getfileExperimentalParams && !forceSmallChunk) {
+        if (FoxConfig.downloadSpeedBoost == FoxConfig.DOWNLOAD_BOOST_FAST || MessagesController.getInstance(currentAccount).getfileExperimentalParams && !forceSmallChunk) {
             downloadChunkSizeBig = 1024 * 512;
             maxDownloadRequests = 8;
             maxDownloadRequestsBig = 8;
-        } else if (ColorConfig.downloadSpeedBoost == ColorConfig.DOWNLOAD_BOOST_EXTREME) {
+        } else if (FoxConfig.downloadSpeedBoost == FoxConfig.DOWNLOAD_BOOST_EXTREME) {
             downloadChunkSizeBig = 1024 * 1024;
             maxDownloadRequests = 12;
             maxDownloadRequestsBig = 12;

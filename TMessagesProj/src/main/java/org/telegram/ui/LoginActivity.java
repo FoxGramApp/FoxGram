@@ -97,7 +97,6 @@ import com.google.android.gms.safetynet.SafetyNet;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.telegram.PhoneFormat.PhoneFormat;
-import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.AuthTokensHelper;
@@ -136,7 +135,6 @@ import org.telegram.ui.Components.AvatarDrawable;
 import org.telegram.ui.Components.BackupImageView;
 import org.telegram.ui.Components.Bulletin;
 import org.telegram.ui.Components.BulletinFactory;
-import org.telegram.ui.Components.CombinedDrawable;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.CustomPhoneKeyboardView;
 import org.telegram.ui.Components.Easings;
@@ -179,8 +177,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.android.PasscodeController;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.android.PasscodeController;
 
 @SuppressLint("HardwareIds")
 public class LoginActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
@@ -484,7 +482,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         });
 
         if (UserConfig.getActivatedAccountsCount() == 0) {
-            ColorConfig.updateCurrentVersion();
+            FoxConfig.updateCurrentVersion();
         }
 
         currentDoneType = DONE_TYPE_FLOATING;
@@ -2343,7 +2341,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                 if (index1 != -1 && index2 != -1 && index1 != index2) {
                     text.replace(index2, index2 + 1, "");
                     text.replace(index1, index1 + 1, "");
-                    text.setSpan(new URLSpanNoUnderline("https://colorgram.app/terms"), index1, index2 - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    text.setSpan(new URLSpanNoUnderline("https://telegram.org/privacy"), index1, index2 - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
                 privacyView.setText(text);
                 privacyLayout.addView(privacyView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, 56, Gravity.LEFT | Gravity.BOTTOM, 14, 0, 70, 32));

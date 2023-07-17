@@ -11,7 +11,6 @@ package org.telegram.tgnet;
 import android.graphics.Bitmap;
 import android.graphics.Path;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
@@ -27,7 +26,7 @@ import org.telegram.messenger.Utilities;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import it.colorgram.android.MessageHelper;
+import it.foxgram.android.MessageHelper;
 
 public class TLRPC {
 

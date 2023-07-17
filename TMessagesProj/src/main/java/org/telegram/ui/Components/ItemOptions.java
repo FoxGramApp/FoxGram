@@ -29,7 +29,7 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.UserCell;
 import org.telegram.ui.ProfileActivity;
 
-import it.colorgram.android.ColorConfig;
+import it.foxgram.android.FoxConfig;
 
 public class ItemOptions {
     public static ItemOptions makeOptions(@NonNull BaseFragment fragment, @NonNull View scrimView) {
@@ -227,7 +227,7 @@ public class ItemOptions {
             @Override
             protected void onDraw(Canvas canvas) {
                 super.onDraw(canvas);
-                if (!ColorConfig.smoothNav) {
+                if (!FoxConfig.smoothNav) {
                     canvas.drawColor(dim);
 
                     if (cachedBitmap != null && scrimView.getParent() instanceof View) {

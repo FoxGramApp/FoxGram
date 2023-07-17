@@ -112,8 +112,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-import it.colorgram.ui.Components.SendOptionsMenuLayout;
-import it.colorgram.android.utils.ForwardContext;
+import it.foxgram.ui.Components.SendOptionsMenuLayout;
+import it.foxgram.android.utils.ForwardContext;
 
 public class ShareAlert extends BottomSheet implements NotificationCenter.NotificationCenterDelegate {
 

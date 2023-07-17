@@ -14,7 +14,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -47,7 +46,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import it.colorgram.android.ColorConfig;
+import it.foxgram.android.FoxConfig;
 
 public class SharedConfig {
     /**
@@ -175,7 +174,7 @@ public class SharedConfig {
     public static boolean recordViaSco = false;
     public static boolean customTabs = true;
     public static boolean directShare = true;
-    public static boolean inappCamera = ColorConfig.cameraEnable;
+    public static boolean inappCamera = FoxConfig.cameraEnable;
     public static boolean roundCamera16to9 = true;
     public static boolean noSoundHintShowed = false;
     public static boolean streamMedia = true;

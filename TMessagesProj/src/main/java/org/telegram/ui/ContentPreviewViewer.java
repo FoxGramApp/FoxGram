@@ -19,7 +19,6 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.text.Layout;
@@ -71,8 +70,8 @@ import org.telegram.ui.Components.SuggestEmojiView;
 
 import java.util.ArrayList;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.android.MessageHelper;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.android.MessageHelper;
 
 public class ContentPreviewViewer {
 
@@ -741,7 +740,7 @@ public class ContentPreviewViewer {
 
     private boolean canSend(View view) {
         boolean isGif = view instanceof ContextLinkCell && ((ContextLinkCell) view).isGif();
-        return !ColorConfig.confirmSending.sendGifs && isGif || !ColorConfig.confirmSending.sendStickers && !isGif;
+        return !FoxConfig.confirmSending.sendGifs && isGif || !FoxConfig.confirmSending.sendStickers && !isGif;
     }
 
     public boolean onTouch(MotionEvent event, final RecyclerListView listView, final int height, final Object listener, ContentPreviewViewerDelegate contentPreviewViewerDelegate, Theme.ResourcesProvider resourcesProvider) {

@@ -17,7 +17,7 @@ import org.telegram.ui.ActionBar.Theme;
 
 import java.util.Random;
 
-import it.colorgram.ui.Cells.Dynamic.ButtonCell;
+import it.foxgram.ui.Cells.Dynamic.ButtonCell;
 
 public class FlickerLoadingView extends View {
 

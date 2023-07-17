@@ -42,7 +42,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -143,9 +142,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.android.MonetThemeController;
-import it.colorgram.android.entities.syntax_highlight.SyntaxHighlight;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.android.MonetThemeController;
+import it.foxgram.android.entities.syntax_highlight.SyntaxHighlight;
 
 public class Theme {
 
@@ -5045,7 +5044,7 @@ public class Theme {
                 canStartHolidayAnimation = false;
             }
             if (dialogs_holidayDrawable == null) {
-                if ((((monthOfYear == 11 && dayOfMonth >= (BuildVars.DEBUG_PRIVATE_VERSION ? 29 : 31) && dayOfMonth <= 31 || monthOfYear == 0 && dayOfMonth == 1) && ColorConfig.eventType == 0) || ColorConfig.eventType == 1) && ColorConfig.showSantaHat) {
+                if ((((monthOfYear == 11 && dayOfMonth >= (BuildVars.DEBUG_PRIVATE_VERSION ? 29 : 31) && dayOfMonth <= 31 || monthOfYear == 0 && dayOfMonth == 1) && FoxConfig.eventType == 0) || FoxConfig.eventType == 1) && FoxConfig.showSantaHat) {
                     dialogs_holidayDrawable = ApplicationLoader.applicationContext.getResources().getDrawable(R.drawable.newyear);
                     dialogs_holidayDrawableOffsetX = -AndroidUtilities.dp(3);
                     dialogs_holidayDrawableOffsetY = -AndroidUtilities.dp(-7);

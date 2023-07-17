@@ -9,7 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
@@ -48,9 +47,6 @@ import org.telegram.ui.PremiumPreviewFragment;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import it.colorgram.android.ColorConfig;
-import it.colorgram.android.MonetIconController;
 
 public class AppIconsSelectorCell extends RecyclerListView implements NotificationCenter.NotificationCenterDelegate {
     public final static float ICONS_ROUND_RADIUS = 18;
@@ -155,19 +151,6 @@ public class AppIconsSelectorCell extends RecyclerListView implements Notificati
 
     @SuppressLint("NotifyDataSetChanged")
     private void updateIconsVisibility() {
-        /*
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S_V2) {
-            availableIcons.clear();
-            availableIcons.addAll(Arrays.asList(LauncherIconController.LauncherIcon.values()));
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S && !(MonetIconController.isSelectedMonet())) {
-            availableIcons.clear();
-            availableIcons.addAll(Arrays.asList(LauncherIconController.LauncherIcon.values()));
-            availableIcons.remove(LauncherIconController.LauncherIcon.MONET);
-        } else if (MonetIconController.needMonetMigration()) {
-            availableIcons.clear();
-            availableIcons.addAll(Arrays.asList(LauncherIconController.LauncherIcon.values()));
-        }
-        */
         availableIcons.clear();
         availableIcons.addAll(Arrays.asList(LauncherIconController.LauncherIcon.values()));
         availableIcons.remove(LauncherIconController.LauncherIcon.MONET);

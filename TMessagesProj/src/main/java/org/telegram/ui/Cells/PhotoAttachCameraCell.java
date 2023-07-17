@@ -26,7 +26,7 @@ import org.telegram.ui.Components.LayoutHelper;
 
 import java.io.File;
 
-import it.colorgram.android.ColorConfig;
+import it.foxgram.android.FoxConfig;
 
 @SuppressLint("NewApi")
 public class PhotoAttachCameraCell extends FrameLayout {
@@ -81,7 +81,7 @@ public class PhotoAttachCameraCell extends FrameLayout {
 
     public void updateBitmap() {
         Bitmap bitmap = null;
-        if (!ColorConfig.cameraPreview) {
+        if (!FoxConfig.cameraPreview) {
             try {
                 File file = new File(ApplicationLoader.getFilesDirFixed(), "cthumb.jpg");
                 bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());

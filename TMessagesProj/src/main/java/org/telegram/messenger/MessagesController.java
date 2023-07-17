@@ -88,7 +88,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
-import it.colorgram.android.StoreUtils;
+import it.foxgram.android.StoreUtils;
 
 public class  MessagesController extends BaseController implements NotificationCenter.NotificationCenterDelegate {
 

@@ -63,8 +63,7 @@ import org.telegram.ui.Components.UndoView;
 
 import java.util.ArrayList;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.android.FolderIconController;
+import it.foxgram.android.FoxConfig;
 
 public class FiltersSetupActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
@@ -499,9 +498,9 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
         ArrayList<MessagesController.DialogFilter> dialogFilters = getMessagesController().getDialogFilters();
         items.add(ItemInner.asHint());
         items.add(ItemInner.asHeader(LocaleController.getString("FoldersType", R.string.FoldersType)));
-        items.add(ItemInner.asRadio(LocaleController.getString("FoldersTypeTitles", R.string.FoldersTypeTitles), ColorConfig.TAB_TYPE_TEXT));
-        items.add(ItemInner.asRadio(LocaleController.getString("FoldersTypeIcons", R.string.FoldersTypeIcons), ColorConfig.TAB_TYPE_ICON));
-        items.add(ItemInner.asRadio(LocaleController.getString("FoldersTypeIconsTitles", R.string.FoldersTypeIconsTitles), ColorConfig.TAB_TYPE_MIX));
+        items.add(ItemInner.asRadio(LocaleController.getString("FoldersTypeTitles", R.string.FoldersTypeTitles), FoxConfig.TAB_TYPE_TEXT));
+        items.add(ItemInner.asRadio(LocaleController.getString("FoldersTypeIcons", R.string.FoldersTypeIcons), FoxConfig.TAB_TYPE_ICON));
+        items.add(ItemInner.asRadio(LocaleController.getString("FoldersTypeIconsTitles", R.string.FoldersTypeIconsTitles), FoxConfig.TAB_TYPE_MIX));
         items.add(ItemInner.asShadow(null));
         if (!suggestedFilters.isEmpty() && dialogFilters.size() < 10) {
             items.add(ItemInner.asHeader(LocaleController.getString("FilterRecommended", R.string.FilterRecommended)));
@@ -632,7 +631,7 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
                     presentFragment(new FilterCreateActivity());
                 }
             } else if (item.viewType == VIEW_TYPE_RADIO) {
-                ColorConfig.setTabMode(item.folderType);
+                FoxConfig.setTabMode(item.folderType);
                 updateRows(true);
                 getNotificationCenter().postNotificationName(NotificationCenter.dialogFiltersUpdated);
             }
@@ -703,7 +702,7 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
             ItemInner i = new ItemInner(VIEW_TYPE_RADIO);
             i.text = text;
             i.folderType = type;
-            i.selectedRadio = ColorConfig.tabMode == i.folderType;
+            i.selectedRadio = FoxConfig.tabMode == i.folderType;
             return i;
         }
 
@@ -987,7 +986,7 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
                 }
                 case VIEW_TYPE_RADIO: {
                     RadioCell radioCell = (RadioCell) holder.itemView;
-                    radioCell.setText(item.text.toString(), ColorConfig.tabMode == item.folderType, true);
+                    radioCell.setText(item.text.toString(), FoxConfig.tabMode == item.folderType, true);
                     break;
                 }
             }

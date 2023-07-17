@@ -61,8 +61,8 @@ import org.telegram.ui.Components.RecyclerListView;
 
 import java.util.ArrayList;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.ui.DoNotTranslateSettings;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.ui.DoNotTranslateSettings;
 
 public abstract class TextSelectionHelper<Cell extends TextSelectionHelper.SelectableView> {
 
@@ -1288,7 +1288,7 @@ public abstract class TextSelectionHelper<Cell extends TextSelectionHelper.Selec
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 menu.add(Menu.NONE, android.R.id.copy, 0, android.R.string.copy);
                 menu.add(Menu.NONE, android.R.id.selectAll, 1, android.R.string.selectAll);
-                if (ColorConfig.showTranslate) menu.add(Menu.NONE, TRANSLATE, 2, LocaleController.getString("TranslateMessage", R.string.TranslateMessage));
+                if (FoxConfig.showTranslate) menu.add(Menu.NONE, TRANSLATE, 2, LocaleController.getString("TranslateMessage", R.string.TranslateMessage));
                 return true;
             }
 
@@ -1333,7 +1333,7 @@ public abstract class TextSelectionHelper<Cell extends TextSelectionHelper.Selec
             private String translateFromLanguage = null;
             private void updateTranslateButton(Menu menu) {
                 //String translateToLanguage = LocaleController.getInstance().getCurrentLocale().getLanguage();
-                if (ColorConfig.showTranslate) menu.getItem(2).setVisible(translateFromLanguage == null || !DoNotTranslateSettings.getRestrictedLanguages().contains(translateFromLanguage.split("-")[0]));
+                if (FoxConfig.showTranslate) menu.getItem(2).setVisible(translateFromLanguage == null || !DoNotTranslateSettings.getRestrictedLanguages().contains(translateFromLanguage.split("-")[0]));
                 /*
                  onTranslateListener != null && (
                                 (

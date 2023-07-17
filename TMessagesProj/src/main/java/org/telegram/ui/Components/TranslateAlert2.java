@@ -50,7 +50,6 @@ import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.TranslateController;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.XiaomiUtilities;
-import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.ActionBarMenuSubItem;
 import org.telegram.ui.ActionBar.ActionBarPopupWindow;
@@ -64,10 +63,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.android.entities.HTMLKeeper;
-import it.colorgram.android.translator.Translator;
-import it.colorgram.android.translator.TranslatorHelper;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.android.entities.HTMLKeeper;
+import it.foxgram.android.translator.Translator;
+import it.foxgram.android.translator.TranslatorHelper;
 
 public class TranslateAlert2 extends BottomSheet implements NotificationCenter.NotificationCenterDelegate {
 
@@ -1131,11 +1130,11 @@ public class TranslateAlert2 extends BottomSheet implements NotificationCenter.N
     }
 
     public static String getToLanguage() {
-        return ColorConfig.translationTarget;
+        return FoxConfig.translationTarget;
     }
 
     public static void setToLanguage(String toLang) {
-        ColorConfig.setTranslationTarget(toLang);
+        FoxConfig.setTranslationTarget(toLang);
     }
 
     public static void resetToLanguage() {

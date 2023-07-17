@@ -35,7 +35,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
-import it.colorgram.android.PermissionsUtils;
+import it.foxgram.android.PermissionsUtils;
 
 public class WallpaperUpdater {
 

@@ -12,7 +12,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
-import it.colorgram.android.StoreUtils;
+import it.foxgram.android.StoreUtils;
 import com.android.billingclient.api.ProductDetails;
 
 import java.util.Objects;
@@ -24,9 +24,9 @@ public class BuildVars {
     public static boolean LOGS_ENABLED = BuildConfig.DEBUG_PRIVATE_VERSION;
     public static boolean DEBUG_PRIVATE_VERSION = BuildConfig.DEBUG_PRIVATE_VERSION;
     public static boolean IGNORE_VERSION_CHECK = false;
-    public static boolean MAGIC_COLOR_EXCEPTIONS = false;
+    public static boolean MAGIC_FOX_EXCEPTIONS = false;
 
-    // Colorgram
+    // FoxGram
     public static boolean USE_CLOUD_STRINGS = true;
     public static boolean CHECK_UPDATES = false;
 
@@ -72,14 +72,14 @@ public class BuildVars {
 
     public static boolean isStandaloneApp() {
         if (standaloneApp == null) {
-            standaloneApp = ApplicationLoader.applicationContext != null && "it.colorgram.android".equals(ApplicationLoader.applicationContext.getPackageName());
+            standaloneApp = ApplicationLoader.applicationContext != null && "it.foxgram.android".equals(ApplicationLoader.applicationContext.getPackageName());
         }
         return standaloneApp;
     }
 
     public static boolean isBetaApp() {
         if (betaApp == null) {
-            betaApp = ApplicationLoader.applicationContext != null && "it.colorgram.android.beta".equals(ApplicationLoader.applicationContext.getPackageName());
+            betaApp = ApplicationLoader.applicationContext != null && "it.foxgram.android.beta".equals(ApplicationLoader.applicationContext.getPackageName());
         }
         return betaApp;
     }

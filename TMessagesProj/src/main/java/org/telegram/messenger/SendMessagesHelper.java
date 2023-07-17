@@ -22,7 +22,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.MediaCodecInfo;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -91,9 +90,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.android.media.VideoUtils;
-import it.colorgram.android.entities.EntitiesHelper;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.android.media.VideoUtils;
+import it.foxgram.android.entities.EntitiesHelper;
 
 public class SendMessagesHelper extends BaseController implements NotificationCenter.NotificationCenterDelegate {
 
@@ -6335,9 +6334,9 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
     }
 
     public TLRPC.TL_photo generatePhotoSizes(TLRPC.TL_photo photo, String path, Uri imageUri) {
-        int maxSize = ColorConfig.sendLargePhotos ? 2560 : 1280;
+        int maxSize = FoxConfig.sendLargePhotos ? 2560 : 1280;
         Bitmap bitmap = ImageLoader.loadBitmap(path, imageUri, maxSize, maxSize, true);
-        if (bitmap == null && ColorConfig.sendLargePhotos) {
+        if (bitmap == null && FoxConfig.sendLargePhotos) {
             bitmap = ImageLoader.loadBitmap(path, imageUri, 1280, 1280, true);
         }
         if (bitmap == null) {
@@ -7293,9 +7292,9 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
             File bigFile = FileLoader.getInstance(accountInstance.getCurrentAccount()).getPathToAttach(bigSize, false);
             boolean bigExists = bigFile.exists();
             if (!smallExists || !bigExists) {
-                int maxSize = ColorConfig.sendLargePhotos ? 2560 : 1280;
+                int maxSize = FoxConfig.sendLargePhotos ? 2560 : 1280;
                 Bitmap bitmap = ImageLoader.loadBitmap(path, uri, maxSize, maxSize, true);
-                if (bitmap == null && ColorConfig.sendLargePhotos) {
+                if (bitmap == null && FoxConfig.sendLargePhotos) {
                     bitmap = ImageLoader.loadBitmap(path, uri, 1280, 1280, true);
                 }
                 if (bitmap == null) {
@@ -8248,7 +8247,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
         int compressionsCount = VideoUtils.getCompressionsCount(videoEditedInfo.originalWidth, videoEditedInfo.originalHeight);
         float maxSize = VideoUtils.getMaxSize(videoEditedInfo.originalWidth, videoEditedInfo.originalHeight, compressionsCount -1);
 
-        int selectedCompression = ColorConfig.lastSelectedCompression;
+        int selectedCompression = FoxConfig.lastSelectedCompression;
 
         if (selectedCompression > compressionsCount) {
             selectedCompression = compressionsCount;

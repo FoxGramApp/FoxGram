@@ -24,7 +24,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -43,7 +42,7 @@ import org.telegram.ui.ChatBackgroundDrawable;
 
 import java.util.ArrayList;
 
-import it.colorgram.android.ColorConfig;
+import it.foxgram.android.FoxConfig;
 
 public class SizeNotifierFrameLayout extends FrameLayout {
 
@@ -493,7 +492,7 @@ public class SizeNotifierFrameLayout extends FrameLayout {
     }
 
     private void checkSnowflake(Canvas canvas) {
-        if ((Theme.canStartHolidayAnimation() || ColorConfig.eventType == 1) && ColorConfig.showSnowFalling && LiteMode.isEnabled(LiteMode.FLAG_CHAT_BACKGROUND)) {
+        if ((Theme.canStartHolidayAnimation() || FoxConfig.eventType == 1) && FoxConfig.showSnowFalling && LiteMode.isEnabled(LiteMode.FLAG_CHAT_BACKGROUND)) {
             if (snowflakesEffect == null) {
                 snowflakesEffect = new SnowflakesEffect(1);
             }

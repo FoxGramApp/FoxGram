@@ -35,8 +35,8 @@ import org.telegram.ui.ChatActivity;
 
 import java.util.ArrayList;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.ui.DoNotTranslateSettings;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.ui.DoNotTranslateSettings;
 
 @SuppressLint("ViewConstructor")
 public class TranslateButton extends FrameLayout {
@@ -159,7 +159,7 @@ public class TranslateButton extends FrameLayout {
 
         ActionBarMenuSubItem translateToButton = new ActionBarMenuSubItem(getContext(), true, false, resourcesProvider);
         translateToButton.setTextAndIcon(LocaleController.getString("TranslateTo", R.string.TranslateTo), R.drawable.msg_translate);
-        translateToButton.setSubtext(TranslateAlert2.capitalFirst(TranslateAlert2.languageName(ColorConfig.translationTarget)));
+        translateToButton.setSubtext(TranslateAlert2.capitalFirst(TranslateAlert2.languageName(FoxConfig.translationTarget)));
         translateToButton.setItemHeight(56);
         translateToButton.setOnClickListener(e -> popupLayout.getSwipeBack().openForeground(swipeBackIndex));
         popupLayout.addView(translateToButton);
@@ -174,7 +174,7 @@ public class TranslateButton extends FrameLayout {
         String detectedLanguage = translateController.getDialogDetectedLanguage(dialogId, topicId);
         String detectedLanguageName = TranslateAlert2.languageName(detectedLanguage);
         String detectedLanguageNameAccusative = TranslateAlert2.languageName(detectedLanguage, accusative);
-        String currentTranslateTo = ColorConfig.translationTarget;
+        String currentTranslateTo = FoxConfig.translationTarget;
 
         ArrayList<TranslateController.Language> suggestedLanguages = TranslateController.getSuggestedLanguages(currentTranslateTo);
         ArrayList<TranslateController.Language> allLanguages = TranslateController.getLanguages();

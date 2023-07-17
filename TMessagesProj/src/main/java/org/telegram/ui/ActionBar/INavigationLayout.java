@@ -20,7 +20,7 @@ import org.telegram.ui.LNavigation.LNavigation;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.colorgram.android.ColorConfig;
+import it.foxgram.android.FoxConfig;
 
 public interface INavigationLayout {
     int REBUILD_FLAG_REBUILD_LAST = 1, REBUILD_FLAG_REBUILD_ONLY_LAST = 2;
@@ -83,7 +83,7 @@ public interface INavigationLayout {
     void setPulledDialogs(List<BackButtonMenu.PulledDialog> pulledDialogs);
 
     static INavigationLayout newLayout(Context context) {
-        return ColorConfig.smoothNav ? new LNavigation(context) : new ActionBarLayout(context);
+        return FoxConfig.smoothNav ? new LNavigation(context) : new ActionBarLayout(context);
     }
 
     static INavigationLayout newLayout(Context context, Supplier<BottomSheet> supplier) {

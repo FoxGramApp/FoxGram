@@ -237,23 +237,23 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.android.StoreUtils;
-import it.colorgram.android.AccountRegistrationDateController;
-import it.colorgram.ui.Cells.ActionPanel;
-import it.colorgram.ui.Cells.Datacenter;
-import it.colorgram.ui.Cells.DcStyleSelector;
-import it.colorgram.ui.Cells.Dynamic.ThemeInfo;
-import it.colorgram.android.ActionButtonController;
-import it.colorgram.android.utils.DCHelper;
-import it.colorgram.ui.BaseSettingsActivity;
-import it.colorgram.ui.DoNotTranslateSettings;
-import it.colorgram.ui.ColorgramSettings;
-import it.colorgram.ui.Components.AutoTranslatePopupWrapper;
-import it.colorgram.android.translator.BaseTranslator;
-import it.colorgram.android.translator.Translator;
-import it.colorgram.android.translator.TranslatorHelper;
-import it.colorgram.android.updates.UpdateManager;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.android.StoreUtils;
+import it.foxgram.android.AccountRegistrationDateController;
+import it.foxgram.ui.Cells.ActionPanel;
+import it.foxgram.ui.Cells.Datacenter;
+import it.foxgram.ui.Cells.DcStyleSelector;
+import it.foxgram.ui.Cells.Dynamic.ThemeInfo;
+import it.foxgram.android.ActionButtonController;
+import it.foxgram.android.utils.DCHelper;
+import it.foxgram.ui.BaseSettingsActivity;
+import it.foxgram.ui.DoNotTranslateSettings;
+import it.foxgram.ui.FoxGramSettings;
+import it.foxgram.ui.Components.AutoTranslatePopupWrapper;
+import it.foxgram.android.translator.BaseTranslator;
+import it.foxgram.android.translator.Translator;
+import it.foxgram.android.translator.TranslatorHelper;
+import it.foxgram.android.updates.UpdateManager;
 
 public class ProfileActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, DialogsActivity.DialogsActivityDelegate, SharedMediaLayout.SharedMediaPreloaderDelegate, ImageUpdater.ImageUpdaterDelegate, SharedMediaLayout.Delegate {
     private final static int PHONE_OPTION_CALL = 0,
@@ -3509,7 +3509,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             } else if (position == premiumRow) {
                 presentFragment(new PremiumPreviewFragment("settings"));
             } else if (position == colorSettingsRow) {
-                presentFragment(new ColorgramSettings());
+                presentFragment(new FoxGramSettings());
             } else {
                 processOnClickOrPress(position, view, x, y);
             }
@@ -3598,11 +3598,11 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                             } else if (which == 11) {
                                 SharedConfig.pendingAppUpdate = null;
                                 SharedConfig.saveConfig();
-                                ColorConfig.updateData.set(null);
-                                ColorConfig.applyUpdateData();
-                                ColorConfig.saveUpdateStatus(0);
-                                ColorConfig.remindUpdate(-1);
-                                ColorConfig.saveLastUpdateCheck(true);
+                                FoxConfig.updateData.set(null);
+                                FoxConfig.applyUpdateData();
+                                FoxConfig.saveUpdateStatus(0);
+                                FoxConfig.remindUpdate(-1);
+                                FoxConfig.saveLastUpdateCheck(true);
                                 if (!StoreUtils.isDownloadedFromAnyStore()) UpdateManager.deleteUpdate();
                                 NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
                             } else if (which == 12) {
@@ -4796,13 +4796,13 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     }
 
     private static long lastClickTime = 0;
-    public static void startColorSound() {
+    public static void startFoxSound() {
         if (SystemClock.elapsedRealtime() - lastClickTime < 2000) {
             return;
         }
         lastClickTime = SystemClock.elapsedRealtime();
         SoundPool soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-        soundPool.load(ApplicationLoader.applicationContext, R.raw.color_sound, 1);
+        soundPool.load(ApplicationLoader.applicationContext, R.raw.fox_sound, 1);
         soundPool.setOnLoadCompleteListener((pool, sampleId, status) -> {
             if (status == 0) {
                 try {
@@ -5345,7 +5345,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             final boolean translateButtonEnabled = MessagesController.getInstance(currentAccount).getTranslateController().isContextTranslateEnabled();
             final boolean[] withTranslate = new boolean[1];
             withTranslate[0] = position == bioRow || position == channelInfoRow || position == userInfoRow;
-            withTranslate[0] &= ColorConfig.showTranslate;
+            withTranslate[0] &= FoxConfig.showTranslate;
             final String toLang = LocaleController.getInstance().getCurrentLocale().getLanguage();
             Runnable showMenu = () -> {
                 if (getParentActivity() == null) {
@@ -5468,7 +5468,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     }
 
     private void translateBio(String bio, AboutLinkCell aboutLinkCell){
-        if (ColorConfig.translatorStyle == BaseTranslator.INLINE_STYLE) {
+        if (FoxConfig.translatorStyle == BaseTranslator.INLINE_STYLE) {
             if(translatingBio) return;
             translatingBio = true;
             Translator.translate(bio, (error, result) -> {
@@ -7087,7 +7087,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     animatingItem.setAlpha(1.0f);
                     animators.add(ObjectAnimator.ofFloat(animatingItem, View.ALPHA, 0.0f));
                 }
-                if (callItemVisible && (chatId != 0 || ColorConfig.searchIconInActionBar)) {
+                if (callItemVisible && (chatId != 0 || FoxConfig.searchIconInActionBar)) {
                     callItem.setAlpha(0.0f);
                     animators.add(ObjectAnimator.ofFloat(callItem, View.ALPHA, 1.0f));
                 }
@@ -7163,7 +7163,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     animatingItem.setAlpha(0.0f);
                     animators.add(ObjectAnimator.ofFloat(animatingItem, View.ALPHA, 1.0f));
                 }
-                if (callItemVisible && (chatId != 0 || ColorConfig.searchIconInActionBar)) {
+                if (callItemVisible && (chatId != 0 || FoxConfig.searchIconInActionBar)) {
                     callItem.setAlpha(1.0f);
                     animators.add(ObjectAnimator.ofFloat(callItem, View.ALPHA, 0.0f));
                 }
@@ -7475,7 +7475,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             TLRPC.User user = getMessagesController().getUser(userId);
 
             if (UserObject.isUserSelf(user)) {
-                if (ColorConfig.buttonStyleType != 5) {
+                if (FoxConfig.buttonStyleType != 5) {
                     actionsSectionRow = rowCount++;
                     actionsSectionDivider = rowCount++;
                 }
@@ -7484,13 +7484,13 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     setAvatarSectionRow = rowCount++;
                 }
                 numberSectionRow = rowCount++;
-                if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
+                if (FoxConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.FOXGRAM_DC) {
                     datacenterRow = rowCount++;
                 }
                 numberRow = rowCount++;
                 setUsernameRow = rowCount++;
-                if (ColorConfig.showAccountRegistrationDate && !isChat()) dateRow = rowCount++;
-                if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
+                if (FoxConfig.showAccountRegistrationDate && !isChat()) dateRow = rowCount++;
+                if (FoxConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
                     datacenterRow = rowCount++;
                 }
                 bioRow = rowCount++;
@@ -7547,7 +7547,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 boolean hasInfo = userInfo != null && !TextUtils.isEmpty(userInfo.about) || user != null && !TextUtils.isEmpty(username);
                 boolean hasPhone = user != null && (!TextUtils.isEmpty(user.phone) || !TextUtils.isEmpty(vcardPhone));
 
-                if (ColorConfig.buttonStyleType != 5) {
+                if (FoxConfig.buttonStyleType != 5) {
                     if(userInfo != null) {
                         actionsSectionRow = rowCount++;
                     } else {
@@ -7557,21 +7557,21 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 infoHeaderRow = rowCount++;
 
-                if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
+                if (FoxConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.FOXGRAM_DC) {
                     if (currentUser != null || currentChat != null) {
                         datacenterRow = rowCount++;
                     } else {
                         datacenterPlaceholderRow = rowCount++;
                     }
                 }
-                if (ColorConfig.showAccountRegistrationDate && !isChat()) dateRow = rowCount++;
+                if (FoxConfig.showAccountRegistrationDate && !isChat()) dateRow = rowCount++;
                 if (!isBot && (hasPhone || !hasInfo)) {
                     phoneRow = rowCount++;
                 }
                 if (userInfo != null && !TextUtils.isEmpty(userInfo.about)) {
                     userInfoRow = rowCount++;
                 }
-                if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
+                if (FoxConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
                     datacenterRow = rowCount++;
                 }
                 if (user != null && username != null) {
@@ -7634,7 +7634,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 sharedMediaRow = rowCount++;
             }
         } else if (chatId != 0) {
-            if (ColorConfig.buttonStyleType != 5) {
+            if (FoxConfig.buttonStyleType != 5) {
                 if(currentChat != null) {
                     actionsSectionRow = rowCount++;
                 }else {
@@ -7642,10 +7642,10 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 actionsSectionDivider = rowCount++;
             }
-            if (ColorConfig.showIDAndDC) {
+            if (FoxConfig.showIDAndDC) {
                 infoHeaderRow = rowCount++;
             }
-            if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
+            if (FoxConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.FOXGRAM_DC) {
                 if (currentUser != null || currentChat != null) {
                     datacenterRow = rowCount++;
                 } else {
@@ -7656,7 +7656,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 if (LocaleController.isRTL && ChatObject.isChannel(currentChat) && chatInfo != null && !currentChat.megagroup && chatInfo.linked_chat_id != 0) {
                     emptyRow = rowCount++;
                 }
-                if (!ColorConfig.showIDAndDC) {
+                if (!FoxConfig.showIDAndDC) {
                     infoHeaderRow = rowCount++;
                 }
                 if (chatInfo != null) {
@@ -7667,7 +7667,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         locationRow = rowCount++;
                     }
                 }
-                if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
+                if (FoxConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
                     datacenterRow = rowCount++;
                 }
                 if (ChatObject.isPublic(currentChat)) {
@@ -7676,7 +7676,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 if (!currentChat.restriction_reason.isEmpty()) {
                     restrictionReasonRow = rowCount++;
                 }
-            } else if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
+            } else if (FoxConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
                 datacenterRow = rowCount++;
             }
             if (infoHeaderRow != -1) {
@@ -9703,7 +9703,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                             text = LocaleController.getString("PhoneHidden", R.string.PhoneHidden);
                             phoneNumber = null;
                         }
-                        if (ColorConfig.hideContactNumber){
+                        if (FoxConfig.hideContactNumber){
                             text = LocaleController.getString("MobileHidden",R.string.MobileHidden);
                         }
                         isFragmentPhoneNumber = phoneNumber != null && phoneNumber.matches("888\\d{8}");
@@ -9786,7 +9786,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         TLRPC.User user = UserConfig.getInstance(currentAccount).getCurrentUser();
                         String value;
                         if (user != null && user.phone != null && user.phone.length() != 0) {
-                            if (!ColorConfig.hidePhoneNumber){
+                            if (!FoxConfig.hidePhoneNumber){
                                 value = PhoneFormat.getInstance().format("+" + user.phone);
                             }else{
                                 value = LocaleController.getString("MobileHidden",R.string.MobileHidden);
@@ -10399,7 +10399,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 return VIEW_TYPE_PLACEHOLDER;
             } else if (position == actionsSectionDivider) {
                 return VIEW_TYPE_ACTIONS_BUTTON_DIVIDER;
-            } else if (position == datacenterRow && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
+            } else if (position == datacenterRow && DcStyleSelector.getStyleSelected() == DcStyleSelector.FOXGRAM_DC) {
                 return VIEW_TYPE_DATACENTER_INFO;
             } else if (position == addToGroupInfoRow) {
                 return VIEW_TYPE_ADDTOGROUP_INFO;
@@ -10444,7 +10444,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             }
         }
         ThemeInfo themeInfo = actionPanelCell.getTheme();
-        if (datacenterCell != null && themeInfo != null && ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
+        if (datacenterCell != null && themeInfo != null && FoxConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.FOXGRAM_DC) {
             datacenterCell.setTheme(themeInfo);
         }
         RLottieDrawable photoAnimationDrawable = actionPanelCell.getPhotoAnimationDrawable();
@@ -11431,13 +11431,13 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
 
         // CUSTOM ELEMENTS
-        if (ColorConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.colorgram_DC) {
+        if (FoxConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.FOXGRAM_DC) {
             arrayList.add(new ThemeDescription(listView, 0, new Class[]{Datacenter.class}, new String[]{"tv"}, null, null, null, Theme.key_windowBackgroundWhiteBlackText));
             arrayList.add(new ThemeDescription(listView, 0, new Class[]{Datacenter.class}, new String[]{"tv2"}, null, null, null, Theme.key_windowBackgroundWhiteGrayText2));
             arrayList.add(new ThemeDescription(listView,0, new Class[]{Datacenter.class}, new String[]{"iv"}, null, null, null, Theme.key_switch2TrackChecked));
             arrayList.add(new ThemeDescription(listView,0, new Class[]{Datacenter.class}, new String[]{"mainLayout"}, null, null, null, Theme.key_windowBackgroundWhite));
         }
-        if (ColorConfig.buttonStyleType != 5) {
+        if (FoxConfig.buttonStyleType != 5) {
             arrayList.add(new ThemeDescription(listView, 0, new Class[]{ActionPanel.class}, new String[]{"mainLayout"}, null, null, null, Theme.key_switch2TrackChecked));
             arrayList.add(new ThemeDescription(listView, 0, new Class[]{ActionPanel.class}, new String[]{"mainLayout"}, null, null, null, Theme.key_windowBackgroundWhiteRedText4));
             arrayList.add(new ThemeDescription(listView, 0, new Class[]{ActionPanel.class}, new String[]{"mainLayout"}, null, null, null, Theme.key_statisticChartLine_green));

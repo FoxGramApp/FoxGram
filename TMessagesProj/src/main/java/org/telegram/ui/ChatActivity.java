@@ -15,7 +15,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -39,9 +38,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Shader;
 import android.graphics.Typeface;
@@ -52,7 +49,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.SystemClock;
-import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.text.Layout;
 import android.text.Spannable;
@@ -105,7 +101,6 @@ import androidx.core.text.HtmlCompat;
 import androidx.dynamicanimation.animation.FloatValueHolder;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
-import androidx.exifinterface.media.ExifInterface;
 import androidx.recyclerview.widget.ChatListItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManagerFixed;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -115,13 +110,11 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.util.Log;
 import com.google.zxing.common.detector.MathUtils;
 
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
-import org.telegram.messenger.AnimationNotificationsLocker;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BotWebViewVibrationEffect;
 import org.telegram.messenger.BuildVars;
@@ -165,7 +158,6 @@ import org.telegram.messenger.voip.VoIPService;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLObject;
 import org.telegram.tgnet.TLRPC;
-import org.telegram.ui.Components.Easings;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.ActionBarLayout;
 import org.telegram.ui.ActionBar.ActionBarMenu;
@@ -200,7 +192,6 @@ import org.telegram.ui.Components.AnimatedEmojiDrawable;
 import org.telegram.ui.Components.AnimatedEmojiSpan;
 import org.telegram.ui.Components.AnimatedFileDrawable;
 import org.telegram.ui.Components.AnimationProperties;
-import org.telegram.ui.Components.AppIconBulletinLayout;
 import org.telegram.ui.Components.AttachBotIntroTopView;
 import org.telegram.ui.Components.AudioPlayerAlert;
 import org.telegram.ui.Components.AutoDeletePopupWrapper;
@@ -329,20 +320,19 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.android.updates.UpdateManager;
-import it.colorgram.ui.Components.EmojiSetBulletinLayout;
-import it.colorgram.ui.Components.Dialogs.ImportSettingsDialog;
-import it.colorgram.android.CustomEmojiController;
-import it.colorgram.android.utils.ForwardContext;
-import it.colorgram.android.MessageHelper;
-import it.colorgram.android.PermissionsUtils;
-import it.colorgram.ui.DoNotTranslateSettings;
-import it.colorgram.android.translator.AutoTranslateConfig;
-import it.colorgram.android.translator.BaseTranslator;
-import it.colorgram.android.translator.Translator;
-import it.colorgram.android.translator.TranslatorHelper;
-import it.colorgram.ui.DetailsActivity;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.ui.Components.EmojiSetBulletinLayout;
+import it.foxgram.ui.Components.Dialogs.ImportSettingsDialog;
+import it.foxgram.android.CustomEmojiController;
+import it.foxgram.android.utils.ForwardContext;
+import it.foxgram.android.MessageHelper;
+import it.foxgram.android.PermissionsUtils;
+import it.foxgram.ui.DoNotTranslateSettings;
+import it.foxgram.android.translator.AutoTranslateConfig;
+import it.foxgram.android.translator.BaseTranslator;
+import it.foxgram.android.translator.Translator;
+import it.foxgram.android.translator.TranslatorHelper;
+import it.foxgram.ui.DetailsActivity;
 
 @SuppressWarnings("unchecked")
 public class ChatActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, DialogsActivity.DialogsActivityDelegate, LocationActivity.LocationActivityDelegate, ChatAttachAlertDocumentLayout.DocumentSelectActivityDelegate, ChatActivityInterface, FloatingDebugProvider, ForwardContext {
@@ -1519,12 +1509,12 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             }
 
             ChatMessageCell cell = (ChatMessageCell) view;
-            return !cell.getMessageObject().isSending() && !cell.getMessageObject().isEditing() && cell.getMessageObject().type != MessageObject.TYPE_PHONE_CALL && !actionBar.isActionModeShowed() && !isSecretChat() && !isInScheduleMode() && !cell.getMessageObject().isSponsored() && ColorConfig.doubleTapDisabled;
+            return !cell.getMessageObject().isSending() && !cell.getMessageObject().isEditing() && cell.getMessageObject().type != MessageObject.TYPE_PHONE_CALL && !actionBar.isActionModeShowed() && !isSecretChat() && !isInScheduleMode() && !cell.getMessageObject().isSponsored() && FoxConfig.doubleTapDisabled;
         }
 
         @Override
         public void onDoubleTap(View view, int position, float x, float y) {
-            if (ColorConfig.doubleTapDisabled) {
+            if (FoxConfig.doubleTapDisabled) {
                 if (!(view instanceof ChatMessageCell) || getParentActivity() == null || isSecretChat() || isInScheduleMode() || isInPreviewMode()) {
                     return;
                 }
@@ -3154,7 +3144,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         avatarContainer.allowShorterStatus = true;
         avatarContainer.premiumIconHiddable = true;
         avatarContainer.setOnLongClickListener(v -> {
-            if (inPreviewMode || threadMessageId != 0 || UserObject.isReplyUser(currentUser)|| currentUser != null && currentUser.self || ColorConfig.searchIconInActionBar || chatMode == MODE_PINNED) {
+            if (inPreviewMode || threadMessageId != 0 || UserObject.isReplyUser(currentUser)|| currentUser != null && currentUser.self || FoxConfig.searchIconInActionBar || chatMode == MODE_PINNED) {
                 return false;
             }
             openSearchWithText(null);
@@ -5354,7 +5344,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 if (!foundTopView) {
                     scrolled = super.scrollVerticallyBy(dy, recycler, state);
                 }
-                if (ColorConfig.jumpChannel && !inPreviewMode && dy > 0 && scrolled == 0 && ChatObject.isChannel(currentChat) && !currentChat.megagroup && chatListView.getScrollState() == RecyclerView.SCROLL_STATE_DRAGGING && !chatListView.isFastScrollAnimationRunning() && !chatListView.isMultiselect() && reportType < 0) {
+                if (FoxConfig.jumpChannel && !inPreviewMode && dy > 0 && scrolled == 0 && ChatObject.isChannel(currentChat) && !currentChat.megagroup && chatListView.getScrollState() == RecyclerView.SCROLL_STATE_DRAGGING && !chatListView.isFastScrollAnimationRunning() && !chatListView.isMultiselect() && reportType < 0) {
                     if (pullingDownOffset == 0 && pullingDownDrawable != null) {
                         pullingDownDrawable.updateDialog();
                     }
@@ -5472,7 +5462,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         wasManualScroll = true;
                         scrollingChatListView = true;
                     } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                        if (ColorConfig.hideKeyboard) {
+                        if (FoxConfig.hideKeyboard) {
                             if (isKeyboardVisible()) {
                                 AndroidUtilities.hideKeyboard(getParentActivity().getCurrentFocus());
                             } else if (chatActivityEnterView != null) {
@@ -7526,7 +7516,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         translateButton = new TranslateButton(getContext(), this, themeDelegate) {
             @Override
             protected void onButtonClick() {
-                if (!getUserConfig().isPremium() && ColorConfig.translationProvider == Translator.PROVIDER_TELEGRAM) {
+                if (!getUserConfig().isPremium() && FoxConfig.translationProvider == Translator.PROVIDER_TELEGRAM) {
                     showDialog(new PremiumFeatureBottomSheet(ChatActivity.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
                 } else {
                     getMessagesController().getTranslateController().toggleTranslatingDialog(getDialogId(), getTopicId());
@@ -7577,7 +7567,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             actionModeViews.add(actionMode.addItemWithWidth(star, R.drawable.msg_fave, AndroidUtilities.dp(54), LocaleController.getString("AddToFavorites", R.string.AddToFavorites)));
             actionModeViews.add(actionMode.addItemWithWidth(copy, R.drawable.msg_copy, AndroidUtilities.dp(54), LocaleController.getString("Copy", R.string.Copy)));
             actionModeViews.add(actionMode.addItemWithWidth(forward_noquote, R.drawable.msg_forward, AndroidUtilities.dp(54), LocaleController.getString("NoQuoteForward", R.string.NoQuoteForward)));
-            actionModeViews.add(actionMode.addItemWithWidth(forward, ColorConfig.contextMenu.noQuoteForward ? R.drawable.msg_forward_quote:R.drawable.msg_forward, AndroidUtilities.dp(54), LocaleController.getString("Forward", R.string.Forward)));
+            actionModeViews.add(actionMode.addItemWithWidth(forward, FoxConfig.contextMenu.noQuoteForward ? R.drawable.msg_forward_quote:R.drawable.msg_forward, AndroidUtilities.dp(54), LocaleController.getString("Forward", R.string.Forward)));
             actionModeViews.add(actionMode.addItemWithWidth(delete, R.drawable.msg_delete, AndroidUtilities.dp(54), LocaleController.getString("Delete", R.string.Delete)));
         } else {
             actionModeViews.add(actionMode.addItemWithWidth(edit, R.drawable.msg_edit, AndroidUtilities.dp(54), LocaleController.getString("Edit", R.string.Edit)));
@@ -13524,7 +13514,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 } else {
                     showSearchAsIcon = false;
                 }
-                showSearchAsIcon |= ColorConfig.searchIconInActionBar && !inPreviewMode && !isComments && !isThreadChat() && !UserObject.isReplyUser(currentUser);
+                showSearchAsIcon |= FoxConfig.searchIconInActionBar && !inPreviewMode && !isComments && !isThreadChat() && !UserObject.isReplyUser(currentUser);
                 if (showSearchAsIcon || showAudioCallAsIcon) {
                     if (avatarContainer != null && avatarContainer.getLayoutParams() != null) {
                         ((ViewGroup.MarginLayoutParams) avatarContainer.getLayoutParams()).rightMargin = AndroidUtilities.dp(96);
@@ -13554,7 +13544,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 }
                 if (headerItem != null) {
                     TLRPC.UserFull userInfo = getCurrentUserInfo();
-                    if (showAudioCallAsIcon && !ColorConfig.searchIconInActionBar) {
+                    if (showAudioCallAsIcon && !FoxConfig.searchIconInActionBar) {
                         headerItem.hideSubItem(call);
                     } else if (userInfo != null && userInfo.phone_calls_available) {
                         headerItem.showSubItem(call, true);
@@ -14196,7 +14186,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                         return 10;
                                     } else if (mime.endsWith("/xml")) {
                                         return 5;
-                                    } else if (messageObject.getDocumentName().toLowerCase().endsWith("color") || messageObject.getDocumentName().toLowerCase().endsWith("owl") && ColorConfig.isValidFileSettings(messageObject) >= ColorConfig.VALID_CONFIGURATION) {
+                                    } else if (messageObject.getDocumentName().toLowerCase().endsWith("fox") || messageObject.getDocumentName().toLowerCase().endsWith("owl") && FoxConfig.isValidFileSettings(messageObject) >= FoxConfig.VALID_CONFIGURATION) {
                                         return 207;
                                     } else if (!messageObject.isNewGif() && mime.endsWith("/mp4") || mime.endsWith("/png") || mime.endsWith("/jpg") || mime.endsWith("/jpeg")) {
                                         return 6;
@@ -14480,10 +14470,10 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     }
                 }
                 if (forwardNoQuoteItem != null) {
-                    if ((((canSaveMusicCount > 0 && canSaveDocumentsCount == 0) || (canSaveMusicCount == 0 && canSaveDocumentsCount > 0)) && cantSaveMessagesCount == 0) && canEditMessagesCount > 0 && canForwardMessagesCount > 0 && ColorConfig.contextMenu.noQuoteForward) {
+                    if ((((canSaveMusicCount > 0 && canSaveDocumentsCount == 0) || (canSaveMusicCount == 0 && canSaveDocumentsCount > 0)) && cantSaveMessagesCount == 0) && canEditMessagesCount > 0 && canForwardMessagesCount > 0 && FoxConfig.contextMenu.noQuoteForward) {
                         forwardNoQuoteItem.setVisibility(View.GONE);
                     } else {
-                        forwardNoQuoteItem.setVisibility(ColorConfig.contextMenu.noQuoteForward ? View.VISIBLE:View.GONE);
+                        forwardNoQuoteItem.setVisibility(FoxConfig.contextMenu.noQuoteForward ? View.VISIBLE:View.GONE);
                     }
                 }
                 if (saveItem != null) {
@@ -14508,7 +14498,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 }
 
                 if (translateItem != null) {
-                    translateItem.setVisibility(selectedMessagesIds[0].size() + selectedMessagesIds[1].size() > 1 && ColorConfig.showTranslate ? View.VISIBLE : View.GONE);
+                    translateItem.setVisibility(selectedMessagesIds[0].size() + selectedMessagesIds[1].size() > 1 && FoxConfig.showTranslate ? View.VISIBLE : View.GONE);
                 }
                 hasUnfavedSelected = false;
                 for (int a = 0; a < 2; a++) {
@@ -14821,18 +14811,18 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         } else if (chatMode == MODE_PINNED) {
             avatarContainer.setTitle(LocaleController.formatPluralString("PinnedMessagesCount", getPinnedMessagesCount()));
         } else if (currentChat != null) {
-            avatarContainer.setTitle(currentChat.title, currentChat.scam, currentChat.fake, currentChat.verified, false, null, animated, ColorConfig.slidingChatTitle);
+            avatarContainer.setTitle(currentChat.title, currentChat.scam, currentChat.fake, currentChat.verified, false, null, animated, FoxConfig.slidingChatTitle);
         } else if (currentUser != null) {
             if (currentUser.self) {
                 avatarContainer.setTitle(LocaleController.getString("SavedMessages", R.string.SavedMessages));
             } else if (!MessagesController.isSupportUser(currentUser) && getContactsController().contactsDict.get(currentUser.id) == null && (getContactsController().contactsDict.size() != 0 || !getContactsController().isLoadingContacts())) {
                 if (!TextUtils.isEmpty(currentUser.phone)) {
-                    avatarContainer.setTitle(PhoneFormat.getInstance().format("+" + currentUser.phone), currentUser.scam, currentUser.fake, currentUser.verified, getMessagesController().isPremiumUser(currentUser), currentUser.emoji_status, animated, ColorConfig.slidingChatTitle);
+                    avatarContainer.setTitle(PhoneFormat.getInstance().format("+" + currentUser.phone), currentUser.scam, currentUser.fake, currentUser.verified, getMessagesController().isPremiumUser(currentUser), currentUser.emoji_status, animated, FoxConfig.slidingChatTitle);
                 } else {
-                    avatarContainer.setTitle(UserObject.getUserName(currentUser), currentUser.scam, currentUser.fake, currentUser.verified, getMessagesController().isPremiumUser(currentUser), currentUser.emoji_status, animated, ColorConfig.slidingChatTitle);
+                    avatarContainer.setTitle(UserObject.getUserName(currentUser), currentUser.scam, currentUser.fake, currentUser.verified, getMessagesController().isPremiumUser(currentUser), currentUser.emoji_status, animated, FoxConfig.slidingChatTitle);
                 }
             } else {
-                avatarContainer.setTitle(UserObject.getUserName(currentUser), currentUser.scam, currentUser.fake, currentUser.verified,  getMessagesController().isPremiumUser(currentUser), currentUser.emoji_status, animated, ColorConfig.slidingChatTitle);
+                avatarContainer.setTitle(UserObject.getUserName(currentUser), currentUser.scam, currentUser.fake, currentUser.verified,  getMessagesController().isPremiumUser(currentUser), currentUser.emoji_status, animated, FoxConfig.slidingChatTitle);
             }
         }
         setParentActivityTitle(avatarContainer.getTitleTextView().getText());
@@ -17078,7 +17068,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 showGigagroupConvertAlert();
                 long prevLinkedChatId = chatInfo != null ? chatInfo.linked_chat_id : 0;
                 chatInfo = chatFull;
-                if (ColorConfig.hideChannelBottom) {
+                if (FoxConfig.hideChannelBottom) {
                     updateBottomOverlay();
                 }
                 groupCall = getMessagesController().getGroupCall(currentChat.id, true);
@@ -23394,7 +23384,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         if (chatActivityEnterView != null) {
             chatActivityEnterView.preventInput = false;
         }
-        if (ColorConfig.hideChannelBottom) {
+        if (FoxConfig.hideChannelBottom) {
             updatePaddings();
         }
         textSelectionHintWasShowed = false;
@@ -23729,7 +23719,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             options.add(OPTION_TRANSLATE);
                             icons.add(R.drawable.msg_translate);
                         }*/
-                        if (messageObject != null && messageObject.contentType == 0 && !(editingMessageObject != null && editingMessageObject.getId() == messageObject.getId()) && (messageTextToTranslate != null && messageTextToTranslate.length() > 0 && !messageObject.isAnimatedEmoji() && !messageObject.isDice()) && messageObject.isRestrictedMessage && ColorConfig.showTranslate) {
+                        if (messageObject != null && messageObject.contentType == 0 && !(editingMessageObject != null && editingMessageObject.getId() == messageObject.getId()) && (messageTextToTranslate != null && messageTextToTranslate.length() > 0 && !messageObject.isAnimatedEmoji() && !messageObject.isDice()) && messageObject.isRestrictedMessage && FoxConfig.showTranslate) {
                             if (!TranslatorHelper.isTranslating(messageObject)) {
                                 items.add(messageObject.translated && !messageObject.isVoiceTranscriptionOpen() ? LocaleController.getString("UndoTranslate", R.string.UndoTranslate) : LocaleController.getString("TranslateMessage", R.string.TranslateMessage));
                                 options.add(201);
@@ -23859,7 +23849,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                         items.add(LocaleController.getString("SaveToGallery", R.string.SaveToGallery));
                                         options.add(OPTION_SAVE_TO_GALLERY);
                                         icons.add(R.drawable.msg_gallery);
-                                        if (ColorConfig.contextMenu.clearFromCache) {
+                                        if (FoxConfig.contextMenu.clearFromCache) {
                                             items.add(LocaleController.getString("ClearFromCache", R.string.ClearFromCache));
                                             options.add(205);
                                             icons.add(R.drawable.msg_clear);
@@ -23872,7 +23862,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                     items.add(LocaleController.getString("SaveToMusic", R.string.SaveToMusic));
                                     options.add(OPTION_SAVE_TO_DOWNLOADS_OR_MUSIC);
                                     icons.add(R.drawable.msg_download);
-                                    if (ColorConfig.contextMenu.clearFromCache) {
+                                    if (FoxConfig.contextMenu.clearFromCache) {
                                         items.add(LocaleController.getString("ClearFromCache", R.string.ClearFromCache));
                                         options.add(205);
                                         icons.add(R.drawable.msg_clear);
@@ -23889,7 +23879,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                     items.add(LocaleController.getString("SaveToDownloads", R.string.SaveToDownloads));
                                     options.add(OPTION_SAVE_TO_DOWNLOADS_OR_MUSIC);
                                     icons.add(R.drawable.msg_download);
-                                    if (ColorConfig.contextMenu.clearFromCache && !MessageObject.isNewGifDocument(selectedObject.getDocument())) {
+                                    if (FoxConfig.contextMenu.clearFromCache && !MessageObject.isNewGifDocument(selectedObject.getDocument())) {
                                         items.add(LocaleController.getString("ClearFromCache", R.string.ClearFromCache));
                                         options.add(205);
                                         icons.add(R.drawable.msg_clear);
@@ -23902,7 +23892,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                         items.add(LocaleController.getString("SaveToGallery", R.string.SaveToGallery));
                                         options.add(OPTION_SAVE_TO_GALLERY);
                                         icons.add(R.drawable.msg_gallery);
-                                        if (ColorConfig.contextMenu.copyPhoto) {
+                                        if (FoxConfig.contextMenu.copyPhoto) {
                                             items.add(LocaleController.getString("CopyPhoto", R.string.CopyPhoto));
                                             options.add(209);
                                             icons.add(R.drawable.msg_copy);
@@ -23918,7 +23908,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                 items.add(LocaleController.getString("SaveToDownloads", R.string.SaveToDownloads));
                                 options.add(OPTION_SAVE_TO_DOWNLOADS_OR_MUSIC);
                                 icons.add(R.drawable.msg_download);
-                                if (ColorConfig.contextMenu.clearFromCache) {
+                                if (FoxConfig.contextMenu.clearFromCache) {
                                     items.add(LocaleController.getString("ClearFromCache", R.string.ClearFromCache));
                                     options.add(205);
                                     icons.add(R.drawable.msg_clear);
@@ -23964,7 +23954,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             items.add(LocaleController.getString("SaveToDownloads", R.string.SaveToDownloads));
                             options.add(OPTION_SAVE_TO_DOWNLOADS_OR_MUSIC);
                             icons.add(R.drawable.msg_download);
-                            if (ColorConfig.contextMenu.clearFromCache) {
+                            if (FoxConfig.contextMenu.clearFromCache) {
                                 items.add(LocaleController.getString("ClearFromCache", R.string.ClearFromCache));
                                 options.add(205);
                                 icons.add(R.drawable.msg_clear);
@@ -24044,9 +24034,9 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                 selectedObject.type != MessageObject.TYPE_GIFT_PREMIUM && selectedObject.type != MessageObject.TYPE_SUGGEST_PHOTO && !selectedObject.isWallpaperAction()) {
                             items.add(LocaleController.getString("Forward", R.string.Forward));
                             options.add(OPTION_FORWARD);
-                            icons.add(ColorConfig.contextMenu.noQuoteForward ? R.drawable.msg_forward_quote:R.drawable.msg_forward);
+                            icons.add(FoxConfig.contextMenu.noQuoteForward ? R.drawable.msg_forward_quote:R.drawable.msg_forward);
                         }
-                        if (ColorConfig.contextMenu.noQuoteForward && !selectedObject.isSponsored() && chatMode != MODE_SCHEDULED && !selectedObject.needDrawBluredPreview() && !selectedObject.isLiveLocation() && selectedObject.type != 16 && !noforwards) {
+                        if (FoxConfig.contextMenu.noQuoteForward && !selectedObject.isSponsored() && chatMode != MODE_SCHEDULED && !selectedObject.needDrawBluredPreview() && !selectedObject.isLiveLocation() && selectedObject.type != 16 && !noforwards) {
                             items.add(LocaleController.getString("NoQuoteForward", R.string.NoQuoteForward));
                             options.add(204);
                             icons.add(R.drawable.msg_forward);
@@ -24055,12 +24045,12 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             long my_user_id = UserConfig.getInstance(currentAccount).getClientUserId();
                             long user_id = selectedObject.messageOwner.from_id.user_id;
                             long chat_id = selectedObject.getChatId();
-                            if (!(chat_id == 0 && user_id == my_user_id) && ColorConfig.contextMenu.saveMessage) {
+                            if (!(chat_id == 0 && user_id == my_user_id) && FoxConfig.contextMenu.saveMessage) {
                                 items.add(LocaleController.getString("AddToSavedMessages", R.string.AddToSavedMessages));
                                 options.add(202);
                                 icons.add(R.drawable.msg_saved);
                             }
-                            if (ColorConfig.contextMenu.repeatMessage) {
+                            if (FoxConfig.contextMenu.repeatMessage) {
                                 if (!selectedObject.isSponsored() && !selectedObject.needDrawBluredPreview() && !selectedObject.isLiveLocation() && selectedObject.type != 16) {
                                     boolean allowRepeat = allowChatActions && (!isThreadChat() || getMessageHelper().getMessageForRepeat(selectedObject, selectedObjectGroup) != null);
                                     if (allowRepeat) {
@@ -24090,7 +24080,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             options.add(OPTION_TRANSLATE);
                             icons.add(R.drawable.msg_translate);
                         }*/
-                        if (messageObject != null && messageObject.contentType == 0 && !(editingMessageObject != null && editingMessageObject.getId() == messageObject.getId()) && (messageTextToTranslate != null && messageTextToTranslate.length() > 0 && !messageObject.isAnimatedEmoji() && !messageObject.isDice()) && ColorConfig.showTranslate) {
+                        if (messageObject != null && messageObject.contentType == 0 && !(editingMessageObject != null && editingMessageObject.getId() == messageObject.getId()) && (messageTextToTranslate != null && messageTextToTranslate.length() > 0 && !messageObject.isAnimatedEmoji() && !messageObject.isDice()) && FoxConfig.showTranslate) {
                             if (!TranslatorHelper.isTranslating(messageObject)) {
                                 items.add(messageObject.translated && !messageObject.isVoiceTranscriptionOpen() ? LocaleController.getString("UndoTranslate", R.string.UndoTranslate) : LocaleController.getString("TranslateMessage", R.string.TranslateMessage));
                                 options.add(201);
@@ -24112,7 +24102,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                 items.add(LocaleController.getString("BlockContact", R.string.BlockContact));
                                 options.add(OPTION_REPORT_CHAT);
                                 icons.add(R.drawable.msg_block2);
-                            } else if (ColorConfig.contextMenu.reportMessage){
+                            } else if (FoxConfig.contextMenu.reportMessage){
                                 items.add(LocaleController.getString("ReportChat", R.string.ReportChat));
                                 options.add(OPTION_REPORT_CHAT);
                                 icons.add(R.drawable.msg_report);
@@ -24215,7 +24205,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     }
                 }
 
-                if (ColorConfig.contextMenu.messageDetails) {
+                if (FoxConfig.contextMenu.messageDetails) {
                     items.add(LocaleController.getString("MessageDetails", R.string.MessageDetails));
                     options.add(203);
                     icons.add(R.drawable.menu_info_little);
@@ -24864,7 +24854,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         }
                         return false;
                     });
-                    if (option == 201) { // Colorgram Translate Button
+                    if (option == 201) { // FoxGram Translate Button
                         MessageObject messageObject = getMessageHelper().getMessageForTranslate(selectedObject, selectedObjectGroup);
                         Utilities.CallbackReturn<URLSpan, Boolean> onLinkPress = (link) -> {
                             didPressMessageUrl(link, false, selectedObject, v instanceof ChatMessageCell ? (ChatMessageCell) v : null);
@@ -24911,7 +24901,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             if (messageObject.isDoneTranslation() && messageObject.translated) {
                                 TranslatorHelper.resetTranslatedMessage(messageObject);
                             } else {
-                                if (ColorConfig.translatorStyle == BaseTranslator.DIALOG_STYLE) {
+                                if (FoxConfig.translatorStyle == BaseTranslator.DIALOG_STYLE) {
                                     TranslateAlert2 alert = TranslateAlert2.showAlert(getParentActivity(), this, currentAccount, null, Translator.getCurrentTranslator().getCurrentTargetLanguage().split("-")[0], getMessageHelper().getPlainText(messageObject), messageObject.messageOwner.entities, noforwards, onLinkPress, () -> dimBehindView(false));
                                     alert.setDimBehind(false);
                                     if (translateButton != null) {
@@ -25394,7 +25384,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         contentView.addView(emptyViewContainer, 1, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER));
 
         int distance = getArguments().getInt("nearby_distance", -1);
-        if (ColorConfig.showGreetings && (distance >= 0 || preloadedGreetingsSticker != null) && currentUser != null && !userBlocked) {
+        if (FoxConfig.showGreetings && (distance >= 0 || preloadedGreetingsSticker != null) && currentUser != null && !userBlocked) {
             greetingsViewContainer = new ChatGreetingsView(getContext(), currentUser, distance, currentAccount, preloadedGreetingsSticker, themeDelegate);
             greetingsViewContainer.setListener((sticker) -> {
                 animatingDocuments.put(sticker, 0);
@@ -25426,7 +25416,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     emptyMessage = LocaleController.getString("GotAQuestion", R.string.GotAQuestion);
                 } else if (currentUser == null || currentUser.self || currentUser.deleted || userBlocked) {
                     emptyMessage = LocaleController.getString("NoMessages", R.string.NoMessages);
-                } else if (!ColorConfig.showGreetings) {
+                } else if (!FoxConfig.showGreetings) {
                     emptyMessage = LocaleController.getString("NoMessages", R.string.NoMessages);
                 }
                 if (emptyMessage == null) {
@@ -25888,7 +25878,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 doneTranslation.await();
             } catch (Exception ignored) {}
             AndroidUtilities.runOnUIThread(() -> {
-                String language = ColorConfig.translationTarget;
+                String language = FoxConfig.translationTarget;
                 CharSequence languageName;
                 if (language.equals("app")) {
                     language = Translator.getCurrentTranslator().getCurrentAppLanguage();
@@ -26097,7 +26087,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                 AndroidUtilities.runOnUIThread(() -> {
                                     progressDialog.dismiss();
                                     if (finalSuccess && finalEmojiPackBase != null) {
-                                        if (finalEmojiPackBase.getPackId().equals(ColorConfig.emojiPackSelected)) {
+                                        if (finalEmojiPackBase.getPackId().equals(FoxConfig.emojiPackSelected)) {
                                             BulletinFactory.of(ChatActivity.this).createErrorBulletin(LocaleController.getString("EmojiSetAlreadyApplied", R.string.EmojiSetAlreadyApplied), themeDelegate).show();
                                         } else {
                                             EmojiSetBulletinLayout bulletinLayout = new EmojiSetBulletinLayout(
@@ -26108,8 +26098,8 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                                     themeDelegate
                                             );
                                             Bulletin.make(ChatActivity.this, bulletinLayout, Bulletin.DURATION_LONG).show();
-                                            ColorConfig.setEmojiPackSelected(finalEmojiPackBase.getPackId());
-                                            if (ColorConfig.useSystemEmoji) ColorConfig.toggleUseSystemEmoji();
+                                            FoxConfig.setEmojiPackSelected(finalEmojiPackBase.getPackId());
+                                            if (FoxConfig.useSystemEmoji) FoxConfig.toggleUseSystemEmoji();
                                             Emoji.reloadEmoji();
                                             NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.emojiLoaded);
                                         }
@@ -26666,8 +26656,8 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 break;
             }
             case 207: {
-                int statusConf = ColorConfig.isValidFileSettings(selectedObject);
-                if (statusConf == ColorConfig.VALID_CONFIGURATION) {
+                int statusConf = FoxConfig.isValidFileSettings(selectedObject);
+                if (statusConf == FoxConfig.VALID_CONFIGURATION) {
                     new ImportSettingsDialog(ChatActivity.this, selectedObject).checkCanShowDialog();
                 } else {
                     AndroidUtilities.runOnUIThread(() -> BulletinFactory.of(ChatActivity.this).createSimpleBulletin(R.raw.gigagroup_convert, LocaleController.getString("UpdateToImport", R.string.UpdateToImport), true).show());
@@ -30620,9 +30610,9 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         scrollToPositionOnRecreate = -1;
                     }
                 }
-                int statusConf = ColorConfig.isValidFileSettings(message);
-                if (message.getDocumentName().toLowerCase().endsWith("color") || message.getDocumentName().toLowerCase().endsWith("owl") && statusConf >= ColorConfig.VALID_CONFIGURATION) {
-                    if (statusConf == ColorConfig.VALID_CONFIGURATION) {
+                int statusConf = FoxConfig.isValidFileSettings(message);
+                if (message.getDocumentName().toLowerCase().endsWith("color") || message.getDocumentName().toLowerCase().endsWith("owl") && statusConf >= FoxConfig.VALID_CONFIGURATION) {
+                    if (statusConf == FoxConfig.VALID_CONFIGURATION) {
                         new ImportSettingsDialog(ChatActivity.this, message).checkCanShowDialog();
                     } else {
                         BulletinFactory.of(ChatActivity.this).createSimpleBulletin(R.raw.gigagroup_convert, LocaleController.getString("UpdateToImport", R.string.UpdateToImport), true).show();
@@ -32807,11 +32797,11 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     private boolean isBottomOverlaysInvisible() {
         if (bottomMessagesActionContainer == null) createBottomMessagesActionButtons();
         if (searchContainer == null) createSearchContainer();
-        return bottomOverlayChat.getVisibility() == View.INVISIBLE && chatActivityEnterView.getVisibility() == View.INVISIBLE && bottomMessagesActionContainer.getVisibility() == View.INVISIBLE && searchContainer.getVisibility() == View.INVISIBLE && !isInPreviewMode() && !isInBubbleMode() && ColorConfig.hideChannelBottom;
+        return bottomOverlayChat.getVisibility() == View.INVISIBLE && chatActivityEnterView.getVisibility() == View.INVISIBLE && bottomMessagesActionContainer.getVisibility() == View.INVISIBLE && searchContainer.getVisibility() == View.INVISIBLE && !isInPreviewMode() && !isInBubbleMode() && FoxConfig.hideChannelBottom;
     }
 
     private boolean isMuteUnmuteButton() {
-        return (bottomOverlayChatText.getText() == LocaleController.getString("ChannelMute", R.string.ChannelMute) || bottomOverlayChatText.getText() == LocaleController.getString("ChannelUnmute", R.string.ChannelUnmute)) && ColorConfig.hideChannelBottom;
+        return (bottomOverlayChatText.getText() == LocaleController.getString("ChannelMute", R.string.ChannelMute) || bottomOverlayChatText.getText() == LocaleController.getString("ChannelUnmute", R.string.ChannelUnmute)) && FoxConfig.hideChannelBottom;
     }
 
     private void updatePaddings() {

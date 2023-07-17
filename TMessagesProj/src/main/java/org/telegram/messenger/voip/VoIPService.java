@@ -76,7 +76,6 @@ import android.telephony.TelephonyManager;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.util.LruCache;
 import android.view.KeyEvent;
 import android.view.View;
@@ -139,7 +138,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -147,7 +145,7 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import it.colorgram.android.ColorConfig;
+import it.foxgram.android.FoxConfig;
 
 @SuppressLint("NewApi")
 public class VoIPService extends Service implements SensorEventListener, AudioManager.OnAudioFocusChangeListener, VoIPController.ConnectionStateListener, NotificationCenter.NotificationCenterDelegate {
@@ -3620,7 +3618,7 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 
 	private int currentStreamType;
 	private void loadResources() {
-		if (chat != null && ColorConfig.betterAudioQuality) {
+		if (chat != null && FoxConfig.betterAudioQuality) {
 			currentStreamType = AudioManager.STREAM_MUSIC;
 			WebRtcAudioTrack.setAudioTrackUsageAttribute(AudioAttributes.USAGE_MEDIA);
 		} else {
@@ -3686,15 +3684,15 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 			FileLog.d("configureDeviceForCall, route to set = " + audioRouteToSet);
 		}
 
-		WebRtcAudioTrack.setAudioTrackUsageAttribute(hasRtmpStream() || ColorConfig.betterAudioQuality ? AudioAttributes.USAGE_MEDIA : AudioAttributes.USAGE_VOICE_COMMUNICATION);
-		WebRtcAudioTrack.setAudioStreamType(hasRtmpStream() || ColorConfig.betterAudioQuality ? AudioManager.USE_DEFAULT_STREAM_TYPE : AudioManager.STREAM_VOICE_CALL);
+		WebRtcAudioTrack.setAudioTrackUsageAttribute(hasRtmpStream() || FoxConfig.betterAudioQuality ? AudioAttributes.USAGE_MEDIA : AudioAttributes.USAGE_VOICE_COMMUNICATION);
+		WebRtcAudioTrack.setAudioStreamType(hasRtmpStream() || FoxConfig.betterAudioQuality ? AudioManager.USE_DEFAULT_STREAM_TYPE : AudioManager.STREAM_VOICE_CALL);
 
 		needPlayEndSound = true;
 		AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
 		if (!USE_CONNECTION_SERVICE) {
 			Utilities.globalQueue.postRunnable(() -> {
 				try {
-					if (hasRtmpStream() || ColorConfig.betterAudioQuality) {
+					if (hasRtmpStream() || FoxConfig.betterAudioQuality) {
 						am.setMode(AudioManager.MODE_NORMAL);
 						am.setBluetoothScoOn(false);
 						AndroidUtilities.runOnUIThread(() -> {
@@ -3755,7 +3753,7 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 		SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
 		Sensor proximity = sm.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 		try {
-			if (!ColorConfig.disableProximityEvents && proximity != null) {
+			if (!FoxConfig.disableProximityEvents && proximity != null) {
 				proximityWakelock = ((PowerManager) getSystemService(Context.POWER_SERVICE)).newWakeLock(PROXIMITY_SCREEN_OFF_WAKE_LOCK, "telegram-voip-prx");
 				sm.registerListener(this, proximity, SensorManager.SENSOR_DELAY_NORMAL);
 			}
@@ -4426,7 +4424,7 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 	}
 
 	public void updateOutputGainControlState() {
-		if (hasRtmpStream() || ColorConfig.betterAudioQuality) {
+		if (hasRtmpStream() || FoxConfig.betterAudioQuality) {
 			return;
 		}
 		if (tgVoip[CAPTURE_DEVICE_CAMERA] != null) {

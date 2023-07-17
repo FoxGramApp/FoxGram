@@ -13,6 +13,6 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
-rootProject.name = "Colorgram"
+rootProject.name = "FoxGram"
 include ':TMessagesProj'
 include ':TMessagesProj_App'

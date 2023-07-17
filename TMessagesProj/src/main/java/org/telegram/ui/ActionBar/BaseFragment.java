@@ -56,7 +56,7 @@ import org.telegram.ui.Components.LayoutHelper;
 
 import java.util.ArrayList;
 
-import it.colorgram.android.MessageHelper;
+import it.foxgram.android.MessageHelper;
 
 public abstract class BaseFragment {
 

@@ -114,7 +114,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import it.colorgram.android.PermissionsUtils;
+import it.foxgram.android.PermissionsUtils;
 
 public class ChatAttachAlert extends BottomSheet implements NotificationCenter.NotificationCenterDelegate, BottomSheet.BottomSheetDelegateInterface {
 

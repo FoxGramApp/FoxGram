@@ -334,9 +334,9 @@ public class SessionCell extends FrameLayout {
             colorKey2 = Theme.key_avatar_background2Cyan;
         } else if (platform.contains("android")) {
             iconId = deviceModel.contains("tab") ? R.drawable.device_tablet_android : R.drawable.device_phone_android;
-            if (app_name.contains("color")) {
-                colorValue = Color.parseColor("#4285F4");
-                iconId = R.drawable.color_logo;
+            if (app_name.contains("fox") || app_name.contains("foxgram")) {
+                colorValue = Color.parseColor("#008BF7");
+                iconId = R.drawable.fox_logo;
             } else {
                 colorKey = Theme.key_avatar_backgroundGreen;
                 colorKey2 = Theme.key_avatar_background2Green;

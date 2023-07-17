@@ -164,11 +164,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.android.entities.EntitiesHelper;
-import it.colorgram.android.MessageHelper;
-import it.colorgram.android.translator.BaseTranslator;
-import it.colorgram.android.translator.Translator;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.android.entities.EntitiesHelper;
+import it.foxgram.android.MessageHelper;
+import it.foxgram.android.translator.BaseTranslator;
+import it.foxgram.android.translator.Translator;
 
 public class ChatActivityEnterView extends BlurredFrameLayout implements NotificationCenter.NotificationCenterDelegate, SizeNotifierFrameLayout.SizeNotifierFrameLayoutDelegate, StickersAlert.StickersAlertDelegate {
 
@@ -2035,9 +2035,9 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                     if (!hasRecordVideo || calledRecordRunnable) {
                         startedDraggingX = -1;
                         if (hasRecordVideo && isInVideoMode()) {
-                            delegate.needStartRecordVideo(ColorConfig.confirmSending.sendVideo ? 3 : 1, true, 0);
+                            delegate.needStartRecordVideo(FoxConfig.confirmSending.sendVideo ? 3 : 1, true, 0);
                         } else {
-                            if (ColorConfig.confirmSending.sendAudio) {
+                            if (FoxConfig.confirmSending.sendAudio) {
                                 MediaController.getInstance().stopRecording(2, true, 0);
                             } else {
                                 if (recordingAudioVideo && isInScheduleMode()) {
@@ -2047,7 +2047,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                             }
                             delegate.needStartRecordAudio(0);
                         }
-                        if (!ColorConfig.confirmSending.sendAudio && !ColorConfig.confirmSending.sendVideo) {
+                        if (!FoxConfig.confirmSending.sendAudio && !FoxConfig.confirmSending.sendVideo) {
                             recordingAudioVideo = false;
                             messageTransitionIsRunning = false;
                             AndroidUtilities.runOnUIThread(moveToSendStateRunnable = () -> {
@@ -2128,23 +2128,23 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                         startedDraggingX = -1;
                         if (hasRecordVideo && isInVideoMode()) {
                             CameraController.getInstance().cancelOnInitRunnable(onFinishInitCameraRunnable);
-                            delegate.needStartRecordVideo(ColorConfig.confirmSending.sendVideo ? 3 : 1, true, 0);
+                            delegate.needStartRecordVideo(FoxConfig.confirmSending.sendVideo ? 3 : 1, true, 0);
                         } else if (!sendVoiceEnabled) {
                             delegate.needShowMediaBanHint();
                         } else {
-                            if (!ColorConfig.confirmSending.sendAudio) {
+                            if (!FoxConfig.confirmSending.sendAudio) {
                                 if (recordingAudioVideo && isInScheduleMode()) {
                                     AlertsCreator.createScheduleDatePickerDialog(parentActivity, parentFragment.getDialogId(), (notify, scheduleDate) -> MediaController.getInstance().stopRecording(1, notify, scheduleDate), () -> MediaController.getInstance().stopRecording(0, false, 0), resourcesProvider);
                                 }
                             }
                             delegate.needStartRecordAudio(0);
-                            if (!ColorConfig.confirmSending.sendAudio) {
+                            if (!FoxConfig.confirmSending.sendAudio) {
                                 MediaController.getInstance().stopRecording(isInScheduleMode() ? 3 : 1, true, 0);
                             } else {
                                 MediaController.getInstance().stopRecording(2, true, 0);
                             }
                         }
-                        if (!ColorConfig.confirmSending.sendAudio && !ColorConfig.confirmSending.sendVideo) {
+                        if (!FoxConfig.confirmSending.sendAudio && !FoxConfig.confirmSending.sendVideo) {
                             recordingAudioVideo = false;
                             messageTransitionIsRunning = false;
                             AndroidUtilities.runOnUIThread(moveToSendStateRunnable = () -> {
@@ -3361,9 +3361,9 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                     sendPopupLayout.addView(sendWithoutMarkdownButton, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48));
                 }
 
-                if (ColorConfig.showTranslate) {
+                if (FoxConfig.showTranslate) {
                     ActionBarMenuSubItem preSentTranslateButton = new ActionBarMenuSubItem(getContext(), false, false, resourcesProvider);
-                    String languageText = Translator.getTranslator(ColorConfig.translationProvider).getCurrentTargetKeyboardLanguage().toUpperCase();
+                    String languageText = Translator.getTranslator(FoxConfig.translationProvider).getCurrentTargetKeyboardLanguage().toUpperCase();
                     preSentTranslateButton.setTextAndIcon(LocaleController.getString("TranslateMessage", R.string.TranslateMessage) + " (" + languageText + ")", R.drawable.msg_translate);
                     preSentTranslateButton.setMinimumWidth(AndroidUtilities.dp(196));
                     preSentTranslateButton.setOnClickListener(v -> {
@@ -3377,7 +3377,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                             sendPopupWindow.dismiss();
                         }
                         Translator.showTranslationTargetSelector(getContext(), true, () -> {
-                            String language = Translator.getTranslator(ColorConfig.translationProvider).getCurrentTargetKeyboardLanguage().toUpperCase();
+                            String language = Translator.getTranslator(FoxConfig.translationProvider).getCurrentTargetKeyboardLanguage().toUpperCase();
                             preSentTranslateButton.setTextAndIcon(LocaleController.getString("TranslateMessage", R.string.TranslateMessage) + " (" + language + ")", R.drawable.msg_translate);
                             translatePreSend();
                         }, resourcesProvider);
@@ -4863,7 +4863,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             sendRoundEnabled = ChatObject.canSendRoundVideo(chat);
             sendVoiceEnabled = ChatObject.canSendVoice(chat);
         }
-        if (!ColorConfig.cameraEnable) {
+        if (!FoxConfig.cameraEnable) {
             hasRecordVideo = false;
         }
         boolean currentModeVideo = false;
@@ -7637,7 +7637,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             defPeer = delegate.getSendAsPeers().peers.get(0).peer;
         }
         boolean isVisible = defPeer != null && (delegate.getSendAsPeers() == null || delegate.getSendAsPeers().peers.size() > 1) &&
-            !isEditingMessage() && !isRecordingAudioVideo() && !ColorConfig.hideSendAsChannel && (recordedAudioPanel == null || recordedAudioPanel.getVisibility() != View.VISIBLE);
+            !isEditingMessage() && !isRecordingAudioVideo() && !FoxConfig.hideSendAsChannel && (recordedAudioPanel == null || recordedAudioPanel.getVisibility() != View.VISIBLE);
         if (isVisible) {
             createSenderSelectView();
         }

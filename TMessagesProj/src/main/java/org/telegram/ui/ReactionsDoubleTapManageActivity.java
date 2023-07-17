@@ -3,7 +3,6 @@ package org.telegram.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.os.Build;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -41,7 +40,7 @@ import org.telegram.ui.Components.SimpleThemeDescription;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.colorgram.android.ColorConfig;
+import it.foxgram.android.FoxConfig;
 
 public class ReactionsDoubleTapManageActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
@@ -90,7 +89,7 @@ public class ReactionsDoubleTapManageActivity extends BaseFragment implements No
         listView.setAdapter(listAdapter = new RecyclerListView.SelectionAdapter() {
             @Override
             public boolean isEnabled(RecyclerView.ViewHolder holder) {
-                return holder.getItemViewType() == 3 || holder.getItemViewType() == 2 && !ColorConfig.doubleTapDisabled;
+                return holder.getItemViewType() == 3 || holder.getItemViewType() == 2 && !FoxConfig.doubleTapDisabled;
             }
 
             @NonNull

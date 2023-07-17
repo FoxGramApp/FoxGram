@@ -35,9 +35,9 @@ import org.telegram.ui.Components.SideMenultItemAnimator;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import it.colorgram.android.ColorConfig;
-import it.colorgram.android.MenuOrderController;
-import it.colorgram.android.PasscodeController;
+import it.foxgram.android.FoxConfig;
+import it.foxgram.android.MenuOrderController;
+import it.foxgram.android.PasscodeController;
 
 public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
 
@@ -257,8 +257,8 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             return;
         }
         int eventType = Theme.getEventType();
-        if (ColorConfig.eventType > 0) {
-            eventType = ColorConfig.eventType - 1;
+        if (FoxConfig.eventType > 0) {
+            eventType = FoxConfig.eventType - 1;
         }
         int newGroupIcon;
         int newSecretIcon;
@@ -358,7 +358,7 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
                     case "settings":
                         items.add(new Item(8, data.text, settingsIcon));
                         break;
-                    case "colorgram_settings":
+                    case "foxgram_settings":
                         items.add(new Item(201, data.text, settingsIcon));
                         break;
                     case "invite_friends":
