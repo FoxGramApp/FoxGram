@@ -303,6 +303,7 @@
     <string name="UnlockedHiddenFoxIcon">Oh… Congratulations! You unlocked the little shy fox icon.</string>
     <string name="AppIconRainbow" comment="AppIconRainbow">Rainbow</string>
     <string name="ClassicIcon">Classic</string>
+    <string name="AppIconGalaxy">Galaxy</string>
     <!-- Details Page -->
     <string name="UserInfo">User</string>
     <string name="BotInfo">Bot</string>

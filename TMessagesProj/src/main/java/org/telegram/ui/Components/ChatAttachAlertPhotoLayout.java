@@ -2386,7 +2386,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
         }
         gridView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
 
-        if (FoxConfig.cameraPreview || !LiteMode.isEnabled(LiteMode.FLAGS_CHAT) || FoxConfig.disableCameraTile && cameraView != null && cameraView.isInited()) {
+        if (!FoxConfig.cameraPreview || !LiteMode.isEnabled(LiteMode.FLAGS_CHAT) || FoxConfig.disableCameraTile && cameraView != null && cameraView.isInited()) {
             cameraView.showTexture(true, animated);
         }
     }
@@ -2412,7 +2412,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
             return;
         }
         if (cameraView == null) {
-            final boolean lazy = FoxConfig.cameraPreview || !LiteMode.isEnabled(LiteMode.FLAGS_CHAT) || FoxConfig.disableCameraTile;
+            final boolean lazy = !FoxConfig.cameraPreview || !LiteMode.isEnabled(LiteMode.FLAGS_CHAT) || FoxConfig.disableCameraTile;
             if (!CameraXUtils.isCameraXSupported() || FoxConfig.cameraType != FoxConfig.CAMERA_X && FoxConfig.cameraEnable) {
                 cameraView = new CameraView(parentAlert.baseFragment.getParentActivity(), parentAlert.openWithFrontFaceCamera, lazy) {
 
