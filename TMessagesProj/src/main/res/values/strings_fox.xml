@@ -283,6 +283,14 @@
     <string name="TranslationsSettings">Translator Settings</string>
     <string name="TitleBarName">Title Text</string>
     <string name="DeleteAccount">Delete Account</string>
+    <string name="UpdatesInfoSettings">Last Update</string>
+    <string name="InstalledVersion">Installed Version</string>
+    <string name="BaseVersionUpdated">Base Version</string>
+    <string name="BuildType">Build Type</string>
+    <string name="BuildVersion">Installed Build</string>
+    <string name="UpdateType">Version Channel</string>
+    <string name="DownloadSource">Download Source</string>
+    <string name="ReleaseDate">Release Date</string>
     <!-- Folders -->
     <string name="FoldersType">Folders Type</string>
     <string name="FoldersTypeTitles">Titles</string>
