@@ -283,6 +283,21 @@
     <string name="TranslationsSettings">Translator Settings</string>
     <string name="TitleBarName">Title Text</string>
     <string name="DeleteAccount">Delete Account</string>
+    <string name="LockedChats">Locked Chats</string>
+    <string name="ManageLockedChats">Manage Locked Chats</string>
+    <string name="LockedChatsDesc">Lock chat with your Telegram Passcode.</string>
+    <string name="EnableChatLock">Do you want lock your chats?</string>
+    <string name="WhatChats">What Chats?</string>
+    <string name="LockChat">Lock Chat</string>
+    <string name="UnlockChat">Always unlocked chats</string>
+    <string name="EditTopicLocks">Edit Topic Lock</string>
+    <string name="RemoveLock">Remove Lock</string>
+    <string name="NotificationsDeleteAllLocks">Remove All Locks</string>
+    <string name="NotificationsDeleteAllLocksAlert">Are you sure to remove all locked chats?</string>
+    <string name="EditRemoveLockText">Are you sure to remove %s from locked chats?</string>
+    <string name="EditTopicsLock">Are you sure to edit topics lock?</string>
+    <string name="EditTopicsLockHint">You can lock specific topics in this group.</string>
+    <string name="KeepAlwaysUnlocked">Keep Always Unlocked</string>
     <!-- Folders -->
     <string name="FoldersType">Folders Type</string>
     <string name="FoldersTypeTitles">Titles</string>

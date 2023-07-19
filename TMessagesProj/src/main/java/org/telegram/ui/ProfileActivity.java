@@ -247,6 +247,7 @@ import it.foxgram.ui.Cells.Dynamic.ThemeInfo;
 import it.foxgram.android.ActionButtonController;
 import it.foxgram.android.utils.DCHelper;
 import it.foxgram.ui.BaseSettingsActivity;
+import it.foxgram.ui.Components.LockChatPopupWrapper;
 import it.foxgram.ui.DoNotTranslateSettings;
 import it.foxgram.ui.FoxGramSettings;
 import it.foxgram.ui.Components.AutoTranslatePopupWrapper;
@@ -8406,6 +8407,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 if (isBot || getContactsController().contactsDict.get(userId) == null) {
                     if (MessagesController.isSupportUser(user)) {
                         createAutoTranslateItem(ProfileActivity.this, userId);
+                        createLockedChatsItem(ProfileActivity.this, userId);
                         if (userBlocked && ActionButtonController.canShowButtons(isTopic)) {
                             otherItem.addSubItem(block_contact, R.drawable.msg_block, LocaleController.getString("Unblock", R.string.Unblock));
                         }
@@ -8415,6 +8417,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                             createAutoDeleteItem(context);
                         }
                         createAutoTranslateItem(ProfileActivity.this, userId);
+                        createLockedChatsItem(ProfileActivity.this, userId);
                         //TODO: Check AddShortcut on line 8414
                         otherItem.addSubItem(add_shortcut, R.drawable.msg_home, LocaleController.getString("AddShortcut", R.string.AddShortcut));
                         if (isBot) {
@@ -8451,6 +8454,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         createAutoDeleteItem(context);
                     }
                     createAutoTranslateItem(ProfileActivity.this, userId);
+                    createLockedChatsItem(ProfileActivity.this, userId);
 
                     if (!TextUtils.isEmpty(user.phone)) {
                         if (!actionButtonManager.hasItem("share_contact")) {
@@ -8480,6 +8484,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 createAutoDeleteItem(context);
             }
             createAutoTranslateItem(ProfileActivity.this, -chatId, topicId, chat);
+            createLockedChatsItem(ProfileActivity.this, -chatId, topicId, chat);
             if (ChatObject.isChannel(chat)) {
                 /*if (isTopic) {
                     if (ChatObject.canManageTopic(currentAccount, chat, topicId)) {
@@ -8808,6 +8813,33 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             otherItem.addSwipeBackItem(R.drawable.msg_translate, null, LocaleController.getString("AutoTranslate", R.string.AutoTranslate), autoTranslatePopupWrapper.windowLayout);
         }
         if ((chatInfo == null || !chatInfo.participants_hidden || ChatObject.hasAdminRights(chat) || !isTopic) && (autoDeleteItem != null || supportAutoTranslate)) {
+            otherItem.addColoredGap();
+        }
+    }
+
+    private void createLockedChatsItem(BaseFragment context, long dialogId) {
+        createLockedChatsItem(context, dialogId, 0, null);
+    }
+    private void createLockedChatsItem(BaseFragment context, long dialogId, int topicId, TLRPC.Chat chat) {
+        if (FoxConfig.lockedChats && !ChatObject.isNotInChat(currentChat)) {
+            LockChatPopupWrapper lockChatPopupWrapper = new LockChatPopupWrapper(context, ChatObject.isForum(currentChat), otherItem, dialogId, topicId, arguments.getBoolean("isAllowLockChat", false), getResourceProvider());
+            if (arguments.getBoolean("isSettings")) {
+                BaseFragment parentFragment = parentLayout.getFragmentStack().get(parentLayout.getFragmentStack().size() - 2);
+                lockChatPopupWrapper.setDelegate(new LockChatPopupWrapper.FragmentDelegate() {
+                    @Override
+                    public void hideLastFragment() {
+                        BaseSettingsActivity.hideLastFragment(parentFragment, parentLayout);
+                    }
+
+                    @Override
+                    public void showLastFragment() {
+                        BaseSettingsActivity.showLastFragment(parentFragment, parentLayout);
+                    }
+                });
+            }
+            otherItem.addSwipeBackItem(R.drawable.msg_premium_lock2, null, LocaleController.getString("LockChat", R.string.LockChat), lockChatPopupWrapper.windowLayout);
+        }
+        if ((chatInfo == null || !chatInfo.participants_hidden || ChatObject.hasAdminRights(chat) || !isTopic) && (autoDeleteItem != null || FoxConfig.lockedChats)) {
             otherItem.addColoredGap();
         }
     }

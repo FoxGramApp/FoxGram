@@ -128,6 +128,7 @@ public class FoxConfig extends SettingsController {
     public static int downloadSpeedBoost;
     public static int lastSelectedCompression;
     public static boolean doubleTapDisabled;
+    public static boolean lockedChats;
 
     static {
         loadConfig(true);
@@ -231,6 +232,7 @@ public class FoxConfig extends SettingsController {
             confirmSending.readParams(getByteArray("confirmSending"), magicException);
             contextMenu.readParams(getByteArray("contextMenu"), magicException);
             doubleTapDisabled = getBoolean("doubleTapDisabled", true);
+            lockedChats = getBoolean("lockedChats", false);
 
             //EXPERIMENTAL OPTIONS
             devOptEnabled = getBoolean("devOptEnabled", false);
@@ -305,7 +307,12 @@ public class FoxConfig extends SettingsController {
     public static void toggleUseSystemEmoji() {
         putValue("useSystemEmoji", useSystemEmoji ^= true);
     }
-    public static void toggleDoubleTapDisabled() {putValue("doubleTapDisabled", doubleTapDisabled ^= true);}
+    public static void toggleDoubleTapDisabled() {
+        putValue("doubleTapDisabled", doubleTapDisabled ^= true);
+    }
+    public static void setLockedChats(boolean value) {
+        putValue("lockedChats", lockedChats = value);
+    }
     public static void toggleShowGreetings() {
         putValue("showGreetings", showGreetings ^= true);
     }
