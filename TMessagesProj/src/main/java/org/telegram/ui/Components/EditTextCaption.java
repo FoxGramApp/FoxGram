@@ -138,6 +138,7 @@ public class EditTextCaption extends EditTextBoldCursor {
         TextStyleSpan.TextStyleRun run = new TextStyleSpan.TextStyleRun();
         run.flags |= TextStyleSpan.FLAG_STYLE_SPOILER;
         applyTextStyleToSelection(new TextStyleSpan(run));
+        invalidateSpoilers();
     }
 
     public void makeSelectedItalic() {

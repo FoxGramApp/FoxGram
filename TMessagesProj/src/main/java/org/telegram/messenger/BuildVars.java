@@ -29,15 +29,15 @@ public class BuildVars {
     // FoxGram
     public static boolean USE_CLOUD_STRINGS = true;
     public static boolean CHECK_UPDATES = false;
-
-    // Scoped Storage for SDK 30+
-    public static boolean NO_SCOPED_STORAGE = Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q;
-
-    // Telegram
     public static int BUILD_VERSION = BuildConfig.BUILD_VERSION;
     public static String BUILD_VERSION_STRING = BuildConfig.BUILD_VERSION_STRING;
-    public static int TELEGRAM_BUILD_VERSION = 3362;
-    public static String TELEGRAM_VERSION_STRING = "9.6.6";
+
+    // Scoped Storage for SDK 30+
+    public static boolean NO_SCOPED_STORAGE = Build.VERSION.SDK_INT <= 29;
+
+    // Telegram
+    public static int TELEGRAM_BUILD_VERSION = 3387;
+    public static String TELEGRAM_BUILD_VERSION_STRING = "9.7.0";
 
     // App ID and HASH
     // If you want make a fork you have to replace ID and HASH with yours
