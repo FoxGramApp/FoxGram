@@ -55,26 +55,23 @@ public class LockChatPopupWrapper {
             }
             updateItems();
             updateLastFragment();
-            //fragment.getMessagesController().getTranslateController().toggleTranslatingDialog(dialogId, topicId, AutoTranslateConfig.isAutoTranslateEnabled(dialogId, topicId));
         });
 
         if (topicId == 0 || LockConfig.isLastTopicAvailable(dialogId, topicId, false)) {
-            enableItem = ActionBarMenuItem.addItem(windowLayout, 0, LocaleController.getString("Enable", R.string.Enable), true, resourcesProvider);
+            enableItem = ActionBarMenuItem.addItem(windowLayout, 0, LocaleController.getString("Lock", R.string.Lock), true, resourcesProvider);
             enableItem.setOnClickListener(view -> {
                 LockConfig.setEnabled(dialogId, topicId, true);
                 updateItems();
                 updateLastFragment();
-                //fragment.getMessagesController().getTranslateController().toggleTranslatingDialog(dialogId, topicId, true);
             });
         }
 
         if (topicId == 0 || LockConfig.isLastTopicAvailable(dialogId, topicId, true)) {
-            disableItem = ActionBarMenuItem.addItem(windowLayout, 0, LocaleController.getString("Disable", R.string.Disable), true, resourcesProvider);
+            disableItem = ActionBarMenuItem.addItem(windowLayout, 0, LocaleController.getString("KeepUnlocked", R.string.KeepUnlocked), true, resourcesProvider);
             disableItem.setOnClickListener(view -> {
                 LockConfig.setEnabled(dialogId, topicId, false);
                 updateItems();
                 updateLastFragment();
-                //fragment.getMessagesController().getTranslateController().toggleTranslatingDialog(dialogId, topicId, false);
             });
         }
         updateItems();

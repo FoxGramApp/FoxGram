@@ -8839,7 +8839,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             }
             otherItem.addSwipeBackItem(R.drawable.msg_premium_lock2, null, LocaleController.getString("LockChat", R.string.LockChat), lockChatPopupWrapper.windowLayout);
         }
-        if ((chatInfo == null || !chatInfo.participants_hidden || ChatObject.hasAdminRights(chat) || !isTopic) && (autoDeleteItem != null || FoxConfig.lockedChats)) {
+        if ((chatInfo == null || !chatInfo.participants_hidden || ChatObject.hasAdminRights(chat) || !isTopic) && autoDeleteItem != null) {
             otherItem.addColoredGap();
         }
     }

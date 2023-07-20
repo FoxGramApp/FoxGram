@@ -298,6 +298,8 @@
     <string name="EditTopicsLock">Are you sure to edit topics lock?</string>
     <string name="EditTopicsLockHint">You can lock specific topics in this group.</string>
     <string name="KeepAlwaysUnlocked">Keep Always Unlocked</string>
+    <string name="Lock">Lock</string>
+    <string name="KeepUnlocked">Keep Unlocked</string>
     <!-- Folders -->
     <string name="FoldersType">Folders Type</string>
     <string name="FoldersTypeTitles">Titles</string>
