@@ -113,14 +113,14 @@ public class FoxGramGeneralSettings extends BaseSettingsActivity {
         divisorDCIdRow = rowCount++;
         hintIdRow = rowCount++;
 
+        foldersHeaderRow = rowCount++;
+        hideAllTabRow = rowCount++;
+        foldersDividerRow = rowCount++;
+
         privacyHeaderRow = rowCount++;
         phoneNumberSwitchRow = rowCount++;
         phoneContactsSwitchRow = rowCount++;
         divisorPrivacyRow = rowCount++;
-
-        foldersHeaderRow = rowCount++;
-        hideAllTabRow = rowCount++;
-        foldersDividerRow = rowCount++;
 
         notificationHeaderRow = rowCount++;
         notificationAccentRow = rowCount++;
