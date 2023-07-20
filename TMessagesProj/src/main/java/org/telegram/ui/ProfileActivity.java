@@ -254,6 +254,7 @@ import it.foxgram.ui.Cells.Dynamic.ThemeInfo;
 import it.foxgram.android.ActionButtonController;
 import it.foxgram.android.utils.DCHelper;
 import it.foxgram.ui.BaseSettingsActivity;
+import it.foxgram.ui.DeleteAccountActivity;
 import it.foxgram.ui.DoNotTranslateSettings;
 import it.foxgram.ui.FoxGramSettings;
 import it.foxgram.ui.Components.AutoTranslatePopupWrapper;
@@ -2227,7 +2228,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 } else if (id == logout) {
                     presentFragment(new LogoutActivity());
                 } else if (id == delete) {
-                    createDeleteDialog(getParentActivity());
+                    presentFragment(new DeleteAccountActivity());
                 } else if (id == set_as_main) {
                     int position = avatarsViewPager.getRealPosition();
                     TLRPC.Photo photo = avatarsViewPager.getPhoto(position);
@@ -10295,7 +10296,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                     presentFragment(new LogoutActivity());
                                     break;
                                 case "delete":
-                                    createDeleteDialog(getParentActivity());
+                                    presentFragment(new DeleteAccountActivity());
                                     break;
                                 case "video_call":
                                     actionBar.actionBarMenuOnItemClick.onItemClick(video_call_item);
@@ -12014,63 +12015,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 info.append("; mi=").append(capabilities.getMaxSupportedInstances()).append(")");
             }
             info.append("\n");
-        } catch (Exception ignore) {}
-    }
-
-    private void createDeleteDialog(Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(LocaleController.getString("TosDeclineDeleteAccount", R.string.TosDeclineDeleteAccount));
-        builder.setTitle(LocaleController.getString("DeleteAccount", R.string.DeleteAccount));
-        builder.setPositiveButton(LocaleController.getString("Deactivate", R.string.Deactivate), (dialog, which) -> {
-            final AlertDialog progressDialog = new AlertDialog(context, AlertDialog.ALERT_TYPE_SPINNER);
-            progressDialog.setCanCancel(false);
-
-            Utilities.globalQueue.postRunnable(() -> {
-                TLRPC.TL_account_deleteAccount req = new TLRPC.TL_account_deleteAccount();
-                req.reason = "UserRequestsDelete";
-                getConnectionsManager().sendRequest(req, (response, error) -> AndroidUtilities.runOnUIThread(() -> {
-                    try {
-                        progressDialog.dismiss();
-                    } catch (Exception e) {
-                        FileLog.e(e);
-                    }
-                    if (response instanceof TLRPC.TL_boolTrue) {
-                        getMessagesController().performLogout(0);
-                    } else if (error == null || error.code != -1000) {
-                        String errorText = LocaleController.getString("ErrorOccurred", R.string.ErrorOccurred);
-                        if (error != null) {
-                            errorText += "\n" + error.text;
-                        }
-                        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-                        builder1.setTitle(LocaleController.getString("AppName", R.string.AppName));
-                        builder1.setMessage(errorText);
-                        builder1.setPositiveButton(LocaleController.getString("OK", R.string.OK), null);
-                        builder1.show();
-                    }
-                }));
-            }, 500);
-            progressDialog.show();
-        });
-        builder.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
-        AlertDialog dialog = builder.create();
-        dialog.setOnShowListener(dialog1 -> {
-            TextView button = (TextView) dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            button.setTextColor(Theme.getColor(Theme.key_text_RedBold));
-            button.setEnabled(false);
-            CharSequence buttonText = button.getText();
-            new CountDownTimer(30000, 100) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    button.setText(String.format(Locale.getDefault(), "%s (%d)", buttonText, millisUntilFinished / 1000 + 1));
-                }
-
-                @Override
-                public void onFinish() {
-                    button.setText(buttonText);
-                    button.setEnabled(true);
-                }
-            }.start();
-        });
-        showDialog(dialog);
+        } catch (Exception ignore) {
+        }
     }
 }

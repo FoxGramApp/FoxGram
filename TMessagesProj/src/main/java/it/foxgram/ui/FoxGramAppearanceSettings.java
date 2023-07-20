@@ -237,19 +237,14 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
             linearLayout.setOrientation(LinearLayout.VERTICAL);
 
             TLRPC.User selfUser = UserConfig.getInstance(currentAccount).getCurrentUser();
-            CharSequence[] items;
-            if (!TextUtils.isEmpty(selfUser.username)) {
-                items = new CharSequence[]{
-                        LocaleController.getString("Default", R.string.Default),
-                        LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar),
-                        LocaleController.getString("Username", R.string.Username)
-                };
-            } else {
-                items = new CharSequence[]{
-                        LocaleController.getString("Default", R.string.Default),
-                        LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar)
-                };
-            }
+            CharSequence[] items = !TextUtils.isEmpty(selfUser.username) ? new CharSequence[]{
+                            LocaleController.getString("Default", R.string.Default),
+                            LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar),
+                            LocaleController.getString("Username", R.string.Username),
+            } : new CharSequence[]{
+                    LocaleController.getString("Default", R.string.Default),
+                    LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar)
+            };
 
             for (int i = 0; i < items.length; ++i) {
                 final int index = i;

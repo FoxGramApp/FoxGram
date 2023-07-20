@@ -127,23 +127,25 @@ public class FilterTabsView extends FrameLayout {
             iconWidth = FolderIconController.getTotalIconWidth();
             int width = titleWidth = (int) Math.ceil(textPaint.measureText(title));
             width += iconWidth;
-            int c;
-            if (store) {
-                c = delegate.getTabCounter(id);
-                if (c < 0) {
-                    c = 0;
-                }
+            if (FoxConfig.tabsUnreadCounter) {
+                int c;
                 if (store) {
-                    counter = c;
+                    c = delegate.getTabCounter(id);
+                    if (c < 0) {
+                        c = 0;
+                    }
+                    if (store) {
+                        counter = c;
+                    }
+                } else {
+                    c = counter;
                 }
-            } else {
-                c = counter;
-            }
-            if (c > 0) {
-                String counterText = String.format("%d", c);
-                int counterWidth = (int) Math.ceil(textCounterPaint.measureText(counterText));
-                int countWidth = Math.max(AndroidUtilities.dp(10), counterWidth) + AndroidUtilities.dp(10);
-                width += countWidth + AndroidUtilities.dp(6);
+                if (c > 0) {
+                    String counterText = String.format("%d", c);
+                    int counterWidth = (int) Math.ceil(textCounterPaint.measureText(counterText));
+                    int countWidth = Math.max(AndroidUtilities.dp(10), counterWidth) + AndroidUtilities.dp(10);
+                    width += countWidth + AndroidUtilities.dp(6);
+                }
             }
             return Math.max(AndroidUtilities.dp(40), width);
         }
