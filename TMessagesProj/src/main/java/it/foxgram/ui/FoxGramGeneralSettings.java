@@ -105,6 +105,7 @@ public class FoxGramGeneralSettings extends BaseSettingsActivity {
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(FoxConfig.tabsUnreadCounter);
             }
+            reloadDialogs();
         }
     }
 
