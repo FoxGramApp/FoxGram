@@ -429,9 +429,6 @@ public class FoxGramSettings extends BaseSettingsActivity {
     @Override
     protected void updateRowsId() {
         super.updateRowsId();
-        foxRow = -1;
-        updatesRow = -1;
-        dividerUpdates = -1;
         bugDividerRow = -1;
         debugHeaderRow = -1;
         sendLogsRow = -1;
@@ -439,12 +436,10 @@ public class FoxGramSettings extends BaseSettingsActivity {
         clearLogsRow = -1;
         switchBackendRow = -1;
 
-        if (StoreUtils.isFromCheckableStore() || !StoreUtils.isDownloadedFromAnyStore()) {
-            updatesRow = rowCount++;
-            foxRow = rowCount++;
-            updatesCheckView = rowCount++;
-            dividerUpdates = rowCount++;
-        }
+        updatesRow = rowCount++;
+        foxRow = rowCount++;
+        updatesCheckView = rowCount++;
+        dividerUpdates = rowCount++;
 
         categoryHeaderRow = rowCount++;
         generalSettingsRow = rowCount++;
@@ -452,8 +447,8 @@ public class FoxGramSettings extends BaseSettingsActivity {
         appearanceSettingsRow = rowCount++;
         chatSettingsRow = rowCount++;
         experimentalSettingsRow = rowCount++;
-
         divisorInfoRow = rowCount++;
+
         infoHeaderRow = rowCount++;
         channelUpdatesRow = rowCount++;
         sourceCodeRow = rowCount++;
