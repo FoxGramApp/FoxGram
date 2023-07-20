@@ -283,6 +283,7 @@
     <string name="TranslationsSettings">Translator Settings</string>
     <string name="TitleBarName">Title Text</string>
     <string name="DeleteAccount">Delete Account</string>
+    <string name="TabsCounter">Tabs Unread Counter</string>
     <!-- Folders -->
     <string name="FoldersType">Folders Type</string>
     <string name="FoldersTypeTitles">Titles</string>

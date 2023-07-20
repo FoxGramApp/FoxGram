@@ -32,6 +32,7 @@ public class FoxGramGeneralSettings extends BaseSettingsActivity {
     private int divisorDCIdRow;
     private int hintIdRow;
     private int foldersHeaderRow;
+    private int tabsUnreadCounterRow;
     private int foldersDividerRow;
     private int hideAllTabRow;
     private int notificationHeaderRow;
@@ -99,6 +100,11 @@ public class FoxGramGeneralSettings extends BaseSettingsActivity {
                 ((TextCheckCell) view).setChecked(FoxConfig.showAccountRegistrationDate);
                 reloadInterface();
             }
+        } else if (position == tabsUnreadCounterRow) {
+            FoxConfig.toggleTabsUnreadCounter();
+            if (view instanceof TextCheckCell) {
+                ((TextCheckCell) view).setChecked(FoxConfig.tabsUnreadCounter);
+            }
         }
     }
 
@@ -114,6 +120,7 @@ public class FoxGramGeneralSettings extends BaseSettingsActivity {
         hintIdRow = rowCount++;
 
         foldersHeaderRow = rowCount++;
+        tabsUnreadCounterRow = rowCount++;
         hideAllTabRow = rowCount++;
         foldersDividerRow = rowCount++;
 
@@ -175,6 +182,8 @@ public class FoxGramGeneralSettings extends BaseSettingsActivity {
                         textCheckCell.setTextAndCheck(LocaleController.getString("HideAllChatsFolder", R.string.HideAllChatsFolder), FoxConfig.hideAllTab, true);
                     } else if (position == notificationAccentRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("AccentAsNotificationColor", R.string.AccentAsNotificationColor), FoxConfig.accentAsNotificationColor, true);
+                    } else if (position == tabsUnreadCounterRow) {
+                        textCheckCell.setTextAndCheck(LocaleController.getString("TabsCounter", R.string.TabsCounter), FoxConfig.tabsUnreadCounter, true);
                     }
                     break;
                 case SETTINGS:
@@ -233,8 +242,10 @@ public class FoxGramGeneralSettings extends BaseSettingsActivity {
             } else if (position == privacyHeaderRow || position == foldersHeaderRow || position == callHeaderRow ||
                     position == dcIdSettingsHeaderRow || position == notificationHeaderRow) {
                 return ViewType.HEADER;
-            } else if (position == phoneNumberSwitchRow || position == phoneContactsSwitchRow || position == dateRow || position == dcIdRow ||
-                    position == confirmCallSwitchRow || position == notificationAccentRow || position == hideAllTabRow) {
+            } else if (position == phoneNumberSwitchRow || position == phoneContactsSwitchRow ||
+                    position == dateRow || position == dcIdRow ||
+                    position == confirmCallSwitchRow || position == tabsUnreadCounterRow ||
+                    position == notificationAccentRow || position == hideAllTabRow) {
                 return ViewType.SWITCH;
             } else if (position == idTypeRow) {
                 return ViewType.SETTINGS;

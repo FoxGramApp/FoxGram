@@ -128,6 +128,7 @@ public class FoxConfig extends SettingsController {
     public static int downloadSpeedBoost;
     public static int lastSelectedCompression;
     public static boolean doubleTapDisabled;
+    public static boolean tabsUnreadCounter;
 
     static {
         loadConfig(true);
@@ -231,6 +232,7 @@ public class FoxConfig extends SettingsController {
             confirmSending.readParams(getByteArray("confirmSending"), magicException);
             contextMenu.readParams(getByteArray("contextMenu"), magicException);
             doubleTapDisabled = getBoolean("doubleTapDisabled", true);
+            tabsUnreadCounter = getBoolean("tabsUnreadCounter", true);
 
             //EXPERIMENTAL OPTIONS
             devOptEnabled = getBoolean("devOptEnabled", false);
@@ -455,6 +457,10 @@ public class FoxConfig extends SettingsController {
 
     public static void toggleSendLargePhotos() {
         putValue("sendLargePhotos", sendLargePhotos ^= true);
+    }
+
+    public static void toggleTabsUnreadCounter() {
+        putValue("tabsUnreadCounter", tabsUnreadCounter ^= true);
     }
 
     public static void setXiaomiBlockedInstaller() {
