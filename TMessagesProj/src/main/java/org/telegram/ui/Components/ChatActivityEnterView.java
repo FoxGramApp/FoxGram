@@ -208,7 +208,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
     public interface ChatActivityEnterViewDelegate {
 
         default void onEditTextScroll() {};
-        
+
         default void onContextMenuOpen() {};
 
         default void onContextMenuClose() {};
@@ -2167,12 +2167,12 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                     return true;
                 }
 
-                    TLRPC.Chat chat = parentFragment == null ? null :parentFragment.getCurrentChat();
-                    TLRPC.UserFull userFull = parentFragment == null ? userInfo :parentFragment.getCurrentUserInfo();
-                    if (chat != null && !(ChatObject.canSendVoice(chat) || (ChatObject.canSendRoundVideo(chat) && hasRecordVideo)) || userFull != null && userFull.voice_messages_forbidden) {
-                        delegate.needShowMediaBanHint();
-                        return true;
-                    }
+                TLRPC.Chat chat = parentFragment == null ? null :parentFragment.getCurrentChat();
+                TLRPC.UserFull userFull = parentFragment == null ? userInfo :parentFragment.getCurrentUserInfo();
+                if (chat != null && !(ChatObject.canSendVoice(chat) || (ChatObject.canSendRoundVideo(chat) && hasRecordVideo)) || userFull != null && userFull.voice_messages_forbidden) {
+                    delegate.needShowMediaBanHint();
+                    return true;
+                }
 
                 if (hasRecordVideo) {
                     calledRecordRunnable = false;
@@ -2662,9 +2662,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
         reactionsButton = new ImageView(getContext());
         reactionsButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.msg_input_like));
         reactionsButton.setScaleType(ImageView.ScaleType.CENTER);
-        if (Build.VERSION.SDK_INT >= 21) {
-            reactionsButton.setBackgroundDrawable(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector)));
-        }
+        reactionsButton.setBackgroundDrawable(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector)));
         //reactionsButton.setVisibility(GONE);
         AndroidUtilities.updateViewVisibilityAnimated(reactionsButton, true, 0.1f, false);
         attachLayout.addView(reactionsButton, 0, LayoutHelper.createLinear(48, 48));
@@ -3607,7 +3605,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                     }
                     if (isInScheduleMode()) {
                         AlertsCreator.createScheduleDatePickerDialog(parentActivity, dialog_id, (notify, scheduleDate) -> {
-                            SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(command, dialog_id, replyingMessageObject, getThreadMessage(), null, false, null, null, null, notify, scheduleDate, null, false));
+                            SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(command, dialog_id, replyingMessageObject, getThreadMessage(), null, false, null, null, null, notify, scheduleDate, null, false, false));
                             setFieldText("");
                             botCommandsMenuContainer.dismiss();
                         }, resourcesProvider);
@@ -3615,7 +3613,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                         if (parentFragment != null && parentFragment.checkSlowMode(view)) {
                             return;
                         }
-                        SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(command, dialog_id, replyingMessageObject, getThreadMessage(), null, false, null, null, null, true, 0, null, false));
+                        SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(command, dialog_id, replyingMessageObject, getThreadMessage(), null, false, null, null, null, true, 0, null, false, false));
                         setFieldText("");
                         botCommandsMenuContainer.dismiss();
                     }
@@ -7251,9 +7249,9 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             TLRPC.User user = messageObject != null && DialogObject.isChatDialog(dialog_id) ? accountInstance.getMessagesController().getUser(messageObject.messageOwner.from_id.user_id) : null;
             SendMessagesHelper.SendMessageParams sendMessageParams;
             if ((botCount != 1 || username) && user != null && user.bot && !command.contains("@")) {
-                sendMessageParams = SendMessagesHelper.SendMessageParams.of(String.format(Locale.US, "%s@%s", command, UserObject.getPublicUsername(user)), dialog_id, replyingMessageObject, getThreadMessage(), null, false, null, null, null, true, 0, null, false);
+                sendMessageParams = SendMessagesHelper.SendMessageParams.of(String.format(Locale.US, "%s@%s", command, UserObject.getPublicUsername(user)), dialog_id, replyingMessageObject, getThreadMessage(), null, false, null, null, null, true, 0, null, false, false);
             } else {
-                sendMessageParams = SendMessagesHelper.SendMessageParams.of(command, dialog_id, replyingMessageObject, getThreadMessage(), null, false, null, null, null, true, 0, null, false);
+                sendMessageParams = SendMessagesHelper.SendMessageParams.of(command, dialog_id, replyingMessageObject, getThreadMessage(), null, false, null, null, null, true, 0, null, false, false);
             }
             applyStoryToSendMessageParams(sendMessageParams);
             SendMessagesHelper.getInstance(currentAccount).sendMessage(sendMessageParams);
@@ -8173,7 +8171,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             return false;
         }
         if (button instanceof TLRPC.TL_keyboardButton) {
-            SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(button.text, dialog_id, replyMessageObject, getThreadMessage(), null, false, null, null, null, true, 0, null, false));
+            SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(button.text, dialog_id, replyMessageObject, getThreadMessage(), null, false, null, null, null, true, 0, null, false, false));
         } else if (button instanceof TLRPC.TL_keyboardButtonUrl) {
             if (Browser.urlMustNotHaveConfirmation(button.url)) {
                 Browser.openUrl(parentActivity, Uri.parse(button.url), true, true, progress);

@@ -15,7 +15,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -39,9 +38,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Shader;
 import android.graphics.Typeface;
@@ -52,7 +49,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.SystemClock;
-import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.text.Layout;
 import android.text.Spannable;
@@ -105,7 +101,6 @@ import androidx.core.text.HtmlCompat;
 import androidx.dynamicanimation.animation.FloatValueHolder;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
-import androidx.exifinterface.media.ExifInterface;
 import androidx.recyclerview.widget.ChatListItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManagerFixed;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -115,13 +110,11 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.util.Log;
 import com.google.zxing.common.detector.MathUtils;
 
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
-import org.telegram.messenger.AnimationNotificationsLocker;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BotWebViewVibrationEffect;
 import org.telegram.messenger.BuildVars;
@@ -344,7 +337,7 @@ import it.foxgram.android.translator.TranslatorHelper;
 import it.foxgram.ui.DetailsActivity;
 
 @SuppressWarnings("unchecked")
-public class ChatActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, DialogsActivity.DialogsActivityDelegate, LocationActivity.LocationActivityDelegate, ChatAttachAlertDocumentLayout.DocumentSelectActivityDelegate, ChatActivityInterface, FloatingDebugProvider {
+public class ChatActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, DialogsActivity.DialogsActivityDelegate, LocationActivity.LocationActivityDelegate, ChatAttachAlertDocumentLayout.DocumentSelectActivityDelegate, ChatActivityInterface, FloatingDebugProvider, InstantCameraView.Delegate, ForwardContext {
     private final static boolean PULL_DOWN_BACK_FRAGMENT = false;
     private final static boolean DISABLE_PROGRESS_VIEW = true;
     private final static int SKELETON_DISAPPEAR_MS = 200;
@@ -365,7 +358,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     protected TLRPC.User currentUser;
     protected TLRPC.EncryptedChat currentEncryptedChat;
     private boolean userBlocked;
-
     private long chatInviterId;
 
     private ArrayList<ChatMessageCell> chatMessageCellsCache = new ArrayList<>();
@@ -3032,9 +3024,9 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     });
                     headerItem.toggleSubMenu(attach, attachItem.createView());
                 } else if (id == bot_help) {
-                    getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of("/help", dialog_id, null, null, null, false, null, null, null, true, 0, null, false));
+                    getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of("/help", dialog_id, null, null, null, false, null, null, null, true, 0, null, false, false));
                 } else if (id == bot_settings) {
-                    getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of("/settings", dialog_id, null, null, null, false, null, null, null, true, 0, null, false));
+                    getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of("/settings", dialog_id, null, null, null, false, null, null, null, true, 0, null, false, false));
                 } else if (id == search) {
                     openSearchWithText(null);
                 } else if (id == translate) {
@@ -5973,7 +5965,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 if (mentionContainer.getAdapter().isBotCommands()) {
                     if (chatMode == MODE_SCHEDULED) {
                         AlertsCreator.createScheduleDatePickerDialog(getParentActivity(), dialog_id, (notify, scheduleDate) -> {
-                            getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of((String) object, dialog_id, replyingMessageObject, getThreadMessage(), null, false, null, null, null, notify, scheduleDate, null, false));
+                            getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of((String) object, dialog_id, replyingMessageObject, getThreadMessage(), null, false, null, null, null, notify, scheduleDate, null, false, false));
                             chatActivityEnterView.setFieldText("");
                             hideFieldPanel(false);
                         }, themeDelegate);
@@ -5981,7 +5973,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         if (checkSlowMode(view)) {
                             return;
                         }
-                        getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of((String) object, dialog_id, replyingMessageObject, getThreadMessage(), null, false, null, null, null, true, 0, null, false));
+                        getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of((String) object, dialog_id, replyingMessageObject, getThreadMessage(), null, false, null, null, null, true, 0, null, false, false));
                         chatActivityEnterView.setFieldText("");
                         hideFieldPanel(false);
                     }
@@ -6858,7 +6850,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         if (botUserLast != null && botUserLast.length() != 0) {
                             getMessagesController().sendBotStart(currentUser, botUserLast);
                         } else {
-                            getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of("/start", dialog_id, null, null, null, false, null, null, null, true, 0, null, false));
+                            getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of("/start", dialog_id, null, null, null, false, null, null, null, true, 0, null, false, false));
                         }
                     });
                 } else {
@@ -6875,7 +6867,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 if (botUser.length() != 0) {
                     getMessagesController().sendBotStart(currentUser, botUser);
                 } else {
-                    getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of("/start", dialog_id, null, null, null, false, null, null, null, true, 0, null, false));
+                    getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of("/start", dialog_id, null, null, null, false, null, null, null, true, 0, null, false, false));
                 }
                 botUser = null;
                 updateBottomOverlay();
@@ -10719,7 +10711,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         fillEditingMediaWithCaption(caption, null);
         if (checkSlowModeAlert()) {
             if (!fmessages.isEmpty() && !TextUtils.isEmpty(caption)) {
-                SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(caption, dialog_id, null, null, null, true, null, null, null, true, 0, null, false));
+                SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(caption, dialog_id, null, null, null, true, null, null, null, true, 0, null, false, false));
                 caption = null;
             }
             getSendMessagesHelper().sendMessage(fmessages, dialog_id, false, false, true, 0);
@@ -10758,7 +10750,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             }
         }
         if (!hasNoGifs && !TextUtils.isEmpty(photos.get(0).caption)) {
-            SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(photos.get(0).caption, dialog_id, replyingMessageObject, getThreadMessage(), null, false, photos.get(0).entities, null, null, notify, scheduleDate, null, false));
+            SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(photos.get(0).caption, dialog_id, replyingMessageObject, getThreadMessage(), null, false, photos.get(0).entities, null, null, notify, scheduleDate, null, false, false));
         }
         for (int a = 0; a < photos.size(); a++) {
             SendMessagesHelper.SendingMediaInfo info = photos.get(a);
@@ -26666,11 +26658,9 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     selectedObjectToEditCaption = null;
                     return;
                 }
-                getMessageHelper().saveStickerToGallery(getParentActivity(), selectedObject, () -> {
-                    if (BulletinFactory.canShowBulletin(ChatActivity.this)) {
-                        AndroidUtilities.runOnUIThread(() -> BulletinFactory.of(this).createDownloadBulletin(BulletinFactory.FileType.STICKER, themeDelegate).show());
-                    }
-                });
+                Utilities.Callback callback = (a) ->
+                        BulletinFactory.of(this).createDownloadBulletin(BulletinFactory.FileType.STICKER, themeDelegate).show();
+                getMessageHelper().saveStickerToGallery(getParentActivity(), selectedObject, callback);
                 break;
             }
             case 202: {
@@ -26844,7 +26834,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 if (messageObject.isAnyKindOfSticker() && !messageObject.isAnimatedEmojiStickers() && !messageObject.isAnimatedEmoji() && !messageObject.isDice()) {
                     getSendMessagesHelper().sendSticker(
                             selectedObject.getDocument(), null, dialog_id, longClick ? messageObject : threadMessageObject,
-                            threadMessageObject, null, null, true, 0, false);
+                            threadMessageObject, null, null, true, 0, false, 0);
                     return true;
                 } else {
                     String message = messageObject.messageOwner.message;
@@ -26880,10 +26870,11 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         } else {
                             entities = null;
                         }
-                        getSendMessagesHelper().sendMessage(
-                                message, dialog_id, longClick ? messageObject : threadMessageObject,
+
+                        SendMessagesHelper.SendMessageParams params = SendMessagesHelper.SendMessageParams.of(message, dialog_id, longClick ? messageObject : threadMessageObject,
                                 threadMessageObject, null, false, entities,
-                                null, null, true, 0, null, false);
+                                null, null, true, 0, null, false, false);
+                        getSendMessagesHelper().sendMessage(params);
                         return true;
                     }
                 }
@@ -26908,7 +26899,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         return false;
     }
 
-    @Override
     public ArrayList<MessageObject> getForwardingMessages() {
         ArrayList<MessageObject> fMessages = new ArrayList<>();
         if (forwardingMessage == null && selectedMessagesIds[0].size() == 0 && selectedMessagesIds[1].size() == 0) {
@@ -26999,7 +26989,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             for (int a = 0; a < dids.size(); a++) {
                 long did = dids.get(a).dialogId;
                 if (message != null) {
-                    getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of(message.toString(), did, null, null, null, true, null, null, null, forwardParams.notify, forwardParams.scheduleDate, null, false));
+                    getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of(message.toString(), did, null, null, null, true, null, null, null, forwardParams.notify, forwardParams.scheduleDate, null, false, false));
                 }
                 getSendMessagesHelper().sendMessage(fmessages, did, forwardParams.noQuote, forwardParams.noCaption, forwardParams.notify, forwardParams.scheduleDate);
             }
@@ -27528,7 +27518,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         entity.offset = 0;
         entity.length = message.length();
         entities.add(entity);
-        SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(message, dialog_id, replyingMessageObject, getThreadMessage(), null, false, entities, null, null, notify, scheduleDate, null, false));
+        SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(message, dialog_id, replyingMessageObject, getThreadMessage(), null, false, entities, null, null, notify, scheduleDate, null, false, false));
         afterMessageSend();
     }
 
@@ -30666,7 +30656,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 }
                 undoView.showWithAction(0, chatActivityEnterView.getVisibility() == View.VISIBLE && bottomOverlay.getVisibility() != View.VISIBLE ? UndoView.ACTION_DICE_INFO : UndoView.ACTION_DICE_NO_SEND_INFO, message.getDiceEmoji(), null, () -> {
                     if (checkSlowModeAlert()) {
-                        getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of(message.getDiceEmoji(), dialog_id, replyingMessageObject, getThreadMessage(), null, false, null, null, null, true, 0, null, false));
+                        getSendMessagesHelper().sendMessage(SendMessagesHelper.SendMessageParams.of(message.getDiceEmoji(), dialog_id, replyingMessageObject, getThreadMessage(), null, false, null, null, null, true, 0, null, false, false));
                     }
                 });
             } else if (message.isAnimatedEmoji() && (!message.isAnimatedAnimatedEmoji() || emojiAnimationsOverlay.supports(MessageObject.findAnimatedEmojiEmoticon(message.getDocument())) && currentUser != null) || message.isPremiumSticker()) {
@@ -32942,18 +32932,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         return skeleton;
     }
 
-    @Override
-    public SizeNotifierFrameLayout getContentView() {
-        return contentView;
-    }
-
-    private final static class MessageSkeleton {
-        int width;
-        int height;
-        int lastBottom;
-    }
-
-
     private boolean isBottomOverlaysInvisible() {
         if (bottomMessagesActionContainer == null) createBottomMessagesActionButtons();
         if (searchContainer == null) createSearchContainer();
@@ -32977,6 +32955,17 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             }
         });
         animator.start();
+    }
+
+    @Override
+    public SizeNotifierFrameLayout getContentView() {
+        return contentView;
+    }
+
+    private final static class MessageSkeleton {
+        int width;
+        int height;
+        int lastBottom;
     }
 
     private class RecyclerListViewInternal extends RecyclerListView implements StoriesListPlaceProvider.ClippedView {

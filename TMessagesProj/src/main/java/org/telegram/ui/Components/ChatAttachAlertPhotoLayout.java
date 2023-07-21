@@ -102,7 +102,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1244,7 +1243,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
                 if (!CameraXUtils.isCameraXSupported() || FoxConfig.cameraType != FoxConfig.CAMERA_X && FoxConfig.cameraEnable) {
                     final boolean sameTakePictureOrientation = ((CameraView) cameraView).getCameraSession().isSameTakePictureOrientation();
                     ((CameraView) cameraView).getCameraSession().setFlipFront(parentAlert.baseFragment instanceof ChatActivity || parentAlert.avatarPicker == 2);
-                    takingPhoto = CameraController.getInstance().takePicture(cameraFile, ((CameraView) cameraView).getCameraSession(), () -> {
+                    takingPhoto = CameraController.getInstance().takePicture(cameraFile, false,((CameraView) cameraView).getCameraSession(), (test) -> {
                         takingPhoto = false;
                         if (cameraFile == null || parentAlert.baseFragment == null) {
                             return;

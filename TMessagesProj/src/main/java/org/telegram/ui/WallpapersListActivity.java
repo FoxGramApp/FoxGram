@@ -609,10 +609,10 @@ public class WallpapersListActivity extends BaseFragment implements Notification
                             for (int a = 0; a < dids.size(); a++) {
                                 long did = dids.get(a).dialogId;
                                 if (message != null) {
-                                    SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(message.toString(), did, null, null, null, true, null, null, null, true, 0, null, false));
+                                    SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(message.toString(), did, null, null, null, true, null, null, null, true, 0, null, false, false));
                                 }
                                 if (!TextUtils.isEmpty(fmessage)) {
-                                    SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(fmessage.toString(), did, null, null, null, true, null, null, null, true, 0, null, false));
+                                    SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(fmessage.toString(), did, null, null, null, true, null, null, null, true, 0, null, false, false));
                                 }
                             }
                             fragment1.finishFragment();
@@ -636,7 +636,7 @@ public class WallpapersListActivity extends BaseFragment implements Notification
 
                             ChatActivity chatActivity = new ChatActivity(args1);
                             presentFragment(chatActivity, true);
-                            SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(fmessage.toString(), did, null, null, null, true, null, null, null, true, 0, null, false));
+                            SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(fmessage.toString(), did, null, null, null, true, null, null, null, true, 0, null, false, false));
                         }
                         return true;
                     });

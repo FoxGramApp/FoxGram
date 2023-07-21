@@ -4891,7 +4891,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                                 for (int a = 0; a < dids.size(); a++) {
                                     long did = dids.get(a).dialogId;
                                     if (message != null) {
-                                        SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(message.toString(), did, null, null, null, true, null, null, null, forwardParams.notify, forwardParams.scheduleDate, null, false));
+                                        SendMessagesHelper.getInstance(currentAccount).sendMessage(SendMessagesHelper.SendMessageParams.of(message.toString(), did, null, null, null, true, null, null, null, forwardParams.notify, forwardParams.scheduleDate, null, false, false));
                                     }
                                     SendMessagesHelper.getInstance(currentAccount).sendMessage(fmessages, did, forwardParams.noQuote, forwardParams.noCaption, forwardParams.notify, forwardParams.scheduleDate);
                                 }
@@ -17743,19 +17743,20 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 resultHeight = Math.round(originalHeight * scale / 2) * 2;
             }
 
-        if (bitrate != 0) {
-            if (sendPhotoType == SELECT_TYPE_AVATAR) {
-                bitrate = 1560000;
-            } else if (resultWidth == originalWidth && resultHeight == originalHeight) {
-                bitrate = originalBitrate;
-            } else {
-                bitrate = MediaController.makeVideoBitrate(originalHeight, originalWidth, originalBitrate, resultHeight, resultWidth);
+            if (bitrate != 0) {
+                if (sendPhotoType == SELECT_TYPE_AVATAR) {
+                    bitrate = 1560000;
+                } else if (resultWidth == originalWidth && resultHeight == originalHeight) {
+                    bitrate = originalBitrate;
+                } else {
+                    bitrate = MediaController.makeVideoBitrate(originalHeight, originalWidth, originalBitrate, resultHeight, resultWidth);
+                }
+                videoFramesSize = (long) (bitrate / 8 * videoDuration / 1000);
             }
-            videoFramesSize = (long) (bitrate / 8 * videoDuration / 1000);
         }
     }
 
-    private void showQualityView(final boolean show) {
+    private void showQualityView(boolean show) {
         if (show && textureUploaded && videoSizeSet && !changingTextureView && videoTextureView != null) {
             videoFrameBitmap = videoTextureView.getBitmap();
         }

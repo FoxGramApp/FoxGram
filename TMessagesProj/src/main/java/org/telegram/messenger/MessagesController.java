@@ -9530,7 +9530,7 @@ public class  MessagesController extends BaseController implements NotificationC
                 arrayList.add(messageObject);
                 new_dialogMessage.put(did, arrayList);
             }
-           // getFileLoader().checkMediaExistance(newMessages);
+            // getFileLoader().checkMediaExistance(newMessages);
 
             if (!fromCache && !migrate && dialogsLoadOffset[UserConfig.i_dialogsLoadOffsetId] != -1 && loadType == 0) {
                 int totalDialogsLoadCount = getUserConfig().getTotalDialogsCount(folderId);
@@ -15602,7 +15602,7 @@ public class  MessagesController extends BaseController implements NotificationC
                                     editor.putBoolean("EnableHideStoriesSenders", newStoriesSendersHide = update.notify_settings.stories_hide_sender);
                                 }
                                 if ((storiesEnabled == null) != (newStoriesEnabled == null) || (storiesSendersHide == null) != (newStoriesSendersHide == null) ||
-                                    storiesEnabled != null && storiesEnabled != newStoriesEnabled || storiesSendersHide != null && storiesSendersHide != newStoriesSendersHide) {
+                                        storiesEnabled != null && storiesEnabled != newStoriesEnabled || storiesSendersHide != null && storiesSendersHide != newStoriesSendersHide) {
                                     editor.putBoolean("overwrite_stories", true);
                                 }
                                 getNotificationsController().getNotificationsSettingsFacade().applySoundSettings(update.notify_settings.android_sound, editor, 0, 0, TYPE_PRIVATE, false);

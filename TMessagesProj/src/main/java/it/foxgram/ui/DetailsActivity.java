@@ -397,7 +397,7 @@ public class DetailsActivity extends BaseFragment implements NotificationCenter.
                     for (int a = 0; a < messageObject.messageOwner.media.document.attributes.size(); a++) {
                         if (messageObject.messageOwner.media.document.attributes.get(a) instanceof TLRPC.TL_documentAttributeAudio ||
                                 messageObject.messageOwner.media.document.attributes.get(a) instanceof TLRPC.TL_documentAttributeVideo) {
-                            int duration = messageObject.messageOwner.media.document.attributes.get(a).duration;
+                            int duration = (int) messageObject.messageOwner.media.document.attributes.get(a).duration;
                             durationString = AndroidUtilities.formatShortDuration(duration);
                             fileDuration = rowCount++;
                         } else if (messageObject.messageOwner.media.document.attributes.get(a) instanceof TLRPC.TL_documentAttributeSticker) {

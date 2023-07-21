@@ -80,8 +80,6 @@ import androidx.recyclerview.widget.LinearSmoothScrollerCustom;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.exoplayer2.util.Log;
-
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.AnimationNotificationsLocker;
@@ -3125,7 +3123,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 menuDrawable.setRoundCap();
                 actionBar.setBackButtonContentDescription(LocaleController.getString("AccDescrOpenMenu", R.string.AccDescrOpenMenu));
             }
-            if (folderId != 0) {
+            if (isArchive()) {
                 actionBar.setTitle(actionBarDefaultTitle = LocaleController.getString("ArchivedChats", R.string.ArchivedChats));
             } else {
                 statusDrawable = new AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable(null, AndroidUtilities.dp(26));
@@ -3137,7 +3135,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 actionBar.setSupportsHolidayImage(true);
             }
         }
-        if ((initialDialogsType == DIALOGS_TYPE_FORWARD) || !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) {
+        if (!onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) {
             actionBar.setAddToContainer(false);
             actionBar.setCastShadows(false);
             actionBar.setClipContent(true);
@@ -3153,10 +3151,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             }
         });
 
-        if (
-                (initialDialogsType == DIALOGS_TYPE_DEFAULT && !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) &&
-                        folderId == 0 && TextUtils.isEmpty(searchString)
-        ) {
+        if ((initialDialogsType == DIALOGS_TYPE_DEFAULT && !onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) && folderId == 0 && TextUtils.isEmpty(searchString)) {
             filterTabsView = new FilterTabsView(context) {
                 @Override
                 public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -4362,19 +4357,17 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 args.putBoolean("destroyAfterSelect", true);
                 presentFragment(new ContactsActivity(args));
             });
-            if (Build.VERSION.SDK_INT >= 21) {
-                StateListAnimator animator = new StateListAnimator();
-                animator.addState(new int[]{android.R.attr.state_pressed}, ObjectAnimator.ofFloat(floatingButton2Container, View.TRANSLATION_Z, AndroidUtilities.dp(2), AndroidUtilities.dp(4)).setDuration(200));
-                animator.addState(new int[]{}, ObjectAnimator.ofFloat(floatingButton2Container, View.TRANSLATION_Z, AndroidUtilities.dp(4), AndroidUtilities.dp(2)).setDuration(200));
-                floatingButton2Container.setStateListAnimator(animator);
-                floatingButton2Container.setOutlineProvider(new ViewOutlineProvider() {
-                    @SuppressLint("NewApi")
-                    @Override
-                    public void getOutline(View view, Outline outline) {
-                        outline.setOval(0, 0, AndroidUtilities.dp(36), AndroidUtilities.dp(36));
-                    }
-                });
-            }
+            StateListAnimator animator = new StateListAnimator();
+            animator.addState(new int[]{android.R.attr.state_pressed}, ObjectAnimator.ofFloat(floatingButton2Container, View.TRANSLATION_Z, AndroidUtilities.dp(2), AndroidUtilities.dp(4)).setDuration(200));
+            animator.addState(new int[]{}, ObjectAnimator.ofFloat(floatingButton2Container, View.TRANSLATION_Z, AndroidUtilities.dp(4), AndroidUtilities.dp(2)).setDuration(200));
+            floatingButton2Container.setStateListAnimator(animator);
+            floatingButton2Container.setOutlineProvider(new ViewOutlineProvider() {
+                @SuppressLint("NewApi")
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    outline.setOval(0, 0, AndroidUtilities.dp(36), AndroidUtilities.dp(36));
+                }
+            });
 
             floatingButton2 = new RLottieImageView(context);
             floatingButton2.setScaleType(ImageView.ScaleType.CENTER);
@@ -4521,7 +4514,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 outline.setOval(0, 0, AndroidUtilities.dp(56), AndroidUtilities.dp(56));
             }
         });
-        Drawable drawable = Theme.createSimpleSelectorCircleDrawable(AndroidUtilities.dp(56), Theme.getColor(Theme.key_chats_actionBackground), Theme.getColor(Theme.key_chats_actionPressedBackground));
+        floatingButtonContainer.addView(floatingButton, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
         updateFloatingButtonColor();
         updateStoriesPosting();
         if (showStoryHint && storyHint != null && storiesEnabled) {
@@ -5084,7 +5077,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         boolean needMonetMigration = MonetIconController.needMonetMigration();
         if (foundCrashReport) {
             CrashReportBottomSheet.checkBottomSheet(this);
-        }else if (needMonetMigration) {
+        } else if (needMonetMigration) {
             MonetAndroidFixDialog.checkBottomSheet(this);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             AppLinkVerifyBottomSheet.checkBottomSheet(this);
@@ -6726,10 +6719,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             final boolean isEmpty = getDialogsArray(currentAccount, initialDialogsType, folderId, false).isEmpty();
             if (showArchiveHint && isEmpty) {
                 showArchiveHint = false;
-                MessagesController.getGlobalMainSettings().edit().putBoolean("archivehint", false).commit();
+                MessagesController.getGlobalMainSettings().edit().putBoolean("archivehint", false).apply();
             }
             if (showArchiveHint) {
-                preferences.edit().putBoolean("archivehint", false).commit();
+                preferences.edit().putBoolean("archivehint", false).apply();
                 showArchiveHelp();
             }
             if (optionsItem != null) {
@@ -11626,13 +11619,6 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     ColorUtils.blendARGB(Theme.getColor(Theme.key_windowBackgroundWhite), Color.WHITE, 0.1f),
                     Theme.blendOver(Theme.getColor(Theme.key_windowBackgroundWhite), Theme.getColor(Theme.key_listSelector))
             );
-            if (Build.VERSION.SDK_INT < 21) {
-                Drawable shadowDrawable = ContextCompat.getDrawable(getParentActivity(), R.drawable.floating_shadow).mutate();
-                shadowDrawable.setColorFilter(new PorterDuffColorFilter(0xff000000, PorterDuff.Mode.MULTIPLY));
-                CombinedDrawable combinedDrawable = new CombinedDrawable(shadowDrawable, drawable, 0, 0);
-                combinedDrawable.setIconSize(AndroidUtilities.dp(36), AndroidUtilities.dp(36));
-                drawable = combinedDrawable;
-            }
             floatingButton2Container.setBackground(drawable);
         }
     }

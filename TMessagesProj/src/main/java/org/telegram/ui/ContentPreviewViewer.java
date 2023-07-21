@@ -297,7 +297,7 @@ public class ContentPreviewViewer {
                         } else if (actions.get(which) == 5) {
                             delegate.remove(importingSticker);
                         } else if (actions.get(which) == 110) {
-                            MessageHelper.saveStickerToGallery(parentActivity, currentDocument, () -> {});
+                            MessageHelper.saveStickerToGallery(parentActivity, currentDocument, null);
                         }
                         if (popupWindow != null) {
                             popupWindow.dismiss();

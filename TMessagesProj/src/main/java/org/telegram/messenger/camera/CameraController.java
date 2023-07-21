@@ -21,7 +21,6 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -37,7 +36,6 @@ import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.Utilities;
 import org.telegram.tgnet.SerializedData;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -66,13 +64,7 @@ public class CameraController implements MediaRecorder.OnInfoListener {
     private boolean loadingCameras;
 
     private ArrayList<Runnable> onFinishCameraInitRunnables = new ArrayList<>();
-    ICameraView recordingCurrentCameraView;
-
-    public interface ICameraView {
-        void stopRecording();
-        boolean startRecording(File file, Runnable runnable);
-    }
-
+    CameraView recordingCurrentCameraView;
     private static volatile CameraController Instance = null;
 
     public interface VideoTakeCallback {
@@ -422,7 +414,7 @@ public class CameraController implements MediaRecorder.OnInfoListener {
 //                        scaleFactor = 1;
 //                    }
                     options.inJustDecodeBounds = false;
-                //    options.inSampleSize = (int) scaleFactor;
+                    //    options.inSampleSize = (int) scaleFactor;
                     options.inPurgeable = true;
                     bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
                 } catch (Throwable e) {
@@ -609,7 +601,7 @@ public class CameraController implements MediaRecorder.OnInfoListener {
         });
     }
 
-    public void recordVideo(final CameraSession session, final File path, boolean mirror, final VideoTakeCallback callback, final Runnable onVideoStartRecord, ICameraView cameraView) {
+    public void recordVideo(final CameraSession session, final File path, boolean mirror, final VideoTakeCallback callback, final Runnable onVideoStartRecord, CameraView cameraView) {
         if (session == null) {
             return;
         }

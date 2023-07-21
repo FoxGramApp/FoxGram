@@ -59,11 +59,11 @@ public class MessageHelper extends BaseController {
         super(num);
     }
 
-    public void saveStickerToGallery(Activity activity, MessageObject messageObject, Runnable callback) {
+    public void saveStickerToGallery(Activity activity, MessageObject messageObject, Utilities.Callback callback) {
         saveStickerToGallery(activity, getPathToMessage(messageObject), messageObject.isVideoSticker(), callback);
     }
 
-    public static void saveStickerToGallery(Activity activity, TLRPC.Document document, Runnable callback) {
+    public static void saveStickerToGallery(Activity activity, TLRPC.Document document, Utilities.Callback callback) {
         String path = FileLoader.getInstance(UserConfig.selectedAccount).getPathToAttach(document, true).toString();
         File temp = new File(path);
         if (!temp.exists()) {
@@ -85,7 +85,7 @@ public class MessageHelper extends BaseController {
     }
 
 
-    private static void saveStickerToGallery(Activity activity, String path, boolean video, Runnable callback) {
+    private static void saveStickerToGallery(Activity activity, String path, boolean video, Utilities.Callback callback) {
         Utilities.globalQueue.postRunnable(() -> {
             try {
                 if (video) {

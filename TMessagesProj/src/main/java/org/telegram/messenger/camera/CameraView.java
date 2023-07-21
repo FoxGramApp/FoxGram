@@ -93,9 +93,7 @@ import javax.microedition.khronos.opengles.GL;
 
 import it.foxgram.ui.Components.BaseCameraView;
 
-import it.foxgram.ui.Components.BaseCameraView;
-
-@SuppressLint("NewApi")
+@SuppressLint({"NewApi", "ViewConstructor"})
 public class CameraView extends BaseCameraView implements TextureView.SurfaceTextureListener {
 
     public boolean isStory;

@@ -11,6 +11,7 @@ package org.telegram.messenger;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentResolver;
@@ -24,14 +25,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
-import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.SparseArray;
 
 import androidx.collection.LongSparseArray;
-
-import com.google.android.exoplayer2.util.Log;
 
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.tgnet.ConnectionsManager;
@@ -550,6 +547,7 @@ public class ContactsController extends BaseController {
         });
     }
 
+    @SuppressLint("Range")
     private boolean checkContactsInternal() {
         boolean reload = false;
         try {
@@ -611,6 +609,7 @@ public class ContactsController extends BaseController {
         return count > 3;
     }
 
+    @SuppressLint("Range")
     public HashMap<String, Contact> readContactsFromPhoneBook() {
         if (!getUserConfig().syncContacts) {
             if (BuildVars.LOGS_ENABLED) {
@@ -809,9 +808,9 @@ public class ContactsController extends BaseController {
                 String[] metadata = new String[5];
                 Pattern phonePattern = Pattern.compile(".*(\\+[0-9 \\-]+).*");
                 while (cur.moveToNext()) {
-                    String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
-                    String lookup_key = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY));
-                    String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                    @SuppressLint("Range") String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
+                    @SuppressLint("Range") String lookup_key = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY));
+                    @SuppressLint("Range") String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                     String phone = null;
                     if ((contactsMap != null && contactsMap.get(lookup_key) != null) || TextUtils.isEmpty(name)) {
                         continue;

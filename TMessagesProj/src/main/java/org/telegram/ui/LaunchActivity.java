@@ -632,11 +632,11 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 } else if (id == 15) {
                     showSelectStatusDialog();
                 } else if (id == 16) {
-                Bundle args = new Bundle();
-                args.putLong("dialog_id", UserConfig.getInstance(currentAccount).getClientUserId());
-                args.putInt("type", MediaActivity.TYPE_STORIES);
-                drawerLayoutContainer.closeDrawer(true);
-                presentFragment(new MediaActivity(args, null));
+                    Bundle args = new Bundle();
+                    args.putLong("dialog_id", UserConfig.getInstance(currentAccount).getClientUserId());
+                    args.putInt("type", MediaActivity.TYPE_STORIES);
+                    drawerLayoutContainer.closeDrawer(true);
+                    presentFragment(new MediaActivity(args, null));
                 } else if (id == 201) {
                     presentFragment(new FoxGramSettings());
                     drawerLayoutContainer.closeDrawer(false);
@@ -5630,7 +5630,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                             }
                             ArrayList<String> arrayList = new ArrayList<>();
                             arrayList.add(videoPath);
-                            SendMessagesHelper.prepareSendingDocuments(accountInstance, arrayList, arrayList, null, captionToSend, null, did, replyToMsg, replyToMsg, null, null, notify, 0, scheduleDate);
+                            SendMessagesHelper.prepareSendingDocuments(accountInstance, arrayList, arrayList, null, captionToSend, null, did, replyToMsg, replyToMsg, null, null, notify, 0, null);
                         }
                     }
                     if (photoPathsArray != null && !photosEditorOpened) {
@@ -5645,7 +5645,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                             captionToSend = sendingText;
                             sendingText = null;
                         }
-                        SendMessagesHelper.prepareSendingDocuments(accountInstance, documentsPathsArray, documentsOriginalPathsArray, documentsUrisArray, captionToSend, documentsMimeType, did, replyToMsg, replyToMsg, null, null, notify, 0, scheduleDate);
+                        SendMessagesHelper.prepareSendingDocuments(accountInstance, documentsPathsArray, documentsOriginalPathsArray, documentsUrisArray, captionToSend, documentsMimeType, did, replyToMsg, replyToMsg, null, null, notify, 0, null);
                     }
                     if (voicePath != null) {
                         File file = new File(voicePath);
