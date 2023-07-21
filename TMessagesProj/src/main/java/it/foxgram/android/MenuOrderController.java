@@ -33,6 +33,7 @@ public class MenuOrderController {
             "sticker_emoji",
             "folders",
             "proxy_settings",
+            "stories"
     };
 
     static {
@@ -59,6 +60,7 @@ public class MenuOrderController {
     private static String[] getDefaultItems() {
         return new String[]{
                 "set_status",
+                "stories",
                 DIVIDER_ITEM,
                 "new_group",
                 "contacts",
@@ -257,6 +259,8 @@ public class MenuOrderController {
                 return LocaleController.getString("PowerUsage", R.string.PowerUsage);
             case "proxy_settings":
                 return LocaleController.getString("ProxySettings", R.string.ProxySettings);
+            case "stories":
+                return LocaleController.getString("ProfileMyStories", R.string.ProfileMyStories);
         }
         throw new RuntimeException("Unknown id: " + id);
     }

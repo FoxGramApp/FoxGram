@@ -400,7 +400,7 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
                     case "folders":
                         items.add(new Item(209, data.text, R.drawable.msg2_folder));
                     case "stories":
-                        items.add(new Item(210, data.text, R.drawable.msg_menu_stories));
+                        items.add(new Item(16, data.text, R.drawable.msg_menu_stories));
                     case "divider":
                         boolean foundPreviousDivider = false;
                         if (i > 0) {
