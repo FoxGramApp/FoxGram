@@ -49,7 +49,6 @@ import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -3606,7 +3605,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                 getMessagesStorage().clearSentMedia();
                                 SharedConfig.setNoSoundHintShowed(false);
                                 SharedPreferences.Editor editor = MessagesController.getGlobalMainSettings().edit();
-                                editor.remove("archivehint").remove("proximityhint").remove("archivehint_l").remove("speedhint").remove("gifhint").remove("reminderhint").remove("soundHint").remove("themehint").remove("bganimationhint").remove("filterhint").remove("n_0").remove("storyprvhint").remove("storyhint").remove("storyhint2").remove("storydualhint").remove("storysvddualhint").remove("stories_camera").remove("dualcam").remove("dualmatrix").remove("dual_available").remove("archivehint").apply();
+                                editor.remove("archivehint").remove("proximityhint").remove("archivehint_l").remove("speedhint").remove("gifhint").remove("reminderhint").remove("soundHint").remove("themehint").remove("bganimationhint").remove("filterhint").remove("n_0").apply();
                                 MessagesController.getEmojiSettings(currentAccount).edit().remove("featured_hidden").remove("emoji_featured_hidden").apply();
                                 SharedConfig.textSelectionHintShows = 0;
                                 SharedConfig.lockRecordAudioVideoHint = 0;
@@ -3796,13 +3795,13 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                 builder2.show();
                             } else if (which == 20) {
                                 SharedConfig.toggleRoundCamera();
-                            } else if (which == 22) {
+                            } else if (which == 21) {
                                 boolean enabled = DualCameraView.dualAvailableStatic(getContext());
                                 MessagesController.getGlobalMainSettings().edit().putBoolean("dual_available", !enabled).apply();
                                 try {
                                     Toast.makeText(getParentActivity(), LocaleController.getString(!enabled ? R.string.DebugMenuDualOnToast : R.string.DebugMenuDualOffToast), Toast.LENGTH_SHORT).show();
                                 } catch (Exception e) {}
-                            } else if (which == 23) {
+                            } else if (which == 22) {
                                 SharedConfig.toggleSurfaceInStories();
                                 for (int i = 0; i < getParentLayout().getFragmentStack().size(); i++) {
                                     getParentLayout().getFragmentStack().get(i).storyViewer = null;
@@ -12015,7 +12014,6 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 info.append("; mi=").append(capabilities.getMaxSupportedInstances()).append(")");
             }
             info.append("\n");
-        } catch (Exception ignore) {
-        }
+        } catch (Exception ignore) {}
     }
 }
