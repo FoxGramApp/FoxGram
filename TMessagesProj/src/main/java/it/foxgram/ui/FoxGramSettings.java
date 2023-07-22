@@ -50,6 +50,7 @@ import org.telegram.ui.Components.voip.VoIPHelper;
 import org.telegram.ui.LaunchActivity;
 import org.telegram.ui.RestrictedLanguagesSelectActivity;
 import org.telegram.ui.ProfileActivity;
+import org.telegram.ui.Stories.recorder.DualCameraView;
 
 import java.util.Set;
 
@@ -166,7 +167,9 @@ public class FoxGramSettings extends BaseSettingsActivity {
                         BuildVars.DEBUG_PRIVATE_VERSION ? "Force remove premium suggestions" : null,
                         BuildVars.DEBUG_PRIVATE_VERSION ? "Share device info" : null,
                         BuildVars.DEBUG_PRIVATE_VERSION ? "Force performance class" : null,
-                        BuildVars.DEBUG_PRIVATE_VERSION && !InstantCameraView.allowBigSizeCameraDebug() ? !SharedConfig.bigCameraForRound ? "Force big camera for round" : "Disable big camera for round" : null
+                        BuildVars.DEBUG_PRIVATE_VERSION && !InstantCameraView.allowBigSizeCameraDebug() ? !SharedConfig.bigCameraForRound ? "Force big camera for round" : "Disable big camera for round" : null,
+                        LocaleController.getString(DualCameraView.dualAvailableStatic(getContext()) ? "DebugMenuDualOff" : "DebugMenuDualOn"),
+                        BuildVars.DEBUG_VERSION ? (SharedConfig.useSurfaceInStories ? "back to TextureView in stories" : "use SurfaceView in stories") : null,
                 };
                 builder.setItems(items, (dialog, which) -> {
                     if (which == 0) {
@@ -371,7 +374,18 @@ public class FoxGramSettings extends BaseSettingsActivity {
                         builder2.show();
                     } else if (which == 20) {
                         SharedConfig.toggleRoundCamera();
+                    } else if (which == 21) {
+                    boolean enabled = DualCameraView.dualAvailableStatic(getContext());
+                    MessagesController.getGlobalMainSettings().edit().putBoolean("dual_available", !enabled).apply();
+                    try {
+                        Toast.makeText(getParentActivity(), LocaleController.getString(!enabled ? R.string.DebugMenuDualOnToast : R.string.DebugMenuDualOffToast), Toast.LENGTH_SHORT).show();
+                    } catch (Exception ignored) {}
+                } else if (which == 22) {
+                    SharedConfig.toggleSurfaceInStories();
+                    for (int i = 0; i < getParentLayout().getFragmentStack().size(); i++) {
+                        getParentLayout().getFragmentStack().get(i).storyViewer = null;
                     }
+                }
                 });
                 showDialog(builder.create());
             } else {
