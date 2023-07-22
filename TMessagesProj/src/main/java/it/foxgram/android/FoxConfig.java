@@ -38,6 +38,7 @@ public class FoxConfig extends SettingsController {
     public static final int DEFAULT_NAME = 0;
     public static final int USER_NAME = 1;
     public static final int TG_USER_NAME = 2;
+    public static final int MY_STORY = 3;
 
     private static final Object sync = new Object();
     public static boolean hidePhoneNumber;

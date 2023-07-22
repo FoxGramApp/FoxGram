@@ -292,6 +292,7 @@
     <string name="UpdateType">Version Channel</string>
     <string name="DownloadSource">Download Source</string>
     <string name="ReleaseDate">Release Date</string>
+    <string name="MissingStoriesTitle">You currently don\'t have Stories. Chat Title have been restored to default.</string>
     <!-- Folders -->
     <string name="FoldersType">Folders Type</string>
     <string name="FoldersTypeTitles">Titles</string>

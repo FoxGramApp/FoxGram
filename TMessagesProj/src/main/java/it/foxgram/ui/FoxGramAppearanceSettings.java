@@ -22,8 +22,10 @@ import org.telegram.ui.Cells.RadioColorCell;
 import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Cells.TextSettingsCell;
+import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.UndoView;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import it.foxgram.android.CustomEmojiController;
@@ -237,16 +239,23 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
             linearLayout.setOrientation(LinearLayout.VERTICAL);
 
             TLRPC.User selfUser = UserConfig.getInstance(currentAccount).getCurrentUser();
-            CharSequence[] items = !TextUtils.isEmpty(selfUser.username) ? new CharSequence[]{
-                            LocaleController.getString("Default", R.string.Default),
-                            LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar),
-                            LocaleController.getString("Username", R.string.Username),
-            } : new CharSequence[]{
-                    LocaleController.getString("Default", R.string.Default),
-                    LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar)
-            };
+            CharSequence[] items;
+            if (!TextUtils.isEmpty(selfUser.username)) {
+                items = new CharSequence[]
+                        {
+                                LocaleController.getString("Default", R.string.Default),
+                                LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar),
+                                LocaleController.getString("Username", R.string.Username),
+                                LocaleController.getString("ProfileMyStories", R.string.ProfileMyStories)};
+            } else {
+                items = new CharSequence[]
+                        {
+                                LocaleController.getString("Default", R.string.Default),
+                                LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar)};
+            }
 
             for (int i = 0; i < items.length; ++i) {
+                AtomicBoolean hasChangedStory = new AtomicBoolean(false);
                 final int index = i;
                 RadioColorCell cell = new RadioColorCell(getParentActivity());
                 cell.setPadding(AndroidUtilities.dp(4), 0, AndroidUtilities.dp(4), 0);
@@ -255,12 +264,25 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                 cell.setBackground(Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector), Theme.RIPPLE_MASK_ALL));
                 linearLayout.addView(cell);
                 cell.setOnClickListener(v -> {
-                    FoxConfig.saveNameType(index);
+                    if (index == 3) {
+                        if (!getMessagesController().getStoriesController().hasStories()) {
+                            FoxConfig.saveNameType(FoxConfig.DEFAULT_NAME);
+                            hasChangedStory.set(true);
+                        } else {
+                            hasChangedStory.set(false);
+                            FoxConfig.saveNameType(FoxConfig.MY_STORY);
+                        }
+                    } else {
+                        FoxConfig.saveNameType(index);
+                    }
                     RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(showInActionBarRow);
                     if (holder != null) {
                         listAdapter.onBindViewHolder(holder, showInActionBarRow);
                     }
                     dialogRef.get().dismiss();
+                    if (hasChangedStory.get()) {
+                        BulletinFactory.of(getLayoutContainer(), getResourceProvider()).createErrorBulletin(LocaleController.getString("MissingStoriesTitle", R.string.MissingStoriesTitle));
+                    }
                     reloadDialogs();
                 });
             }
@@ -447,6 +469,8 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                             defaultName = LocaleController.getString("Username", R.string.Username);
                         else if (FoxConfig.nameType == FoxConfig.USER_NAME)
                             defaultName = LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar);
+                        else if (FoxConfig.nameType == FoxConfig.MY_STORY)
+                            defaultName = LocaleController.getString("ProfileMyStories", R.string.ProfileMyStories);
                         textSettingsCell.setTextAndValue(LocaleController.getString("TitleBarName", R.string.TitleBarName), defaultName, partial, true);
                     }
                     break;

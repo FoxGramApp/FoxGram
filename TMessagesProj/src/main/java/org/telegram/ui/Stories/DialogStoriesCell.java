@@ -66,6 +66,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Objects;
 
+import it.foxgram.android.FoxConfig;
+
 public class DialogStoriesCell extends FrameLayout implements NotificationCenter.NotificationCenterDelegate {
 
     public final static int TYPE_DIALOGS = 0;
@@ -330,6 +332,40 @@ public class DialogStoriesCell extends FrameLayout implements NotificationCenter
         }
     }
 
+    public void setTitle(boolean animated, int totalCount) {
+        if (FoxConfig.nameType != FoxConfig.MY_STORY) {
+            currentTitle = FoxConfig.getTitleText();
+            titleView.setText(currentTitle, animated);
+            return;
+        }
+        if (storiesController.hasOnlySelfStories()) {
+            if (!storiesController.getUploadingStories().isEmpty()) {
+                String str = LocaleController.getString("UploadingStory", R.string.UploadingStory);
+                int index = str.indexOf("…");
+                if (index > 0) {
+                    if (uploadingString == null) {
+                        SpannableStringBuilder spannableStringBuilder = SpannableStringBuilder.valueOf(str);
+                        UploadingDotsSpannable dotsSpannable = new UploadingDotsSpannable();
+                        spannableStringBuilder.setSpan(dotsSpannable, spannableStringBuilder.length() - 1, spannableStringBuilder.length(), 0);
+                        dotsSpannable.setParent(titleView, true);
+                        uploadingString = spannableStringBuilder;
+                    }
+                    currentTitle = uploadingString;
+                } else {
+                    currentTitle = str;
+                }
+            } else {
+                currentTitle = LocaleController.getString("MyStory", R.string.MyStory);
+            }
+        } else {
+            currentTitle = LocaleController.formatPluralString("Stories", totalCount);
+        }
+
+        if (!hasOverlayText) {
+            titleView.setText(currentTitle, animated);
+        }
+    }
+
     public void updateItems(boolean animated, boolean force) {
         if ((currentState == TRANSITION_STATE || overscrollPrgoress != 0) && !force) {
             updateOnIdleState = true;
@@ -358,32 +394,7 @@ public class DialogStoriesCell extends FrameLayout implements NotificationCenter
         boolean hidden = type == TYPE_ARCHIVE;
         totalCount = Math.max(1, Math.max(storiesController.getTotalStoriesCount(hidden), size));
 
-        if (storiesController.hasOnlySelfStories()) {
-            if (!storiesController.getUploadingStories().isEmpty()) {
-                String str = LocaleController.getString("UploadingStory", R.string.UploadingStory);
-                int index = str.indexOf("…");
-                if (index > 0) {
-                    if (uploadingString == null) {
-                        SpannableStringBuilder spannableStringBuilder = SpannableStringBuilder.valueOf(str);
-                        UploadingDotsSpannable dotsSpannable = new UploadingDotsSpannable();
-                        spannableStringBuilder.setSpan(dotsSpannable, spannableStringBuilder.length() - 1, spannableStringBuilder.length(), 0);
-                        dotsSpannable.setParent(titleView, true);
-                        uploadingString = spannableStringBuilder;
-                    }
-                    currentTitle = uploadingString;
-                } else {
-                    currentTitle = str;
-                }
-            } else {
-                currentTitle = LocaleController.getString("MyStory", R.string.MyStory);
-            }
-        } else {
-            currentTitle = LocaleController.formatPluralString("Stories", totalCount);
-        }
-
-        if (!hasOverlayText) {
-            titleView.setText(currentTitle, animated);
-        }
+        setTitle(animated, totalCount);
 
         miniItems.clear();
         for (int i = 0; i < items.size(); i++) {
