@@ -203,7 +203,7 @@ public class NotificationsCustomSettingsActivity extends BaseFragment implements
     private void deleteException(NotificationsSettingsActivity.NotificationException exception, View view, int position) {
         final String key = NotificationsController.getSharedPrefKey(exception.did, 0);
         final SharedPreferences prefs = getNotificationsSettings();
-        prefs.edit().remove("stories_" + key).commit();
+        prefs.edit().remove("stories_" + key).apply();
         if (autoExceptions != null) {
             autoExceptions.remove(exception);
         }
@@ -231,7 +231,7 @@ public class NotificationsCustomSettingsActivity extends BaseFragment implements
         exception.notify = mute ? Integer.MAX_VALUE : 0;
         if (exception.auto) {
             exception.auto = false;
-            edit.putBoolean("stories_" + key, !mute).commit();
+            edit.putBoolean("stories_" + key, !mute).apply();
             if (autoExceptions != null) {
                 autoExceptions.remove(exception);
             }
@@ -243,12 +243,12 @@ public class NotificationsCustomSettingsActivity extends BaseFragment implements
             // auto = false
             // (un)mute
         } else if (isTopPeer) {
-            edit.putBoolean("stories_" + key, !mute).commit();
+            edit.putBoolean("stories_" + key, !mute).apply();
         } else if (mute ? (storiesEnabled == null || !storiesEnabled) : (storiesEnabled != null && storiesEnabled)) {
             deleteException(exception, view, position);
             return;
         } else {
-            edit.putBoolean("stories_" + key, !mute).commit();
+            edit.putBoolean("stories_" + key, !mute).apply();
         }
 
         if (view instanceof UserCell) {
@@ -776,7 +776,7 @@ public class NotificationsCustomSettingsActivity extends BaseFragment implements
                         editor.putBoolean("EnableAllStories", !enabled);
                         storiesEnabled = !enabled;
                     }
-                    editor.commit();
+                    editor.apply();
                     getNotificationsController().updateServerNotificationsSettings(currentType);
                     checkCell.setChecked(!enabled);
                     if (holder != null) {
@@ -934,7 +934,7 @@ public class NotificationsCustomSettingsActivity extends BaseFragment implements
                 if (view instanceof TextCheckCell) {
                     ((TextCheckCell) view).setChecked(storiesAuto);
                 }
-                editor.commit();
+                editor.apply();
                 if (storiesAuto != showAutoExceptions) {
                     toggleShowAutoExceptions();
                 }
@@ -959,7 +959,7 @@ public class NotificationsCustomSettingsActivity extends BaseFragment implements
                     enabled = preferences.getBoolean("EnablePreviewChannel", true);
                     editor.putBoolean("EnablePreviewChannel", !enabled);
                 }
-                editor.commit();
+                editor.apply();
                 getNotificationsController().updateServerNotificationsSettings(currentType);
                 if (view instanceof TextCheckCell) {
                     ((TextCheckCell) view).setChecked(!enabled);
@@ -1339,9 +1339,7 @@ public class NotificationsCustomSettingsActivity extends BaseFragment implements
 
             items.add(ItemInner.asSetting(3, LocaleController.getString("Sound", R.string.Sound), getSound()));
 
-            if (Build.VERSION.SDK_INT >= 21) {
-                items.add(ItemInner.asSetting(4, LocaleController.getString("NotificationsImportance", R.string.NotificationsImportance), getPriorityOption()));
-            }
+            items.add(ItemInner.asSetting(4, LocaleController.getString("NotificationsImportance", R.string.NotificationsImportance), getPriorityOption()));
 
             if (currentType == TYPE_STORIES) {
                 items.add(ItemInner.asCheck(5, LocaleController.getString(R.string.StoryAutoExceptions), storiesAuto && (storiesEnabled == null || !storiesEnabled)));

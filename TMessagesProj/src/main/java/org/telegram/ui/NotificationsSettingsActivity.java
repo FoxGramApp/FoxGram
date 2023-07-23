@@ -607,7 +607,7 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                 SharedPreferences.Editor editor = preferences.edit();
                 enabled = preferences.getBoolean("EnableAllStories", true);
                 editor.putBoolean("EnableAllStories", !enabled);
-                editor.commit();
+                editor.apply();
                 getNotificationsController().updateServerNotificationsSettings(NotificationsController.TYPE_PRIVATE);
             } */else if (position == pinnedMessageRow) {
                 SharedPreferences preferences = MessagesController.getNotificationsSettings(currentAccount);

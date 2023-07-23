@@ -125,9 +125,7 @@ public class StoryPrivacySelector extends View {
                 rippleDrawable = Theme.createRadSelectorDrawable(234881023, dp(15), dp(15));
                 rippleDrawable.setBounds((int) rect.left, (int) rect.top, (int) rect.right, (int) rect.bottom);
                 rippleDrawable.setState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled});
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    rippleDrawable.setHotspot(event.getX(), event.getY());
-                }
+                rippleDrawable.setHotspot(event.getX(), event.getY());
                 rippleDrawable.setCallback(this);
                 tapTime = System.currentTimeMillis();
                 AndroidUtilities.runOnUIThread(longPressRunnable = () -> {

@@ -785,11 +785,9 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
 
         imageReceiver.setAllowLoadingOnAttachedOnly(true);
         imageReceiver.setParentView(storyContainer);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            outlineProvider = new RoundRectOutlineProvider(10);
-            storyContainer.setOutlineProvider(outlineProvider);
-            storyContainer.setClipToOutline(true);
-        }
+        outlineProvider = new RoundRectOutlineProvider(10);
+        storyContainer.setOutlineProvider(outlineProvider);
+        storyContainer.setClipToOutline(true);
         addView(storyContainer);
         headerView = new PeerHeaderView(context, currentStory);
         headerView.setOnClickListener(v -> {
@@ -1811,9 +1809,7 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
                 public void startDocumentSelectActivity() {
                     try {
                         Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                        if (Build.VERSION.SDK_INT >= 18) {
-                            photoPickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                        }
+                        photoPickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                         photoPickerIntent.setType("*/*");
                         storyViewer.startActivityForResult(photoPickerIntent, 21);
                     } catch (Exception e) {

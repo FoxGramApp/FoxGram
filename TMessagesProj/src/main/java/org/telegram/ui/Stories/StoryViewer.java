@@ -328,13 +328,11 @@ public class StoryViewer {
         if (Build.VERSION.SDK_INT >= 28) {
             windowLayoutParams.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
         }
-        if (Build.VERSION.SDK_INT >= 21) {
-            windowLayoutParams.flags =
-                    WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
-                            WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR |
-                            WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS |
-                            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
-        }
+        windowLayoutParams.flags =
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
+                        WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR |
+                        WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS |
+                        WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
         isClosed = false;
         unreadStateChanged = false;
 
@@ -1006,10 +1004,8 @@ public class StoryViewer {
                             peerStoriesView.setViewsThumbImageReceiver(progressHalf, selfStoryViewsView.getCrossfadeToImage());
                         }
                         peerStoriesView.invalidate();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            peerStoriesView.outlineProvider.radiusInDp = (int) AndroidUtilities.lerp(10f, 6f / toScale, selfStoryViewsView.progressToOpen);
-                            peerStoriesView.storyContainer.invalidateOutline();
-                        }
+                        peerStoriesView.outlineProvider.radiusInDp = (int) AndroidUtilities.lerp(10f, 6f / toScale, selfStoryViewsView.progressToOpen);
+                        peerStoriesView.storyContainer.invalidateOutline();
                         storiesViewPager.setTranslationY((selfStoryViewsView.toY - pivotY) * progressHalf);
 
                     }
@@ -1342,32 +1338,30 @@ public class StoryViewer {
         } else {
             windowView.setFocusable(false);
             containerView.setFocusable(false);
-            if (Build.VERSION.SDK_INT >= 21) {
-                windowView.setFitsSystemWindows(true);
+            windowView.setFitsSystemWindows(true);
 
-                containerView.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+            containerView.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
 
-                    @NonNull
-                    @Override
-                    public WindowInsets onApplyWindowInsets(@NonNull View v, @NonNull WindowInsets insets) {
-                        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) containerView.getLayoutParams();
+                @NonNull
+                @Override
+                public WindowInsets onApplyWindowInsets(@NonNull View v, @NonNull WindowInsets insets) {
+                    ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) containerView.getLayoutParams();
 
-                        layoutParams.topMargin = insets.getSystemWindowInsetTop();
-                        layoutParams.bottomMargin = insets.getSystemWindowInsetBottom();
-                        layoutParams.leftMargin = insets.getSystemWindowInsetLeft();
-                        layoutParams.rightMargin = insets.getSystemWindowInsetRight();
+                    layoutParams.topMargin = insets.getSystemWindowInsetTop();
+                    layoutParams.bottomMargin = insets.getSystemWindowInsetBottom();
+                    layoutParams.leftMargin = insets.getSystemWindowInsetLeft();
+                    layoutParams.rightMargin = insets.getSystemWindowInsetRight();
 
-                        windowView.requestLayout();
-                        containerView.requestLayout();
-                        if (Build.VERSION.SDK_INT >= 30) {
-                            return WindowInsets.CONSUMED;
-                        } else {
-                            return insets.consumeSystemWindowInsets();
-                        }
+                    windowView.requestLayout();
+                    containerView.requestLayout();
+                    if (Build.VERSION.SDK_INT >= 30) {
+                        return WindowInsets.CONSUMED;
+                    } else {
+                        return insets.consumeSystemWindowInsets();
                     }
-                });
-                containerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-            }
+                }
+            });
+            containerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
             windowManager.addView(windowView, windowLayoutParams);
         }
         windowView.requestLayout();

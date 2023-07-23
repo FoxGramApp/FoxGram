@@ -89,7 +89,7 @@ public class NotificationsDisabledReceiver extends BroadcastReceiver {
             if (BuildVars.LOGS_ENABLED) {
                 FileLog.d("apply channel{stories} " + channelId + " state");
             }
-            preferences.edit().putBoolean(NotificationsController.getGlobalNotificationsKey(NotificationsController.TYPE_STORIES), !state).commit();
+            preferences.edit().putBoolean(NotificationsController.getGlobalNotificationsKey(NotificationsController.TYPE_STORIES), !state).apply();
             AccountInstance.getInstance(account).getNotificationsController().updateServerNotificationsSettings(NotificationsController.TYPE_PRIVATE);
         } else {
             long dialogId = Utilities.parseLong(args[1]);

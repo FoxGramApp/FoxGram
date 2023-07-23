@@ -94,9 +94,7 @@ public class DownloadsInfoBottomSheet extends BottomSheet {
         clearBtn.setText(LocaleController.getString("ClearDownloadsList", R.string.ClearDownloadsList));
         clearBtn.setTextColor(Theme.getColor(Theme.key_featuredStickers_addButton));
         clearBtn.setBackground(Theme.createSimpleSelectorRoundRectDrawable(AndroidUtilities.dp(8), Color.TRANSPARENT, ColorUtils.setAlphaComponent(Theme.getColor(Theme.key_featuredStickers_addButton), 120)));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            clearBtn.setLetterSpacing(0.025f);
-        }
+        clearBtn.setLetterSpacing(0.025f);
         linearLayout.addView(clearBtn, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 48, 0, 14, 0, 14, 6));
 
         NestedScrollView scrollView = new NestedScrollView(context);

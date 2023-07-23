@@ -903,7 +903,7 @@ public class MediaCodecVideoConvertor {
             outputMimeType = "video/avc";
             encoder = MediaCodec.createEncoderByType(outputMimeType);
         }
-//        if (encoder != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && "c2.qti.avc.encoder".equals(encoder.getName())) {
+//        if (encoder != null && "c2.qti.avc.encoder".equals(encoder.getName())) {
 //            FileLog.d("searching another encoder to replace c2.qti.avc.encoder");
 //            MediaCodecInfo[] infos = new MediaCodecList(MediaCodecList.ALL_CODECS).getCodecInfos();
 //            for (MediaCodecInfo codecInfo : infos) {

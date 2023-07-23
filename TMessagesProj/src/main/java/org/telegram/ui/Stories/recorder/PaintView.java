@@ -1280,7 +1280,7 @@ public class PaintView extends SizeNotifierFrameLayoutPhoto implements IPhotoPai
         if ((child == renderView || child == renderInputView || child == entitiesView || child == selectionContainerView) && currentCropState != null) {
             canvas.save();
 
-            int status = (Build.VERSION.SDK_INT >= 21 && !inBubbleMode ? AndroidUtilities.statusBarHeight : 0);
+            int status = !inBubbleMode ? AndroidUtilities.statusBarHeight : 0;
             int actionBarHeight = ActionBar.getCurrentActionBarHeight();
             int actionBarHeight2 = actionBarHeight + status;
 
@@ -1605,7 +1605,7 @@ public class PaintView extends SizeNotifierFrameLayoutPhoto implements IPhotoPai
 //            emojiView.layout(0, height - emojiView.getMeasuredHeight(), emojiView.getMeasuredWidth(), height);
 //        }
 
-//        int status = (Build.VERSION.SDK_INT >= 21 && !inBubbleMode ? AndroidUtilities.statusBarHeight : 0);
+//        int status = (!inBubbleMode ? AndroidUtilities.statusBarHeight : 0);
 //        int actionBarHeight = ActionBar.getCurrentActionBarHeight();
 //        int actionBarHeight2 = actionBarHeight + status;
 //
@@ -3458,10 +3458,10 @@ public class PaintView extends SizeNotifierFrameLayoutPhoto implements IPhotoPai
         if (height > AndroidUtilities.dp(50) && keyboardVisible && !AndroidUtilities.isInMultiwindow && !AndroidUtilities.isTablet()) {
             if (isWidthGreater) {
                 keyboardHeightLand = height;
-                MessagesController.getGlobalEmojiSettings().edit().putInt("kbd_height_land3", keyboardHeightLand).commit();
+                MessagesController.getGlobalEmojiSettings().edit().putInt("kbd_height_land3", keyboardHeightLand).apply();
             } else {
                 keyboardHeight = height;
-                MessagesController.getGlobalEmojiSettings().edit().putInt("kbd_height", keyboardHeight).commit();
+                MessagesController.getGlobalEmojiSettings().edit().putInt("kbd_height", keyboardHeight).apply();
             }
         }
 

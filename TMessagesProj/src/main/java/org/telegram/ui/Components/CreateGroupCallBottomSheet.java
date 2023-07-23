@@ -108,9 +108,7 @@ public class CreateGroupCallBottomSheet extends BottomSheetWithRecyclerListView 
                 ? LocaleController.formatString("VoipChannelScheduleVoiceChat", R.string.VoipChannelScheduleVoiceChat)
                 : LocaleController.formatString("VoipGroupScheduleVoiceChat", R.string.VoipGroupScheduleVoiceChat)
         );
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            scheduleBtn.setLetterSpacing(0.025f);
-        }
+        scheduleBtn.setLetterSpacing(0.025f);
         scheduleBtn.setTextColor(Theme.getColor(Theme.key_featuredStickers_addButton));
         scheduleBtn.setBackground(Theme.createSimpleSelectorRoundRectDrawable(AndroidUtilities.dp(8), Color.TRANSPARENT, ColorUtils.setAlphaComponent(Theme.getColor(Theme.key_featuredStickers_addButton), 120)));
         containerView.addView(scheduleBtn, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 48, Gravity.BOTTOM, 16, 0, 16, 6));

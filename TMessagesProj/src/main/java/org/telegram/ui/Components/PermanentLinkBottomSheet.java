@@ -100,9 +100,7 @@ public class PermanentLinkBottomSheet extends BottomSheet {
         manage.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
         manage.setTextColor(Theme.getColor(Theme.key_featuredStickers_addButton));
         manage.setBackground(Theme.createSimpleSelectorRoundRectDrawable(AndroidUtilities.dp(8), Color.TRANSPARENT, ColorUtils.setAlphaComponent(Theme.getColor(Theme.key_featuredStickers_addButton), 120)));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            manage.setLetterSpacing(0.025f);
-        }
+        manage.setLetterSpacing(0.025f);
         manage.setOnClickListener(view -> {
             ManageLinksActivity manageFragment = new ManageLinksActivity(info.id, 0, 0);
             manageFragment.setInfo(info, info.exported_invite);

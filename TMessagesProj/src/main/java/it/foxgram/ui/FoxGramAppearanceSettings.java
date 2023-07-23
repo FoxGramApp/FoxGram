@@ -281,7 +281,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                     }
                     dialogRef.get().dismiss();
                     if (hasChangedStory.get()) {
-                        BulletinFactory.of(getLayoutContainer(), getResourceProvider()).createErrorBulletin(LocaleController.getString("MissingStoriesTitle", R.string.MissingStoriesTitle));
+                        BulletinFactory.of(FoxGramAppearanceSettings.this).createErrorBulletin(LocaleController.getString("MissingStoriesTitle", R.string.MissingStoriesTitle), getResourceProvider()).show();
                     }
                     reloadDialogs();
                 });

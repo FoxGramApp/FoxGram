@@ -283,7 +283,7 @@
     <string name="TranslationsSettings">Translator Settings</string>
     <string name="TitleBarName">Title Text</string>
     <string name="DeleteAccount">Delete Account</string>
-    <string name="TabsCounter">Tabs Unread Counter</string>
+    <string name="TabsCounter">Unread Counter</string>
     <string name="UpdatesInfoSettings">Last Update</string>
     <string name="InstalledVersion">Installed Version</string>
     <string name="BaseVersionUpdated">Base Version</string>

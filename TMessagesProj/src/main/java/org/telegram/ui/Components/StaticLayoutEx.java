@@ -103,8 +103,7 @@ public class StaticLayoutEx {
     }
 
     public static StaticLayout createStaticLayout(CharSequence source, int bufstart, int bufend, TextPaint paint, int outerWidth, Layout.Alignment align, float spacingMult, float spacingAdd, boolean includePad, TextUtils.TruncateAt ellipsize, int ellipsisWidth, int maxLines, boolean canContainUrl) {
-        /*if (Build.VERSION.SDK_INT >= 14) {
-            init();
+        /*  init();
             try {
                 sConstructorArgs[0] = source;
                 sConstructorArgs[1] = bufstart;
@@ -123,7 +122,7 @@ public class StaticLayoutEx {
             } catch (Exception e) {
                 FileLog.e(e);
             }
-        }*/
+        */
         try {
             if (maxLines == 1) {
                 CharSequence text = TextUtils.ellipsize(source, paint, ellipsisWidth, TextUtils.TruncateAt.END);

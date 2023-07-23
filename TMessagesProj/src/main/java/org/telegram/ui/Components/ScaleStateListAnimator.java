@@ -14,7 +14,7 @@ public class ScaleStateListAnimator {
     }
 
     public static void apply(View view, float scale, float tension) {
-        if (view == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        if (view == null) {
             return;
         }
 
