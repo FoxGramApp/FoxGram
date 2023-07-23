@@ -641,6 +641,14 @@ public class FoxConfig extends SettingsController {
                 return selfUser.first_name + " " + (selfUser.last_name != null ? selfUser.last_name : "");
             case TG_USER_NAME:
                 return selfUser.username;
+            case MY_STORY:
+                if (BuildConfig.BUILD_VERSION_STRING.contains("Beta")) {
+                    return LocaleController.getString("ColorVersionAppNameBeta", R.string.ColorVersionAppNameBeta);
+                } else if (BuildConfig.BUILD_VERSION_STRING.contains("Alpha")) {
+                    return LocaleController.getString("ColorVersionAppNameAlpha", R.string.ColorVersionAppNameAlpha);
+                } else {
+                    return LocaleController.getString("ColorVersionAppName", R.string.ColorVersionAppName);
+                }
         }
         return null;
     }

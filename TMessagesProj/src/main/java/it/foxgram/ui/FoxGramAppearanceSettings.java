@@ -240,7 +240,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
 
             TLRPC.User selfUser = UserConfig.getInstance(currentAccount).getCurrentUser();
             CharSequence[] items;
-            if (!TextUtils.isEmpty(selfUser.username)) {
+            if (!TextUtils.isEmpty(selfUser.username) && getMessagesController().storiesEnabled()) {
                 items = new CharSequence[]
                         {
                                 LocaleController.getString("Default", R.string.Default),
@@ -265,7 +265,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                 linearLayout.addView(cell);
                 cell.setOnClickListener(v -> {
                     if (index == 3) {
-                        if (!getMessagesController().getStoriesController().hasStories()) {
+                        if (!getMessagesController().getStoriesController().hasSelfStories()) {
                             FoxConfig.saveNameType(FoxConfig.DEFAULT_NAME);
                             hasChangedStory.set(true);
                         } else {
