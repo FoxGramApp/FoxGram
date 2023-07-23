@@ -64,8 +64,13 @@ public class CameraController implements MediaRecorder.OnInfoListener {
     private boolean loadingCameras;
 
     private ArrayList<Runnable> onFinishCameraInitRunnables = new ArrayList<>();
-    CameraView recordingCurrentCameraView;
     private static volatile CameraController Instance = null;
+    ICameraView recordingCurrentCameraView;
+
+    public interface ICameraView {
+        void stopRecording();
+        boolean startRecording(File file, Runnable runnable);
+    }
 
     public interface VideoTakeCallback {
         void onFinishVideoRecording(String thumbPath, long duration);
@@ -601,7 +606,7 @@ public class CameraController implements MediaRecorder.OnInfoListener {
         });
     }
 
-    public void recordVideo(final CameraSession session, final File path, boolean mirror, final VideoTakeCallback callback, final Runnable onVideoStartRecord, CameraView cameraView) {
+    public void recordVideo(final CameraSession session, final File path, boolean mirror, final VideoTakeCallback callback, final Runnable onVideoStartRecord, ICameraView cameraView) {
         if (session == null) {
             return;
         }

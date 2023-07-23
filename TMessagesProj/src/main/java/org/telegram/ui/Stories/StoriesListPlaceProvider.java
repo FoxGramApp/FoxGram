@@ -3,8 +3,6 @@ package org.telegram.ui.Stories;
 import android.graphics.Canvas;
 import android.view.View;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import org.telegram.messenger.MessageObject;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.Cells.ChatActionCell;

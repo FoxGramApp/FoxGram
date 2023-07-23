@@ -2,9 +2,6 @@ package org.telegram.ui.Stories;
 
 import android.view.View;
 
-import com.google.android.exoplayer2.util.Log;
-
-import org.checkerframework.checker.units.qual.A;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.MessagesStorage;

@@ -42,7 +42,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.Surface;
@@ -53,9 +52,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.core.graphics.ColorUtils;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
-
-import com.google.zxing.common.detector.MathUtils;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BuildVars;
@@ -94,7 +90,7 @@ import javax.microedition.khronos.opengles.GL;
 import it.foxgram.ui.Components.BaseCameraView;
 
 @SuppressLint({"NewApi", "ViewConstructor"})
-public class CameraView extends BaseCameraView implements TextureView.SurfaceTextureListener {
+public class CameraView extends BaseCameraView implements TextureView.SurfaceTextureListener, CameraController.ICameraView {
 
     public boolean isStory;
     private Size[] previewSize = new Size[2];

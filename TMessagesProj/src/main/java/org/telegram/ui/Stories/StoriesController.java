@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.collection.LongSparseArray;
 
 import com.google.android.exoplayer2.util.Consumer;
-import com.google.android.exoplayer2.util.Log;
 
 import org.telegram.SQLite.SQLiteCursor;
 import org.telegram.SQLite.SQLiteDatabase;
