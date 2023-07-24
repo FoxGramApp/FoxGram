@@ -9,11 +9,9 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
-import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.text.SpannableString;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -24,9 +22,7 @@ import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.FileRefController;
 import org.telegram.messenger.MediaController;
-import org.telegram.messenger.MediaDataController;
 import org.telegram.messenger.MessageObject;
-import org.telegram.messenger.SendMessagesHelper;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.Utilities;
@@ -43,7 +39,6 @@ import org.telegram.ui.Components.RLottieDrawable;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
