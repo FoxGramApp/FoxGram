@@ -35,6 +35,7 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
     private int updateCheckRow;
     private int betaUpdatesRow;
     private int notifyWhenAvailableRow;
+    private int updatesDividerRow;
     private int infoHeaderRow;
     private int updatesChannelRow;
     private int versionInfoRow;
@@ -167,6 +168,7 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
             betaUpdatesRow = rowCount++;
             updatesChannelRow = rowCount++;
         }
+        updatesDividerRow = rowCount++;
 
         infoHeaderRow = rowCount++;
         versionInfoRow = rowCount++;
@@ -332,7 +334,7 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
 
         @Override
         public ViewType getViewType(int position) {
-            if (position == updateSectionDividerRow) {
+            if (position == updateSectionDividerRow || position == updatesDividerRow) {
                 return ViewType.SHADOW;
             } else if (position == updateSectionAvailableRow) {
                 return ViewType.UPDATE;
