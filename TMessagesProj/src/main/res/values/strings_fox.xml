@@ -296,6 +296,7 @@
     <string name="DoubleTap">Double Tap Action</string>
     <string name="DoubleTapDesc">Tap two once on a message to do an action.</string>
     <string name="DoubleTapDesc2">Customize the Double Tap to adapt your use of FoxGram.</string>
+    <string name="StoriesCameraOff">Camera is disabled from FoxGram\'s Settings.</string>
     <!-- Folders -->
     <string name="FoldersType">Folders Type</string>
     <string name="FoldersTypeTitles">Titles</string>
