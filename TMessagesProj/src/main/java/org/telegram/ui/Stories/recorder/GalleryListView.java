@@ -812,10 +812,10 @@ public class GalleryListView extends FrameLayout implements NotificationCenter.N
 
                 if (drawDurationPlay) {
                     durationPlayDrawable.setBounds(
-                        (int) (AndroidUtilities.rectTmp.left + dp(6)),
-                        (int) (AndroidUtilities.rectTmp.centerY() - dp(8) / 2),
-                        (int) (AndroidUtilities.rectTmp.left + dp(13)),
-                        (int) (AndroidUtilities.rectTmp.centerY() + dp(8) / 2)
+                            (int) (AndroidUtilities.rectTmp.left + dp(6)),
+                            (int) (AndroidUtilities.rectTmp.centerY() - dp(8) / 2),
+                            (int) (AndroidUtilities.rectTmp.left + dp(13)),
+                            (int) (AndroidUtilities.rectTmp.centerY() + dp(8) / 2)
                     );
                     durationPlayDrawable.draw(canvas);
                 }

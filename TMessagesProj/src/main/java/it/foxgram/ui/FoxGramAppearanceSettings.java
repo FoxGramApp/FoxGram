@@ -271,6 +271,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                         }
                     } else {
                         FoxConfig.saveNameType(index);
+                        FoxConfig.saveOldTitleText(index);
                     }
                     RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(showInActionBarRow);
                     if (holder != null) {
