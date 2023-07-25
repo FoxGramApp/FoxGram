@@ -19,6 +19,7 @@ import org.telegram.ui.ActionBar.ActionBarMenuItem;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.CheckBoxCell;
 import org.telegram.ui.Cells.HeaderCell;
+import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Cells.TextCheckCell2;
 import org.telegram.ui.Cells.TextCheckbox2Cell;
@@ -48,7 +49,6 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
     private int stickerSizeDividerRow;
     private int chatHeaderRow;
     private int jumpChannelRow;
-    private int doubleReactionsRow;
     private int showGreetings;
     private int hideChannelBottomRow;
     private int hideKeyboardRow;
@@ -85,6 +85,7 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
     private int hideTimeOnStickerRow;
     private int onlineStatusRow;
     private int hideSendAsChannelRow;
+    private int doubleTapRow;
 
     private boolean confirmSendExpanded;
 
@@ -106,11 +107,6 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
             FoxConfig.toggleJumpChannel();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(FoxConfig.jumpChannel);
-            }
-        } else if (position == doubleReactionsRow) {
-            FoxConfig.toggleDoubleTapDisabled();
-            if (view instanceof TextCheckCell) {
-                ((TextCheckCell) view).setChecked(FoxConfig.doubleTapDisabled);
             }
         } else if (position == showGreetings) {
             FoxConfig.toggleShowGreetings();
@@ -269,6 +265,8 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
             FoxConfig.applyConfirmSending();
             listAdapter.notifyItemChanged(confirmSendVideoRow, PARTIAL);
             listAdapter.notifyItemChanged(confirmSendRow, PARTIAL);
+        } else if (position == doubleTapRow) {
+            presentFragment(new DoubleTapActionsSettings());
         }
     }
 
@@ -312,13 +310,13 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
 
         chatHeaderRow = rowCount++;
         jumpChannelRow = rowCount++;
-        doubleReactionsRow = rowCount++;
         showGreetings = rowCount++;
         hideChannelBottomRow = rowCount++;
         hideKeyboardRow = rowCount++;
         hideSendAsChannelRow = rowCount++;
         openArchiveOnPullRow = rowCount++;
         onlineStatusRow = rowCount++;
+        doubleTapRow = rowCount++;
         chatDividerRow = rowCount++;
 
         cameraHeaderRow = rowCount++;
@@ -401,8 +399,6 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("UseRearRoundVideos", R.string.UseRearRoundVideos), LocaleController.getString("UseRearRoundVideosDesc", R.string.UseRearRoundVideosDesc), FoxConfig.useRearCamera, true, true);
                     } else if (position == jumpChannelRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("JumpToNextChannel", R.string.JumpToNextChannel), FoxConfig.jumpChannel, true);
-                    } else if (position == doubleReactionsRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("DoubleTapReactions", R.string.DoubleTapReactions), FoxConfig.doubleTapDisabled, true);
                     } else if (position == showGreetings) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("GreetingSticker", R.string.GreetingSticker), FoxConfig.showGreetings, true);
                     } else if (position == hideChannelBottomRow) {
@@ -500,6 +496,11 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
                     }
                     checkBoxCell.setPad(1);
                     break;
+                case TEXT_CELL:
+                    TextCell textCell = (TextCell) holder.itemView;
+                    if (position == doubleTapRow) {
+                        textCell.setTextAndValue(LocaleController.getString("DoubleTap", R.string.DoubleTap), FoxConfig.getDoubleTapText(), true);
+                    }
             }
         }
 
@@ -564,7 +565,7 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
                 return ViewType.HEADER;
             } else if (position == cameraEnableRow || position == cameraXOptimizeRow ||
                     position == cameraPreviewRow || position == rearCameraStartingRow ||
-                    position == jumpChannelRow || position == doubleReactionsRow || position == hideKeyboardRow ||
+                    position == jumpChannelRow || position == hideKeyboardRow ||
                     position == playGifAsVideoRow || position == showGreetings || position == hideChannelBottomRow ||
                     position == proximitySensorRow || position == suppressionRow || position == turnSoundOnVDKeyRow ||
                     position == openArchiveOnPullRow || position == hideTimeOnStickerRow || position == onlineStatusRow ||
@@ -587,6 +588,8 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
             } else if (position == confirmSendGifsRow || position == confirmSendStickersRow ||
                     position == confirmSendAudioRow || position == confirmSendVideoRow) {
                 return ViewType.CHECKBOX_CELL;
+            } else if (position == doubleTapRow) {
+                return ViewType.TEXT_CELL;
             }
             throw new IllegalArgumentException("Invalid position");
         }

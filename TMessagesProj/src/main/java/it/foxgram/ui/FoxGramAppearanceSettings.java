@@ -265,7 +265,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                 linearLayout.addView(cell);
                 cell.setOnClickListener(v -> {
                     if (index == 3) {
-                        if (!getMessagesController().getStoriesController().hasSelfStories()) {
+                        if (!getMessagesController().getStoriesController().hasStories()) {
                             FoxConfig.saveNameType(FoxConfig.DEFAULT_NAME);
                             hasChangedStory.set(true);
                         } else {

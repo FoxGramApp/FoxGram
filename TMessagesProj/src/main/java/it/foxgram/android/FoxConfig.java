@@ -40,6 +40,13 @@ public class FoxConfig extends SettingsController {
     public static final int TG_USER_NAME = 2;
     public static final int MY_STORY = 3;
 
+    public static final int DOUBLE_TAP_DISABLED = 0;
+    public static final int DOUBLE_TAP_REACT = 1;
+    public static final int DOUBLE_TAP_FORWARD = 2;
+    public static final int DOUBLE_TAP_EDIT = 3;
+    public static final int DOUBLE_TAP_COPY_TEXT = 4;
+    public static final int DOUBLE_TAP_DELETE = 5;
+
     private static final Object sync = new Object();
     public static boolean hidePhoneNumber;
     public static boolean hideContactNumber;
@@ -120,6 +127,7 @@ public class FoxConfig extends SettingsController {
     public static int translatorStyle = 0;
     public static int cameraType;
     public static int nameType;
+    public static int doubleTapType;
     public static int cameraResolution;
     public static int maxRecentStickers;
     public static int stickerSizeStack = 0;
@@ -128,7 +136,6 @@ public class FoxConfig extends SettingsController {
     public static long lastUpdateCheck = 0;
     public static int downloadSpeedBoost;
     public static int lastSelectedCompression;
-    public static boolean doubleTapDisabled;
     public static boolean tabsUnreadCounter;
 
     static {
@@ -203,6 +210,7 @@ public class FoxConfig extends SettingsController {
             showSnowFalling = getBoolean("showSnowFalling", true);
             cameraType = getInt("cameraType", CameraXUtils.getDefault());
             nameType = getInt("nameType", DEFAULT_NAME);
+            doubleTapType = getInt("doubleTapType", DOUBLE_TAP_REACT);
             cameraResolution = getInt("cameraResolution", CameraXUtils.getCameraResolution());
             cameraPreview = getBoolean("cameraPreview", true);
             useCameraXOptimizedMode = getBoolean("useCameraXOptimizedMode", SharedConfig.getDevicePerformanceClass() != SharedConfig.PERFORMANCE_CLASS_HIGH);
@@ -232,7 +240,6 @@ public class FoxConfig extends SettingsController {
             translateEntireChat = getBoolean("translateEntireChat", false);
             confirmSending.readParams(getByteArray("confirmSending"), magicException);
             contextMenu.readParams(getByteArray("contextMenu"), magicException);
-            doubleTapDisabled = getBoolean("doubleTapDisabled", true);
             tabsUnreadCounter = getBoolean("tabsUnreadCounter", true);
 
             //EXPERIMENTAL OPTIONS
@@ -308,7 +315,6 @@ public class FoxConfig extends SettingsController {
     public static void toggleUseSystemEmoji() {
         putValue("useSystemEmoji", useSystemEmoji ^= true);
     }
-    public static void toggleDoubleTapDisabled() {putValue("doubleTapDisabled", doubleTapDisabled ^= true);}
     public static void toggleShowGreetings() {
         putValue("showGreetings", showGreetings ^= true);
     }
@@ -561,6 +567,10 @@ public class FoxConfig extends SettingsController {
         putValue("nameType", nameType = type);
     }
 
+    public static void saveDoubleTapType(int type) {
+        putValue("doubleTapType", doubleTapType = type);
+    }
+
     public static void saveCameraResolution(int resolution) {
         putValue("cameraResolution", cameraResolution = resolution);
     }
@@ -649,6 +659,24 @@ public class FoxConfig extends SettingsController {
                 } else {
                     return LocaleController.getString("ColorVersionAppName", R.string.ColorVersionAppName);
                 }
+        }
+        return null;
+    }
+
+    public static String getDoubleTapText() {
+        switch (doubleTapType) {
+            case DOUBLE_TAP_DISABLED:
+                return LocaleController.getString("DevOptDisabled", R.string.DevOptDisabled);
+            case DOUBLE_TAP_REACT:
+                return LocaleController.getString("Reactions", R.string.Reactions);
+            case DOUBLE_TAP_FORWARD:
+                return LocaleController.getString("Forward", R.string.Forward);
+            case DOUBLE_TAP_EDIT:
+                return LocaleController.getString("Edit", R.string.Edit);
+            case DOUBLE_TAP_COPY_TEXT:
+                return LocaleController.getString("Copy", R.string.Copy);
+            case DOUBLE_TAP_DELETE:
+                return LocaleController.getString("Delete", R.string.Delete);
         }
         return null;
     }

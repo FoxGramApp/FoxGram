@@ -466,7 +466,7 @@ public class StickersActivity extends BaseFragment implements NotificationCenter
             } else if (position == suggestAnimatedEmojiRow) {
                 SharedConfig.toggleSuggestAnimatedEmoji();
                 ((TextCheckCell) view).setChecked(SharedConfig.suggestAnimatedEmoji);
-            } else if (position == reactionsDoubleTapRow && FoxConfig.doubleTapDisabled) {
+            } else if (position == reactionsDoubleTapRow) {
                 presentFragment(new ReactionsDoubleTapManageActivity());
             } else if (position == dynamicPackOrder) {
                 SharedConfig.toggleUpdateStickersOrderOnSend();
@@ -704,7 +704,7 @@ public class StickersActivity extends BaseFragment implements NotificationCenter
             suggestAnimatedEmojiInfoRow = -1;
         }
 
-        if (FoxConfig.doubleTapDisabled) {
+        if (FoxConfig.doubleTapType == FoxConfig.DOUBLE_TAP_REACT) {
             if (currentType == MediaDataController.TYPE_IMAGE) {
                 reactionsDoubleTapRow = rowCount++;
             } else {
@@ -1110,26 +1110,23 @@ public class StickersActivity extends BaseFragment implements NotificationCenter
                             }
                         }
                         stickerSetCell.updateButtonState(
-                            unlock ? (
-                                installed && !set.set.official ? StickerSetCell.BUTTON_STATE_LOCKED_RESTORE : StickerSetCell.BUTTON_STATE_LOCKED
-                            ) : (
-                                installed ? StickerSetCell.BUTTON_STATE_REMOVE : StickerSetCell.BUTTON_STATE_ADD
-                            ),
-                            sameSet
+                                unlock ? (
+                                        installed && !set.set.official ? StickerSetCell.BUTTON_STATE_LOCKED_RESTORE : StickerSetCell.BUTTON_STATE_LOCKED
+                                ) : (
+                                        installed ? StickerSetCell.BUTTON_STATE_REMOVE : StickerSetCell.BUTTON_STATE_ADD
+                                ),
+                                sameSet
                         );
                     }
                     break;
                 case TYPE_INFO:
                     TextInfoPrivacyCell infoPrivacyCell = (TextInfoPrivacyCell) holder.itemView;
                     infoPrivacyCell.setFixedSize(0);
-                    if (position == stickersBotInfo && FoxConfig.doubleTapDisabled) {
-                        infoPrivacyCell.setText(addStickersBotSpan(
-                                currentType == MediaDataController.TYPE_EMOJIPACKS ?
-                                        LocaleController.getString("EmojiBotInfo", R.string.EmojiBotInfo) :
-                                        LocaleController.getString("StickersBotInfo", R.string.StickersBotInfo)
-                        ));
-                    } else if (position == stickersBotInfo && !FoxConfig.doubleTapDisabled) {
-                        infoPrivacyCell.setText(addStickersBotSpan(LocaleController.getString("ColorDisabledTap", R.string.ColorDisabledTap)));
+                    if (position == stickersBotInfo) {
+                        if (FoxConfig.doubleTapType == FoxConfig.DOUBLE_TAP_REACT)
+                            infoPrivacyCell.setText(addStickersBotSpan(currentType == MediaDataController.TYPE_EMOJIPACKS ? LocaleController.getString("EmojiBotInfo", R.string.EmojiBotInfo) : LocaleController.getString("StickersBotInfo", R.string.StickersBotInfo)));
+                        else
+                            infoPrivacyCell.setText(addStickersBotSpan(LocaleController.getString("ColorDisabledTap", R.string.ColorDisabledTap)));
                     } else if (position == archivedInfoRow) {
                         if (currentType == MediaDataController.TYPE_IMAGE) {
                             infoPrivacyCell.setText(LocaleController.getString("ArchivedStickersInfo", R.string.ArchivedStickersInfo));
@@ -1358,10 +1355,10 @@ public class StickersActivity extends BaseFragment implements NotificationCenter
                         ItemOptions options = ItemOptions.makeOptions(StickersActivity.this, cell);
                         options.add(R.drawable.msg_archive, LocaleController.getString("StickersHide", R.string.StickersHide), () -> processSelectionOption(MENU_ARCHIVE, stickerSet));
                         if (stickerSet.set.official) {
-                            options.add(R.drawable.msg_reorder, LocaleController.getString("StickersReorder", R.string.StickersReorder), () -> processSelectionOption(4, stickerSet));
+                            options.add(R.drawable.msg_forward_replace, LocaleController.getString("StickersReorder", R.string.StickersReorder), () -> processSelectionOption(4, stickerSet));
                         } else {
                             options.add(R.drawable.msg_link, LocaleController.getString("StickersCopy", R.string.StickersCopy), () -> processSelectionOption(3, stickerSet));
-                            options.add(R.drawable.msg_reorder, LocaleController.getString("StickersReorder", R.string.StickersReorder), () -> processSelectionOption(4, stickerSet));
+                            options.add(R.drawable.msg_forward_replace, LocaleController.getString("StickersReorder", R.string.StickersReorder), () -> processSelectionOption(4, stickerSet));
                             options.add(R.drawable.msg_share, LocaleController.getString("StickersShare", R.string.StickersShare), () -> processSelectionOption(2, stickerSet));
                             options.add(R.drawable.msg_delete, LocaleController.getString("StickersRemove", R.string.StickersRemove), true, () -> processSelectionOption(MENU_DELETE, stickerSet));
                         }
@@ -1412,7 +1409,7 @@ public class StickersActivity extends BaseFragment implements NotificationCenter
                 return TYPE_SHADOW;
             } else if (i == loopRow || i == largeEmojiRow || i == suggestAnimatedEmojiRow || i == dynamicPackOrder) {
                 return TYPE_SWITCH;
-            } else if (i == reactionsDoubleTapRow && FoxConfig.doubleTapDisabled) {
+            } else if (i == reactionsDoubleTapRow) {
                 return TYPE_DOUBLE_TAP_REACTIONS;
             } else if (i == featuredStickersHeaderRow || i == stickersHeaderRow || i == stickersSettingsRow) {
                 return TYPE_HEADER;

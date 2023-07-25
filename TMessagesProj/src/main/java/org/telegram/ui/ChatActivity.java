@@ -1507,30 +1507,75 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
 
         @Override
         public boolean hasDoubleTap(View view, int position) {
-            String reactionStringSetting = getMediaDataController().getDoubleTapReaction();
-            TLRPC.TL_availableReaction reaction = getMediaDataController().getReactionsMap().get(reactionStringSetting);
-            if (reaction == null && (reactionStringSetting == null || !reactionStringSetting.startsWith("animated_"))) {
-                return false;
-            }
-            boolean available = dialog_id >= 0;
-            if (!available && chatInfo != null) {
-                available = ChatObject.reactionIsAvailable(chatInfo, reaction == null ? reactionStringSetting : reaction.reaction);
-            }
-            if (!available || !(view instanceof ChatMessageCell)) {
+            if (FoxConfig.doubleTapType == FoxConfig.DOUBLE_TAP_DISABLED || !(view instanceof ChatMessageCell)) {
                 return false;
             }
 
             ChatMessageCell cell = (ChatMessageCell) view;
-            return !cell.getMessageObject().isSending() && !cell.getMessageObject().isEditing() && cell.getMessageObject().type != MessageObject.TYPE_PHONE_CALL && !actionBar.isActionModeShowed() && !isSecretChat() && !isInScheduleMode() && !cell.getMessageObject().isSponsored() && FoxConfig.doubleTapDisabled;
+            boolean isOutOwner = cell.getMessageObject().isOutOwner();
+
+            if (FoxConfig.doubleTapType == FoxConfig.DOUBLE_TAP_REACT || (FoxConfig.doubleTapType == FoxConfig.DOUBLE_TAP_EDIT && !isOutOwner)) {
+                String reactionStringSetting = getMediaDataController().getDoubleTapReaction();
+                TLRPC.TL_availableReaction reaction = getMediaDataController().getReactionsMap().get(reactionStringSetting);
+                if (reaction == null && (reactionStringSetting == null || !reactionStringSetting.startsWith("animated_"))) {
+                    return false;
+                }
+                boolean available = dialog_id >= 0;
+                if (!available && chatInfo != null) {
+                    available = ChatObject.reactionIsAvailable(chatInfo, reaction == null ? reactionStringSetting : reaction.reaction);
+                }
+                if (!available || !(view instanceof ChatMessageCell)) {
+                    return false;
+                }
+                return !cell.getMessageObject().isSending() && !cell.getMessageObject().isEditing() && cell.getMessageObject().type != MessageObject.TYPE_PHONE_CALL && !actionBar.isActionModeShowed() && !isSecretChat() && !isInScheduleMode() && !cell.getMessageObject().isSponsored();
+            } else {
+                var message = cell.getMessageObject();
+                var messageGroup = getValidGroupedMessage(message);
+                boolean allowEdit = message.canEditMessage(currentChat) && !chatActivityEnterView.hasAudioToSend() && message.getDialogId() != mergeDialogId;
+                if (allowEdit && messageGroup != null) {
+                    int captionsCount = 0;
+                    for (int a = 0, N = messageGroup.messages.size(); a < N; a++) {
+                        MessageObject messageObject = messageGroup.messages.get(a);
+                        if (a == 0 || !TextUtils.isEmpty(messageObject.caption)) {
+                            selectedObjectToEditCaption = messageObject;
+                            if (!TextUtils.isEmpty(messageObject.caption)) {
+                                captionsCount++;
+                            }
+                        }
+                    }
+                    allowEdit = captionsCount < 2;
+                }
+                boolean noForwards = getMessagesController().isChatNoForwards(currentChat) || message.messageOwner.noforwards;
+                boolean canCopy = (message.type == MessageObject.TYPE_TEXT || message.isAnimatedEmoji() || message.isAnimatedEmojiStickers() || getMessageCaption(message, messageGroup) != null) && !noForwards;
+                boolean canForward = !message.isSponsored() && chatMode != MODE_SCHEDULED && (!message.needDrawBluredPreview() || message.hasExtendedMediaPreview()) && !message.isLiveLocation() && message.type != MessageObject.TYPE_PHONE_CALL && !noForwards && message.type != MessageObject.TYPE_GIFT_PREMIUM && message.type != MessageObject.TYPE_SUGGEST_PHOTO;
+                boolean canDelete = message.canDeleteMessage(chatMode == MODE_SCHEDULED, currentChat) && (threadMessageObjects == null || !threadMessageObjects.contains(message)) && !(message != null && message.messageOwner != null && message.messageOwner.action instanceof TLRPC.TL_messageActionTopicCreate);
+                switch (FoxConfig.doubleTapType) {
+                    case FoxConfig.DOUBLE_TAP_FORWARD:
+                        return canForward;
+                    case FoxConfig.DOUBLE_TAP_EDIT:
+                        return allowEdit;
+                    case FoxConfig.DOUBLE_TAP_COPY_TEXT:
+                        return canCopy;
+                    case FoxConfig.DOUBLE_TAP_DELETE:
+                        return canDelete;
+                }
+            }
+            return false;
         }
 
         @Override
         public void onDoubleTap(View view, int position, float x, float y) {
-            if (FoxConfig.doubleTapDisabled) {
-                if (!(view instanceof ChatMessageCell) || getParentActivity() == null || isSecretChat() || isInScheduleMode() || isInPreviewMode()) {
+            if (FoxConfig.doubleTapType == FoxConfig.DOUBLE_TAP_DISABLED || !(view instanceof ChatMessageCell) || getParentActivity() == null || isSecretChat() || isInScheduleMode() || isInPreviewMode()) {
+                return;
+            }
+
+            ChatMessageCell cell = (ChatMessageCell) view;
+            boolean isOutOwner = cell.getMessageObject().isOutOwner();
+
+            if (FoxConfig.doubleTapType == FoxConfig.DOUBLE_TAP_REACT || (FoxConfig.doubleTapType == FoxConfig.DOUBLE_TAP_EDIT && !isOutOwner)) {
+                if (isSecretChat() || isInScheduleMode()) {
                     return;
                 }
-                ChatMessageCell cell = (ChatMessageCell) view;
                 MessageObject primaryMessage = cell.getPrimaryMessageObject();
                 if (primaryMessage.isSecretMedia() || primaryMessage.isExpiredStory()) {
                     return;
@@ -1559,6 +1604,25 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         return;
                     }
                     selectReaction(primaryMessage, null, null, x, y, ReactionsLayoutInBubble.VisibleReaction.fromEmojicon(reaction), true, false, false);
+                }
+            } else {
+                var message = cell.getMessageObject();
+                selectedObject = message;
+                selectedObjectGroup = getValidGroupedMessage(message);
+
+                switch (FoxConfig.doubleTapType) {
+                    case FoxConfig.DOUBLE_TAP_FORWARD:
+                        processSelectedOption(OPTION_FORWARD);
+                        break;
+                    case FoxConfig.DOUBLE_TAP_EDIT:
+                        processSelectedOption(OPTION_EDIT);
+                        break;
+                    case FoxConfig.DOUBLE_TAP_COPY_TEXT:
+                        processSelectedOption(OPTION_COPY);
+                        break;
+                    case FoxConfig.DOUBLE_TAP_DELETE:
+                        processSelectedOption(OPTION_DELETE);
+                        break;
                 }
             }
         }

@@ -40,8 +40,6 @@ import org.telegram.ui.Components.SimpleThemeDescription;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.foxgram.android.FoxConfig;
-
 public class ReactionsDoubleTapManageActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
     private LinearLayout contentView;
@@ -89,7 +87,7 @@ public class ReactionsDoubleTapManageActivity extends BaseFragment implements No
         listView.setAdapter(listAdapter = new RecyclerListView.SelectionAdapter() {
             @Override
             public boolean isEnabled(RecyclerView.ViewHolder holder) {
-                return holder.getItemViewType() == 3 || holder.getItemViewType() == 2 && !FoxConfig.doubleTapDisabled;
+                return holder.getItemViewType() == 3 || holder.getItemViewType() == 2;
             }
 
             @NonNull
@@ -119,8 +117,8 @@ public class ReactionsDoubleTapManageActivity extends BaseFragment implements No
                             @Override
                             protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
                                 super.onMeasure(
-                                    MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.EXACTLY),
-                                    MeasureSpec.makeMeasureSpec(AndroidUtilities.dp(16), MeasureSpec.EXACTLY)
+                                        MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.EXACTLY),
+                                        MeasureSpec.makeMeasureSpec(AndroidUtilities.dp(16), MeasureSpec.EXACTLY)
                                 );
                             }
                         };
@@ -226,10 +224,10 @@ public class ReactionsDoubleTapManageActivity extends BaseFragment implements No
 
         public void updateImageBounds() {
             imageDrawable.setBounds(
-                getWidth() - imageDrawable.getIntrinsicWidth() - AndroidUtilities.dp(21),
-                (getHeight() - imageDrawable.getIntrinsicHeight()) / 2,
-                getWidth() - AndroidUtilities.dp(21),
-                (getHeight() + imageDrawable.getIntrinsicHeight()) / 2
+                    getWidth() - imageDrawable.getIntrinsicWidth() - AndroidUtilities.dp(21),
+                    (getHeight() - imageDrawable.getIntrinsicHeight()) / 2,
+                    getWidth() - AndroidUtilities.dp(21),
+                    (getHeight() + imageDrawable.getIntrinsicHeight()) / 2
             );
         }
 
@@ -243,8 +241,8 @@ public class ReactionsDoubleTapManageActivity extends BaseFragment implements No
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             super.onMeasure(
-                MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(AndroidUtilities.dp(50), MeasureSpec.EXACTLY)
+                    MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(AndroidUtilities.dp(50), MeasureSpec.EXACTLY)
             );
         }
 
@@ -297,6 +295,7 @@ public class ReactionsDoubleTapManageActivity extends BaseFragment implements No
                     popup[0].dismiss();
                 }
             }
+
             @Override
             protected void onReactionClick(ImageViewEmoji emoji, ReactionsLayoutInBubble.VisibleReaction reaction) {
                 MediaDataController.getInstance(currentAccount).setDoubleTapReaction(reaction.emojicon);
