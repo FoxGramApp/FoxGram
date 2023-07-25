@@ -22,10 +22,8 @@ import org.telegram.ui.Cells.RadioColorCell;
 import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Cells.TextSettingsCell;
-import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.UndoView;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import it.foxgram.android.CustomEmojiController;
@@ -254,8 +252,9 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                                 LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar)};
             }
 
+            FoxConfig.saveOldTitleText(FoxConfig.nameType);
+
             for (int i = 0; i < items.length; ++i) {
-                AtomicBoolean hasChangedStory = new AtomicBoolean(false);
                 final int index = i;
                 RadioColorCell cell = new RadioColorCell(getParentActivity());
                 cell.setPadding(AndroidUtilities.dp(4), 0, AndroidUtilities.dp(4), 0);
@@ -266,10 +265,8 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                 cell.setOnClickListener(v -> {
                     if (index == 3) {
                         if (!getMessagesController().getStoriesController().hasStories()) {
-                            FoxConfig.saveNameType(FoxConfig.DEFAULT_NAME);
-                            hasChangedStory.set(true);
+                            FoxConfig.saveNameType(FoxConfig.oldTitleText);
                         } else {
-                            hasChangedStory.set(false);
                             FoxConfig.saveNameType(FoxConfig.MY_STORY);
                         }
                     } else {
@@ -280,9 +277,6 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                         listAdapter.onBindViewHolder(holder, showInActionBarRow);
                     }
                     dialogRef.get().dismiss();
-                    if (hasChangedStory.get()) {
-                        BulletinFactory.of(FoxGramAppearanceSettings.this).createErrorBulletin(LocaleController.getString("MissingStoriesTitle", R.string.MissingStoriesTitle), getResourceProvider()).show();
-                    }
                     reloadDialogs();
                 });
             }

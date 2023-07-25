@@ -136,6 +136,7 @@ public class FoxConfig extends SettingsController {
     public static long lastUpdateCheck = 0;
     public static int downloadSpeedBoost;
     public static int lastSelectedCompression;
+    public static int oldTitleText;
     public static boolean tabsUnreadCounter;
 
     static {
@@ -652,15 +653,40 @@ public class FoxConfig extends SettingsController {
             case TG_USER_NAME:
                 return selfUser.username;
             case MY_STORY:
-                if (BuildConfig.BUILD_VERSION_STRING.contains("Beta")) {
-                    return LocaleController.getString("ColorVersionAppNameBeta", R.string.ColorVersionAppNameBeta);
-                } else if (BuildConfig.BUILD_VERSION_STRING.contains("Alpha")) {
-                    return LocaleController.getString("ColorVersionAppNameAlpha", R.string.ColorVersionAppNameAlpha);
-                } else {
-                    return LocaleController.getString("ColorVersionAppName", R.string.ColorVersionAppName);
+                switch (oldTitleText) {
+                    case DEFAULT_NAME:
+                    case MY_STORY:
+                    default:
+                        if (BuildConfig.BUILD_VERSION_STRING.contains("Beta")) {
+                            return LocaleController.getString("ColorVersionAppNameBeta", R.string.ColorVersionAppNameBeta);
+                        } else if (BuildConfig.BUILD_VERSION_STRING.contains("Alpha")) {
+                            return LocaleController.getString("ColorVersionAppNameAlpha", R.string.ColorVersionAppNameAlpha);
+                        } else {
+                            return LocaleController.getString("ColorVersionAppName", R.string.ColorVersionAppName);
+                        }
+                    case USER_NAME:
+                        return selfUser.first_name + " " + (selfUser.last_name != null ? selfUser.last_name : "");
+                    case TG_USER_NAME:
+                        return selfUser.username;
                 }
         }
         return null;
+    }
+
+    public static void saveOldTitleText(int type) {
+        switch (type) {
+            case DEFAULT_NAME:
+            case MY_STORY:
+            default:
+                oldTitleText = 0;
+                break;
+            case USER_NAME:
+                oldTitleText = 1;
+                break;
+            case TG_USER_NAME:
+                oldTitleText = 2;
+                break;
+        }
     }
 
     public static String getDoubleTapText() {
