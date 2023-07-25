@@ -17521,7 +17521,10 @@ public class  MessagesController extends BaseController implements NotificationC
             reason = getRestrictionReason(user.restriction_reason);
             if (type != 3 && user.bot) {
                 type = 1;
-                closeLast = true;
+                BaseFragment lastFragment = LaunchActivity.getLastFragment();
+                if (!(lastFragment.storyViewer != null && lastFragment.storyViewer.isShown())) {
+                    closeLast = true;
+                }
             }
         }
         if (reason != null) {

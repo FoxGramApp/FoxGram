@@ -68,6 +68,7 @@ public class UserCell extends FrameLayout implements NotificationCenter.Notifica
     private Theme.ResourcesProvider resourcesProvider;
 
     private AvatarDrawable avatarDrawable;
+    private boolean storiable;
     private Object currentObject;
     private TLRPC.EncryptedChat encryptedChat;
 
@@ -149,8 +150,12 @@ public class UserCell extends FrameLayout implements NotificationCenter.Notifica
         avatarImageView = new BackupImageView(context) {
             @Override
             protected void onDraw(Canvas canvas) {
-                storyParams.originalAvatarRect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
-                StoriesUtilities.drawAvatarWithStory(dialogId, canvas, imageReceiver, storyParams);
+                if (storiable) {
+                    storyParams.originalAvatarRect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+                    StoriesUtilities.drawAvatarWithStory(dialogId, canvas, imageReceiver, storyParams);
+                } else {
+                    super.onDraw(canvas);
+                }
             }
 
             @Override
@@ -288,6 +293,7 @@ public class UserCell extends FrameLayout implements NotificationCenter.Notifica
         if (object == null && name == null && status == null) {
             currentStatus = null;
             currentName = null;
+            storiable = false;
             currentObject = null;
             nameTextView.setText("");
             statusTextView.setText("");
@@ -302,6 +308,7 @@ public class UserCell extends FrameLayout implements NotificationCenter.Notifica
             }
         } catch (Exception ignore) {}
         currentName = name;
+        storiable = !(object instanceof String);
         currentObject = object;
         currentDrawable = resId;
         needDivider = divider;
