@@ -462,64 +462,33 @@ public class SelectAnimatedEmojiDialog extends FrameLayout implements Notificati
         contentView = new FrameLayout(context) {
             private final Path pathApi20 = new Path();
             private final Paint paintApi20 = new Paint(Paint.ANTI_ALIAS_FLAG);
-            private final boolean beforeLollipop = Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
 
             @Override
             protected void dispatchDraw(Canvas canvas) {
-                if (!drawBackground) {
-                    super.dispatchDraw(canvas);
-                    return;
-                }
-                if (beforeLollipop) {
-                    canvas.save();
-                    if (needBackgroundShadow) {
-                        Theme.applyDefaultShadow(paintApi20);
-                    }
-                    paintApi20.setColor(Theme.getColor(Theme.key_actionBarDefaultSubmenuBackground, resourcesProvider));
-                    paintApi20.setAlpha((int) (255 * getAlpha()));
-                    float px = (bubbleX == null ? getWidth() / 2f : bubbleX) + AndroidUtilities.dp(20);
-                    float w = getWidth() - getPaddingLeft() - getPaddingRight();
-                    float h = getHeight() - getPaddingBottom() - getPaddingTop();
-                    AndroidUtilities.rectTmp.set(
-                            getPaddingLeft() + (px - px * scaleX),
-                            getPaddingTop(),
-                            getPaddingLeft() + px + (w - px) * scaleX,
-                            getPaddingTop() + h * scaleY
-                    );
-                    pathApi20.rewind();
-                    pathApi20.addRoundRect(AndroidUtilities.rectTmp, AndroidUtilities.dp(12), AndroidUtilities.dp(12), Path.Direction.CW);
-                    canvas.drawPath(pathApi20, paintApi20);
-                    canvas.clipPath(pathApi20);
-                    super.dispatchDraw(canvas);
-                    canvas.restore();
-                } else {
-                    super.dispatchDraw(canvas);
-                }
+                super.dispatchDraw(canvas);
             }
         };
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            contentView.setOutlineProvider(new ViewOutlineProvider() {
-                private final Rect rect = new Rect();
+        contentView.setOutlineProvider(new ViewOutlineProvider() {
+            private final Rect rect = new Rect();
 
-                @Override
-                public void getOutline(View view, Outline outline) {
-                    float px = (bubbleX == null ? view.getWidth() / 2f : bubbleX) + AndroidUtilities.dp(20);
-                    float w = view.getWidth() - view.getPaddingLeft() - view.getPaddingRight();
-                    float h = view.getHeight() - view.getPaddingBottom() - view.getPaddingTop();
-                    rect.set(
-                            (int) (view.getPaddingLeft() + (px - px * scaleX)),
-                            view.getPaddingTop(),
-                            (int) (view.getPaddingLeft() + px + (w - px) * scaleX),
-                            (int) (view.getPaddingTop() + h * scaleY)
-                    );
-                    outline.setRoundRect(rect, dp(12));
-                }
-            });
-            contentView.setClipToOutline(true);
-            if (needBackgroundShadow) {
-                contentView.setElevation(2f);
+            @Override
+            public void getOutline(View view, Outline outline) {
+                float px = (bubbleX == null ? view.getWidth() / 2f : bubbleX) + AndroidUtilities.dp(20);
+                float w = view.getWidth() - view.getPaddingLeft() - view.getPaddingRight();
+                float h = view.getHeight() - view.getPaddingBottom() - view.getPaddingTop();
+                rect.set(
+                        (int) (view.getPaddingLeft() + (px - px * scaleX)),
+                        view.getPaddingTop(),
+                        (int) (view.getPaddingLeft() + px + (w - px) * scaleX),
+                        (int) (view.getPaddingTop() + h * scaleY)
+                );
+                outline.setRoundRect(rect, dp(12));
             }
+        });
+        contentView.setClipToOutline(true);
+        if (needBackgroundShadow) {
+            contentView.setElevation(2f);
         }
 
         if (type == TYPE_EMOJI_STATUS || type == TYPE_SET_DEFAULT_REACTION) {
@@ -4587,13 +4556,7 @@ public class SelectAnimatedEmojiDialog extends FrameLayout implements Notificati
         }
         this.scaleX = .15f + .85f * containerx;
         this.scaleY = .075f + .925f * containery;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            contentView.invalidateOutline();
-        } else {
-            backgroundView.setVisibility(GONE);
-            contentView.setAlpha(containeralphat);
-            contentView.invalidate();
-        }
+        contentView.invalidateOutline();
         if (bubble2View != null) {
             bubble2View.setAlpha(containeralphat);
         }
@@ -4682,9 +4645,7 @@ public class SelectAnimatedEmojiDialog extends FrameLayout implements Notificati
 
     public void setDrawBackground(boolean drawBackground) {
         this.drawBackground = drawBackground;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            contentView.setClipToOutline(drawBackground);
-        }
+        contentView.setClipToOutline(drawBackground);
         if (!drawBackground) {
             backgroundView.setVisibility(GONE);
         } else {

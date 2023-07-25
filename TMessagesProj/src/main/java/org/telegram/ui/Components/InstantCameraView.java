@@ -282,7 +282,6 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
             }
         };
         cameraContainer.setOutlineProvider(new ViewOutlineProvider() {
-            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void getOutline(View view, Outline outline) {
                 outline.setOval(0, 0, textureViewSize, textureViewSize);

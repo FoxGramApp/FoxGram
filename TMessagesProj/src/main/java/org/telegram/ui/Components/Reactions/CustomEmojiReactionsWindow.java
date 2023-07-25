@@ -204,24 +204,22 @@ public class CustomEmojiReactionsWindow {
                 containerView.invalidate();
             }
         };
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            selectAnimatedEmojiDialog.setOutlineProvider(new ViewOutlineProvider() {
-                final Rect rect = new Rect();
-                final RectF rectTmp = new RectF();
-                final RectF rectF = new RectF();
+        selectAnimatedEmojiDialog.setOutlineProvider(new ViewOutlineProvider() {
+            final Rect rect = new Rect();
+            final RectF rectTmp = new RectF();
+            final RectF rectF = new RectF();
 
-                @Override
-                public void getOutline(View view, Outline outline) {
-                    float radius = AndroidUtilities.lerp(fromRadius, AndroidUtilities.dp(8), enterTransitionProgress);
-                    rectTmp.set(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-                    AndroidUtilities.lerp(fromRect, rectTmp, enterTransitionProgress, rectF);
-                    rectF.round(rect);
-                    outline.setRoundRect(rect, radius);
-                }
-            });
-            selectAnimatedEmojiDialog.setClipToOutline(true);
-        }
-        
+            @Override
+            public void getOutline(View view, Outline outline) {
+                float radius = AndroidUtilities.lerp(fromRadius, AndroidUtilities.dp(8), enterTransitionProgress);
+                rectTmp.set(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+                AndroidUtilities.lerp(fromRect, rectTmp, enterTransitionProgress, rectF);
+                rectF.round(rect);
+                outline.setRoundRect(rect, radius);
+            }
+        });
+        selectAnimatedEmojiDialog.setClipToOutline(true);
+
         selectAnimatedEmojiDialog.setOnLongPressedListener(new SelectAnimatedEmojiDialog.onLongPressedListener() {
             @Override
             public void onLongPressed(SelectAnimatedEmojiDialog.ImageViewEmoji view) {
@@ -373,9 +371,7 @@ public class CustomEmojiReactionsWindow {
             reactionsContainerLayout.setCustomEmojiEnterProgress(Utilities.clamp(enterTransitionProgress, 1f, 0));
             invalidatePath = true;
             containerView.invalidate();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                selectAnimatedEmojiDialog.invalidateOutline();
-            }
+            selectAnimatedEmojiDialog.invalidateOutline();
             if (cascadeAnimation) {
                 updateCascadeEnter(enterTransitionProgress, enter);
             }
@@ -390,9 +386,7 @@ public class CustomEmojiReactionsWindow {
                 updateContainersAlpha();
                 updateContentPosition();
                 checkAnimationEnd(enter);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    selectAnimatedEmojiDialog.invalidateOutline();
-                }
+                selectAnimatedEmojiDialog.invalidateOutline();
                 enterTransitionProgress = enter ? 1f : 0f;
                 if (enter) {
                     enterTransitionFinished = true;
@@ -915,20 +909,7 @@ public class CustomEmojiReactionsWindow {
                 canvas.restoreToCount(restoreCount);
             }
 
-            boolean beforeLollipop = Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
-            if (beforeLollipop) {
-                if (invalidatePath) {
-                    invalidatePath = false;
-                    pathToClipApi20.rewind();
-                    pathToClipApi20.addRoundRect(drawingRect, radius, radius, Path.Direction.CW);
-                }
-                canvas.save();
-                canvas.clipPath(pathToClipApi20);
-                super.dispatchDraw(canvas);
-                canvas.restore();
-            } else {
-                super.dispatchDraw(canvas);
-            }
+            super.dispatchDraw(canvas);
 
             if (frameDrawCount < 5) {
                 if (frameDrawCount == 3) {
