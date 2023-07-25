@@ -6396,6 +6396,14 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     viewPages[a].requestLayout();
                 }
 
+                if (!actionBarDefaultTitle.equals(actionBar.getTitle())) {
+                    if (animated) {
+                        actionBar.setTitleAnimatedX(actionBarDefaultTitle, statusDrawable, false, 200);
+                    } else {
+                        actionBar.setTitle(actionBarDefaultTitle, statusDrawable);
+                    }
+                }
+
                 filterTabsView.resetTabId();
             }
             updateDrawerSwipeEnabled();
