@@ -1134,7 +1134,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
                             height = options.outHeight;
                         } catch (Exception ignore) {}
                         MediaController.PhotoEntry photoEntry = new MediaController.PhotoEntry(0, lastImageId--, 0, outputFile.getAbsolutePath(), 0, true, width, height, 0);
-                        photoEntry.duration = (int) (duration / 1000f);
+                        photoEntry.duration = (int) duration;
                         photoEntry.thumbPath = thumbPath;
                         if (parentAlert.avatarPicker != 0 && cameraView.isFrontface()) {
                             photoEntry.cropState = new MediaController.CropState();
@@ -1243,7 +1243,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
                 if (!CameraXUtils.isCameraXSupported() || FoxConfig.cameraType != FoxConfig.CAMERA_X && FoxConfig.cameraEnable) {
                     final boolean sameTakePictureOrientation = ((CameraView) cameraView).getCameraSession().isSameTakePictureOrientation();
                     ((CameraView) cameraView).getCameraSession().setFlipFront(parentAlert.baseFragment instanceof ChatActivity || parentAlert.avatarPicker == 2);
-                    takingPhoto = CameraController.getInstance().takePicture(cameraFile, false,((CameraView) cameraView).getCameraSession(), (test) -> {
+                    takingPhoto = CameraController.getInstance().takePicture(cameraFile, false,((CameraView) cameraView).getCameraSession(), (thumbPath) -> {
                         takingPhoto = false;
                         if (cameraFile == null || parentAlert.baseFragment == null) {
                             return;
@@ -1401,6 +1401,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
             }
             evControlView.animateToValue(0.5f);
             cameraView.switchCamera();
+            cameraView.startSwitchingAnimation();
             ObjectAnimator animator = ObjectAnimator.ofFloat(switchCameraButton, View.SCALE_X, 0.0f).setDuration(100);
             animator.addListener(new AnimatorListenerAdapter() {
                 @Override

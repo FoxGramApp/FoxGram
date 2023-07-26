@@ -82,6 +82,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import it.foxgram.android.FoxConfig;
+
 public class MediaActivity extends BaseFragment implements SharedMediaLayout.SharedMediaPreloaderDelegate, FloatingDebugProvider, NotificationCenter.NotificationCenterDelegate {
 
     public static final int TYPE_MEDIA = 0;
@@ -496,6 +498,10 @@ public class MediaActivity extends BaseFragment implements SharedMediaLayout.Sha
             floatingButtonContainer = new FrameLayout(context);
             floatingButtonContainer.setVisibility(View.VISIBLE);
             floatingButtonContainer.setOnClickListener(v -> {
+                if (!FoxConfig.cameraEnable) {
+                    BulletinFactory.of(this).createSimpleBulletin(R.raw.not_available, LocaleController.getString("StoriesCameraOff", R.string.StoriesCameraOff)).show();
+                    return;
+                }
                 StoryRecorder.getInstance(getParentActivity(), getCurrentAccount())
                         .open(StoryRecorder.SourceView.fromFloatingButton(floatingButtonContainer));
             });
