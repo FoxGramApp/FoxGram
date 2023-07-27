@@ -366,6 +366,7 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
                         break;
                     case "telegram_features":
                         items.add(new Item(13, data.text, helpIcon));
+                        break;
                     case "stories":
                         items.add(new Item(16, data.text, R.drawable.msg_menu_stories));
                         break;
