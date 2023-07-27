@@ -366,6 +366,8 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
                         break;
                     case "telegram_features":
                         items.add(new Item(13, data.text, helpIcon));
+                    case "stories":
+                        items.add(new Item(16, data.text, R.drawable.msg_menu_stories));
                         break;
                     case "archived_messages":
                         items.add(new Item(202, data.text, R.drawable.msg_archive));
@@ -399,8 +401,7 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
                         break;
                     case "folders":
                         items.add(new Item(209, data.text, R.drawable.msg2_folder));
-                    case "stories":
-                        items.add(new Item(16, data.text, R.drawable.msg_menu_stories));
+                        break;
                     case "divider":
                         boolean foundPreviousDivider = false;
                         if (i > 0) {
