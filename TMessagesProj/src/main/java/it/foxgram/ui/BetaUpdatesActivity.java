@@ -22,6 +22,8 @@ import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.StickerImageView;
 
 import it.foxgram.android.FoxConfig;
+import it.foxgram.android.http.FileDownloader;
+import it.foxgram.android.updates.UpdateManager;
 
 public class BetaUpdatesActivity extends BaseSettingsActivity {
     private int imageRow;
@@ -42,11 +44,15 @@ public class BetaUpdatesActivity extends BaseSettingsActivity {
             if (position == stableRow) {
                 if (FoxConfig.betaUpdates) {
                     FoxConfig.toggleBetaUpdates();
+                    FileDownloader.cancel("appUpdate");
+                    UpdateManager.deleteUpdate();
                 }
             }
             if (position == betaRow) {
                 if (!FoxConfig.betaUpdates) {
                     FoxConfig.toggleBetaUpdates();
+                    FileDownloader.cancel("appUpdate");
+                    UpdateManager.deleteUpdate();
                 }
             }
         }
