@@ -7,8 +7,6 @@
     <string name="ColorSetting">FoxGram Settings</string>
     <string name="Categories">Categories</string>
     <string name="UpdateInfo">Version</string>
-    <string name="ViewUpdate">Updates Settings</string>
-    <string name="AppVersionHeader">App Version</string>
     <string name="Chat">Chats</string>
     <string name="ColorUpdates">Updates</string>
     <string name="Experimental">Experimental</string>
@@ -19,13 +17,10 @@
     <string name="DisableExperimentalAlert">Are you sure you want to disable experimental settings?\n\nNote that this will disable the Monet Icon.</string>
     <string name="OfficialChannel">Official Channel</string>
     <string name="ChannelUsername">SCP_System</string>
-    <string name="OfficialGroup">Official Group</string>
     <string name="GroupUsername">chatscpsystem</string>
     <string name="SourceCode">View Source Code</string>
     <string name="TranslateColor">Translate FoxGram</string>
     <string name="TranslateColorDesc">Help us translate FoxGram into your language</string>
-    <string name="Donate">Donate</string>
-    <string name="DonateDesc">Support the development</string>
     <string name="CopyReportDetails">Copy Report Details</string>
     <string name="CopyReportDetailsDesc">Use when submitting a bug report</string>
     <string name="ReportDetailsCopied">Report details copied to clipboard.</string>
@@ -54,7 +49,6 @@
     <string name="ResetItemsOrder">Reset Items Order</string>
     <string name="AddDivider">Add Divider</string>
     <string name="Divider">Divider</string>
-    <string name="ColorDisable">This feature is currently disabled.</string>
     <string name="DatacenterStatus">Datacenter Status</string>
     <string name="DatacenterStatusDesc">Check the Telegram\'s <![CDATA[<a href="https://core.telegram.org/api/datacenter">Datacenter</a>]]> Status in realtime.</string>
     <string name="WebVersion">Open Web Version</string>
@@ -104,7 +98,6 @@
     <string name="OpenArchiveOnPull">Pull down to Open the Archive</string>
     <string name="OnlineStatusDesc">Show the online status of other people next to their profile photo in groups</string>
     <string name="HideAllChatsFolder">Hide "All Chats" Folder</string>
-    <string name="FoldersWhenForwarding">Show Folders when Forwarding</string>
     <string name="ContextMenu">Context Menu</string>
     <string name="ClearFromCache">Clear from Cache</string>
     <string name="NoQuoteForward">NoQuote Forward</string>
@@ -166,7 +159,6 @@
     <string name="CameraQuality">Camera Quality</string>
     <string name="CameraTypeSystem">System</string>
     <string name="SystemCameraDesc">Access directly the system camera (not applicable for video messages).</string>
-    <string name="CameraButton">Camera Button in attachments</string>
     <string name="MediaSettings">Media</string>
     <string name="VoiceEnhancements">Voice Enhancements</string>
     <string name="VoiceEnhancementsDesc">Noise Suppression and Voice Normalization</string>
@@ -221,7 +213,6 @@
     <string name="ThemeMonetLight">Monet Light</string>
     <string name="ThemeMonetDark">Monet Dark</string>
     <string name="PrivacyPolicyLogin">By continuing,\nyou agree to the *Privacy Policy*.</string>
-    <string name="OwlPrivacyPolicy">FoxGram Privacy Policy</string>
     <string name="HideSendAsChannel">Hide "Send as Channel"</string>
     <string name="EmojiSets">Emoji Sets</string>
     <string name="MyEmojiSets">My Emoji Sets</string>
@@ -255,7 +246,6 @@
     <string name="TranslateInfo">Manage your translation and auto-translation preferences in FoxGram settings.</string>
     <string name="SmoothNav">Smooth Navigation</string>
     <string name="HideChannelBottomButton">Hide Bottom Button in Channels</string>
-    <string name="DoubleTapReactions">Quick Reactions</string>
     <string name="ColorDisabledTap">Quick reactions are disabled from FoxGram\'s Settings.</string>
     <string name="AccountRegistrationDate">Account Registration Date</string>
     <string name="ShowDate">Show Account Registration Date</string>
