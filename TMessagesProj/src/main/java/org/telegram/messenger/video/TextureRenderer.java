@@ -1028,6 +1028,7 @@ public class TextureRenderer {
             entity.animatedFileDrawable = new AnimatedFileDrawable(new File(entity.text), true, 0, 0, null, null, null, 0, UserConfig.selectedAccount, true, 512, 512, null);
             entity.framesPerDraw = entity.animatedFileDrawable.getFps() / videoFps;
             entity.currentFrame = 0;
+            entity.animatedFileDrawable.getNextFrame();
         } else {
             BitmapFactory.Options opts = new BitmapFactory.Options();
             if (entity.type == VideoEditedInfo.MediaEntity.TYPE_PHOTO) {

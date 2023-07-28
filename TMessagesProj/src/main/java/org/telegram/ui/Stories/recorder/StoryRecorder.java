@@ -1603,9 +1603,9 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
         titleTextView.setRightPadding(AndroidUtilities.dp(96));
         actionBarContainer.addView(titleTextView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 56, Gravity.TOP | Gravity.FILL_HORIZONTAL, 71, 0, 0, 0));
 
-        downloadButton = new DownloadButton(context, () -> {
-            applyFilter();
+        downloadButton = new DownloadButton(context, done -> {
             applyPaint(true);
+            applyFilter(done);
         }, currentAccount, windowView, resourcesProvider);
         actionBarContainer.addView(downloadButton, LayoutHelper.createFrame(56, 56, Gravity.TOP | Gravity.RIGHT));
 
@@ -1740,7 +1740,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
         navbarContainer.addView(modeSwitcherView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.BOTTOM | Gravity.FILL_HORIZONTAL));
 
         hintTextView = new HintTextView(context);
-        navbarContainer.addView(hintTextView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 32, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 8, 0, 8, 8));
+        navbarContainer.addView(hintTextView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 32, Gravity.CENTER, 8, 0, 8, 8));
 
         previewButtons = new PreviewButtons(context);
         previewButtons.setVisibility(View.GONE);
@@ -1762,6 +1762,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
                 }
                 if (outputEntry.isEdit) {
                     outputEntry.editedPrivacy = false;
+                    applyFilter(null);
                     upload(true);
                 } else {
                     previewView.updatePauseReason(3, true);
@@ -1779,9 +1780,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
                                     return;
                                 }
                                 previewView.updatePauseReason(5, true);
-                                if (whenDone != null) {
-                                    whenDone.run();
-                                }
+
                                 outputEntry.privacy = privacy;
                                 StoryPrivacySelector.save(currentAccount, outputEntry.privacy);
                                 outputEntry.pinned = keepInProfile;
@@ -1789,7 +1788,10 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
                                 outputEntry.privacyRules.clear();
                                 outputEntry.privacyRules.addAll(privacy.rules);
                                 outputEntry.editedPrivacy = true;
+                                applyFilter(() -> {
+                                whenDone.run();
                                 upload(true);
+                            });
                             }, false);
                     privacySheet.setOnDismissListener(di -> {
                         previewView.updatePauseReason(3, false);
@@ -1884,7 +1886,6 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
     }
 
     private void upload(boolean asStory) {
-        applyFilter();
         applyPaint(true);
         if (outputEntry == null) {
             close(true);
@@ -2162,26 +2163,35 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
             }
             outputFile = StoryEntry.makeCacheFile(currentAccount, true);
             CameraController.getInstance().recordVideo(cameraView.getCameraSession(), outputFile, false, (thumbPath, duration) -> {
+                if (recordControl != null) {
+                    recordControl.stopRecordingLoading(true);
+                }
                 if (outputFile == null || cameraView == null) {
                     return;
                 }
 
                 takingVideo = false;
                 stoppingTakingVideo = false;
-                animateRecording(false, true);
 
                 if (duration <= 800) {
+                    animateRecording(false, true);
+                    setAwakeLock(false);
                     videoTimerView.setRecording(false, true);
+                    if (recordControl != null) {
+                        recordControl.stopRecordingLoading(true);
+                    }
                     try {
                         outputFile.delete();
                         outputFile = null;
                     } catch (Exception e) {
                         FileLog.e(e);
                     }
-                    try {
-                        new File(thumbPath).delete();
-                    } catch (Exception e) {
-                        FileLog.e(e);
+                    if (thumbPath != null) {
+                        try {
+                            new File(thumbPath).delete();
+                        } catch (Exception e) {
+                            FileLog.e(e);
+                        }
                     }
                     return;
                 }
@@ -2197,17 +2207,19 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
                     outputEntry.height = height;
                     outputEntry.setupMatrix();
                 }
-
-                navigateToPreviewWithPlayerAwait(() -> navigateTo(PAGE_PREVIEW, true), 0);
+                navigateToPreviewWithPlayerAwait(() -> {
+                    navigateTo(PAGE_PREVIEW, true);
+                }, 0);
             }, () /* onVideoStart */ -> {
                 whenStarted.run();
 
                 hintTextView.setText(byLongPress ? LocaleController.getString("StoryHintSwipeToZoom", R.string.StoryHintSwipeToZoom) : LocaleController.getString("StoryHintPinchToZoom", R.string.StoryHintPinchToZoom), false);
                 animateRecording(true, true);
+                setAwakeLock(true);
 
                 videoTimerView.setRecording(true, true);
                 showVideoTimer(true, true);
-            }, cameraView);
+            }, cameraView, false);
 
             if (!isVideo) {
                 isVideo = true;
@@ -2241,8 +2253,9 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
             AndroidUtilities.runOnUIThread(() -> {
                 if (takingVideo && stoppingTakingVideo && cameraView != null) {
                     showZoomControls(false, true);
-                    animateRecording(false, true);
-                    CameraController.getInstance().stopVideoRecording(cameraView.getCameraSessionRecording(), false);
+//                    animateRecording(false, true);
+//                    setAwakeLock(false);
+                    CameraController.getInstance().stopVideoRecording(cameraView.getCameraSessionRecording(), false, false);
                 }
             }, byDuration ? 0 : 400);
         }
@@ -2285,6 +2298,19 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
         }
     };
 
+    private void setAwakeLock(boolean lock) {
+        if (lock) {
+            windowLayoutParams.flags |= WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+        } else {
+            windowLayoutParams.flags &= ~WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+        }
+        try {
+            windowManager.updateViewLayout(windowView, windowLayoutParams);
+        } catch (Exception e) {
+            FileLog.e(e);
+        }
+    }
+
     private AnimatorSet recordingAnimator;
     private boolean animatedRecording;
     private void animateRecording(boolean recording, boolean animated) {
@@ -2317,18 +2343,20 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
             recordingAnimator = new AnimatorSet();
             recordingAnimator.playTogether(
                     ObjectAnimator.ofFloat(backButton, View.ALPHA, recording ? 0 : 1),
-                    ObjectAnimator.ofFloat(flashButton, View.ALPHA, recording ? 0 : 1),
-                    ObjectAnimator.ofFloat(dualButton, View.ALPHA, recording || cameraView == null || !cameraView.dualAvailable() ? 0 : 1),
-                    ObjectAnimator.ofFloat(hintTextView, View.ALPHA, recording ? 1 : 0),
-                    ObjectAnimator.ofFloat(hintTextView, View.TRANSLATION_Y, recording ? 0 : dp(16)),
-                    ObjectAnimator.ofFloat(modeSwitcherView, View.ALPHA, recording ? 0 : 1),
-                    ObjectAnimator.ofFloat(modeSwitcherView, View.TRANSLATION_Y, recording ? dp(16) : 0)
+                    ObjectAnimator.ofFloat(flashButton, View.ALPHA, recording || currentPage != PAGE_CAMERA ? 0 : 1),
+                    ObjectAnimator.ofFloat(dualButton, View.ALPHA, recording || currentPage != PAGE_CAMERA || cameraView == null || !cameraView.dualAvailable() ? 0 : 1),
+                    ObjectAnimator.ofFloat(hintTextView, View.ALPHA, recording && currentPage == PAGE_CAMERA ? 1 : 0),
+                    ObjectAnimator.ofFloat(hintTextView, View.TRANSLATION_Y, recording || currentPage != PAGE_CAMERA ? 0 : dp(16)),
+                    ObjectAnimator.ofFloat(modeSwitcherView, View.ALPHA, recording || currentPage != PAGE_CAMERA ? 0 : 1),
+                    ObjectAnimator.ofFloat(modeSwitcherView, View.TRANSLATION_Y, recording || currentPage != PAGE_CAMERA ? dp(16) : 0)
             );
             recordingAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     if (recording) {
                         backButton.setVisibility(View.GONE);
+                    }
+                    if (recording || currentPage != PAGE_CAMERA) {
                         flashButton.setVisibility(View.GONE);
                     }
                 }
@@ -2339,14 +2367,14 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
         } else {
             backButton.setAlpha(recording ? 0 : 1f);
             backButton.setVisibility(recording ? View.GONE : View.VISIBLE);
-            flashButton.setAlpha(recording ? 0 : 1f);
-            flashButton.setVisibility(recording ? View.GONE : View.VISIBLE);
-            dualButton.setAlpha(recording ? 0 : 1f);
-            dualButton.setVisibility(recording || cameraView == null || !cameraView.dualAvailable() ? View.GONE : View.VISIBLE);
-            hintTextView.setAlpha(recording ? 1f : 0);
-            hintTextView.setTranslationY(recording ? 0 : dp(16));
-            modeSwitcherView.setAlpha(recording ? 0 : 1f);
-            modeSwitcherView.setTranslationY(recording ? dp(16) : 0);
+            flashButton.setAlpha(recording || currentPage != PAGE_CAMERA ? 0 : 1f);
+            flashButton.setVisibility(recording || currentPage != PAGE_CAMERA ? View.GONE : View.VISIBLE);
+            dualButton.setAlpha(recording || currentPage != PAGE_CAMERA ? 0 : 1f);
+            dualButton.setVisibility(recording || currentPage != PAGE_CAMERA || cameraView == null || !cameraView.dualAvailable() ? View.GONE : View.VISIBLE);
+            hintTextView.setAlpha(recording && currentPage == PAGE_CAMERA ? 1f : 0);
+            hintTextView.setTranslationY(recording || currentPage != PAGE_CAMERA ? 0 : dp(16));
+            modeSwitcherView.setAlpha(recording || currentPage != PAGE_CAMERA ? 0 : 1f);
+            modeSwitcherView.setTranslationY(recording || currentPage != PAGE_CAMERA ? dp(16) : 0);
         }
     }
 
@@ -2511,6 +2539,9 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
             animators.add(ObjectAnimator.ofFloat(recordControl, View.TRANSLATION_Y, page == PAGE_CAMERA ? 0 : dp(24)));
             animators.add(ObjectAnimator.ofFloat(modeSwitcherView, View.ALPHA, page == PAGE_CAMERA ? 1 : 0));
             animators.add(ObjectAnimator.ofFloat(modeSwitcherView, View.TRANSLATION_Y, page == PAGE_CAMERA ? 0 : dp(24)));
+            backButton.setVisibility(View.VISIBLE);
+            animators.add(ObjectAnimator.ofFloat(backButton, View.ALPHA, 1));
+            animators.add(ObjectAnimator.ofFloat(hintTextView, View.ALPHA, page == PAGE_CAMERA && animatedRecording ? 1 : 0));
             animators.add(ObjectAnimator.ofFloat(captionContainer, View.ALPHA, page == PAGE_PREVIEW ? 1f : 0));
             animators.add(ObjectAnimator.ofFloat(captionContainer, View.TRANSLATION_Y, page == PAGE_PREVIEW ? 0 : dp(12)));
             animators.add(ObjectAnimator.ofFloat(titleTextView, View.ALPHA, page == PAGE_PREVIEW ? 1f : 0));
@@ -2546,6 +2577,9 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
             recordControl.setTranslationY(page == PAGE_CAMERA ? 0 : dp(16));
             modeSwitcherView.setAlpha(page == PAGE_CAMERA ? 1f : 0);
             modeSwitcherView.setTranslationY(page == PAGE_CAMERA ? 0 : dp(16));
+            backButton.setVisibility(View.VISIBLE);
+            backButton.setAlpha(1f);
+            hintTextView.setAlpha(page == PAGE_CAMERA && animatedRecording ? 1f : 0);
             captionContainer.setAlpha(page == PAGE_PREVIEW ? 1f : 0);
             captionContainer.setTranslationY(page == PAGE_PREVIEW ? 0 : dp(12));
             muteButton.setAlpha(page == PAGE_PREVIEW && isVideo ? 1f : 0);
@@ -2860,6 +2894,9 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
         if (toPage == PAGE_CAMERA) {
             requestCameraPermission(false);
             recordControl.setVisibility(View.VISIBLE);
+            if (recordControl != null) {
+                recordControl.stopRecordingLoading(false);
+            }
             modeSwitcherView.setVisibility(View.VISIBLE);
             zoomControlView.setVisibility(View.VISIBLE);
             zoomControlView.setAlpha(0);
@@ -2968,6 +3005,8 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
             zoomControlView.setVisibility(View.GONE);
             modeSwitcherView.setVisibility(View.GONE);
             dualButton.setVisibility(View.GONE);
+            animateRecording(false, false);
+            setAwakeLock(false);
         }
         cameraViewThumb.setClickable(toPage == PAGE_CAMERA);
         if (fromPage == PAGE_PREVIEW) {
@@ -3371,7 +3410,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
 //        privacySelectorHint.hide();
         Bulletin.hideVisible();
         if (photoFilterView != null && toMode == EDIT_MODE_FILTER) {
-            applyFilter();
+            applyFilter(null);
         }
         if (photoFilterEnhanceView != null) {
             photoFilterEnhanceView.setAllowTouch(false);
@@ -3433,14 +3472,16 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
         outputEntry.paintFile = FileLoader.getInstance(currentAccount).getPathToAttach(size, true);
     }
 
-    private void applyFilter() {
+    private void applyFilter(Runnable whenDone) {
         if (photoFilterView == null || outputEntry == null) {
+            if (whenDone != null) {
+                whenDone.run();
+            }
             return;
         }
         outputEntry.editedMedia |= photoFilterView.hasChanges();
-        outputEntry.updateFilter(photoFilterView);
-        outputEntry.filterState = photoFilterView.getSavedFilterState();
-        if (!outputEntry.isVideo) {
+        outputEntry.updateFilter(photoFilterView, whenDone);
+        if (whenDone == null && !outputEntry.isVideo && previewView != null) {
             previewView.set(outputEntry);
         }
     }
@@ -3448,16 +3489,14 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
 //    private Matrix photoFilterStartMatrix, photoFilterEndMatrix;
 
     private void createFilterPhotoView() {
-        if (photoFilterView != null) {
+        if (photoFilterView != null || outputEntry == null) {
             return;
         }
 
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(outputEntry.file.getPath(), opts);
-        StoryEntry.setupScale(opts, outputEntry.resultWidth, outputEntry.resultHeight);
-        opts.inJustDecodeBounds = false;
-        Bitmap photoBitmap = photoFilterBitmap = BitmapFactory.decodeFile(outputEntry.file.getPath(), opts);
+        Bitmap photoBitmap = previewView.getPhotoBitmap();
+        if (photoBitmap == null) {
+            return;
+        }
 
         photoFilterView = new PhotoFilterView(activity, previewView.getTextureView(), photoBitmap, previewView.getOrientation(), outputEntry == null ? null : outputEntry.filterState, null, 0, false, false, resourcesProvider);
         containerView.addView(photoFilterView);
@@ -3465,6 +3504,9 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
             photoFilterEnhanceView.setFilterView(photoFilterView);
         }
         photoFilterViewTextureView = photoFilterView.getMyTextureView();
+        if (photoFilterViewTextureView != null) {
+            photoFilterViewTextureView.setOpaque(false);
+        }
         previewView.setFilterTextureView(photoFilterViewTextureView);
         if (photoFilterViewTextureView != null) {
             photoFilterViewTextureView.setAlpha(0f);
@@ -3482,7 +3524,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
         orderPreviewViews();
 
         photoFilterView.getDoneTextView().setOnClickListener(v -> {
-            applyFilter();
+            applyFilter(null);
             switchToEditMode(EDIT_MODE_NONE, true);
         });
         photoFilterView.getCancelTextView().setOnClickListener(v -> {
@@ -3756,7 +3798,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
                     return;
                 }
                 showSavedDraftHint = !outputEntry.isDraft;
-                applyFilter();
+                applyFilter(null);
                 applyPaint(false);
                 destroyPhotoFilterView();
                 StoryEntry storyEntry = outputEntry;
