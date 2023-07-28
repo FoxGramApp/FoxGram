@@ -9730,7 +9730,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                 }
                                 break;
                         }
-                        String version_info = LocaleController.formatString("ColorgramVersion", R.string.colorgramVersion, String.format(Locale.US, "v%s (%s) %s", BuildVars.BUILD_VERSION_STRING, BuildVars.DEBUG_PRIVATE_VERSION ? BuildConfig.GIT_COMMIT_HASH : BuildVars.BUILD_VERSION, abi), String.format(Locale.US, "v%s (%d)", BuildVars.TELEGRAM_VERSION_STRING, BuildVars.TELEGRAM_BUILD_VERSION));
+                        String version_info = LocaleController.formatString("colorgramVersion", R.string.colorgramVersion, String.format(Locale.US, "v%s (%s) %s", BuildVars.BUILD_VERSION_STRING, BuildVars.DEBUG_PRIVATE_VERSION ? BuildConfig.GIT_COMMIT_HASH : BuildVars.BUILD_VERSION, abi), String.format(Locale.US, "v%s (%d)", BuildVars.TELEGRAM_VERSION_STRING, BuildVars.TELEGRAM_BUILD_VERSION));
                         cell.setText(version_info);
                     } catch (Exception e) {
                         FileLog.e(e);
