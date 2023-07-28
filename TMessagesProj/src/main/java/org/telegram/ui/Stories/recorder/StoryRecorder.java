@@ -46,7 +46,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Pair;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -145,6 +144,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
     private WindowView windowView;
     private ContainerView containerView;
 
+    @SuppressLint("StaticFieldLeak")
     private static StoryRecorder instance;
     private boolean wasSend;
     private ClosingViewProvider closingSourceProvider;
@@ -170,6 +170,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
     public static boolean isVisible() {
         return instance != null && instance.isShown;
     }
+    @SuppressLint("WrongConstant")
     public StoryRecorder(Activity activity, int currentAccount) {
         this.activity = activity;
         this.currentAccount = currentAccount;
@@ -3866,23 +3867,21 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
 
     private boolean requestGalleryPermission() {
         if (activity != null) {
-            boolean noGalleryPermission = false;
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//                noGalleryPermission = (
-//                    activity.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED ||
-//                    activity.checkSelfPermission(Manifest.permission.READ_MEDIA_VIDEO) != PackageManager.PERMISSION_GRANTED
-//                );
-//                if (noGalleryPermission) {
-//                    activity.requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO}, 114);
-//                }
-//            } else
+            boolean noGalleryPermission;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                noGalleryPermission = (activity.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED || activity.checkSelfPermission(Manifest.permission.READ_MEDIA_VIDEO) != PackageManager.PERMISSION_GRANTED);
+                if (noGalleryPermission) {
+                    activity.requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO}, 114);
+                }
+                return !noGalleryPermission;
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 noGalleryPermission = activity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
                 if (noGalleryPermission) {
                     activity.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 114);
                 }
+                return !noGalleryPermission;
             }
-            return !noGalleryPermission;
         }
         return true;
     }

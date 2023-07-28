@@ -3,6 +3,7 @@ package org.telegram.ui.Stories.recorder;
 import static org.telegram.messenger.AndroidUtilities.dp;
 import static org.telegram.messenger.AndroidUtilities.dpf2;
 
+import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -63,6 +64,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+@SuppressLint("ViewConstructor")
 public class GalleryListView extends FrameLayout implements NotificationCenter.NotificationCenterDelegate {
 
     private final int currentAccount;
