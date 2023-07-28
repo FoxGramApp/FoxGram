@@ -263,22 +263,16 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                 cell.setBackground(Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector), Theme.RIPPLE_MASK_ALL));
                 linearLayout.addView(cell);
                 cell.setOnClickListener(v -> {
-                    if (index == 3) {
-                        if (!getMessagesController().getStoriesController().hasStories()) {
-                            FoxConfig.saveNameType(FoxConfig.oldTitleText);
-                        } else {
-                            FoxConfig.saveNameType(FoxConfig.MY_STORY);
-                        }
-                    } else {
-                        FoxConfig.saveNameType(index);
-                        FoxConfig.saveOldTitleText(index);
-                    }
-                    RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(showInActionBarRow);
-                    if (holder != null) {
-                        listAdapter.onBindViewHolder(holder, showInActionBarRow);
-                    }
-                    dialogRef.get().dismiss();
-                    reloadDialogs();
+                   FoxConfig.saveNameType(index);
+                   if (index != 3) {
+                       FoxConfig.saveOldTitleText(index);
+                   }
+                   RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(showInActionBarRow);
+                   if (holder != null) {
+                       listAdapter.onBindViewHolder(holder, showInActionBarRow);
+                   }
+                   dialogRef.get().dismiss();
+                   reloadDialogs();
                 });
             }
 
