@@ -33,7 +33,6 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
     private int updateSectionDividerRow;
     private int updateCheckHeaderRow;
     private int updateCheckRow;
-    private int betaUpdatesRow;
     private int notifyWhenAvailableRow;
     private int updatesDividerRow;
     private int infoHeaderRow;
@@ -46,7 +45,7 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
     private int downloadSourceRow;
     private int releaseDateRow;
     private boolean checkingUpdates;
-    private TextCheckCell changeBetaMode;
+    private TextCell changeBetaMode;
 
     private FOXENC.UpdateAvailable updateAvailable;
     private UpdateCheckCell updateCheckCell;
@@ -77,7 +76,7 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
 
             @Override
             public void onFinished() {
-                if (!StoreUtils.isFromPlayStore()) changeBetaMode.setEnabled(!AppDownloader.updateDownloaded(), null);
+                if (!StoreUtils.isFromPlayStore()) changeBetaMode.setEnabled(!AppDownloader.updateDownloaded());
                 updateCheckCell.setCanCheckForUpdate(!AppDownloader.updateDownloaded() && !PlayStoreAPI.isRunningDownload());
                 if (PlayStoreAPI.updateDownloaded()) {
                     updateCheckCell.setDownloaded();
@@ -101,32 +100,15 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
 
     @Override
     protected void onItemClick(View view, int position, float x, float y) {
-        if (position == betaUpdatesRow) {
-            if (!UpdateManager.updateDownloaded() && !checkingUpdates) {
-                FoxConfig.toggleBetaUpdates();
-                FileDownloader.cancel("appUpdate");
-                UpdateManager.deleteUpdate();
-                listAdapter.notifyItemChanged(updatesChannelRow, PARTIAL);
-                if (updateAvailable != null) {
-                    FoxConfig.remindUpdate(updateAvailable.version);
-                    NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
-                    updateAvailable = null;
-                    listAdapter.notifyItemRangeRemoved(updateSectionAvailableRow, 2);
-                    listAdapter.notifyItemRangeChanged(updateSectionAvailableRow, 1);
-                    updateRowsId();
-                }
-                checkUpdates();
-                if (view instanceof TextCheckCell) {
-                    ((TextCheckCell) view).setChecked(FoxConfig.betaUpdates);
-                }
-            }
-        } else if (position == notifyWhenAvailableRow) {
+        if (position == notifyWhenAvailableRow) {
             FoxConfig.toggleNotifyUpdates();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(FoxConfig.notifyUpdates);
             }
         } else if (position == updatesChannelRow) {
-            checkUpdates();
+            if (!UpdateManager.updateDownloaded() && !checkingUpdates) {
+                presentFragment(new BetaUpdatesActivity());
+            }
         } else if (position == versionInfoRow) {
             AndroidUtilities.addToClipboard(BuildConfig.BUILD_VERSION_STRING);
         } else if (position == baseVersionRow) {
@@ -154,7 +136,6 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
         super.updateRowsId();
         updateSectionAvailableRow = -1;
         updateSectionDividerRow = -1;
-        betaUpdatesRow = -1;
 
         if (updateAvailable != null && !StoreUtils.isDownloadedFromAnyStore()) {
             updateSectionAvailableRow = rowCount++;
@@ -165,7 +146,6 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
         updateCheckRow = rowCount++;
         notifyWhenAvailableRow = rowCount++;
         if (!StoreUtils.isDownloadedFromAnyStore()) {
-            betaUpdatesRow = rowCount++;
             updatesChannelRow = rowCount++;
         }
         updatesDividerRow = rowCount++;
@@ -231,18 +211,15 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
                     break;
                 case SWITCH:
                     TextCheckCell textCheckCell = (TextCheckCell) holder.itemView;
-                    textCheckCell.setEnabled(!AppDownloader.updateDownloaded() || position != betaUpdatesRow, null);
-                    if (position == betaUpdatesRow) {
-                        changeBetaMode = textCheckCell;
-                        changeBetaMode.setTextAndValueAndCheck(LocaleController.getString("InstallPreview", R.string.InstallPreview), LocaleController.getString("InstallPreviewDesc", R.string.InstallPreviewDesc), FoxConfig.betaUpdates, true, true);
-                    } else if (position == notifyWhenAvailableRow) {
+                    if (position == notifyWhenAvailableRow) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("AutoUpdate", R.string.AutoUpdate), LocaleController.getString("AutoUpdatePrompt", R.string.AutoUpdatePrompt), FoxConfig.notifyUpdates, true, true);
                     }
                     break;
                 case TEXT_CELL:
                     TextCell textCell = (TextCell) holder.itemView;
                     if (position == updatesChannelRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("APKsChannel", R.string.APKsChannel), UpdateManager.getUpdatesChannel(), partial,R.drawable.msg_switch, true);
+                        changeBetaMode = textCell;
+                        changeBetaMode.setTextAndValue(LocaleController.getString("APKsChannel", R.string.APKsChannel), UpdateManager.getUpdatesChannel(), true);
                     } else if (position == versionInfoRow) {
                         textCell.setTextAndValueAndIcon(LocaleController.getString("InstalledVersion", R.string.InstalledVersion), BuildConfig.BUILD_VERSION_STRING, R.drawable.msg_info, true);
                     } else if (position == baseVersionRow) {
@@ -343,8 +320,7 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
                 return ViewType.HEADER;
             } else if (position == updateCheckRow) {
                 return ViewType.UPDATE_CHECK;
-            } else if (position == betaUpdatesRow ||
-                    position == notifyWhenAvailableRow) {
+            } else if (position == notifyWhenAvailableRow) {
                 return ViewType.SWITCH;
             } else if (position == updatesChannelRow || position == versionInfoRow ||
                     position == buildInfoRow || position == buildTypeRow ||

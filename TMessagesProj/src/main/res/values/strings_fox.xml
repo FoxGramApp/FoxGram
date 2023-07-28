@@ -286,6 +286,7 @@
     <string name="DoubleTapDesc">Tap two once on a message to do an action.</string>
     <string name="DoubleTapDesc2">Customize the Double Tap to adapt your use of FoxGram.</string>
     <string name="StoriesCameraOff">Camera is disabled from FoxGram\'s Settings.</string>
+    <string name="UpdatesChannelInfo">Features included in Preview versions may disappear at any time or contain bugs.</string>
     <!-- Folders -->
     <string name="FoldersType">Folders Type</string>
     <string name="FoldersTypeTitles">Titles</string>
@@ -350,7 +351,7 @@
     <string name="LastCheckNever">Never</string>
     <string name="CheckFailed">Unable to Check for Updates</string>
     <string name="InstallPreview">Change Updates Channel</string>
-    <string name="InstallPreviewDesc">Test new FoxGram updates before their official release</string>
+    <string name="InstallPreviewDesc">Test new FoxGram updates before their official release.</string>
     <string name="Stable">Stable</string>
     <!-- Chats -->
     <string name="CopyPhoto">Copy Photo</string>
