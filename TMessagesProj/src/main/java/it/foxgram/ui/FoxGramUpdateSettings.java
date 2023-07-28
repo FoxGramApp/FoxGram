@@ -96,7 +96,7 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
 
     @Override
     protected String getActionBarTitle() {
-        return LocaleController.getString("ViewUpdate", R.string.ViewUpdate);
+        return LocaleController.getString("ColorUpdates", R.string.ColorUpdates);
     }
 
     @Override
