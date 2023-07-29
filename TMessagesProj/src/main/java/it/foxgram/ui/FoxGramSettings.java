@@ -581,7 +581,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
                 subTextView.setGravity(Gravity.CENTER);
                 subTextView.setTextColor(getThemedColor(Theme.key_windowBackgroundWhiteGrayText4));
                 subTextView.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
-                imageCell.addView(subTextView, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER | Gravity.TOP, 25, 0, 25, 23));
+                imageCell.addView(subTextView, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER | Gravity.TOP, 25, 0, 25, 30));
 
                 view = imageCell;
             }

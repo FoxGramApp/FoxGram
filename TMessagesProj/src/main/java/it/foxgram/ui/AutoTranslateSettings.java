@@ -2,7 +2,9 @@ package it.foxgram.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,8 @@ import org.telegram.ui.Cells.HeaderCell;
 import org.telegram.ui.Cells.RadioCell;
 import org.telegram.ui.Cells.TextInfoPrivacyCell;
 import org.telegram.ui.Cells.TextSettingsCell;
+import org.telegram.ui.Components.LayoutHelper;
+import org.telegram.ui.Components.StickerImageView;
 import org.telegram.ui.GroupCreateActivity;
 
 import it.foxgram.android.FoxConfig;
@@ -23,6 +27,7 @@ import it.foxgram.android.translator.AutoTranslateConfig;
 
 public class AutoTranslateSettings extends BaseSettingsActivity {
 
+    private int imageRow;
     private int headerDefaultSettingsRow;
     private int alwaysTranslateRow;
     private int neverTranslateRow;
@@ -83,6 +88,8 @@ public class AutoTranslateSettings extends BaseSettingsActivity {
     @Override
     protected void updateRowsId() {
         super.updateRowsId();
+
+        imageRow = rowCount++;
 
         headerDefaultSettingsRow = rowCount++;
         alwaysTranslateRow = rowCount++;
@@ -161,6 +168,21 @@ public class AutoTranslateSettings extends BaseSettingsActivity {
         }
 
         @Override
+        protected View onCreateViewHolder(ViewType viewType) {
+            View view = null;
+            if (viewType == ViewType.IMAGE_HEADER) {
+                LinearLayout stickerHeaderCell = new LinearLayout(context);
+                stickerHeaderCell.setOrientation(LinearLayout.VERTICAL);
+                StickerImageView backupImageView = new StickerImageView(context, currentAccount);
+                backupImageView.setStickerPackName("UtyaDuckFull");
+                backupImageView.setStickerNum(55);
+                stickerHeaderCell.addView(backupImageView, LayoutHelper.createLinear(140, 140, Gravity.CENTER, 0, 20, 0, 20));
+                view = stickerHeaderCell;
+            }
+            return view;
+        }
+
+        @Override
         protected boolean isEnabled(ViewType viewType, int position) {
             boolean canReset = AutoTranslateConfig.getAllExceptions().size() > 0;
             return viewType == ViewType.ADD_EXCEPTION ||
@@ -179,6 +201,8 @@ public class AutoTranslateSettings extends BaseSettingsActivity {
                 return ViewType.RADIO;
             } else if (position == alwaysAllowExceptionRow || position == neverAllowExceptionRow || position == resetExceptionsRow) {
                 return ViewType.SETTINGS;
+            } else if (position == imageRow) {
+                return ViewType.IMAGE_HEADER;
             }
             throw new IllegalArgumentException("Invalid position");
         }
