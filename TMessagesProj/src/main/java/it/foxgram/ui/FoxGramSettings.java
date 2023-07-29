@@ -259,7 +259,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
                     } else if (position == appearanceSettingsRow) {
                         textCell.setTextAndIcon(LocaleController.getString("Appearance", R.string.Appearance), R.drawable.settings_appearance, true);
                     } else if (position == updatesSettingsRow) {
-                        textCell.setTextAndIcon(LocaleController.getString("ColorUpdates", R.string.ColorUpdates), R.drawable.msg_recent, true);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString("ColorUpdates", R.string.ColorUpdates), UpdateManager.isAvailableUpdate() ? LocaleController.getString("UpdateAvailable", R.string.UpdateAvailable) : "", R.drawable.msg_recent, true);
                     }
                     break;
                 case HEADER:

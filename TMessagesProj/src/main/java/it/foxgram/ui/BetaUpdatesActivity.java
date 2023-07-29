@@ -44,15 +44,11 @@ public class BetaUpdatesActivity extends BaseSettingsActivity {
             if (position == stableRow) {
                 if (FoxConfig.betaUpdates) {
                     FoxConfig.toggleBetaUpdates();
-                    FileDownloader.cancel("appUpdate");
-                    UpdateManager.deleteUpdate();
                 }
             }
             if (position == betaRow) {
                 if (!FoxConfig.betaUpdates) {
                     FoxConfig.toggleBetaUpdates();
-                    FileDownloader.cancel("appUpdate");
-                    UpdateManager.deleteUpdate();
                 }
             }
         }

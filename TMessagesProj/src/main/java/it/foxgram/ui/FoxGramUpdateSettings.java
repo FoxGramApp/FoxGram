@@ -108,6 +108,17 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
         } else if (position == updatesChannelRow) {
             if (!UpdateManager.updateDownloaded() && !checkingUpdates) {
                 presentFragment(new BetaUpdatesActivity());
+                FileDownloader.cancel("appUpdate");
+                UpdateManager.deleteUpdate();
+                if (updateAvailable != null) {
+                    FoxConfig.remindUpdate(updateAvailable.version);
+                    NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
+                    updateAvailable = null;
+                    listAdapter.notifyItemRangeRemoved(updateSectionAvailableRow, 2);
+                    listAdapter.notifyItemRangeChanged(updateSectionAvailableRow, 1);
+                    updateRowsId();
+                }
+                checkUpdates();
             }
         } else if (position == versionInfoRow) {
             AndroidUtilities.addToClipboard(BuildConfig.BUILD_VERSION_STRING);
