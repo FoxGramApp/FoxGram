@@ -39,7 +39,7 @@ import it.foxgram.android.FoxConfig;
 import it.foxgram.android.camera.CameraXUtils;
 import it.foxgram.android.entities.EntitiesHelper;
 import it.foxgram.android.media.AudioEnhance;
-import it.foxgram.android.utils.TextUtils;
+import it.foxgram.android.utils.FoxTextUtils;
 import it.foxgram.ui.Cells.CameraTypeSelector;
 import it.foxgram.ui.Cells.StickerSize;
 
@@ -500,7 +500,7 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
                 case TEXT_CELL:
                     TextCell textCell = (TextCell) holder.itemView;
                     if (position == doubleTapRow) {
-                        textCell.setTextAndValue(LocaleController.getString("DoubleTap", R.string.DoubleTap), TextUtils.getDoubleTapText(), true);
+                        textCell.setTextAndValue(LocaleController.getString("DoubleTap", R.string.DoubleTap), FoxTextUtils.getDoubleTapText(), true);
                     }
             }
         }

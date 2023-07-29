@@ -67,6 +67,7 @@ import java.util.Comparator;
 import java.util.Objects;
 
 import it.foxgram.android.FoxConfig;
+import it.foxgram.android.utils.FoxTextUtils;
 
 public class DialogStoriesCell extends FrameLayout implements NotificationCenter.NotificationCenterDelegate {
 
@@ -341,7 +342,7 @@ public class DialogStoriesCell extends FrameLayout implements NotificationCenter
 
     public void setTitle(boolean animated, int totalCount) {
         if (FoxConfig.nameType != FoxConfig.MY_STORY) {
-            currentTitle = it.foxgram.android.utils.TextUtils.getTitleText();
+            currentTitle = FoxTextUtils.getTitleText();
             titleView.setText(currentTitle, animated);
             return;
         }

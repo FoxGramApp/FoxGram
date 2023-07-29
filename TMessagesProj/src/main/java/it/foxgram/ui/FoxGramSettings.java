@@ -67,7 +67,7 @@ import it.foxgram.android.Crashlytics;
 import it.foxgram.android.FoxConfig;
 import it.foxgram.android.StoreUtils;
 import it.foxgram.android.updates.UpdateManager;
-import it.foxgram.android.utils.TextUtils;
+import it.foxgram.android.utils.FoxTextUtils;
 
 public class FoxGramSettings extends BaseSettingsActivity {
 
@@ -299,7 +299,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
             View view = null;
             if (viewType == ViewType.IMAGE_HEADER) {
                 String updateInfo = LocaleController.getString("UpdateInfo", R.string.UpdateInfo) + " " + BuildConfig.BUILD_VERSION_STRING + " " + "(" + BuildConfig.BUILD_VERSION + ")";
-                String appName = TextUtils.getAppName();
+                String appName = FoxTextUtils.getAppName();
                 LinearLayout imageCell = new LinearLayout(context);
                 imageCell.setOrientation(LinearLayout.VERTICAL);
                 ImageView imageView = new ImageView(context);

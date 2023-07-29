@@ -8,7 +8,7 @@ import org.telegram.tgnet.TLRPC;
 
 import it.foxgram.android.FoxConfig;
 
-public class TextUtils {
+public class FoxTextUtils {
     public static String getTitleText() {
         int currentAccount = UserConfig.selectedAccount;
         TLRPC.User selfUser = UserConfig.getInstance(currentAccount).getCurrentUser();

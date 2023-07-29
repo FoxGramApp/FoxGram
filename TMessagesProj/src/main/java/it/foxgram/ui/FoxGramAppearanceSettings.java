@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import it.foxgram.android.CustomEmojiController;
 import it.foxgram.android.FoxConfig;
+import it.foxgram.android.utils.FoxTextUtils;
 import it.foxgram.ui.Cells.BlurIntensity;
 import it.foxgram.ui.Cells.DrawerProfilePreview;
 import it.foxgram.ui.Cells.DynamicButtonSelector;
@@ -252,7 +253,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                                 LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar)};
             }
 
-            it.foxgram.android.utils.TextUtils.saveOldTitleText(FoxConfig.nameType);
+            FoxTextUtils.saveOldTitleText(FoxConfig.nameType);
 
             for (int i = 0; i < items.length; ++i) {
                 final int index = i;
@@ -265,7 +266,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                 cell.setOnClickListener(v -> {
                    FoxConfig.saveNameType(index);
                    if (index != 3) {
-                       it.foxgram.android.utils.TextUtils.saveOldTitleText(index);
+                       FoxTextUtils.saveOldTitleText(index);
                    }
                    RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(showInActionBarRow);
                    if (holder != null) {

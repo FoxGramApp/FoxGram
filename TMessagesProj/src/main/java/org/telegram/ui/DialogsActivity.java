@@ -214,6 +214,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import it.foxgram.android.FoxConfig;
+import it.foxgram.android.utils.FoxTextUtils;
 import it.foxgram.ui.Components.Dialogs.AppLinkVerifyBottomSheet;
 import it.foxgram.ui.Components.Dialogs.CrashReportBottomSheet;
 import it.foxgram.ui.Components.Dialogs.MonetAndroidFixDialog;
@@ -3134,7 +3135,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             } else {
                 statusDrawable = new AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable(null, AndroidUtilities.dp(26));
                 statusDrawable.center = true;
-                actionBar.setTitle(actionBarDefaultTitle = it.foxgram.android.utils.TextUtils.getTitleText(), statusDrawable);
+                actionBar.setTitle(actionBarDefaultTitle = FoxTextUtils.getTitleText(), statusDrawable);
                 updateStatus(UserConfig.getInstance(currentAccount).getCurrentUser(), false);
             }
             if (folderId == 0) {
@@ -3438,7 +3439,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 @Override
                 public void onTabSelected(FilterTabsView.Tab tab, boolean forward, boolean animated) {
                     if (FoxConfig.tabMode != FoxConfig.TAB_TYPE_ICON || lastNameStatus != FoxConfig.nameType) {
-                        actionBar.setTitle(actionBarDefaultTitle = it.foxgram.android.utils.TextUtils.getTitleText(), statusDrawable);
+                        actionBar.setTitle(actionBarDefaultTitle = FoxTextUtils.getTitleText(), statusDrawable);
                         lastNameStatus = FoxConfig.nameType;
                         if (FoxConfig.tabMode != FoxConfig.TAB_TYPE_ICON) return;
                     }
