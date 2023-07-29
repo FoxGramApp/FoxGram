@@ -67,6 +67,7 @@ import it.foxgram.android.Crashlytics;
 import it.foxgram.android.FoxConfig;
 import it.foxgram.android.StoreUtils;
 import it.foxgram.android.updates.UpdateManager;
+import it.foxgram.android.utils.TextUtils;
 
 public class FoxGramSettings extends BaseSettingsActivity {
 
@@ -293,16 +294,12 @@ public class FoxGramSettings extends BaseSettingsActivity {
             }
         }
 
-        @SuppressLint("NotifyDataSetChanged")
         @Override
         protected View onCreateViewHolder(ViewType viewType) {
             View view = null;
             if (viewType == ViewType.IMAGE_HEADER) {
                 String updateInfo = LocaleController.getString("UpdateInfo", R.string.UpdateInfo) + " " + BuildConfig.BUILD_VERSION_STRING + " " + "(" + BuildConfig.BUILD_VERSION + ")";
-                String appName;
-                if (updateInfo.contains("Beta")) appName = LocaleController.getString("ColorVersionAppNameBeta", R.string.ColorVersionAppNameBeta);
-                else if (updateInfo.contains("Alpha")) appName = LocaleController.getString("ColorVersionAppNameAlpha", R.string.ColorVersionAppNameAlpha);
-                else appName = LocaleController.getString("ColorVersionAppName", R.string.ColorVersionAppName);
+                String appName = TextUtils.getAppName();
                 LinearLayout imageCell = new LinearLayout(context);
                 imageCell.setOrientation(LinearLayout.VERTICAL);
                 ImageView imageView = new ImageView(context);
@@ -310,263 +307,9 @@ public class FoxGramSettings extends BaseSettingsActivity {
                 imageView.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_dialogIcon, resourcesProvider), PorterDuff.Mode.MULTIPLY));
                 imageView.setScaleType(ImageView.ScaleType.CENTER);
                 imageView.setClickable(true);
-                imageView.setOnClickListener((view1) -> {
-                    pressCount++;
-                    if (pressCount >= 2) {
-                        BottomSheet.Builder builder = new BottomSheet.Builder(context);
-                        builder.setTitle(LocaleController.getString("DebugMenu", R.string.DebugMenu), true);
-                        CharSequence[] items;
-                        items = new CharSequence[]{
-                                LocaleController.getString("DebugMenuImportContacts", R.string.DebugMenuImportContacts),
-                                LocaleController.getString("DebugMenuReloadContacts", R.string.DebugMenuReloadContacts),
-                                LocaleController.getString("DebugMenuResetContacts", R.string.DebugMenuResetContacts),
-                                LocaleController.getString("DebugMenuResetDialogs", R.string.DebugMenuResetDialogs),
-                                BuildVars.DEBUG_VERSION ? null : BuildVars.LOGS_ENABLED ? LocaleController.getString("DebugMenuDisableLogs", R.string.DebugMenuDisableLogs) : LocaleController.getString("DebugMenuEnableLogs", R.string.DebugMenuEnableLogs),
-                                LocaleController.getString("DebugMenuClearMediaCache", R.string.DebugMenuClearMediaCache),
-                                LocaleController.getString("DebugMenuCallSettings", R.string.DebugMenuCallSettings),
-                                null,
-                                LocaleController.getString("DebugMenuCheckAppUpdate", R.string.DebugMenuCheckAppUpdate),
-                                LocaleController.getString("DebugMenuReadAllDialogs", R.string.DebugMenuReadAllDialogs),
-                                BuildVars.DEBUG_PRIVATE_VERSION ? SharedConfig.disableVoiceAudioEffects ? "Enable voip audio effects" : "Disable voip audio effects" : null,
-                                BuildVars.DEBUG_PRIVATE_VERSION ? "Clean app update" : null,
-                                BuildVars.DEBUG_PRIVATE_VERSION ? "Reset suggestions" : null,
-                                BuildVars.DEBUG_PRIVATE_VERSION ? LocaleController.getString(R.string.DebugMenuClearWebViewCache) : null,
-                                LocaleController.getString(SharedConfig.debugWebView ? R.string.DebugMenuDisableWebViewDebug : R.string.DebugMenuEnableWebViewDebug),
-                                AndroidUtilities.isTabletInternal() && BuildVars.DEBUG_PRIVATE_VERSION ? SharedConfig.forceDisableTabletMode ? "Enable tablet mode" : "Disable tablet mode" : null,
-                                LocaleController.getString(SharedConfig.isFloatingDebugActive ? R.string.FloatingDebugDisable : R.string.FloatingDebugEnable),
-                                BuildVars.DEBUG_PRIVATE_VERSION ? "Force remove premium suggestions" : null,
-                                BuildVars.DEBUG_PRIVATE_VERSION ? "Share device info" : null,
-                                BuildVars.DEBUG_PRIVATE_VERSION ? "Force performance class" : null,
-                                BuildVars.DEBUG_PRIVATE_VERSION && !InstantCameraView.allowBigSizeCameraDebug() ? !SharedConfig.bigCameraForRound ? "Force big camera for round" : "Disable big camera for round" : null,
-                                LocaleController.getString(DualCameraView.dualAvailableStatic(getContext()) ? "DebugMenuDualOff" : "DebugMenuDualOn"),
-                                BuildVars.DEBUG_VERSION ? (SharedConfig.useSurfaceInStories ? "back to TextureView in stories" : "use SurfaceView in stories") : null,
-                        };
-                        builder.setItems(items, (dialog, which) -> {
-                            if (which == 0) {
-                                getUserConfig().syncContacts = true;
-                                getUserConfig().saveConfig(false);
-                                getContactsController().forceImportContacts();
-                            } else if (which == 1) {
-                                getContactsController().loadContacts(false, 0);
-                            } else if (which == 2) {
-                                getContactsController().resetImportedContacts();
-                            } else if (which == 3) {
-                                getMessagesController().forceResetDialogs();
-                            } else if (which == 4) {
-                                BuildVars.LOGS_ENABLED = !BuildVars.LOGS_ENABLED;
-                                SharedPreferences sharedPreferences = ApplicationLoader.applicationContext.getSharedPreferences("systemConfig", Context.MODE_PRIVATE);
-                                sharedPreferences.edit().putBoolean("logsEnabled", BuildVars.LOGS_ENABLED).apply();
-                                updateRowsId();
-                                listAdapter.notifyDataSetChanged();
-                            } else if (which == 5) {
-                                getMessagesStorage().clearSentMedia();
-                                SharedConfig.setNoSoundHintShowed(false);
-                                SharedPreferences.Editor editor = MessagesController.getGlobalMainSettings().edit();
-                                editor.remove("archivehint").remove("proximityhint").remove("archivehint_l").remove("speedhint").remove("gifhint").remove("reminderhint").remove("soundHint").remove("themehint").remove("bganimationhint").remove("filterhint").remove("n_0").apply();
-                                MessagesController.getEmojiSettings(currentAccount).edit().remove("featured_hidden").remove("emoji_featured_hidden").apply();
-                                SharedConfig.textSelectionHintShows = 0;
-                                SharedConfig.lockRecordAudioVideoHint = 0;
-                                SharedConfig.stickersReorderingHintUsed = false;
-                                SharedConfig.forwardingOptionsHintShown = false;
-                                SharedConfig.messageSeenHintCount = 3;
-                                SharedConfig.emojiInteractionsHintCount = 3;
-                                SharedConfig.dayNightThemeSwitchHintCount = 3;
-                                SharedConfig.fastScrollHintCount = 3;
-                                ChatThemeController.getInstance(currentAccount).clearCache();
-                                getNotificationCenter().postNotificationName(NotificationCenter.newSuggestionsAvailable);
-                                RestrictedLanguagesSelectActivity.cleanup();
-                            } else if (which == 6) {
-                                VoIPHelper.showCallDebugSettings(getParentActivity());
-                            } else if (which == 7) {
-                                SharedConfig.toggleRoundCamera16to9();
-                            } else if (which == 8) {
-                                ((LaunchActivity) getParentActivity()).checkAppUpdate(true);
-                            } else if (which == 9) {
-                                getMessagesStorage().readAllDialogs(-1);
-                            } else if (which == 10) {
-                                SharedConfig.toggleDisableVoiceAudioEffects();
-                            } else if (which == 11) {
-                                SharedConfig.pendingAppUpdate = null;
-                                SharedConfig.saveConfig();
-                                FoxConfig.updateData.set(null);
-                                FoxConfig.applyUpdateData();
-                                FoxConfig.saveUpdateStatus(0);
-                                FoxConfig.remindUpdate(-1);
-                                FoxConfig.saveLastUpdateCheck(true);
-                                if (!StoreUtils.isDownloadedFromAnyStore()) UpdateManager.deleteUpdate();
-                                NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
-                            } else if (which == 12) {
-                                Set<String> suggestions = getMessagesController().pendingSuggestions;
-                                suggestions.add("VALIDATE_PHONE_NUMBER");
-                                suggestions.add("VALIDATE_PASSWORD");
-                                getNotificationCenter().postNotificationName(NotificationCenter.newSuggestionsAvailable);
-                            } else if (which == 13) {
-                                ApplicationLoader.applicationContext.deleteDatabase("webview.db");
-                                ApplicationLoader.applicationContext.deleteDatabase("webviewCache.db");
-                                WebStorage.getInstance().deleteAllData();
-                            } else if (which == 14) {
-                                SharedConfig.toggleDebugWebView();
-                                Toast.makeText(getParentActivity(), LocaleController.getString(SharedConfig.debugWebView ? R.string.DebugMenuWebViewDebugEnabled : R.string.DebugMenuWebViewDebugDisabled), Toast.LENGTH_SHORT).show();
-                            } else if (which == 15) {
-                                SharedConfig.toggleForceDisableTabletMode();
-
-                                Activity activity = AndroidUtilities.findActivity(context);
-                                final PackageManager pm = activity.getPackageManager();
-                                final Intent intent = pm.getLaunchIntentForPackage(activity.getPackageName());
-                                activity.finishAffinity(); // Finishes all activities.
-                                activity.startActivity(intent);    // Start the launch activity
-                                System.exit(0);
-                            } else if (which == 16) {
-                                FloatingDebugController.setActive((LaunchActivity) getParentActivity(), !FloatingDebugController.isActive());
-                            } else if (which == 17) {
-                                getMessagesController().loadAppConfig();
-                                TLRPC.TL_help_dismissSuggestion req = new TLRPC.TL_help_dismissSuggestion();
-                                req.suggestion = "VALIDATE_PHONE_NUMBER";
-                                req.peer = new TLRPC.TL_inputPeerEmpty();
-                                getConnectionsManager().sendRequest(req, (response, error) -> {
-                                    TLRPC.TL_help_dismissSuggestion req2 = new TLRPC.TL_help_dismissSuggestion();
-                                    req2.suggestion = "VALIDATE_PASSWORD";
-                                    req2.peer = new TLRPC.TL_inputPeerEmpty();
-                                    getConnectionsManager().sendRequest(req2, (res2, err2) -> getMessagesController().loadAppConfig());
-                                });
-                            } else if (which == 18) {
-                                int cpuCount = ConnectionsManager.CPU_COUNT;
-                                int memoryClass = ((ActivityManager) ApplicationLoader.applicationContext.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
-                                long minFreqSum = 0, minFreqCount = 0;
-                                long maxFreqSum = 0, maxFreqCount = 0;
-                                long curFreqSum = 0, curFreqCount = 0;
-                                long capacitySum = 0, capacityCount = 0;
-                                StringBuilder cpusInfo = new StringBuilder();
-                                for (int i = 0; i < cpuCount; i++) {
-                                    Long minFreq = AndroidUtilities.getSysInfoLong("/sys/devices/system/cpu/cpu" + i + "/cpufreq/cpuinfo_min_freq");
-                                    Long curFreq = AndroidUtilities.getSysInfoLong("/sys/devices/system/cpu/cpu" + i + "/cpufreq/cpuinfo_cur_freq");
-                                    Long maxFreq = AndroidUtilities.getSysInfoLong("/sys/devices/system/cpu/cpu" + i + "/cpufreq/cpuinfo_max_freq");
-                                    Long capacity = AndroidUtilities.getSysInfoLong("/sys/devices/system/cpu/cpu" + i + "/cpu_capacity");
-                                    cpusInfo.append("#").append(i).append(" ");
-                                    if (minFreq != null) {
-                                        cpusInfo.append("min=").append(minFreq / 1000L).append(" ");
-                                        minFreqSum += (minFreq / 1000L);
-                                        minFreqCount++;
-                                    }
-                                    if (curFreq != null) {
-                                        cpusInfo.append("cur=").append(curFreq / 1000L).append(" ");
-                                        curFreqSum += (curFreq / 1000L);
-                                        curFreqCount++;
-                                    }
-                                    if (maxFreq != null) {
-                                        cpusInfo.append("max=").append(maxFreq / 1000L).append(" ");
-                                        maxFreqSum += (maxFreq / 1000L);
-                                        maxFreqCount++;
-                                    }
-                                    if (capacity != null) {
-                                        cpusInfo.append("cpc=").append(capacity).append(" ");
-                                        capacitySum += capacity;
-                                        capacityCount++;
-                                    }
-                                    cpusInfo.append("\n");
-                                }
-                                StringBuilder info = new StringBuilder();
-                                info.append(Build.MANUFACTURER).append(", ").append(Build.MODEL).append(" (").append(Build.PRODUCT).append(", ").append(Build.DEVICE).append(") ").append(" (android ").append(Build.VERSION.SDK_INT).append(")\n");
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                                    info.append("SoC: ").append(Build.SOC_MANUFACTURER).append(", ").append(Build.SOC_MODEL).append("\n");
-                                }
-                                String gpuModel = AndroidUtilities.getSysInfoString("/sys/kernel/gpu/gpu_model");
-                                if (gpuModel != null) {
-                                    info.append("GPU: ").append(gpuModel);
-                                    Long minClock = AndroidUtilities.getSysInfoLong("/sys/kernel/gpu/gpu_min_clock");
-                                    Long mminClock = AndroidUtilities.getSysInfoLong("/sys/kernel/gpu/gpu_mm_min_clock");
-                                    Long maxClock = AndroidUtilities.getSysInfoLong("/sys/kernel/gpu/gpu_max_clock");
-                                    if (minClock != null) {
-                                        info.append(", min=").append(minClock / 1000L);
-                                    }
-                                    if (mminClock != null) {
-                                        info.append(", mmin=").append(mminClock / 1000L);
-                                    }
-                                    if (maxClock != null) {
-                                        info.append(", max=").append(maxClock / 1000L);
-                                    }
-                                    info.append("\n");
-                                }
-                                ConfigurationInfo configurationInfo = ((ActivityManager) ApplicationLoader.applicationContext.getSystemService(Context.ACTIVITY_SERVICE)).getDeviceConfigurationInfo();
-                                info.append("GLES Version: ").append(configurationInfo.getGlEsVersion()).append("\n");
-                                info.append("Memory: class=").append(AndroidUtilities.formatFileSize(memoryClass * 1024L * 1024L));
-                                ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
-                                ((ActivityManager) ApplicationLoader.applicationContext.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryInfo(memoryInfo);
-                                info.append(", total=").append(AndroidUtilities.formatFileSize(memoryInfo.totalMem));
-                                info.append(", avail=").append(AndroidUtilities.formatFileSize(memoryInfo.availMem));
-                                info.append(", low?=").append(memoryInfo.lowMemory);
-                                info.append(" (threshold=").append(AndroidUtilities.formatFileSize(memoryInfo.threshold)).append(")");
-                                info.append("\n");
-                                info.append("Current class: ").append(SharedConfig.performanceClassName(SharedConfig.getDevicePerformanceClass())).append(", measured: ").append(SharedConfig.performanceClassName(SharedConfig.measureDevicePerformanceClass()));
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                                    info.append(", suggest=").append(Build.VERSION.MEDIA_PERFORMANCE_CLASS);
-                                }
-                                info.append("\n");
-                                info.append(cpuCount).append(" CPUs");
-                                if (minFreqCount > 0) {
-                                    info.append(", avgMinFreq=").append(minFreqSum / minFreqCount);
-                                }
-                                if (curFreqCount > 0) {
-                                    info.append(", avgCurFreq=").append(curFreqSum / curFreqCount);
-                                }
-                                if (maxFreqCount > 0) {
-                                    info.append(", avgMaxFreq=").append(maxFreqSum / maxFreqCount);
-                                }
-                                if (capacityCount > 0) {
-                                    info.append(", avgCapacity=").append(capacitySum / capacityCount);
-                                }
-                                info.append("\n").append(cpusInfo);
-
-                                showDialog(new ShareAlert(getParentActivity(), null, info.toString(), false, null, false) {
-                                    @Override
-                                    protected void onSend(LongSparseArray<TLRPC.Dialog> dids, int count, TLRPC.TL_forumTopic topic) {
-                                        AndroidUtilities.runOnUIThread(() -> BulletinFactory.createInviteSentBulletin(getParentActivity(), contentView, dids.size(), dids.size() == 1 ? dids.valueAt(0).id : 0, count, getThemedColor(Theme.key_undo_background), getThemedColor(Theme.key_undo_infoColor)).show(), 250);
-                                    }
-                                });
-                            } else if (which == 19) {
-                                AlertDialog.Builder builder2 = new AlertDialog.Builder(getParentActivity(), resourcesProvider);
-                                builder2.setTitle("Force performance class");
-                                int currentClass = SharedConfig.getDevicePerformanceClass();
-                                int trueClass = SharedConfig.measureDevicePerformanceClass();
-                                builder2.setItems(new CharSequence[]{
-                                        AndroidUtilities.replaceTags((currentClass == SharedConfig.PERFORMANCE_CLASS_HIGH ? "**HIGH**" : "HIGH") + (trueClass == SharedConfig.PERFORMANCE_CLASS_HIGH ? " (measured)" : "")),
-                                        AndroidUtilities.replaceTags((currentClass == SharedConfig.PERFORMANCE_CLASS_AVERAGE ? "**AVERAGE**" : "AVERAGE") + (trueClass == SharedConfig.PERFORMANCE_CLASS_AVERAGE ? " (measured)" : "")),
-                                        AndroidUtilities.replaceTags((currentClass == SharedConfig.PERFORMANCE_CLASS_LOW ? "**LOW**" : "LOW") + (trueClass == SharedConfig.PERFORMANCE_CLASS_LOW ? " (measured)" : ""))
-                                }, (dialog2, which2) -> {
-                                    int newClass = 2 - which2;
-                                    if (newClass == trueClass) {
-                                        SharedConfig.overrideDevicePerformanceClass(-1);
-                                    } else {
-                                        SharedConfig.overrideDevicePerformanceClass(newClass);
-                                    }
-                                });
-                                builder2.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
-                                builder2.show();
-                            } else if (which == 20) {
-                                SharedConfig.toggleRoundCamera();
-                            } else if (which == 21) {
-                                boolean enabled = DualCameraView.dualAvailableStatic(getContext());
-                                MessagesController.getGlobalMainSettings().edit().putBoolean("dual_available", !enabled).apply();
-                                try {
-                                    Toast.makeText(getParentActivity(), LocaleController.getString(!enabled ? R.string.DebugMenuDualOnToast : R.string.DebugMenuDualOffToast), Toast.LENGTH_SHORT).show();
-                                } catch (Exception ignored) {}
-                            } else if (which == 22) {
-                                SharedConfig.toggleSurfaceInStories();
-                                for (int i = 0; i < getParentLayout().getFragmentStack().size(); i++) {
-                                    getParentLayout().getFragmentStack().get(i).storyViewer = null;
-                                }
-                            }
-                        });
-                        showDialog(builder.create());
-                    } else {
-                        try {
-                            Toast.makeText(getParentActivity(), LocaleController.getString("OnDebugClick", R.string.OnDebugClick), Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            FileLog.e(e);
-                        }
-                    }
-                });
+                imageView.setOnClickListener((view1) -> showDebugMenu());
                 imageCell.addView(imageView, LayoutHelper.createLinear(140, 140, Gravity.CENTER, 0, 0, 0, -23));
+
                 TextView textView = new TextView(context);
                 textView.setText(appName);
                 textView.setTypeface(AndroidUtilities.getTypeface(AndroidUtilities.TYPEFACE_ROBOTO_MEDIUM));
@@ -575,6 +318,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
                 textView.setTextColor(getThemedColor(Theme.key_windowBackgroundWhiteBlackText));
                 textView.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
                 imageCell.addView(textView, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER | Gravity.TOP, 25, 0, 25, 0));
+
                 TextView subTextView = new TextView(context);
                 subTextView.setText(updateInfo);
                 subTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
@@ -586,6 +330,264 @@ public class FoxGramSettings extends BaseSettingsActivity {
                 view = imageCell;
             }
             return view;
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        public void showDebugMenu() {
+            pressCount++;
+            if (pressCount >= 2) {
+                BottomSheet.Builder builder = new BottomSheet.Builder(context);
+                builder.setTitle(LocaleController.getString("DebugMenu", R.string.DebugMenu), true);
+                CharSequence[] items;
+                items = new CharSequence[]{
+                        LocaleController.getString("DebugMenuImportContacts", R.string.DebugMenuImportContacts),
+                        LocaleController.getString("DebugMenuReloadContacts", R.string.DebugMenuReloadContacts),
+                        LocaleController.getString("DebugMenuResetContacts", R.string.DebugMenuResetContacts),
+                        LocaleController.getString("DebugMenuResetDialogs", R.string.DebugMenuResetDialogs),
+                        BuildVars.DEBUG_VERSION ? null : BuildVars.LOGS_ENABLED ? LocaleController.getString("DebugMenuDisableLogs", R.string.DebugMenuDisableLogs) : LocaleController.getString("DebugMenuEnableLogs", R.string.DebugMenuEnableLogs),
+                        LocaleController.getString("DebugMenuClearMediaCache", R.string.DebugMenuClearMediaCache),
+                        LocaleController.getString("DebugMenuCallSettings", R.string.DebugMenuCallSettings),
+                        null,
+                        LocaleController.getString("DebugMenuCheckAppUpdate", R.string.DebugMenuCheckAppUpdate),
+                        LocaleController.getString("DebugMenuReadAllDialogs", R.string.DebugMenuReadAllDialogs),
+                        BuildVars.DEBUG_PRIVATE_VERSION ? SharedConfig.disableVoiceAudioEffects ? "Enable voip audio effects" : "Disable voip audio effects" : null,
+                        BuildVars.DEBUG_PRIVATE_VERSION ? "Clean app update" : null,
+                        BuildVars.DEBUG_PRIVATE_VERSION ? "Reset suggestions" : null,
+                        BuildVars.DEBUG_PRIVATE_VERSION ? LocaleController.getString(R.string.DebugMenuClearWebViewCache) : null,
+                        LocaleController.getString(SharedConfig.debugWebView ? R.string.DebugMenuDisableWebViewDebug : R.string.DebugMenuEnableWebViewDebug),
+                        AndroidUtilities.isTabletInternal() && BuildVars.DEBUG_PRIVATE_VERSION ? SharedConfig.forceDisableTabletMode ? "Enable tablet mode" : "Disable tablet mode" : null,
+                        LocaleController.getString(SharedConfig.isFloatingDebugActive ? R.string.FloatingDebugDisable : R.string.FloatingDebugEnable),
+                        BuildVars.DEBUG_PRIVATE_VERSION ? "Force remove premium suggestions" : null,
+                        BuildVars.DEBUG_PRIVATE_VERSION ? "Share device info" : null,
+                        BuildVars.DEBUG_PRIVATE_VERSION ? "Force performance class" : null,
+                        BuildVars.DEBUG_PRIVATE_VERSION && !InstantCameraView.allowBigSizeCameraDebug() ? !SharedConfig.bigCameraForRound ? "Force big camera for round" : "Disable big camera for round" : null,
+                        LocaleController.getString(DualCameraView.dualAvailableStatic(getContext()) ? "DebugMenuDualOff" : "DebugMenuDualOn"),
+                        BuildVars.DEBUG_VERSION ? (SharedConfig.useSurfaceInStories ? "back to TextureView in stories" : "use SurfaceView in stories") : null,
+                };
+                builder.setItems(items, (dialog, which) -> {
+                    if (which == 0) {
+                        getUserConfig().syncContacts = true;
+                        getUserConfig().saveConfig(false);
+                        getContactsController().forceImportContacts();
+                    } else if (which == 1) {
+                        getContactsController().loadContacts(false, 0);
+                    } else if (which == 2) {
+                        getContactsController().resetImportedContacts();
+                    } else if (which == 3) {
+                        getMessagesController().forceResetDialogs();
+                    } else if (which == 4) {
+                        BuildVars.LOGS_ENABLED = !BuildVars.LOGS_ENABLED;
+                        SharedPreferences sharedPreferences = ApplicationLoader.applicationContext.getSharedPreferences("systemConfig", Context.MODE_PRIVATE);
+                        sharedPreferences.edit().putBoolean("logsEnabled", BuildVars.LOGS_ENABLED).apply();
+                        updateRowsId();
+                        listAdapter.notifyDataSetChanged();
+                    } else if (which == 5) {
+                        getMessagesStorage().clearSentMedia();
+                        SharedConfig.setNoSoundHintShowed(false);
+                        SharedPreferences.Editor editor = MessagesController.getGlobalMainSettings().edit();
+                        editor.remove("archivehint").remove("proximityhint").remove("archivehint_l").remove("speedhint").remove("gifhint").remove("reminderhint").remove("soundHint").remove("themehint").remove("bganimationhint").remove("filterhint").remove("n_0").apply();
+                        MessagesController.getEmojiSettings(currentAccount).edit().remove("featured_hidden").remove("emoji_featured_hidden").apply();
+                        SharedConfig.textSelectionHintShows = 0;
+                        SharedConfig.lockRecordAudioVideoHint = 0;
+                        SharedConfig.stickersReorderingHintUsed = false;
+                        SharedConfig.forwardingOptionsHintShown = false;
+                        SharedConfig.messageSeenHintCount = 3;
+                        SharedConfig.emojiInteractionsHintCount = 3;
+                        SharedConfig.dayNightThemeSwitchHintCount = 3;
+                        SharedConfig.fastScrollHintCount = 3;
+                        ChatThemeController.getInstance(currentAccount).clearCache();
+                        getNotificationCenter().postNotificationName(NotificationCenter.newSuggestionsAvailable);
+                        RestrictedLanguagesSelectActivity.cleanup();
+                    } else if (which == 6) {
+                        VoIPHelper.showCallDebugSettings(getParentActivity());
+                    } else if (which == 7) {
+                        SharedConfig.toggleRoundCamera16to9();
+                    } else if (which == 8) {
+                        ((LaunchActivity) getParentActivity()).checkAppUpdate(true);
+                    } else if (which == 9) {
+                        getMessagesStorage().readAllDialogs(-1);
+                    } else if (which == 10) {
+                        SharedConfig.toggleDisableVoiceAudioEffects();
+                    } else if (which == 11) {
+                        SharedConfig.pendingAppUpdate = null;
+                        SharedConfig.saveConfig();
+                        FoxConfig.updateData.set(null);
+                        FoxConfig.applyUpdateData();
+                        FoxConfig.saveUpdateStatus(0);
+                        FoxConfig.remindUpdate(-1);
+                        FoxConfig.saveLastUpdateCheck(true);
+                        if (!StoreUtils.isDownloadedFromAnyStore()) UpdateManager.deleteUpdate();
+                        NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
+                    } else if (which == 12) {
+                        Set<String> suggestions = getMessagesController().pendingSuggestions;
+                        suggestions.add("VALIDATE_PHONE_NUMBER");
+                        suggestions.add("VALIDATE_PASSWORD");
+                        getNotificationCenter().postNotificationName(NotificationCenter.newSuggestionsAvailable);
+                    } else if (which == 13) {
+                        ApplicationLoader.applicationContext.deleteDatabase("webview.db");
+                        ApplicationLoader.applicationContext.deleteDatabase("webviewCache.db");
+                        WebStorage.getInstance().deleteAllData();
+                    } else if (which == 14) {
+                        SharedConfig.toggleDebugWebView();
+                        Toast.makeText(getParentActivity(), LocaleController.getString(SharedConfig.debugWebView ? R.string.DebugMenuWebViewDebugEnabled : R.string.DebugMenuWebViewDebugDisabled), Toast.LENGTH_SHORT).show();
+                    } else if (which == 15) {
+                        SharedConfig.toggleForceDisableTabletMode();
+
+                        Activity activity = AndroidUtilities.findActivity(context);
+                        final PackageManager pm = activity.getPackageManager();
+                        final Intent intent = pm.getLaunchIntentForPackage(activity.getPackageName());
+                        activity.finishAffinity(); // Finishes all activities.
+                        activity.startActivity(intent);    // Start the launch activity
+                        System.exit(0);
+                    } else if (which == 16) {
+                        FloatingDebugController.setActive((LaunchActivity) getParentActivity(), !FloatingDebugController.isActive());
+                    } else if (which == 17) {
+                        getMessagesController().loadAppConfig();
+                        TLRPC.TL_help_dismissSuggestion req = new TLRPC.TL_help_dismissSuggestion();
+                        req.suggestion = "VALIDATE_PHONE_NUMBER";
+                        req.peer = new TLRPC.TL_inputPeerEmpty();
+                        getConnectionsManager().sendRequest(req, (response, error) -> {
+                            TLRPC.TL_help_dismissSuggestion req2 = new TLRPC.TL_help_dismissSuggestion();
+                            req2.suggestion = "VALIDATE_PASSWORD";
+                            req2.peer = new TLRPC.TL_inputPeerEmpty();
+                            getConnectionsManager().sendRequest(req2, (res2, err2) -> getMessagesController().loadAppConfig());
+                        });
+                    } else if (which == 18) {
+                        int cpuCount = ConnectionsManager.CPU_COUNT;
+                        int memoryClass = ((ActivityManager) ApplicationLoader.applicationContext.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
+                        long minFreqSum = 0, minFreqCount = 0;
+                        long maxFreqSum = 0, maxFreqCount = 0;
+                        long curFreqSum = 0, curFreqCount = 0;
+                        long capacitySum = 0, capacityCount = 0;
+                        StringBuilder cpusInfo = new StringBuilder();
+                        for (int i = 0; i < cpuCount; i++) {
+                            Long minFreq = AndroidUtilities.getSysInfoLong("/sys/devices/system/cpu/cpu" + i + "/cpufreq/cpuinfo_min_freq");
+                            Long curFreq = AndroidUtilities.getSysInfoLong("/sys/devices/system/cpu/cpu" + i + "/cpufreq/cpuinfo_cur_freq");
+                            Long maxFreq = AndroidUtilities.getSysInfoLong("/sys/devices/system/cpu/cpu" + i + "/cpufreq/cpuinfo_max_freq");
+                            Long capacity = AndroidUtilities.getSysInfoLong("/sys/devices/system/cpu/cpu" + i + "/cpu_capacity");
+                            cpusInfo.append("#").append(i).append(" ");
+                            if (minFreq != null) {
+                                cpusInfo.append("min=").append(minFreq / 1000L).append(" ");
+                                minFreqSum += (minFreq / 1000L);
+                                minFreqCount++;
+                            }
+                            if (curFreq != null) {
+                                cpusInfo.append("cur=").append(curFreq / 1000L).append(" ");
+                                curFreqSum += (curFreq / 1000L);
+                                curFreqCount++;
+                            }
+                            if (maxFreq != null) {
+                                cpusInfo.append("max=").append(maxFreq / 1000L).append(" ");
+                                maxFreqSum += (maxFreq / 1000L);
+                                maxFreqCount++;
+                            }
+                            if (capacity != null) {
+                                cpusInfo.append("cpc=").append(capacity).append(" ");
+                                capacitySum += capacity;
+                                capacityCount++;
+                            }
+                            cpusInfo.append("\n");
+                        }
+                        StringBuilder info = new StringBuilder();
+                        info.append(Build.MANUFACTURER).append(", ").append(Build.MODEL).append(" (").append(Build.PRODUCT).append(", ").append(Build.DEVICE).append(") ").append(" (android ").append(Build.VERSION.SDK_INT).append(")\n");
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            info.append("SoC: ").append(Build.SOC_MANUFACTURER).append(", ").append(Build.SOC_MODEL).append("\n");
+                        }
+                        String gpuModel = AndroidUtilities.getSysInfoString("/sys/kernel/gpu/gpu_model");
+                        if (gpuModel != null) {
+                            info.append("GPU: ").append(gpuModel);
+                            Long minClock = AndroidUtilities.getSysInfoLong("/sys/kernel/gpu/gpu_min_clock");
+                            Long mminClock = AndroidUtilities.getSysInfoLong("/sys/kernel/gpu/gpu_mm_min_clock");
+                            Long maxClock = AndroidUtilities.getSysInfoLong("/sys/kernel/gpu/gpu_max_clock");
+                            if (minClock != null) {
+                                info.append(", min=").append(minClock / 1000L);
+                            }
+                            if (mminClock != null) {
+                                info.append(", mmin=").append(mminClock / 1000L);
+                            }
+                            if (maxClock != null) {
+                                info.append(", max=").append(maxClock / 1000L);
+                            }
+                            info.append("\n");
+                        }
+                        ConfigurationInfo configurationInfo = ((ActivityManager) ApplicationLoader.applicationContext.getSystemService(Context.ACTIVITY_SERVICE)).getDeviceConfigurationInfo();
+                        info.append("GLES Version: ").append(configurationInfo.getGlEsVersion()).append("\n");
+                        info.append("Memory: class=").append(AndroidUtilities.formatFileSize(memoryClass * 1024L * 1024L));
+                        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+                        ((ActivityManager) ApplicationLoader.applicationContext.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryInfo(memoryInfo);
+                        info.append(", total=").append(AndroidUtilities.formatFileSize(memoryInfo.totalMem));
+                        info.append(", avail=").append(AndroidUtilities.formatFileSize(memoryInfo.availMem));
+                        info.append(", low?=").append(memoryInfo.lowMemory);
+                        info.append(" (threshold=").append(AndroidUtilities.formatFileSize(memoryInfo.threshold)).append(")");
+                        info.append("\n");
+                        info.append("Current class: ").append(SharedConfig.performanceClassName(SharedConfig.getDevicePerformanceClass())).append(", measured: ").append(SharedConfig.performanceClassName(SharedConfig.measureDevicePerformanceClass()));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            info.append(", suggest=").append(Build.VERSION.MEDIA_PERFORMANCE_CLASS);
+                        }
+                        info.append("\n");
+                        info.append(cpuCount).append(" CPUs");
+                        if (minFreqCount > 0) {
+                            info.append(", avgMinFreq=").append(minFreqSum / minFreqCount);
+                        }
+                        if (curFreqCount > 0) {
+                            info.append(", avgCurFreq=").append(curFreqSum / curFreqCount);
+                        }
+                        if (maxFreqCount > 0) {
+                            info.append(", avgMaxFreq=").append(maxFreqSum / maxFreqCount);
+                        }
+                        if (capacityCount > 0) {
+                            info.append(", avgCapacity=").append(capacitySum / capacityCount);
+                        }
+                        info.append("\n").append(cpusInfo);
+
+                        showDialog(new ShareAlert(getParentActivity(), null, info.toString(), false, null, false) {
+                            @Override
+                            protected void onSend(LongSparseArray<TLRPC.Dialog> dids, int count, TLRPC.TL_forumTopic topic) {
+                                AndroidUtilities.runOnUIThread(() -> BulletinFactory.createInviteSentBulletin(getParentActivity(), contentView, dids.size(), dids.size() == 1 ? dids.valueAt(0).id : 0, count, getThemedColor(Theme.key_undo_background), getThemedColor(Theme.key_undo_infoColor)).show(), 250);
+                            }
+                        });
+                    } else if (which == 19) {
+                        AlertDialog.Builder builder2 = new AlertDialog.Builder(getParentActivity(), resourcesProvider);
+                        builder2.setTitle("Force performance class");
+                        int currentClass = SharedConfig.getDevicePerformanceClass();
+                        int trueClass = SharedConfig.measureDevicePerformanceClass();
+                        builder2.setItems(new CharSequence[]{
+                                AndroidUtilities.replaceTags((currentClass == SharedConfig.PERFORMANCE_CLASS_HIGH ? "**HIGH**" : "HIGH") + (trueClass == SharedConfig.PERFORMANCE_CLASS_HIGH ? " (measured)" : "")),
+                                AndroidUtilities.replaceTags((currentClass == SharedConfig.PERFORMANCE_CLASS_AVERAGE ? "**AVERAGE**" : "AVERAGE") + (trueClass == SharedConfig.PERFORMANCE_CLASS_AVERAGE ? " (measured)" : "")),
+                                AndroidUtilities.replaceTags((currentClass == SharedConfig.PERFORMANCE_CLASS_LOW ? "**LOW**" : "LOW") + (trueClass == SharedConfig.PERFORMANCE_CLASS_LOW ? " (measured)" : ""))
+                        }, (dialog2, which2) -> {
+                            int newClass = 2 - which2;
+                            if (newClass == trueClass) {
+                                SharedConfig.overrideDevicePerformanceClass(-1);
+                            } else {
+                                SharedConfig.overrideDevicePerformanceClass(newClass);
+                            }
+                        });
+                        builder2.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
+                        builder2.show();
+                    } else if (which == 20) {
+                        SharedConfig.toggleRoundCamera();
+                    } else if (which == 21) {
+                        boolean enabled = DualCameraView.dualAvailableStatic(getContext());
+                        MessagesController.getGlobalMainSettings().edit().putBoolean("dual_available", !enabled).apply();
+                        try {
+                            Toast.makeText(getParentActivity(), LocaleController.getString(!enabled ? R.string.DebugMenuDualOnToast : R.string.DebugMenuDualOffToast), Toast.LENGTH_SHORT).show();
+                        } catch (Exception ignored) {}
+                    } else if (which == 22) {
+                        SharedConfig.toggleSurfaceInStories();
+                        for (int i = 0; i < getParentLayout().getFragmentStack().size(); i++) {
+                            getParentLayout().getFragmentStack().get(i).storyViewer = null;
+                        }
+                    }
+                });
+                showDialog(builder.create());
+            } else {
+                try {
+                    Toast.makeText(getParentActivity(), LocaleController.getString("OnDebugClick", R.string.OnDebugClick), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    FileLog.e(e);
+                }
+            }
         }
 
         @Override

@@ -252,7 +252,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                                 LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar)};
             }
 
-            FoxConfig.saveOldTitleText(FoxConfig.nameType);
+            it.foxgram.android.utils.TextUtils.saveOldTitleText(FoxConfig.nameType);
 
             for (int i = 0; i < items.length; ++i) {
                 final int index = i;
@@ -265,7 +265,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                 cell.setOnClickListener(v -> {
                    FoxConfig.saveNameType(index);
                    if (index != 3) {
-                       FoxConfig.saveOldTitleText(index);
+                       it.foxgram.android.utils.TextUtils.saveOldTitleText(index);
                    }
                    RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(showInActionBarRow);
                    if (holder != null) {

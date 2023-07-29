@@ -24,6 +24,7 @@ import it.foxgram.android.magic.FOXENC;
 import it.foxgram.android.updates.AppDownloader;
 import it.foxgram.android.updates.PlayStoreAPI;
 import it.foxgram.android.updates.UpdateManager;
+import it.foxgram.android.utils.TextUtils;
 import it.foxgram.ui.Cells.UpdateAvailableCell;
 import it.foxgram.ui.Cells.UpdateCheckCell;
 
@@ -129,11 +130,7 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
         } else if (position == buildTypeRow) {
             AndroidUtilities.addToClipboard(BuildConfig.BUILD_TYPE);
         } else if (position == updateTypeRow) {
-            String type;
-            if (BuildConfig.BUILD_VERSION_STRING.contains("Beta")) type = "Beta";
-            else if (BuildConfig.BUILD_VERSION_STRING.contains("Alpha")) type = "Alpha";
-            else type = LocaleController.getString("Stable", R.string.Stable);
-            AndroidUtilities.addToClipboard(type);
+            AndroidUtilities.addToClipboard(TextUtils.getAppName());
         } else if (position == downloadSourceRow) {
             String source = StoreUtils.isFromPlayStore() ? "Play Store" : StoreUtils.isFromHuaweiStore() ? "Huawei Store" : "APK";
             AndroidUtilities.addToClipboard(source);
@@ -240,11 +237,7 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
                     } else if (position == buildInfoRow) {
                         textCell.setTextAndValueAndIcon(LocaleController.getString("BuildVersion", R.string.BuildVersion), String.valueOf(BuildConfig.BUILD_VERSION), R.drawable.msg_text_check, true);
                     } else if (position == updateTypeRow) {
-                        String type;
-                        if (BuildConfig.BUILD_VERSION_STRING.contains("Beta")) type = "Beta";
-                        else if (BuildConfig.BUILD_VERSION_STRING.contains("Alpha")) type = "Alpha";
-                        else type = LocaleController.getString("Stable", R.string.Stable);
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("UpdateType", R.string.UpdateType), type,R.drawable.round_update_white_28, true);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString("UpdateType", R.string.UpdateType), TextUtils.getAppName(),R.drawable.round_update_white_28, true);
                     } else if (position == downloadSourceRow) {
                         String source = StoreUtils.isFromPlayStore() ? "Play Store" : StoreUtils.isFromHuaweiStore() ? "Huawei Store" : "APK";
                         textCell.setTextAndValueAndIcon(LocaleController.getString("DownloadSource", R.string.DownloadSource), source, R.drawable.msg_current_location, true);
