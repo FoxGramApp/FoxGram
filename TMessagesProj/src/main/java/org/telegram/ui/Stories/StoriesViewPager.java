@@ -18,7 +18,6 @@ import org.telegram.messenger.UserConfig;
 import org.telegram.ui.ActionBar.Theme;
 
 import java.util.ArrayList;
-import java.util.TreeSet;
 
 public class StoriesViewPager extends ViewPager {
 

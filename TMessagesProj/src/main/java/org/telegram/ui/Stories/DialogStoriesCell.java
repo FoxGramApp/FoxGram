@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
@@ -69,6 +70,7 @@ import java.util.Objects;
 import it.foxgram.android.FoxConfig;
 import it.foxgram.android.utils.FoxTextUtils;
 
+@SuppressLint("ViewConstructor")
 public class DialogStoriesCell extends FrameLayout implements NotificationCenter.NotificationCenterDelegate {
 
     public final static int TYPE_DIALOGS = 0;
@@ -924,7 +926,7 @@ public class DialogStoriesCell extends FrameLayout implements NotificationCenter
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
             StoryCell cell = (StoryCell) holder.itemView;
             cell.position = position;
             if (mini) {

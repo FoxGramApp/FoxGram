@@ -1,10 +1,8 @@
 package it.foxgram.ui;
 
-import android.app.Dialog;
 import android.text.TextUtils;
 import android.transition.TransitionManager;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,17 +13,16 @@ import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.messenger.UserConfig;
 import org.telegram.tgnet.TLRPC;
-import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.HeaderCell;
-import org.telegram.ui.Cells.RadioColorCell;
 import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Cells.TextSettingsCell;
 import org.telegram.ui.Components.UndoView;
 
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.ArrayList;
 
+import it.foxgram.android.AlertController;
 import it.foxgram.android.CustomEmojiController;
 import it.foxgram.android.FoxConfig;
 import it.foxgram.android.utils.FoxTextUtils;
@@ -229,61 +226,38 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                 ((TextCheckCell) view).setChecked(FoxConfig.showPencilIcon);
             }
         } else if (position == showInActionBarRow) {
-            if (getParentActivity() == null) {
-                return;
-            }
-            AtomicReference<Dialog> dialogRef = new AtomicReference<>();
-
-            LinearLayout linearLayout = new LinearLayout(context);
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
-
             TLRPC.User selfUser = UserConfig.getInstance(currentAccount).getCurrentUser();
-            CharSequence[] items;
-            if (!TextUtils.isEmpty(selfUser.username) && getMessagesController().storiesEnabled()) {
-                items = new CharSequence[]
-                        {
-                                LocaleController.getString("Default", R.string.Default),
-                                LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar),
-                                LocaleController.getString("Username", R.string.Username),
-                                LocaleController.getString("ProfileMyStories", R.string.ProfileMyStories)};
+
+            ArrayList<String> arrayList = new ArrayList<>();
+            ArrayList<Integer> types = new ArrayList<>();
+            arrayList.add(LocaleController.getString("Default", R.string.Default));
+            types.add(0);
+            arrayList.add(LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar));
+            types.add(1);
+            if (!TextUtils.isEmpty(selfUser.username)) {
+                arrayList.add(LocaleController.getString("Username", R.string.Username));
+                types.add(2);
             } else {
-                items = new CharSequence[]
-                        {
-                                LocaleController.getString("Default", R.string.Default),
-                                LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar)};
+                if (getMessagesController().storiesEnabled()) {
+                    arrayList.add(LocaleController.getString("ProfileMyStories", R.string.ProfileMyStories));
+                    types.add(2);
+                }
+            }
+            if (!TextUtils.isEmpty(selfUser.username) && getMessagesController().storiesEnabled()) {
+                arrayList.add(LocaleController.getString("ProfileMyStories", R.string.ProfileMyStories));
+                types.add(3);
             }
 
             FoxTextUtils.saveOldTitleText(FoxConfig.nameType);
 
-            for (int i = 0; i < items.length; ++i) {
-                final int index = i;
-                RadioColorCell cell = new RadioColorCell(getParentActivity());
-                cell.setPadding(AndroidUtilities.dp(4), 0, AndroidUtilities.dp(4), 0);
-                cell.setCheckColor(Theme.getColor(Theme.key_radioBackground), Theme.getColor(Theme.key_dialogRadioBackgroundChecked));
-                cell.setTextAndValue(items[index], index == FoxConfig.nameType);
-                cell.setBackground(Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector), Theme.RIPPLE_MASK_ALL));
-                linearLayout.addView(cell);
-                cell.setOnClickListener(v -> {
-                   FoxConfig.saveNameType(index);
-                   if (index != 3) {
-                       FoxTextUtils.saveOldTitleText(index);
-                   }
-                   RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(showInActionBarRow);
-                   if (holder != null) {
-                       listAdapter.onBindViewHolder(holder, showInActionBarRow);
-                   }
-                   dialogRef.get().dismiss();
-                   reloadDialogs();
-                });
-            }
-
-            Dialog dialog = new AlertDialog.Builder(getParentActivity())
-                    .setTitle(LocaleController.getString("TitleBarName", R.string.TitleBarName))
-                    .setView(linearLayout)
-                    .setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null)
-                    .create();
-            dialogRef.set(dialog);
-            showDialog(dialog);
+            AlertController.show(arrayList, LocaleController.getString("TitleBarName", R.string.TitleBarName), types.indexOf(FoxConfig.nameType), context, i -> {
+                FoxConfig.saveNameType(types.get(i));
+                if (types.get(i) != 3) {
+                    FoxTextUtils.saveOldTitleText(types.get(i));
+                }
+                listAdapter.notifyItemChanged(showInActionBarRow, PARTIAL);
+                reloadDialogs();
+            });
         } else if (position == chooseEmojiPackRow) {
             presentFragment(new EmojiPackSettings());
         }
@@ -452,15 +426,24 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                         String emojiPack = CustomEmojiController.getSelectedPackName();
                         textSettingsCell.setTextAndValue(LocaleController.getString("EmojiSets", R.string.EmojiSets), emojiPack, true);
                     } else if (position == showInActionBarRow) {
-                        String defaultName = LocaleController.getString("NumberUnknown", R.string.NumberUnknown);
-                        if (FoxConfig.nameType == FoxConfig.DEFAULT_NAME)
-                            defaultName = LocaleController.getString("Default", R.string.Default);
-                        else if (FoxConfig.nameType == FoxConfig.TG_USER_NAME)
-                            defaultName = LocaleController.getString("Username", R.string.Username);
-                        else if (FoxConfig.nameType == FoxConfig.USER_NAME)
-                            defaultName = LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar);
-                        else if (FoxConfig.nameType == FoxConfig.MY_STORY)
-                            defaultName = LocaleController.getString("ProfileMyStories", R.string.ProfileMyStories);
+                        String defaultName;
+                        switch (FoxConfig.nameType) {
+                            case FoxConfig.DEFAULT_NAME:
+                                defaultName = LocaleController.getString("Default", R.string.Default);
+                                break;
+                            case FoxConfig.USER_NAME:
+                                defaultName = LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar);
+                                break;
+                            case FoxConfig.TG_USER_NAME:
+                                defaultName = LocaleController.getString("Username", R.string.Username);
+                                break;
+                            case FoxConfig.MY_STORY:
+                                defaultName = LocaleController.getString("ProfileMyStories", R.string.ProfileMyStories);
+                                break;
+                            default:
+                                defaultName = LocaleController.getString("NumberUnknown", R.string.NumberUnknown);
+                                break;
+                        }
                         textSettingsCell.setTextAndValue(LocaleController.getString("TitleBarName", R.string.TitleBarName), defaultName, partial, true);
                     }
                     break;

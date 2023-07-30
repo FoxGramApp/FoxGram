@@ -23,7 +23,7 @@ import it.foxgram.android.FoxConfig;
 import it.foxgram.android.MenuOrderController;
 import it.foxgram.android.StoreUtils;
 import it.foxgram.android.updates.PlayStoreAPI;
-import it.foxgram.android.updates.UpdateManager;
+import it.foxgram.android.utils.FoxTextUtils;
 
 public class FOXENC {
     public static class DrawerItems extends MagicVector<String> {
@@ -110,11 +110,7 @@ public class FOXENC {
                 title = updates.getString("title");
                 description = updates.getString("description");
                 note = updates.getString("note");
-                if (FoxConfig.betaUpdates && !StoreUtils.isDownloadedFromAnyStore()) {
-                    banner = "https://raw.githubusercontent.com/Pierlu096/FoxAssets/main/Updates/Previews/color_update.png";
-                } else {
-                    banner = "https://raw.githubusercontent.com/Pierlu096/FoxAssets/main/Updates/color_update.png";
-                }
+                banner = FoxConfig.betaUpdates && !StoreUtils.isDownloadedFromAnyStore() ? "https://raw.githubusercontent.com/Pierlu096/FoxAssets/main/Updates/Previews/color_update.png" : "https://raw.githubusercontent.com/Pierlu096/FoxAssets/main/Updates/color_update.png";
                 version = updateInfo.getInt("tag_name");
                 JSONArray arr = updateInfo.getJSONArray("assets");
                 String[] supportedTypes = {"arm64-v8a", "armeabi-v7a", "x86", "x86_64", "universal"};
@@ -123,7 +119,7 @@ public class FOXENC {
                     fileLink = arr.getJSONObject(i).getString("browser_download_url");
                     fileSize = arr.getJSONObject(i).getLong("size");
                     for (String type : supportedTypes) {
-                        if (fileLink.contains(type) && Objects.equals(UpdateManager.getAbi(), type)) {
+                        if (fileLink.contains(type) && Objects.equals(FoxTextUtils.getAbi(), type)) {
                             break loop;
                         }
                     }

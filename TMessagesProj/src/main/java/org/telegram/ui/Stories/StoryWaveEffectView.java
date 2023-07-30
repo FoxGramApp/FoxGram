@@ -1,5 +1,6 @@
 package org.telegram.ui.Stories;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -36,6 +37,7 @@ import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.egl.EGLSurface;
 import javax.microedition.khronos.opengles.GL10;
 
+@SuppressLint("ViewConstructor")
 public class StoryWaveEffectView extends TextureView implements TextureView.SurfaceTextureListener  {
 
     public static StoryWaveEffectView launch(Context context, float cx, float cy, float r) {

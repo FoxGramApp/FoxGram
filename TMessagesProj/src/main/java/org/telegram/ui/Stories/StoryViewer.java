@@ -22,7 +22,6 @@ import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -74,7 +73,6 @@ import org.telegram.ui.LaunchActivity;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.TreeSet;
 
 public class StoryViewer {
 

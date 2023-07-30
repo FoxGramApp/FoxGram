@@ -1,5 +1,6 @@
 package org.telegram.ui.Stories;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -36,6 +37,7 @@ import org.telegram.ui.ProfileActivity;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+@SuppressLint("ViewConstructor")
 public class SelfStoryViewsPage extends FrameLayout implements NotificationCenter.NotificationCenterDelegate {
 
     private final static int TOP_PADDING = 46;
@@ -312,6 +314,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
             return holder.getItemViewType() == USER_ITEM;
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         public void updateRows() {
             items.clear();
             if (model != null && model.views.isEmpty() && (model.isExpiredViews || (!model.loading && !model.hasNext))) {

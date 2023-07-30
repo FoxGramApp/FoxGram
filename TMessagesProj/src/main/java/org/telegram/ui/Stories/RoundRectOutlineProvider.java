@@ -1,11 +1,8 @@
 package org.telegram.ui.Stories;
 
 import android.graphics.Outline;
-import android.os.Build;
 import android.view.View;
 import android.view.ViewOutlineProvider;
-
-import androidx.annotation.RequiresApi;
 
 import org.telegram.messenger.AndroidUtilities;
 

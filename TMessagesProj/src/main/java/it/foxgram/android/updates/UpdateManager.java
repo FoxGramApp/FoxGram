@@ -2,7 +2,6 @@ package it.foxgram.android.updates;
 
 import android.app.Activity;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
 import androidx.core.util.Pair;
 
@@ -14,7 +13,6 @@ import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.NotificationCenter;
-import org.telegram.messenger.R;
 import org.telegram.tgnet.TLRPC;
 
 import java.io.File;
@@ -44,10 +42,6 @@ public class UpdateManager {
 
     public interface UpdateUICallback {
         void onResult(boolean result);
-    }
-
-    public static String getUpdatesChannel() {
-        return FoxConfig.betaUpdates ? "Release Preview" : LocaleController.getString("Stable", R.string.Stable);
     }
 
     public static void getChangelogs(ChangelogCallback changelogCallback) {
@@ -92,29 +86,6 @@ public class UpdateManager {
             });
         } else {
             checkInternal(updateCallback, null);
-        }
-    }
-
-    public static String getAbi() throws PackageManager.NameNotFoundException {
-        PackageInfo pInfo = ApplicationLoader.applicationContext.getPackageManager().getPackageInfo(ApplicationLoader.applicationContext.getPackageName(), 0);
-        switch (pInfo.versionCode % 10) {
-            case 1:
-            case 3:
-                return "arm-v7a";
-            case 2:
-            case 4:
-                return "x86";
-            case 5:
-            case 7:
-                return "arm64-v8a";
-            case 6:
-            case 8:
-                return  "x86_64";
-            case 0:
-            case 9:
-                return "universal";
-            default:
-                return "unknown";
         }
     }
 

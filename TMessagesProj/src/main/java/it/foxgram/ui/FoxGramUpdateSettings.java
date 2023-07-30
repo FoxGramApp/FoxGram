@@ -16,7 +16,11 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.HeaderCell;
 import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Cells.TextCheckCell;
+import org.telegram.ui.Cells.TextInfoPrivacyCell;
 
+import java.util.ArrayList;
+
+import it.foxgram.android.AlertController;
 import it.foxgram.android.FoxConfig;
 import it.foxgram.android.StoreUtils;
 import it.foxgram.android.http.FileDownloader;
@@ -35,9 +39,9 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
     private int updateCheckHeaderRow;
     private int updateCheckRow;
     private int notifyWhenAvailableRow;
-    private int updatesDividerRow;
     private int infoHeaderRow;
     private int updatesChannelRow;
+    private int infoUpdatesChannelRow;
     private int versionInfoRow;
     private int baseVersionRow;
     private int buildTypeRow;
@@ -108,18 +112,51 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
             }
         } else if (position == updatesChannelRow) {
             if (!UpdateManager.updateDownloaded() && !checkingUpdates) {
-                presentFragment(new BetaUpdatesActivity());
-                FileDownloader.cancel("appUpdate");
-                UpdateManager.deleteUpdate();
-                if (updateAvailable != null) {
-                    FoxConfig.remindUpdate(updateAvailable.version);
-                    NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
-                    updateAvailable = null;
-                    listAdapter.notifyItemRangeRemoved(updateSectionAvailableRow, 2);
-                    listAdapter.notifyItemRangeChanged(updateSectionAvailableRow, 1);
-                    updateRowsId();
-                }
-                checkUpdates();
+                ArrayList<String> arrayList = new ArrayList<>();
+                ArrayList<Integer> types = new ArrayList<>();
+                arrayList.add(LocaleController.getString("Stable", R.string.Stable));
+                types.add(0);
+                arrayList.add("Release Preview");
+                types.add(1);
+                int updateChannel = FoxConfig.betaUpdates ? 1 : 0;
+                AlertController.show(arrayList, LocaleController.getString("InstallPreview", R.string.InstallPreview), types.indexOf(updateChannel), context, i -> {
+                    switch (types.get(i)) {
+                        case 0:
+                            if (FoxConfig.betaUpdates) {
+                                FoxConfig.toggleBetaUpdates();
+                                FileDownloader.cancel("appUpdate");
+                                listAdapter.notifyItemChanged(updatesChannelRow, PARTIAL);
+                                UpdateManager.deleteUpdate();
+                                if (updateAvailable != null) {
+                                    FoxConfig.remindUpdate(updateAvailable.version);
+                                    NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
+                                    updateAvailable = null;
+                                    listAdapter.notifyItemRangeRemoved(updateSectionAvailableRow, 2);
+                                    listAdapter.notifyItemRangeChanged(updateSectionAvailableRow, 1);
+                                    updateRowsId();
+                                }
+                                checkUpdates();
+                            }
+                            break;
+                        case 1:
+                            if (!FoxConfig.betaUpdates) {
+                                FoxConfig.toggleBetaUpdates();
+                                FileDownloader.cancel("appUpdate");
+                                listAdapter.notifyItemChanged(updatesChannelRow, PARTIAL);
+                                UpdateManager.deleteUpdate();
+                                if (updateAvailable != null) {
+                                    FoxConfig.remindUpdate(updateAvailable.version);
+                                    NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
+                                    updateAvailable = null;
+                                    listAdapter.notifyItemRangeRemoved(updateSectionAvailableRow, 2);
+                                    listAdapter.notifyItemRangeChanged(updateSectionAvailableRow, 1);
+                                    updateRowsId();
+                                }
+                                checkUpdates();
+                            }
+                            break;
+                    }
+                });
             }
         } else if (position == versionInfoRow) {
             AndroidUtilities.addToClipboard(BuildConfig.BUILD_VERSION_STRING);
@@ -155,8 +192,8 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
         notifyWhenAvailableRow = rowCount++;
         if (!StoreUtils.isDownloadedFromAnyStore()) {
             updatesChannelRow = rowCount++;
+            infoUpdatesChannelRow = rowCount++;
         }
-        updatesDividerRow = rowCount++;
 
         infoHeaderRow = rowCount++;
         versionInfoRow = rowCount++;
@@ -227,7 +264,7 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
                     TextCell textCell = (TextCell) holder.itemView;
                     if (position == updatesChannelRow) {
                         changeBetaMode = textCell;
-                        changeBetaMode.setTextAndValue(LocaleController.getString("APKsChannel", R.string.APKsChannel), UpdateManager.getUpdatesChannel(), true);
+                        changeBetaMode.setTextAndValue(LocaleController.getString("APKsChannel", R.string.APKsChannel), FoxTextUtils.getUpdatesChannel(),partial, true);
                     } else if (position == versionInfoRow) {
                         textCell.setTextAndValueAndIcon(LocaleController.getString("InstalledVersion", R.string.InstalledVersion), BuildConfig.BUILD_VERSION_STRING, R.drawable.msg_info, true);
                     } else if (position == baseVersionRow) {
@@ -244,6 +281,10 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
                     } else if (position == releaseDateRow) {
                         textCell.setTextAndValueAndIcon(LocaleController.getString("ReleaseDate", R.string.ReleaseDate),LocaleController.formatDateAudio(BuildConfig.GIT_COMMIT_DATE, true), R.drawable.msg_calendar2, true);
                     }
+                    break;
+                case TEXT_HINT_WITH_PADDING:
+                    TextInfoPrivacyCell textInfoPrivacyCell = (TextInfoPrivacyCell) holder.itemView;
+                    textInfoPrivacyCell.setText(LocaleController.getString("InstallPreviewDesc", R.string.InstallPreviewDesc) + " " + LocaleController.getString("UpdatesChannelInfo", R.string.UpdatesChannelInfo));
                     break;
             }
         }
@@ -315,12 +356,11 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
 
         @Override
         public ViewType getViewType(int position) {
-            if (position == updateSectionDividerRow || position == updatesDividerRow) {
+            if (position == updateSectionDividerRow) {
                 return ViewType.SHADOW;
             } else if (position == updateSectionAvailableRow) {
                 return ViewType.UPDATE;
-            } else if (position == updateCheckHeaderRow ||
-                    position == infoHeaderRow) {
+            } else if (position == updateCheckHeaderRow || position == infoHeaderRow) {
                 return ViewType.HEADER;
             } else if (position == updateCheckRow) {
                 return ViewType.UPDATE_CHECK;
@@ -331,6 +371,8 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
                     position == updateTypeRow || position == downloadSourceRow ||
                     position == releaseDateRow || position == baseVersionRow) {
                 return ViewType.TEXT_CELL;
+            } else if (position == infoUpdatesChannelRow) {
+                return ViewType.TEXT_HINT_WITH_PADDING;
             }
             throw new IllegalArgumentException("Invalid position");
         }

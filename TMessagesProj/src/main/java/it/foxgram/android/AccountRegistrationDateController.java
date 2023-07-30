@@ -4,7 +4,6 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import org.jetbrains.annotations.Contract;
 import org.json.JSONObject;
 import org.json.JSONException;
 
@@ -65,7 +64,6 @@ public class AccountRegistrationDateController {
     }
 
     @NonNull
-    @Contract("_ -> new")
     public static JSONObject loadTimeFromJson(Context context) throws IOException, JSONException {
         InputStream inputStream = context.getAssets().open(fileName);
         int size = inputStream.available();
