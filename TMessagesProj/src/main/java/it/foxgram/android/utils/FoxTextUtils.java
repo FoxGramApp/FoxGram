@@ -68,6 +68,8 @@ public class FoxTextUtils {
                 return LocaleController.getString("Copy", R.string.Copy);
             case FoxConfig.DOUBLE_TAP_DELETE:
                 return LocaleController.getString("Delete", R.string.Delete);
+            case FoxConfig.DOUBLE_TAP_SAVE_MESSAGE:
+                return LocaleController.getString("AddToSavedMessages", R.string.AddToSavedMessages);
         }
         return null;
     }

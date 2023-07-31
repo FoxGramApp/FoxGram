@@ -42,6 +42,7 @@ public class FoxConfig extends SettingsController {
     public static final int DOUBLE_TAP_EDIT = 3;
     public static final int DOUBLE_TAP_COPY_TEXT = 4;
     public static final int DOUBLE_TAP_DELETE = 5;
+    public static final int DOUBLE_TAP_SAVE_MESSAGE = 6;
 
     private static final Object sync = new Object();
     public static boolean hidePhoneNumber;

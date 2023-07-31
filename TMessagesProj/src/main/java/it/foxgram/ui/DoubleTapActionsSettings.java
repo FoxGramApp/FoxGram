@@ -32,6 +32,7 @@ public class DoubleTapActionsSettings extends BaseSettingsActivity {
     private int doubleTapForwardRow;
     private int doubleTapEditRow;
     private int doubleTapDeleteRow;
+    private int doubleTapSaveMessageRow;
     private int doubleTapCopyRow;
 
     @Override
@@ -59,17 +60,24 @@ public class DoubleTapActionsSettings extends BaseSettingsActivity {
         } else if (position == doubleTapEditRow) {
             FoxConfig.saveDoubleTapType(FoxConfig.DOUBLE_TAP_EDIT);
             listAdapter.notifyItemRangeChanged(doubleTapNoneRow, listAdapter.getItemCount(), PARTIAL);
+        } else if (position == doubleTapSaveMessageRow) {
+            FoxConfig.saveDoubleTapType(FoxConfig.DOUBLE_TAP_SAVE_MESSAGE);
+            listAdapter.notifyItemRangeChanged(doubleTapNoneRow, listAdapter.getItemCount(), PARTIAL);
         }
     }
 
     @Override
     protected void updateRowsId() {
+        super.updateRowsId();
+
         imageRow = rowCount++;
+
         doubleTapTypeRow = rowCount++;
         doubleTapNoneRow = rowCount++;
         doubleTapReactRow = rowCount++;
         doubleTapForwardRow = rowCount++;
         doubleTapEditRow = rowCount++;
+        doubleTapSaveMessageRow = rowCount++;
         doubleTapDeleteRow = rowCount++;
         doubleTapCopyRow = rowCount++;
         infoRow = rowCount++;
@@ -137,6 +145,12 @@ public class DoubleTapActionsSettings extends BaseSettingsActivity {
                         } else {
                             radioCell.setText(LocaleController.getString("Disable", R.string.Disable), FoxConfig.doubleTapType == FoxConfig.DOUBLE_TAP_DISABLED, true);
                         }
+                    } else if (position == doubleTapSaveMessageRow) {
+                        if (partial) {
+                            radioCell.setChecked(FoxConfig.doubleTapType == FoxConfig.DOUBLE_TAP_SAVE_MESSAGE, true);
+                        } else {
+                            radioCell.setText(LocaleController.getString("AddToSavedMessages", R.string.AddToSavedMessages), FoxConfig.doubleTapType == FoxConfig.DOUBLE_TAP_SAVE_MESSAGE, true);
+                        }
                     }
                     break;
             }
@@ -178,7 +192,8 @@ public class DoubleTapActionsSettings extends BaseSettingsActivity {
                 return ViewType.HEADER;
             } else if (position == doubleTapCopyRow || position == doubleTapReactRow ||
                     position == doubleTapEditRow || position == doubleTapNoneRow ||
-                    position == doubleTapForwardRow || position == doubleTapDeleteRow) {
+                    position == doubleTapForwardRow || position == doubleTapDeleteRow ||
+                    position == doubleTapSaveMessageRow) {
                 return ViewType.RADIO;
             } else if (position == imageRow) {
                 return ViewType.IMAGE_HEADER;

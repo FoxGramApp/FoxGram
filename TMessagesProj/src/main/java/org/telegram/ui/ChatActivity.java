@@ -1545,10 +1545,13 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     }
                     allowEdit = captionsCount < 2;
                 }
+
                 boolean noForwards = getMessagesController().isChatNoForwards(currentChat) || message.messageOwner.noforwards;
                 boolean canCopy = (message.type == MessageObject.TYPE_TEXT || message.isAnimatedEmoji() || message.isAnimatedEmojiStickers() || getMessageCaption(message, messageGroup) != null) && !noForwards;
                 boolean canForward = !message.isSponsored() && chatMode != MODE_SCHEDULED && (!message.needDrawBluredPreview() || message.hasExtendedMediaPreview()) && !message.isLiveLocation() && message.type != MessageObject.TYPE_PHONE_CALL && !noForwards && message.type != MessageObject.TYPE_GIFT_PREMIUM && message.type != MessageObject.TYPE_SUGGEST_PHOTO;
                 boolean canDelete = message.canDeleteMessage(chatMode == MODE_SCHEDULED, currentChat) && (threadMessageObjects == null || !threadMessageObjects.contains(message)) && !(message != null && message.messageOwner != null && message.messageOwner.action instanceof TLRPC.TL_messageActionTopicCreate);
+                boolean canSave =  !message.isSponsored() && chatMode != MODE_SCHEDULED && (!message.needDrawBluredPreview() || message.hasExtendedMediaPreview()) && !message.isLiveLocation() && message.type != MessageObject.TYPE_PHONE_CALL && !noForwards && message.type != MessageObject.TYPE_GIFT_PREMIUM && !UserObject.isUserSelf(currentUser);
+
                 switch (FoxConfig.doubleTapType) {
                     case FoxConfig.DOUBLE_TAP_FORWARD:
                         return canForward;
@@ -1558,6 +1561,8 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         return canCopy;
                     case FoxConfig.DOUBLE_TAP_DELETE:
                         return canDelete;
+                    case FoxConfig.DOUBLE_TAP_SAVE_MESSAGE:
+                        return canSave;
                 }
             }
             return false;
@@ -1622,6 +1627,9 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         break;
                     case FoxConfig.DOUBLE_TAP_DELETE:
                         processSelectedOption(OPTION_DELETE);
+                        break;
+                    case FoxConfig.DOUBLE_TAP_SAVE_MESSAGE:
+                        processSelectedOption(202);
                         break;
                 }
             }
