@@ -209,7 +209,7 @@ public class FoxGramTranslationsSettings extends BaseSettingsActivity {
                        textCheckCell.setTextAndValueAndCheck(LocaleController.getString("KeepMarkdown", R.string.KeepMarkdown), LocaleController.getString("KeepMarkdownDesc", R.string.KeepMarkdownDesc), FoxConfig.keepTranslationMarkdown, true, false);
                        textCheckCell.setCheckBoxIcon(isLocked ? R.drawable.permission_locked : 0);
                     } else if (position == showTranslateButtonRow) {
-                       textCheckCell.setTextAndCheck(LocaleController.getString("ShowTranslateButton", R.string.ShowTranslateButton), FoxConfig.showTranslate, true);
+                       textCheckCell.setTextAndCheck(LocaleController.getString("ShowTranslateButton", R.string.ShowTranslateButton), FoxConfig.showTranslate, false);
                     } else if (position == translateEntireChatRow) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("ShowTranslateChatButton", R.string.ShowTranslateChatButton), LocaleController.getString("ShowTranslateChatButtonDesc", R.string.ShowTranslateChatButtonDesc), FoxConfig.translateEntireChat, true, true);
                         textCheckCell.setCheckBoxIcon(isLocked ? R.drawable.permission_locked : 0);
@@ -218,7 +218,6 @@ public class FoxGramTranslationsSettings extends BaseSettingsActivity {
                 case TEXT_HINT_WITH_PADDING:
                     TextInfoPrivacyCell textInfoPrivacyCell = (TextInfoPrivacyCell) holder.itemView;
                     if (position == hintTranslation1) {
-                        textInfoPrivacyCell.setTopPadding(0);
                         textInfoPrivacyCell.setText(LocaleController.getString("TranslateMessagesInfo1", R.string.TranslateMessagesInfo1));
                     } else if (position == hintTranslation2) {
                         Pair<ArrayList<String>, ArrayList<Integer>> providers = Translator.getProviders();
@@ -336,7 +335,7 @@ public class FoxGramTranslationsSettings extends BaseSettingsActivity {
                         } else {
                             value = LocaleController.getString("UseLessDataNever", R.string.UseLessDataNever);
                         }
-                        textSettingsCell.setTextAndValue(LocaleController.getString("AutoTranslate", R.string.AutoTranslate), value, keepMarkdownRow != -1);
+                        textSettingsCell.setTextAndValue(LocaleController.getString("AutoTranslate", R.string.AutoTranslate), value, false);
                         if (!supportLanguageDetector) textSettingsCell.setAlpha(0.5f);
                         ImageView imageView = textSettingsCell.getValueImageView();
                         if (!getUserConfig().isPremium() && FoxConfig.translationProvider == Translator.PROVIDER_TELEGRAM) {

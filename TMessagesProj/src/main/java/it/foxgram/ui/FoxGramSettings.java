@@ -254,7 +254,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
                         textCell.setTextAndIcon(LocaleController.getString("Chat", R.string.Chat), R.drawable.msg_msgbubble3, true);
                     } else if (position == experimentalSettingsRow) {
                         String isEnabled = FoxConfig.isDevOptEnabled() ? LocaleController.getString("DevOptEnabled", R.string.DevOptEnabled) : LocaleController.getString("DevOptDisabled", R.string.DevOptDisabled);
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("Experimental", R.string.Experimental), isEnabled, R.drawable.outline_science_white, true);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString("Experimental", R.string.Experimental), isEnabled, R.drawable.outline_science_white, false);
                     } else if (position == appearanceSettingsRow) {
                         textCell.setTextAndIcon(LocaleController.getString("Appearance", R.string.Appearance), R.drawable.settings_appearance, true);
                     } else if (position == updatesSettingsRow) {
@@ -275,7 +275,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
                     TextDetailSettingsCell textDetailCell = (TextDetailSettingsCell) holder.itemView;
                     textDetailCell.setMultilineDetail(true);
                     if (position == supportTranslationRow) {
-                        textDetailCell.setTextAndValueAndIcon(LocaleController.getString("TranslateColor", R.string.TranslateColor), LocaleController.getString("TranslateColorDesc", R.string.TranslateColorDesc), R.drawable.round_translate_white_28, true);
+                        textDetailCell.setTextAndValueAndIcon(LocaleController.getString("TranslateColor", R.string.TranslateColor), LocaleController.getString("TranslateColorDesc", R.string.TranslateColorDesc), R.drawable.round_translate_white_28, false);
                     } else if (position == channelUpdatesRow) {
                         textDetailCell.setTextAndValueAndIcon(LocaleController.getString("OfficialChannel", R.string.OfficialChannel), LocaleController.getString("OfficialChannelDesc", R.string.OfficialChannelDesc) + " " + "@" + LocaleController.getString("ChannelUsername", R.string.ChannelUsername), R.drawable.msg_channel, true);
                     } else if (position == sourceCodeRow) {

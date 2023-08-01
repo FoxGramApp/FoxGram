@@ -264,7 +264,7 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
                     TextCell textCell = (TextCell) holder.itemView;
                     if (position == updatesChannelRow) {
                         changeBetaMode = textCell;
-                        changeBetaMode.setTextAndValue(LocaleController.getString("APKsChannel", R.string.APKsChannel), FoxTextUtils.getUpdatesChannel(),partial, true);
+                        changeBetaMode.setTextAndValue(LocaleController.getString("APKsChannel", R.string.APKsChannel), FoxTextUtils.getUpdatesChannel(),partial, false);
                     } else if (position == versionInfoRow) {
                         textCell.setTextAndValueAndIcon(LocaleController.getString("InstalledVersion", R.string.InstalledVersion), BuildConfig.BUILD_VERSION_STRING, R.drawable.msg_info, true);
                     } else if (position == baseVersionRow) {
@@ -279,7 +279,7 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
                         String source = StoreUtils.isFromPlayStore() ? "Play Store" : StoreUtils.isFromHuaweiStore() ? "Huawei Store" : "APK";
                         textCell.setTextAndValueAndIcon(LocaleController.getString("DownloadSource", R.string.DownloadSource), source, R.drawable.msg_current_location, true);
                     } else if (position == releaseDateRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("ReleaseDate", R.string.ReleaseDate),LocaleController.formatDateAudio(BuildConfig.GIT_COMMIT_DATE, true), R.drawable.msg_calendar2, true);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString("ReleaseDate", R.string.ReleaseDate),LocaleController.formatDateAudio(BuildConfig.GIT_COMMIT_DATE, true), R.drawable.msg_calendar2, false);
                     }
                     break;
                 case TEXT_HINT_WITH_PADDING:

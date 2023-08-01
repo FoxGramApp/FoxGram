@@ -401,7 +401,7 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
                     } else if (position == cameraPreviewRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("CameraPreview"), FoxConfig.cameraPreview, true);
                     } else if (position == rearCameraStartingRow) {
-                        textCheckCell.setTextAndValueAndCheck(LocaleController.getString("UseRearRoundVideos", R.string.UseRearRoundVideos), LocaleController.getString("UseRearRoundVideosDesc", R.string.UseRearRoundVideosDesc), FoxConfig.useRearCamera, true, true);
+                        textCheckCell.setTextAndValueAndCheck(LocaleController.getString("UseRearRoundVideos", R.string.UseRearRoundVideos), LocaleController.getString("UseRearRoundVideosDesc", R.string.UseRearRoundVideosDesc), FoxConfig.useRearCamera, true, false);
                     } else if (position == jumpChannelRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("JumpToNextChannel", R.string.JumpToNextChannel), FoxConfig.jumpChannel, true);
                     } else if (position == showGreetings) {
@@ -423,7 +423,7 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
                     } else if (position == hideTimeOnStickerRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("HideTimeOnSticker", R.string.HideTimeOnSticker), FoxConfig.hideTimeOnSticker, false);
                     } else if (position == onlineStatusRow) {
-                        textCheckCell.setTextAndValueAndCheck(LocaleController.getString("OnlineStatus", R.string.OnlineStatus), LocaleController.getString("OnlineStatusDesc", R.string.OnlineStatusDesc), FoxConfig.showStatusInChat, true, false);
+                        textCheckCell.setTextAndValueAndCheck(LocaleController.getString("OnlineStatus", R.string.OnlineStatus), LocaleController.getString("OnlineStatusDesc", R.string.OnlineStatusDesc), FoxConfig.showStatusInChat, true, true);
                     } else if (position == hideSendAsChannelRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("HideSendAsChannel", R.string.HideSendAsChannel), FoxConfig.hideSendAsChannel, true);
                     }
@@ -504,7 +504,7 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
                 case TEXT_CELL:
                     TextCell textCell = (TextCell) holder.itemView;
                     if (position == doubleTapRow) {
-                        textCell.setTextAndValue(LocaleController.getString("DoubleTap", R.string.DoubleTap), FoxTextUtils.getDoubleTapText(), true);
+                        textCell.setTextAndValue(LocaleController.getString("DoubleTap", R.string.DoubleTap), FoxTextUtils.getDoubleTapText(), false);
                     }
             }
         }

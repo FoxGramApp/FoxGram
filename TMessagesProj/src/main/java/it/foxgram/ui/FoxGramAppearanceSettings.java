@@ -56,7 +56,6 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
     private int useSystemFontRow;
     private int fontsAndEmojiDividerRow;
     private int chatHeaderRow;
-    private int chatHeaderDividerRow;
     private int appearanceHeaderRow;
     private int forcePacmanRow;
     private int smoothNavRow;
@@ -324,7 +323,6 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
         appBarShadowRow = rowCount++;
         searchIconInActionBarRow = rowCount++;
         slidingTitleRow = rowCount++;
-        chatHeaderDividerRow = rowCount++;
     }
 
     @Override
@@ -376,23 +374,23 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                     } else if (position == drawerAvatarAsBackgroundRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("AvatarAsBackground", R.string.AvatarAsBackground), FoxConfig.avatarAsDrawerBackground, FoxConfig.avatarAsDrawerBackground);
                     } else if (position == showMenuControllerIconRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("ShowItemManagement", R.string.ShowItemManagement), FoxConfig.showMenuControllerIcon, true);
+                        textCheckCell.setTextAndCheck(LocaleController.getString("ShowItemManagement", R.string.ShowItemManagement), FoxConfig.showMenuControllerIcon, false);
                     } else if (position == drawerBlurBackgroundRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("AvatarBlur", R.string.AvatarBlur), FoxConfig.avatarBackgroundBlur, !FoxConfig.avatarBackgroundBlur);
+                        textCheckCell.setTextAndCheck(LocaleController.getString("AvatarBlur", R.string.AvatarBlur), FoxConfig.avatarBackgroundBlur, true);
                     } else if (position == drawerDarkenBackgroundRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("AvatarDarken", R.string.AvatarDarken), FoxConfig.avatarBackgroundDarken, true);
                     } else if (position == useSystemFontRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("UseSystemFonts", R.string.UseSystemFonts), FoxConfig.useSystemFont, true);
+                        textCheckCell.setTextAndCheck(LocaleController.getString("UseSystemFonts", R.string.UseSystemFonts), FoxConfig.useSystemFont, false);
                     } else if (position == messageTimeSwitchRow) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("FormatTimeSeconds", R.string.FormatTimeSeconds), LocaleController.getString("FormatTimeSecondsDesc", R.string.FormatTimeSecondsDesc), FoxConfig.fullTime, true, true);
                     } else if (position == roundedNumberSwitchRow) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("NumberRounding", R.string.NumberRounding), LocaleController.getString("NumberRoundingDesc", R.string.NumberRoundingDesc), FoxConfig.roundedNumbers, true, true);
                     } else if (position == forcePacmanRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("PacManAnimation", R.string.PacManAnimation), FoxConfig.pacmanForced, true);
+                        textCheckCell.setTextAndCheck(LocaleController.getString("PacManAnimation", R.string.PacManAnimation), FoxConfig.pacmanForced, false);
                     } else if (position == smoothNavRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("SmoothNav", R.string.SmoothNav), FoxConfig.smoothNav, true);
                     } else if (position == smartButtonsRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("ShortcutsForAdmins", R.string.ShortcutsForAdmins), FoxConfig.smartButtons, false);
+                        textCheckCell.setTextAndCheck(LocaleController.getString("ShortcutsForAdmins", R.string.ShortcutsForAdmins), FoxConfig.smartButtons, true);
                     } else if (position == appBarShadowRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("AppBarShadow", R.string.AppBarShadow), FoxConfig.showAppBarShadow, true);
                     } else if (position == showSantaHatRow) {
@@ -400,9 +398,9 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                     } else if (position == showFallingSnowRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("FallingSnow", R.string.FallingSnow), FoxConfig.showSnowFalling, true);
                     } else if (position == slidingTitleRow) {
-                        textCheckCell.setTextAndValueAndCheck(LocaleController.getString("SlidingTitle", R.string.SlidingTitle), LocaleController.getString("SlidingTitleDesc", R.string.SlidingTitleDesc), FoxConfig.slidingChatTitle, true, true);
+                        textCheckCell.setTextAndValueAndCheck(LocaleController.getString("SlidingTitle", R.string.SlidingTitle), LocaleController.getString("SlidingTitleDesc", R.string.SlidingTitleDesc), FoxConfig.slidingChatTitle, true, false);
                     } else if (position == searchIconInActionBarRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("SearchIconTitleBar", R.string.SearchIconTitleBar), FoxConfig.searchIconInActionBar, false);
+                        textCheckCell.setTextAndCheck(LocaleController.getString("SearchIconTitleBar", R.string.SearchIconTitleBar), FoxConfig.searchIconInActionBar, true);
                     } else if (position == showPencilIconRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("ShowPencilIcon", R.string.ShowPencilIcon), FoxConfig.showPencilIcon, true);
                     }
@@ -529,8 +527,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
         @Override
         public ViewType getViewType(int position) {
             if (position == drawerDividerRow || position == editBlurDividerRow || position == themeDrawerDividerRow ||
-                    position == dynamicDividerRow || position == fontsAndEmojiDividerRow || position == appearanceDividerRow ||
-                    position == chatHeaderDividerRow) {
+                    position == dynamicDividerRow || position == fontsAndEmojiDividerRow || position == appearanceDividerRow) {
                 return ViewType.SHADOW;
             } else if (position == editBlurHeaderRow || position == themeDrawerHeader || position == dynamicButtonHeaderRow ||
                     position == fontsAndEmojiHeaderRow || position == appearanceHeaderRow || position == chatHeaderRow) {

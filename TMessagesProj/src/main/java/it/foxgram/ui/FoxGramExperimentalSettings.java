@@ -223,7 +223,7 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
                     TextSettingsCell textCell = (TextSettingsCell) holder.itemView;
                     textCell.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
                     if (position == maxRecentStickersRow) {
-                        textCell.setTextAndValue(LocaleController.getString("MaxRecentStickers", R.string.MaxRecentStickers), String.valueOf(FoxConfig.maxRecentStickers), partial, true);
+                        textCell.setTextAndValue(LocaleController.getString("MaxRecentStickers", R.string.MaxRecentStickers), String.valueOf(FoxConfig.maxRecentStickers), partial, false);
                     }
                     break;
             }

@@ -173,7 +173,7 @@ public class FoxGramGeneralSettings extends BaseSettingsActivity {
                     if (position == phoneNumberSwitchRow) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("HidePhone", R.string.HidePhone), LocaleController.getString("HidePhoneDesc", R.string.HidePhoneDesc), FoxConfig.hidePhoneNumber, true, true);
                     } else if (position == phoneContactsSwitchRow) {
-                        textCheckCell.setTextAndValueAndCheck(LocaleController.getString("HidePhoneOthers", R.string.HidePhoneOthers), LocaleController.getString("HidePhoneOthersDesc", R.string.HidePhoneOthersDesc), FoxConfig.hideContactNumber, true, true);
+                        textCheckCell.setTextAndValueAndCheck(LocaleController.getString("HidePhoneOthers", R.string.HidePhoneOthers), LocaleController.getString("HidePhoneOthersDesc", R.string.HidePhoneOthersDesc), FoxConfig.hideContactNumber, true, false);
                     } else if (position == dateRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("ShowDate", R.string.ShowDate), FoxConfig.showAccountRegistrationDate, true);
                     } else if (position == dcIdRow) {
@@ -181,9 +181,9 @@ public class FoxGramGeneralSettings extends BaseSettingsActivity {
                     } else if (position == confirmCallSwitchRow) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("ConfirmCalls", R.string.ConfirmCalls), LocaleController.getString("ConfirmCallsDesc", R.string.ConfirmCallsDesc), FoxConfig.confirmCall, true, true);
                     } else if (position == hideAllTabRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("HideAllChatsFolder", R.string.HideAllChatsFolder), FoxConfig.hideAllTab, true);
+                        textCheckCell.setTextAndCheck(LocaleController.getString("HideAllChatsFolder", R.string.HideAllChatsFolder), FoxConfig.hideAllTab, false);
                     } else if (position == notificationAccentRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("AccentAsNotificationColor", R.string.AccentAsNotificationColor), FoxConfig.accentAsNotificationColor, true);
+                        textCheckCell.setTextAndCheck(LocaleController.getString("AccentAsNotificationColor", R.string.AccentAsNotificationColor), FoxConfig.accentAsNotificationColor, false);
                     } else if (position == tabsUnreadCounterRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("TabsCounter", R.string.TabsCounter), FoxConfig.tabsUnreadCounter, true);
                     }

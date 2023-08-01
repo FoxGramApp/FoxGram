@@ -113,7 +113,7 @@ public class DoubleTapActionsSettings extends BaseSettingsActivity {
                         if (partial) {
                             radioCell.setChecked(FoxConfig.doubleTapType == FoxConfig.DOUBLE_TAP_COPY_TEXT, true);
                         } else {
-                            radioCell.setText(LocaleController.getString("Copy", R.string.Copy), FoxConfig.doubleTapType == FoxConfig.DOUBLE_TAP_COPY_TEXT, true);
+                            radioCell.setText(LocaleController.getString("Copy", R.string.Copy), FoxConfig.doubleTapType == FoxConfig.DOUBLE_TAP_COPY_TEXT, false);
                         }
                     } else if (position == doubleTapEditRow) {
                         if (partial) {
