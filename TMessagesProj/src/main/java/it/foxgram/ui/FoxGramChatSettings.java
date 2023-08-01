@@ -299,6 +299,10 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
     @Override
     protected void updateRowsId() {
         super.updateRowsId();
+        cameraTypeSelectorRow = -1;
+        cameraXOptimizeRow = -1;
+        cameraXQualityRow = -1;
+        cameraAdviseRow = -1;
         suppressionRow = -1;
         confirmSendGifsRow = -1;
         confirmSendStickersRow = -1;
@@ -324,7 +328,7 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
         cameraEnableRow = rowCount++;
         if (CameraXUtils.isCameraXSupported()) {
             cameraTypeSelectorRow = rowCount++;
-            if (FoxConfig.cameraType == 1) {
+            if (FoxConfig.cameraType == FoxConfig.CAMERA_X) {
                 cameraXOptimizeRow = rowCount++;
                 cameraXQualityRow = rowCount++;
             }
