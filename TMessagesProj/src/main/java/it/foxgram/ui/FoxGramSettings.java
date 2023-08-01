@@ -277,7 +277,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
                     if (position == supportTranslationRow) {
                         textDetailCell.setTextAndValueAndIcon(LocaleController.getString("TranslateColor", R.string.TranslateColor), LocaleController.getString("TranslateColorDesc", R.string.TranslateColorDesc), R.drawable.round_translate_white_28, true);
                     } else if (position == channelUpdatesRow) {
-                        textDetailCell.setTextAndValueAndIcon(LocaleController.getString("OfficialChannel", R.string.OfficialChannel), "@" + LocaleController.getString("ChannelUsername", R.string.ChannelUsername), R.drawable.msg_channel, true);
+                        textDetailCell.setTextAndValueAndIcon(LocaleController.getString("OfficialChannel", R.string.OfficialChannel), LocaleController.getString("OfficialChannelDesc", R.string.OfficialChannelDesc) + " " + "@" + LocaleController.getString("ChannelUsername", R.string.ChannelUsername), R.drawable.msg_channel, true);
                     } else if (position == sourceCodeRow) {
                         String commitInfo = String.format("%s commit, %s", BuildConfig.GIT_COMMIT_HASH, LocaleController.formatDateAudio(BuildConfig.GIT_COMMIT_DATE, false));
                         textDetailCell.setTextAndValueAndIcon(LocaleController.getString("SourceCode", R.string.SourceCode), commitInfo, R.drawable.outline_source_white_28, true);

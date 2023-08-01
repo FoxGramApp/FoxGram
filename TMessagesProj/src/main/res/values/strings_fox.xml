@@ -287,6 +287,7 @@
     <string name="DoubleTapDesc2">Customize the Double Tap to adapt your use of FoxGram.</string>
     <string name="StoriesCameraOff">Camera is disabled from FoxGram\'s Settings.</string>
     <string name="UpdatesChannelInfo">Features included in Preview versions may disappear at any time or contain bugs.</string>
+    <string name="OfficialChannelDesc">Stay informed of news on</string>
     <!-- Folders -->
     <string name="FoldersType">Folders Type</string>
     <string name="FoldersTypeTitles">Titles</string>
