@@ -252,8 +252,6 @@ public class FoxGramSettings extends BaseSettingsActivity {
                         textCell.setTextAndIcon(LocaleController.getString("TranslationsTitle", R.string.TranslationsTitle), R.drawable.msg_translate, true);
                     } else if (position == chatSettingsRow) {
                         textCell.setTextAndIcon(LocaleController.getString("Chat", R.string.Chat), R.drawable.msg_msgbubble3, true);
-                    } else if (position == channelUpdatesRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("OfficialChannel", R.string.OfficialChannel), "@" + LocaleController.getString("ChannelUsername", R.string.ChannelUsername), R.drawable.msg_channel, true);
                     } else if (position == experimentalSettingsRow) {
                         String isEnabled = FoxConfig.isDevOptEnabled() ? LocaleController.getString("DevOptEnabled", R.string.DevOptEnabled) : LocaleController.getString("DevOptDisabled", R.string.DevOptDisabled);
                         textCell.setTextAndValueAndIcon(LocaleController.getString("Experimental", R.string.Experimental), isEnabled, R.drawable.outline_science_white, true);
@@ -278,6 +276,8 @@ public class FoxGramSettings extends BaseSettingsActivity {
                     textDetailCell.setMultilineDetail(true);
                     if (position == supportTranslationRow) {
                         textDetailCell.setTextAndValueAndIcon(LocaleController.getString("TranslateColor", R.string.TranslateColor), LocaleController.getString("TranslateColorDesc", R.string.TranslateColorDesc), R.drawable.round_translate_white_28, true);
+                    } else if (position == channelUpdatesRow) {
+                        textDetailCell.setTextAndValueAndIcon(LocaleController.getString("OfficialChannel", R.string.OfficialChannel), "@" + LocaleController.getString("ChannelUsername", R.string.ChannelUsername), R.drawable.msg_channel, true);
                     } else if (position == sourceCodeRow) {
                         String commitInfo = String.format("%s commit, %s", BuildConfig.GIT_COMMIT_HASH, LocaleController.formatDateAudio(BuildConfig.GIT_COMMIT_DATE, false));
                         textDetailCell.setTextAndValueAndIcon(LocaleController.getString("SourceCode", R.string.SourceCode), commitInfo, R.drawable.outline_source_white_28, true);
@@ -599,15 +599,17 @@ public class FoxGramSettings extends BaseSettingsActivity {
         public ViewType getViewType(int position) {
             if (position == divisorInfoRow || position == bugDividerRow) {
                 return ViewType.SHADOW;
-            } else if (position == generalSettingsRow || position == translateSettingsRow || position == chatSettingsRow ||
-                    position == channelUpdatesRow || position == experimentalSettingsRow || position == appearanceSettingsRow ||
-                    position == updatesSettingsRow) {
+            } else if (position == generalSettingsRow || position == translateSettingsRow ||
+                    position == chatSettingsRow || position == experimentalSettingsRow ||
+                    position == appearanceSettingsRow || position == updatesSettingsRow) {
                 return ViewType.TEXT_CELL;
-            } else if (position == infoHeaderRow || position == categoryHeaderRow || position == debugHeaderRow) {
+            } else if (position == infoHeaderRow || position == categoryHeaderRow ||
+                    position == debugHeaderRow) {
                 return ViewType.HEADER;
             } else if (position == supportTranslationRow || position == sourceCodeRow ||
                     position == sendLastLogsRow || position == sendLogsRow ||
-                    position == clearLogsRow || position == switchBackendRow) {
+                    position == clearLogsRow || position == switchBackendRow ||
+                    position == channelUpdatesRow) {
                 return ViewType.DETAILED_SETTINGS;
             } else if (position == foxRow) {
                 return ViewType.IMAGE_HEADER;

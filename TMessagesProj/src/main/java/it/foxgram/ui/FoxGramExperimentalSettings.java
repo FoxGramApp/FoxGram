@@ -122,7 +122,7 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
         FoxConfig.toggleDevOpt();
         boolean isEnabled = FoxConfig.isDevOptEnabled();
         textCheckCell.setChecked(isEnabled);
-        textCheckCell.setText(isEnabled ? LocaleController.getString("OnModeCheckTitle", R.string.OnModeCheckTitle) : LocaleController.getString("OffModeCheckTitle", R.string.OffModeCheckTitle));
+        textCheckCell.setText(isEnabled ? LocaleController.getString("DevOptEnabled", R.string.DevOptEnabled) : LocaleController.getString("DevOptDisabled", R.string.DevOptDisabled));
         textCheckCell.setBackgroundColorAnimated(isEnabled, Theme.getColor(isEnabled ? Theme.key_windowBackgroundChecked : Theme.key_windowBackgroundUnchecked));
         if (isEnabled) {
             listAdapter.notifyItemRemoved(experimentalMessageAlert);
@@ -190,7 +190,7 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
                     } else if (position == checkBoxExperimentalRow) {
                         boolean isEnabled = FoxConfig.isDevOptEnabled();
                         textCheckCell.setDrawCheckRipple(true);
-                        textCheckCell.setTextAndCheck(isEnabled ? LocaleController.getString("OnModeCheckTitle", R.string.OnModeCheckTitle) : LocaleController.getString("OffModeCheckTitle", R.string.OffModeCheckTitle), isEnabled, false);
+                        textCheckCell.setTextAndCheck(isEnabled ? LocaleController.getString("DevOptEnabled", R.string.DevOptEnabled) : LocaleController.getString("DevOptDisabled", R.string.DevOptDisabled), isEnabled, false);
                         textCheckCell.setBackgroundColor(Theme.getColor(isEnabled ? Theme.key_windowBackgroundChecked : Theme.key_windowBackgroundUnchecked));
                         textCheckCell.setColors(Theme.key_windowBackgroundCheckText, Theme.key_switchTrackBlue, Theme.key_switchTrackBlueChecked, Theme.key_switchTrackBlueThumb, Theme.key_switchTrackBlueThumbChecked);
                         textCheckCell.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
