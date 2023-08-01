@@ -112,6 +112,12 @@ public class FoxGramGeneralSettings extends BaseSettingsActivity {
     @Override
     protected void updateRowsId() {
         super.updateRowsId();
+
+        privacyHeaderRow = rowCount++;
+        phoneNumberSwitchRow = rowCount++;
+        phoneContactsSwitchRow = rowCount++;
+        divisorPrivacyRow = rowCount++;
+
         dcIdSettingsHeaderRow = rowCount++;
         dcStyleSelectorRow = rowCount++;
         dcIdRow = rowCount++;
@@ -124,11 +130,6 @@ public class FoxGramGeneralSettings extends BaseSettingsActivity {
         tabsUnreadCounterRow = rowCount++;
         hideAllTabRow = rowCount++;
         foldersDividerRow = rowCount++;
-
-        privacyHeaderRow = rowCount++;
-        phoneNumberSwitchRow = rowCount++;
-        phoneContactsSwitchRow = rowCount++;
-        divisorPrivacyRow = rowCount++;
 
         notificationHeaderRow = rowCount++;
         notificationAccentRow = rowCount++;
