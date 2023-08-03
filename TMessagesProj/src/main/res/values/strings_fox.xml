@@ -288,6 +288,8 @@
     <string name="StoriesCameraOff">Camera is disabled from FoxGram\'s Settings.</string>
     <string name="UpdatesChannelInfo">Features included in Preview versions may disappear at any time or contain bugs.</string>
     <string name="OfficialChannelDesc">Stay informed of news on</string>
+    <string name="RegistrationDate">%s Registered on %s</string>
+    <string name="CopyDate">Copy Date</string>
     <!-- Folders -->
     <string name="FoldersType">Folders Type</string>
     <string name="FoldersTypeTitles">Titles</string>

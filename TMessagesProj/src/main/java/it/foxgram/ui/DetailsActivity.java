@@ -39,7 +39,7 @@ import it.foxgram.android.entities.EntitiesHelper;
 import it.foxgram.android.utils.DCHelper;
 import it.foxgram.ui.Cells.DetailsPreviewMessages;
 import it.foxgram.ui.Cells.TextDetailCellMultiline;
-import it.foxgram.android.AccountRegistrationDateController;
+import it.foxgram.android.utils.DateHelper;
 
 public class DetailsActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
     private int rowCount;
@@ -506,7 +506,7 @@ public class DetailsActivity extends BaseFragment implements NotificationCenter.
                     } else if (position == usernameRow) {
                         textDetailCell.setTextAndValue("@" + UserObject.getPublicUsername(fromUser), LocaleController.getString("Username", R.string.Username), true);
                     } else if (position == dateRow) {
-                        textDetailCell.setTextWithEmojiAndValue(AccountRegistrationDateController.getDate(fromUserInfo.tID), LocaleController.getString("AccountRegistrationDate", R.string.AccountRegistrationDate), true);
+                        textDetailCell.setTextWithEmojiAndValue(DateHelper.getDate(fromUserInfo.tID), LocaleController.getString("AccountRegistrationDate", R.string.AccountRegistrationDate), true);
                     } else if (position == messageIdRow) {
                         textDetailCell.setTextAndValue(String.valueOf(messageObject.getId()), "ID", true);
                     } else if (position == messageTextRow) {

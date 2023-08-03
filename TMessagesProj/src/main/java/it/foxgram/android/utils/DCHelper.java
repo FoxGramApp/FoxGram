@@ -59,19 +59,26 @@ public class DCHelper {
         if (DC != -1) {
             DC_NAME = String.format(Locale.ENGLISH, "%s - DC%d", DC_NAME, DC);
         }
-        return new TInfo(DC, id, DC_NAME);
+        String date = user != null && FoxConfig.showAccountRegistrationDate ? String.format(LocaleController.getString("RegistrationDate", R.string.RegistrationDate), " •" , getAccountRegistrationDate(user.id)) : "";
+        return new TInfo(DC, id, DC_NAME, date);
     }
 
     public static class TInfo {
         public final int dcID;
         public final String longDcName;
         public final long tID;
+        public final String date;
 
-        TInfo(int dcID, long tID, String longDcName) {
+        TInfo(int dcID, long tID, String longDcName, String date) {
             this.dcID = dcID;
             this.tID = tID;
             this.longDcName = longDcName;
+            this.date = date;
         }
+    }
+
+    public static String getAccountRegistrationDate(long id) {
+        return DateHelper.getDate(id);
     }
 
     public static int getDCColor(int dc_id) {

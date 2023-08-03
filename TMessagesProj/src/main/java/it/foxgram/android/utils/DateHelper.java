@@ -1,4 +1,4 @@
-package it.foxgram.android;
+package it.foxgram.android.utils;
 
 import android.content.Context;
 
@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class AccountRegistrationDateController {
+public class DateHelper extends DCHelper {
     private static final JSONObject account_date;
     private static final DateFormat dateFormat = DateFormat.getDateInstance();
     private static final String[] ids;

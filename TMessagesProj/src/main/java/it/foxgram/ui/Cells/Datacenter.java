@@ -133,7 +133,8 @@ public class Datacenter extends LinearLayout {
     public void setIdAndDC(DCHelper.TInfo tInfo, boolean divider) {
         this.tInfo = tInfo;
         tv.setText(tInfo.longDcName);
-        tv2.setText(String.valueOf(tInfo.tID));
+        String text = String.valueOf(tInfo.tID) + tInfo.date;
+        tv2.setText(text);
         Drawable d = ContextCompat.getDrawable(getContext(), DCHelper.getDcIcon(tInfo.dcID));
         Objects.requireNonNull(d).setColorFilter(Theme.getColor(Theme.key_switch2TrackChecked, resourcesProvider), PorterDuff.Mode.SRC_ATOP);
         iv.setBackground(d);

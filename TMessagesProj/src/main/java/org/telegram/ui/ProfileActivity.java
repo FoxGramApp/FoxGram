@@ -246,7 +246,7 @@ import java.util.zip.ZipOutputStream;
 
 import it.foxgram.android.FoxConfig;
 import it.foxgram.android.StoreUtils;
-import it.foxgram.android.AccountRegistrationDateController;
+import it.foxgram.android.utils.DateHelper;
 import it.foxgram.ui.Cells.ActionPanel;
 import it.foxgram.ui.Cells.Datacenter;
 import it.foxgram.ui.Cells.DcStyleSelector;
@@ -494,7 +494,6 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private int actionsSectionPlaceHolderRow;
     private int actionsSectionDivider;
     private int datacenterRow;
-    private int dateRow;
     private int datacenterPlaceholderRow;
     private int colorSettingsRow;
     private int numberSectionRow;
@@ -5378,17 +5377,78 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             }
         } else if (position == datacenterRow && (userInfo != null || chatInfo != null)) {
             try {
-                String id = String.valueOf(DCHelper.getTInfo(currentUser, currentChat).tID);
-                AndroidUtilities.addToClipboard(id);
-                BulletinFactory.of(this).createCopyBulletin(LocaleController.getString("TextCopied", R.string.TextCopied)).show();
-            } catch (Exception e) {
-                FileLog.e(e);
-            }
-        } else if (position == dateRow && userInfo != null) {
-            try {
-                String accDate = AccountRegistrationDateController.getDate(currentUser.id);
-                AndroidUtilities.addToClipboard(accDate);
-                BulletinFactory.of(this).createCopyBulletin(LocaleController.getString("TextCopied", R.string.TextCopied)).show();
+                if (getParentActivity() == null) {
+                    return false;
+                }
+                CharSequence[] items = currentUser != null && FoxConfig.showAccountRegistrationDate ? new CharSequence[] {LocaleController.getString("CopyID", R.string.CopyID), LocaleController.getString("CopyDate", R.string.CopyDate)} : new CharSequence[] {LocaleController.getString("CopyID", R.string.CopyID)};
+                int[] icons = currentUser != null && FoxConfig.showAccountRegistrationDate ? new int[] {R.drawable.msg_copy, R.drawable.msg_calendar2} : new int[] {R.drawable.msg_copy};
+
+                AtomicReference<ActionBarPopupWindow> popupWindowRef = new AtomicReference<>();
+                ActionBarPopupWindow.ActionBarPopupWindowLayout popupLayout = new ActionBarPopupWindow.ActionBarPopupWindowLayout(getContext(), R.drawable.popup_fixed_alert, resourcesProvider) {
+                    Path path = new Path();
+
+                    @Override
+                    protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
+                        canvas.save();
+                        path.rewind();
+                        AndroidUtilities.rectTmp.set(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
+                        path.addRoundRect(AndroidUtilities.rectTmp, AndroidUtilities.dp(6), AndroidUtilities.dp(6), Path.Direction.CW);
+                        canvas.clipPath(path);
+                        boolean draw = super.drawChild(canvas, child, drawingTime);
+                        canvas.restore();
+                        return draw;
+                    }
+                };
+                popupLayout.setFitItems(true);
+
+                for (int i = 0; i < icons.length; i++) {
+                    int j = i;
+                    ActionBarMenuItem.addItem(popupLayout, icons[i], items[i], false, resourcesProvider).setOnClickListener(v -> {
+                        popupWindowRef.get().dismiss();
+                        try {
+                            tInfo = DCHelper.getTInfo(currentUser, currentChat);
+                            if (j == 0) {
+                                String id = String.valueOf(tInfo.tID);
+                                AndroidUtilities.addToClipboard(id);
+                                BulletinFactory.of(this).createCopyBulletin(LocaleController.getString("TextCopied", R.string.TextCopied)).show();
+                            } else if (j == 1) {
+                                String date = DateHelper.getDate(currentUser.id);
+                                AndroidUtilities.addToClipboard(date);
+                                BulletinFactory.of(this).createCopyBulletin(LocaleController.getString("TextCopied", R.string.TextCopied)).show();
+                            }
+                        } catch (Exception e) {
+                            FileLog.e(e);
+                        }
+                    });
+                }
+
+                ActionBarPopupWindow popupWindow = new ActionBarPopupWindow(popupLayout, LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT);
+                popupWindow.setPauseNotifications(true);
+                popupWindow.setDismissAnimationDuration(220);
+                popupWindow.setOutsideTouchable(true);
+                popupWindow.setClippingEnabled(true);
+                popupWindow.setAnimationStyle(R.style.PopupContextAnimation);
+                popupWindow.setFocusable(true);
+                popupLayout.measure(View.MeasureSpec.makeMeasureSpec(AndroidUtilities.dp(1000), View.MeasureSpec.AT_MOST), View.MeasureSpec.makeMeasureSpec(AndroidUtilities.dp(1000), View.MeasureSpec.AT_MOST));
+                popupWindow.setInputMethodMode(ActionBarPopupWindow.INPUT_METHOD_NOT_NEEDED);
+                popupWindow.getContentView().setFocusableInTouchMode(true);
+                popupWindowRef.set(popupWindow);
+
+                float px = x, py = y;
+                View v = view;
+                while (v != getFragmentView()) {
+                    px += v.getX();
+                    py += v.getY();
+                    v = (View) v.getParent();
+                }
+                if (AndroidUtilities.isTablet()) {
+                    View pv = parentLayout.getView();
+                    px += pv.getX() + pv.getPaddingLeft();
+                    py += pv.getY() + pv.getPaddingTop();
+                }
+                px -= popupLayout.getMeasuredWidth() / 2f;
+                popupWindow.showAtLocation(getFragmentView(), 0, (int) px, (int) py);
+                popupWindow.dimBehind();
             } catch (Exception e) {
                 FileLog.e(e);
             }
@@ -7499,7 +7559,6 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         datacenterPlaceholderRow = -1;
         actionsSectionDivider = -1;
         datacenterRow = -1;
-        dateRow = -1;
         colorSettingsRow = -1;
         numberSectionRow = -1;
         numberRow = -1;
@@ -7611,7 +7670,6 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 numberRow = rowCount++;
                 setUsernameRow = rowCount++;
-                if (FoxConfig.showAccountRegistrationDate && !isChat()) dateRow = rowCount++;
                 if (FoxConfig.showIDAndDC && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) {
                     datacenterRow = rowCount++;
                 }
@@ -7686,7 +7744,6 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         datacenterPlaceholderRow = rowCount++;
                     }
                 }
-                if (FoxConfig.showAccountRegistrationDate && !isChat()) dateRow = rowCount++;
                 if (!isBot && (hasPhone || !hasInfo)) {
                     phoneRow = rowCount++;
                 }
@@ -9973,13 +10030,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                             detailCell.setImage(drawable);
                         }
                         boolean withDivider = (currentChat != null && !TextUtils.isEmpty(currentChat.username)) || currentUser != null && (UserObject.isUserSelf(currentUser) || !TextUtils.isEmpty(currentUser.username));
-                        detailCell.setTextAndValue(String.valueOf(tInfo.tID), "ID", withDivider);
+                        detailCell.setTextAndValue(String.valueOf(tInfo.tID) + tInfo.date, "ID", withDivider);
                         detailCell.setImageClickListener(ProfileActivity.this::onTextDetailCellImageClicked);
-                    } else if (position == dateRow) {
-                        if (!isChat() || currentUser != null) {
-                            detailCell.setTextAndValue(AccountRegistrationDateController.getDate(currentUser.id), LocaleController.getString(R.string.AccountRegistrationDate), true);
-                            break;
-                        }
                     }
                     if (containsQr) {
                         Drawable drawable = ContextCompat.getDrawable(detailCell.getContext(), R.drawable.msg_qr_mini);
@@ -10461,7 +10513,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         position == faqRow || position == policyRow || position == sendLogsRow || position == sendLastLogsRow ||
                         position == clearLogsRow || position == switchBackendRow || position == setAvatarRow ||
                         position == addToGroupButtonRow || position == premiumRow || position == liteModeRow ||
-                        position == colorSettingsRow || position == datacenterRow || position == dateRow;
+                        position == colorSettingsRow || position == datacenterRow;
             }
             if (holder.itemView instanceof UserCell) {
                 UserCell userCell = (UserCell) holder.itemView;
@@ -10491,7 +10543,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     position == numberSectionRow || position == helpHeaderRow || position == debugHeaderRow) {
                 return VIEW_TYPE_HEADER;
             } else if (position == phoneRow || position == locationRow || position == numberRow || position == restrictionReasonRow ||
-                    (position == datacenterRow && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC) || position == dateRow) {
+                    (position == datacenterRow && DcStyleSelector.getStyleSelected() == DcStyleSelector.TELEGRAM_DC)) {
                 return VIEW_TYPE_TEXT_DETAIL;
             } else if (position == usernameRow || position == setUsernameRow) {
                 return VIEW_TYPE_TEXT_DETAIL_MULTILINE;
@@ -11787,7 +11839,6 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             put(++pointer, actionsSectionPlaceHolderRow, sparseIntArray);
             put(++pointer, actionsSectionDivider, sparseIntArray);
             put(++pointer, datacenterRow, sparseIntArray);
-            put(++pointer, dateRow, sparseIntArray);
             put(++pointer, datacenterPlaceholderRow, sparseIntArray);
             put(++pointer, colorSettingsRow, sparseIntArray);
             put(++pointer, emptyRow, sparseIntArray);
