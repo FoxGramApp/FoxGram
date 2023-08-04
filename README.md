@@ -10,7 +10,7 @@ will be used from Homebrew if installed, otherwise it will be used the one in th
 1. [**Obtain your own api_id**](https://core.telegram.org/api/obtaining_api_id) for your application and put [**here**](https://github.com/Pierlu096/Color/blob/dev/TMessagesProj/src/main/java/org/telegram/messenger/BuildVars.java). 
 2. Create 2 app in [**firebase**](https://console.firebase.google.com/) and download google_services.json file.
 3. Add your google-services.json file to the [**root of the project**](https://github.com/Pierlu096/FoxGram/blob/dev/TMessagesProj_App/google-services.json).
-4. Copy your release.keystore [**here**](https://github.com/Pierlu096/FoxGram/blob/dev/TMessagesProj/config/release.keystore).
+4. Copy your release.keystore [**here**](https://github.com/Pierlu096/FoxGram/blob/dev/TMessagesProj/config).
 5. Add `MAPS_API_KEY=<your-api-key>` (you can get it [**here**](https://console.cloud.google.com/google/maps-apis)) to your `local.properties` file.
 6. Please **do not** use the name Telegram for your app — or make sure your users understand that it is unofficial.
 7. Kindly **do not** use our standard logo (white paper plane in a blue circle) as your app's logo.
