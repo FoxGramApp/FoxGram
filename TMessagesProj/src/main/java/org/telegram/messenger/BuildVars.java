@@ -41,8 +41,8 @@ public class BuildVars {
 
     // App ID and HASH
     // If you want make a fork you have to replace ID and HASH with yours
-    public static int APP_ID = 12921654;
-    public static String APP_HASH = "8ebeb77d7170894d560ca40bdeabac3a";
+    public static int APP_ID = 0;
+    public static String APP_HASH = "000";
 
     // Google
     // You can disable Safety Net Key leaving no text here
