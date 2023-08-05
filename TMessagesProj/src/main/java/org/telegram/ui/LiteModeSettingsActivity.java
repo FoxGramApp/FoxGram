@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -251,9 +250,7 @@ public class LiteModeSettingsActivity extends BaseFragment {
                 items.add(Item.asCheckbox(LocaleController.getString("LiteOptionsTopics"), LiteMode.FLAG_CHAT_FORUM_TWOCOLUMN));
             }
             items.add(Item.asCheckbox(LocaleController.getString("LiteOptionsSpoiler"), LiteMode.FLAG_CHAT_SPOILER));
-            if (SharedConfig.getDevicePerformanceClass() >= SharedConfig.PERFORMANCE_CLASS_AVERAGE) {
-                items.add(Item.asCheckbox(LocaleController.getString("LiteOptionsBlur"), LiteMode.FLAG_CHAT_BLUR));
-            }
+            //items.add(Item.asCheckbox(LocaleController.getString("LiteOptionsBlur"), LiteMode.FLAG_CHAT_BLUR));
             items.add(Item.asCheckbox(LocaleController.getString("LiteOptionsScale"), LiteMode.FLAG_CHAT_SCALE));
         }
         items.add(Item.asSwitch(R.drawable.msg2_call_earpiece, LocaleController.getString("LiteOptionsCalls"), LiteMode.FLAG_CALLS_ANIMATIONS));
@@ -618,7 +615,10 @@ public class LiteModeSettingsActivity extends BaseFragment {
                 if ((flags & LiteMode.FLAG_ANIMATED_EMOJI_KEYBOARD_PREMIUM) > 0)
                     count--;
             }
-            if (SharedConfig.getDevicePerformanceClass() < SharedConfig.PERFORMANCE_CLASS_AVERAGE && (flags & LiteMode.FLAG_CHAT_BLUR) > 0) {
+            /*if (SharedConfig.getDevicePerformanceClass() < SharedConfig.PERFORMANCE_CLASS_AVERAGE && (flags & LiteMode.FLAG_CHAT_BLUR) > 0) {
+                count--;
+            }*/
+            if ((flags & LiteMode.FLAG_CHAT_BLUR) > 0) {
                 count--;
             }
             return count;

@@ -290,6 +290,8 @@
     <string name="OfficialChannelDesc">Stay informed of news on</string>
     <string name="RegistrationDate">%s Registered on %s</string>
     <string name="CopyDate">Copy Date</string>
+    <string name="Blur">In-Chat Blur</string>
+    <string name="BlurChatIntensity">Chat Blur Intensity</string>
     <!-- Folders -->
     <string name="FoldersType">Folders Type</string>
     <string name="FoldersTypeTitles">Titles</string>

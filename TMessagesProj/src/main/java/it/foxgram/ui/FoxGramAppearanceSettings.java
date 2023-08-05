@@ -27,6 +27,7 @@ import it.foxgram.android.CustomEmojiController;
 import it.foxgram.android.FoxConfig;
 import it.foxgram.android.utils.FoxTextUtils;
 import it.foxgram.ui.Cells.BlurIntensity;
+import it.foxgram.ui.Cells.ChatBlurIntensity;
 import it.foxgram.ui.Cells.DrawerProfilePreview;
 import it.foxgram.ui.Cells.DynamicButtonSelector;
 import it.foxgram.ui.Cells.ThemeSelectorDrawer;
@@ -71,6 +72,10 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
     private int showPencilIconRow;
     private int showInActionBarRow;
     private int chooseEmojiPackRow;
+    private int inAppBlurRow;
+    private int inAppBlurDividerRow;
+    private int editInAppBlurRow;
+    private int editInAppBlurHeaderRow;
 
     @Override
     protected String getActionBarTitle() {
@@ -259,6 +264,17 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
             });
         } else if (position == chooseEmojiPackRow) {
             presentFragment(new EmojiPackSettings());
+        } else if (position == inAppBlurRow) {
+            FoxConfig.toggleBlurInApp();
+            if (view instanceof TextCheckCell) {
+                ((TextCheckCell) view).setChecked(FoxConfig.blurInApp);
+            }
+            if (FoxConfig.blurInApp) {
+                listAdapter.notifyItemRangeInserted(appearanceDividerRow, 3);
+            } else {
+                listAdapter.notifyItemRangeRemoved(inAppBlurDividerRow, 3);
+            }
+            updateRowsId();
         }
     }
 
@@ -274,6 +290,9 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
         editBlurDividerRow = -1;
         showSantaHatRow = -1;
         showFallingSnowRow = -1;
+        inAppBlurDividerRow = -1;
+        editInAppBlurHeaderRow = -1;
+        editInAppBlurRow = -1;
 
         drawerRow = rowCount++;
         drawerAvatarAsBackgroundRow = rowCount++;
@@ -311,6 +330,12 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
         messageTimeSwitchRow = rowCount++;
         smartButtonsRow = rowCount++;
         forcePacmanRow = rowCount++;
+        inAppBlurRow = rowCount++;
+        if (FoxConfig.blurInApp) {
+            inAppBlurDividerRow = rowCount++;
+            editInAppBlurHeaderRow = rowCount++;
+            editInAppBlurRow = rowCount++;
+        }
         appearanceDividerRow = rowCount++;
 
         fontsAndEmojiHeaderRow = rowCount++;
@@ -363,6 +388,8 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                         headerCell.setText(LocaleController.getString("Appearance", R.string.Appearance));
                     } else if (position == chatHeaderRow) {
                         headerCell.setText(LocaleController.getString("ChatHeader", R.string.ChatHeader));
+                    } else if (position == editInAppBlurHeaderRow) {
+                        headerCell.setText(LocaleController.getString("BlurChatIntensity", R.string.BlurChatIntensity));
                     }
                     break;
                 case SWITCH:
@@ -386,7 +413,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                     } else if (position == roundedNumberSwitchRow) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("NumberRounding", R.string.NumberRounding), LocaleController.getString("NumberRoundingDesc", R.string.NumberRoundingDesc), FoxConfig.roundedNumbers, true, true);
                     } else if (position == forcePacmanRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("PacManAnimation", R.string.PacManAnimation), FoxConfig.pacmanForced, false);
+                        textCheckCell.setTextAndCheck(LocaleController.getString("PacManAnimation", R.string.PacManAnimation), FoxConfig.pacmanForced, true);
                     } else if (position == smoothNavRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("SmoothNav", R.string.SmoothNav), FoxConfig.smoothNav, true);
                     } else if (position == smartButtonsRow) {
@@ -403,6 +430,8 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                         textCheckCell.setTextAndCheck(LocaleController.getString("SearchIconTitleBar", R.string.SearchIconTitleBar), FoxConfig.searchIconInActionBar, true);
                     } else if (position == showPencilIconRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("ShowPencilIcon", R.string.ShowPencilIcon), FoxConfig.showPencilIcon, true);
+                    } else if (position == inAppBlurRow) {
+                        textCheckCell.setTextAndCheck(LocaleController.getString("Blur", R.string.Blur), FoxConfig.blurInApp, false);
                     }
                     break;
                 case PROFILE_PREVIEW:
@@ -482,6 +511,26 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                     };
                     view.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite));
                     break;
+                case CHAT_BLUR_INTENSITY:
+                    view = new ChatBlurIntensity(context) {
+                        @Override
+                        protected void onBlurIntensityChange(int percentage, boolean layout) {
+                            super.onBlurIntensityChange(percentage, layout);
+                            FoxConfig.setBlurAlpha(percentage);
+                            RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(editInAppBlurRow);
+                            if (holder != null && holder.itemView instanceof BlurIntensity) {
+                                BlurIntensity cell = (BlurIntensity) holder.itemView;
+                                if (layout) {
+                                    cell.requestLayout();
+                                } else {
+                                    cell.invalidate();
+                                }
+                            }
+                            listAdapter.notifyItemChanged(inAppBlurRow, PARTIAL);
+                        }
+                    };
+                    view.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite));
+                    break;
                 case THEME_SELECTOR:
                     view = new ThemeSelectorDrawer(context, FoxConfig.eventType) {
                         @Override
@@ -526,23 +575,33 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
 
         @Override
         public ViewType getViewType(int position) {
-            if (position == drawerDividerRow || position == editBlurDividerRow || position == themeDrawerDividerRow ||
-                    position == dynamicDividerRow || position == fontsAndEmojiDividerRow || position == appearanceDividerRow) {
+            if (position == drawerDividerRow || position == editBlurDividerRow ||
+                    position == themeDrawerDividerRow || position == dynamicDividerRow ||
+                    position == fontsAndEmojiDividerRow || position == appearanceDividerRow ||
+                    position == inAppBlurDividerRow) {
                 return ViewType.SHADOW;
-            } else if (position == editBlurHeaderRow || position == themeDrawerHeader || position == dynamicButtonHeaderRow ||
-                    position == fontsAndEmojiHeaderRow || position == appearanceHeaderRow || position == chatHeaderRow) {
+            } else if (position == editBlurHeaderRow || position == themeDrawerHeader ||
+                    position == dynamicButtonHeaderRow || position == fontsAndEmojiHeaderRow ||
+                    position == appearanceHeaderRow || position == chatHeaderRow ||
+                    position == editInAppBlurHeaderRow) {
                 return ViewType.HEADER;
             } else if (position == roundedNumberSwitchRow || position == messageTimeSwitchRow ||
-                    position == useSystemFontRow || position == drawerAvatarAsBackgroundRow || position == showMenuControllerIconRow ||
-                    position == drawerDarkenBackgroundRow || position == drawerBlurBackgroundRow || position == showGradientRow ||
-                    position == showAvatarRow || position == forcePacmanRow || position == smoothNavRow || position == smartButtonsRow ||
-                    position == appBarShadowRow || position == showSantaHatRow || position == showFallingSnowRow ||
-                    position == slidingTitleRow || position == searchIconInActionBarRow || position == showPencilIconRow) {
+                    position == useSystemFontRow || position == drawerAvatarAsBackgroundRow ||
+                    position == showMenuControllerIconRow || position == drawerDarkenBackgroundRow ||
+                    position == drawerBlurBackgroundRow || position == showGradientRow ||
+                    position == showAvatarRow || position == forcePacmanRow ||
+                    position == smoothNavRow || position == smartButtonsRow ||
+                    position == appBarShadowRow || position == showSantaHatRow ||
+                    position == showFallingSnowRow || position == slidingTitleRow ||
+                    position == searchIconInActionBarRow || position == showPencilIconRow ||
+                    position == inAppBlurRow) {
                 return ViewType.SWITCH;
             } else if (position == drawerRow) {
                 return ViewType.PROFILE_PREVIEW;
             } else if (position == editBlurRow) {
                 return ViewType.BLUR_INTENSITY;
+            } else if (position == editInAppBlurRow) {
+                return ViewType.CHAT_BLUR_INTENSITY;
             } else if (position == menuItemsRow) {
                 return ViewType.TEXT_CELL;
             } else if (position == themeDrawerRow) {

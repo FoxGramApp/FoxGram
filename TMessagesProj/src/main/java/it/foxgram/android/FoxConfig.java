@@ -102,6 +102,8 @@ public class FoxConfig extends SettingsController {
     public static boolean reduceCameraXLatency;
     public static boolean cameraPreview;
     public static boolean translateEntireChat;
+    public static boolean tabsUnreadCounter;
+    public static boolean blurInApp;
     public static String translationTarget = "app";
     public static String translationKeyboardTarget = "app";
     public static String oldBuildVersion = null;
@@ -134,7 +136,7 @@ public class FoxConfig extends SettingsController {
     public static int downloadSpeedBoost;
     public static int lastSelectedCompression;
     public static int oldTitleText;
-    public static boolean tabsUnreadCounter;
+    public static int blurAlphaIntensity;
 
     static {
         loadConfig(true);
@@ -239,6 +241,8 @@ public class FoxConfig extends SettingsController {
             confirmSending.readParams(getByteArray("confirmSending"), magicException);
             contextMenu.readParams(getByteArray("contextMenu"), magicException);
             tabsUnreadCounter = getBoolean("tabsUnreadCounter", true);
+            blurInApp = getBoolean("blurInApp", true);
+            blurAlphaIntensity = getInt("blurAlphaIntensity", 127);
 
             //EXPERIMENTAL OPTIONS
             devOptEnabled = getBoolean("devOptEnabled", false);
@@ -468,6 +472,10 @@ public class FoxConfig extends SettingsController {
         putValue("tabsUnreadCounter", tabsUnreadCounter ^= true);
     }
 
+    public static void toggleBlurInApp() {
+        putValue("blurInApp", blurInApp ^= true);
+    }
+
     public static void setXiaomiBlockedInstaller() {
         putValue("xiaomiBlockedInstaller", xiaomiBlockedInstaller = true);
     }
@@ -506,6 +514,10 @@ public class FoxConfig extends SettingsController {
 
     public static void setStickerSize(int size) {
         putValue("stickerSizeStack", stickerSizeStack = size);
+    }
+
+    public static void setBlurAlpha(int alpha) {
+        putValue("blurAlphaIntensity", blurAlphaIntensity = alpha);
     }
 
     public static void setDcStyleType(int type) {
