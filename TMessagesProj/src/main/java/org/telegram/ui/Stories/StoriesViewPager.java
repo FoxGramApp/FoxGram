@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -167,7 +168,7 @@ public class StoriesViewPager extends ViewPager {
 
             @Override
             public void onPageSelected(int position) {
-                PeerStoriesView peerStoriesView = getCurrentPeerView();
+                final PeerStoriesView peerStoriesView = getCurrentPeerView();
                 if (peerStoriesView == null) {
                     return;
                 }
@@ -221,6 +222,7 @@ public class StoriesViewPager extends ViewPager {
         return true;
     }
 
+    @Nullable
     public PeerStoriesView getCurrentPeerView() {
         for (int i = 0; i < getChildCount(); i++) {
             if ((Integer) getChildAt(i).getTag() == getCurrentItem()) {
@@ -263,7 +265,7 @@ public class StoriesViewPager extends ViewPager {
         super.onLayout(changed, l, t, r, b);
         if (updateDelegate) {
             updateDelegate = false;
-            PeerStoriesView peerStoriesView = getCurrentPeerView();
+            final PeerStoriesView peerStoriesView = getCurrentPeerView();
             if (peerStoriesView != null) {
                 delegate.onPeerSelected(peerStoriesView.getCurrentPeer(), peerStoriesView.getSelectedPosition());
             }
@@ -342,7 +344,7 @@ public class StoriesViewPager extends ViewPager {
     public void setKeyboardHeight(int realKeyboardHeight) {
         if (keyboardHeight != realKeyboardHeight) {
             keyboardHeight = realKeyboardHeight;
-            View view = getCurrentPeerView();
+            final View view = getCurrentPeerView();
             if (view != null) {
                 view.requestLayout();
             }
