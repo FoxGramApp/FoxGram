@@ -456,7 +456,7 @@ public class FileLog {
                 size += file.length();
             }
         }
-        return AndroidUtilities.formatFileSize(size, true);
+        return AndroidUtilities.formatFileSize(size, true, false);
     }
 
     public static void cleanupLogs() {
