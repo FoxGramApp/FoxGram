@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class DateHelper extends DCHelper {
+public class DateHelper {
     private static final JSONObject account_date;
     private static final DateFormat dateFormat = DateFormat.getDateInstance();
     private static final String[] ids;
@@ -41,14 +41,12 @@ public class DateHelper extends DCHelper {
                 idList.add(key);
             }
             ids = idList.toArray(new String[0]);
-
             time = new int[ids.length];
             int i = 0;
             while (i < ids.length) {
                 time[i] = Integer.parseInt(ids[i]);
                 i++;
             }
-
             minId = time[0];
             maxId = time[time.length - 1];
         } catch (IOException | JSONException e) {
@@ -59,7 +57,9 @@ public class DateHelper extends DCHelper {
     @NonNull
     public static String getDate(long id) {
         Date dateResult = getAccountRegistration(id);
-        if (dateResult == null) return LocaleController.getString("NumberUnknown", R.string.NumberUnknown);
+        if (dateResult == null) {
+            return LocaleController.getString("NumberUnknown", R.string.NumberUnknown);
+        }
         return String.format(dateFormat.format(dateResult));
     }
 
@@ -76,15 +76,19 @@ public class DateHelper extends DCHelper {
     @NonNull
     private static Date getAccountRegistration(long id) {
         try {
-            if (id <= minId) return new Date((Long) account_date.get(ids[0]));
-            else if (id >= maxId) return new Date((Long) account_date.get(ids[ids.length - 1]));
-            else {
+            if (id <= minId) {
+                return new Date((Long) account_date.get(ids[0]));
+            } else if (id >= maxId) {
+                return new Date((Long) account_date.get(ids[ids.length - 1]));
+            } else {
                 int INDEX = Arrays.binarySearch(time, (int) id);
                 if (INDEX >= 0) {
                     long dateInMillis = (Long) account_date.get(ids[INDEX]);
                     String formattedDate = dateFormat.format(new Date(dateInMillis));
                     Date parseDate = dateFormat.parse(formattedDate);
-                    if (parseDate == null) throw new ParseException("Failed to parse date", 0);
+                    if (parseDate == null) {
+                        throw new ParseException("Failed to parse date", 0);
+                    }
                     return parseDate;
                 } else {
                     int insertionPoint = - (INDEX + 1), lowerId = insertionPoint - 1;
@@ -93,10 +97,14 @@ public class DateHelper extends DCHelper {
                     long midTime = (long) (ratio * (MAX_AGE - lowTime) + lowTime);
                     String formattedDate = dateFormat.format(new Date(midTime));
                     Date parsedDate = dateFormat.parse(formattedDate);
-                    if (parsedDate == null) throw new ParseException("Date parse failed", 0);
+                    if (parsedDate == null) {
+                        throw new ParseException("Date parse failed", 0);
+                    }
                     return parsedDate;
                 }
             }
-        } catch (Exception e) {throw new RuntimeException(e);}
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

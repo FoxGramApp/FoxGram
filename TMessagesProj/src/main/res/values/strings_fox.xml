@@ -10,8 +10,6 @@
     <string name="Chat">Chats</string>
     <string name="ColorUpdates">Updates</string>
     <string name="Experimental">Experimental</string>
-    <string name="OnModeCheckTitle">On</string>
-    <string name="OffModeCheckTitle">Off</string>
     <string name="ExperimentalOff">Warning! Those are experimental settings. Some may not work. Others may break the app. Any of them may disappear in the next version without a trace. Use at your own risk.</string>
     <string name="ExperimentalDesc">Try experimental features. Some may not work correctly.</string>
     <string name="DisableExperimentalAlert">Are you sure you want to disable experimental settings?\n\nNote that this will disable the Monet Icon.</string>
@@ -279,7 +277,7 @@
     <string name="BaseVersionUpdated">Base Version</string>
     <string name="BuildType">Build Type</string>
     <string name="BuildVersion">Installed Build</string>
-    <string name="UpdateType">Version Channel</string>
+    <string name="UpdateType">Channel Version</string>
     <string name="DownloadSource">Download Source</string>
     <string name="ReleaseDate">Release Date</string>
     <string name="DoubleTap">Double Tap Action</string>
