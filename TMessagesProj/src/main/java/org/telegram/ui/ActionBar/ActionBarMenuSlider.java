@@ -250,7 +250,7 @@ public class ActionBarMenuSlider extends FrameLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(drawShadow ? MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec) + getPaddingRight() + getPaddingLeft(), MeasureSpec.EXACTLY) : widthMeasureSpec, MeasureSpec.makeMeasureSpec(dp(44) + getPaddingTop() + getPaddingBottom(), MeasureSpec.EXACTLY));
 
-        final boolean canDoBlur = SharedConfig.getDevicePerformanceClass() >= SharedConfig.PERFORMANCE_CLASS_HIGH && LiteMode.isEnabled(LiteMode.FLAG_CHAT_BLUR);
+        final boolean canDoBlur = SharedConfig.chatBlurEnabled();
         if (drawBlur && blurBitmap == null && !preparingBlur && canDoBlur) {
             this.prepareBlur.run();
 //            removeCallbacks(this.prepareBlur);

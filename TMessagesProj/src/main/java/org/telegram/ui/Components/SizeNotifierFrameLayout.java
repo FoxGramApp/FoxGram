@@ -555,10 +555,7 @@ public class SizeNotifierFrameLayout extends FrameLayout {
             return;
         }
 
-        int blurAlpha = Color.alpha(Theme.getColor(Theme.key_chat_BlurAlpha));
-        if (FoxConfig.blurInApp) {
-            blurAlpha = FoxConfig.blurAlphaIntensity;
-        }
+        int blurAlpha = FoxConfig.editInAppBlurAlpha;
         if (blurAlpha == 255) {
             return;
         }
@@ -820,10 +817,7 @@ public class SizeNotifierFrameLayout extends FrameLayout {
     }
 
     public void drawBlurRect(Canvas canvas, float y, Rect rectTmp, Paint blurScrimPaint, boolean top) {
-        int blurAlpha = Color.alpha(Theme.getColor(Theme.key_chat_BlurAlpha));
-        if (FoxConfig.blurInApp) {
-            blurAlpha = FoxConfig.blurAlphaIntensity;
-        }
+        int blurAlpha = FoxConfig.editInAppBlurAlpha;
         if (currentBitmap == null || !SharedConfig.chatBlurEnabled()) {
             canvas.drawRect(rectTmp, blurScrimPaint);
             return;
@@ -847,7 +841,7 @@ public class SizeNotifierFrameLayout extends FrameLayout {
     }
 
     public void drawBlurCircle(Canvas canvas, float viewY, float cx, float cy, float radius, Paint blurScrimPaint, boolean top) {
-        int blurAlpha = Color.alpha(Theme.getColor(Theme.key_chat_BlurAlpha));
+        int blurAlpha = FoxConfig.editInAppBlurAlpha;
         if (currentBitmap == null || !SharedConfig.chatBlurEnabled()) {
             canvas.drawCircle(cx, cy, radius, blurScrimPaint);
             return;

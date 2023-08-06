@@ -61,14 +61,14 @@ public class ChatBlurIntensity extends FrameLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         textPaint.setColor(Theme.getColor(Theme.key_windowBackgroundWhiteValueText));
-        canvas.drawText("" + FoxConfig.blurAlphaIntensity, getMeasuredWidth() - AndroidUtilities.dp(39), AndroidUtilities.dp(28), textPaint);
+        canvas.drawText("" + FoxConfig.editInAppBlurAlpha, getMeasuredWidth() - AndroidUtilities.dp(39), AndroidUtilities.dp(28), textPaint);
         canvas.drawLine(LocaleController.isRTL ? 0 : AndroidUtilities.dp(20), getMeasuredHeight() - 1, getMeasuredWidth() - (LocaleController.isRTL ? AndroidUtilities.dp(20) : 0), getMeasuredHeight() - 1, Theme.dividerPaint);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.EXACTLY), heightMeasureSpec);
-        sizeBar.setProgress((FoxConfig.blurAlphaIntensity - startIntensity) / (float) (endIntensity - startIntensity));
+        sizeBar.setProgress((FoxConfig.editInAppBlurAlpha - startIntensity) / (float) (endIntensity - startIntensity));
     }
 
     @Override

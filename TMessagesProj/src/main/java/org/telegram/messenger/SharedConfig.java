@@ -1175,7 +1175,7 @@ public class SharedConfig {
     }
 
     public static void toggleChatBlur() {
-        LiteMode.toggleFlag(LiteMode.FLAG_CHAT_BLUR);
+        FoxConfig.toggleEditInAppBlur();
     }
 
     public static void toggleForceDisableTabletMode() {
@@ -1550,7 +1550,7 @@ public class SharedConfig {
     }
 
     public static boolean chatBlurEnabled() {
-        return canBlurChat() && LiteMode.isEnabled(LiteMode.FLAG_CHAT_BLUR) && FoxConfig.blurInApp;
+        return canBlurChat() && FoxConfig.editInAppBlur;
     }
 
     public static class BackgroundActivityPrefs {

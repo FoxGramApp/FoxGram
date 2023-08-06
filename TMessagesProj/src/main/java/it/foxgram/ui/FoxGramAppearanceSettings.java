@@ -265,11 +265,11 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
         } else if (position == chooseEmojiPackRow) {
             presentFragment(new EmojiPackSettings());
         } else if (position == inAppBlurRow) {
-            FoxConfig.toggleBlurInApp();
+            FoxConfig.toggleEditInAppBlur();
             if (view instanceof TextCheckCell) {
-                ((TextCheckCell) view).setChecked(FoxConfig.blurInApp);
+                ((TextCheckCell) view).setChecked(FoxConfig.editInAppBlur);
             }
-            if (FoxConfig.blurInApp) {
+            if (FoxConfig.editInAppBlur) {
                 listAdapter.notifyItemRangeInserted(appearanceDividerRow, 3);
             } else {
                 listAdapter.notifyItemRangeRemoved(inAppBlurDividerRow, 3);
@@ -331,7 +331,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
         smartButtonsRow = rowCount++;
         forcePacmanRow = rowCount++;
         inAppBlurRow = rowCount++;
-        if (FoxConfig.blurInApp) {
+        if (FoxConfig.editInAppBlur) {
             inAppBlurDividerRow = rowCount++;
             editInAppBlurHeaderRow = rowCount++;
             editInAppBlurRow = rowCount++;
@@ -431,7 +431,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                     } else if (position == showPencilIconRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("ShowPencilIcon", R.string.ShowPencilIcon), FoxConfig.showPencilIcon, true);
                     } else if (position == inAppBlurRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("Blur", R.string.Blur), FoxConfig.blurInApp, false);
+                        textCheckCell.setTextAndCheck(LocaleController.getString("Blur", R.string.Blur), FoxConfig.editInAppBlur, false);
                     }
                     break;
                 case PROFILE_PREVIEW:

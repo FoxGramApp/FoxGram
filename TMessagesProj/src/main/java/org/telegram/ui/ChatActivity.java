@@ -11974,7 +11974,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         int maxAdapterPosition = -1;
         int minAdapterPosition = -1;
 
-        boolean blurEnabled = SharedConfig.chatBlurEnabled() && Color.alpha(Theme.getColor(Theme.key_chat_BlurAlpha)) != 255;
+        boolean blurEnabled = SharedConfig.chatBlurEnabled() && FoxConfig.editInAppBlurAlpha != 255;
 
         MessageObject messageStarter = isTopic ? topicStarterMessageObject : threadMessageObject;
 

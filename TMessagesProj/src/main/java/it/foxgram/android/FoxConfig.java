@@ -103,7 +103,7 @@ public class FoxConfig extends SettingsController {
     public static boolean cameraPreview;
     public static boolean translateEntireChat;
     public static boolean tabsUnreadCounter;
-    public static boolean blurInApp;
+    public static boolean editInAppBlur;
     public static boolean unlockedSecretIcons;
     public static String translationTarget = "app";
     public static String translationKeyboardTarget = "app";
@@ -137,7 +137,7 @@ public class FoxConfig extends SettingsController {
     public static int downloadSpeedBoost;
     public static int lastSelectedCompression;
     public static int oldTitleText;
-    public static int blurAlphaIntensity;
+    public static int editInAppBlurAlpha;
 
     static {
         loadConfig(true);
@@ -242,8 +242,8 @@ public class FoxConfig extends SettingsController {
             confirmSending.readParams(getByteArray("confirmSending"), magicException);
             contextMenu.readParams(getByteArray("contextMenu"), magicException);
             tabsUnreadCounter = getBoolean("tabsUnreadCounter", true);
-            blurInApp = getBoolean("blurInApp", true);
-            blurAlphaIntensity = getInt("blurAlphaIntensity", 127);
+            editInAppBlur = getBoolean("editInAppBlur", true);
+            editInAppBlurAlpha = getInt("editInAppBlurAlpha", 127);
             unlockedSecretIcons = getBoolean("unlockedSecretIcons", false);
 
             //EXPERIMENTAL OPTIONS
@@ -474,8 +474,8 @@ public class FoxConfig extends SettingsController {
         putValue("tabsUnreadCounter", tabsUnreadCounter ^= true);
     }
 
-    public static void toggleBlurInApp() {
-        putValue("blurInApp", blurInApp ^= true);
+    public static void toggleEditInAppBlur() {
+        putValue("editInAppBlur", editInAppBlur ^= true);
     }
 
     public static void toggleUnlockedSecretIcons() {
@@ -523,7 +523,7 @@ public class FoxConfig extends SettingsController {
     }
 
     public static void setBlurAlpha(int alpha) {
-        putValue("blurAlphaIntensity", blurAlphaIntensity = alpha);
+        putValue("editInAppBlurAlpha", editInAppBlurAlpha = alpha);
     }
 
     public static void setDcStyleType(int type) {
