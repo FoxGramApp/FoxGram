@@ -20,7 +20,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.text.Editable;
@@ -589,7 +588,11 @@ public class ChatEditActivity extends BaseFragment implements ImageUpdater.Image
 
         linearLayout1.setOrientation(LinearLayout.VERTICAL);
 
-        actionBar.setTitle(LocaleController.getString("ChannelEdit", R.string.ChannelEdit));
+        if (ChatObject.hasAdminRights(currentChat)) {
+            actionBar.setTitle(LocaleController.getString("ChannelEdit", R.string.ChannelEdit));
+        } else {
+            actionBar.setTitle(LocaleController.getString("Info", R.string.Info));
+        }
 
         avatarContainer = new LinearLayout(context);
         avatarContainer.setOrientation(LinearLayout.VERTICAL);
@@ -1077,6 +1080,9 @@ public class ChatEditActivity extends BaseFragment implements ImageUpdater.Image
             if (isChannel || currentChat.gigagroup) {
                 infoContainer.addView(blockCell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
             }
+            if (logCell != null) {
+                infoContainer.addView(logCell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
+            }
             if (!isChannel && info != null && info.can_set_stickers) {
                 stickersContainer = new FrameLayout(context);
                 stickersContainer.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite));
@@ -1092,8 +1098,6 @@ public class ChatEditActivity extends BaseFragment implements ImageUpdater.Image
                     groupStickersActivity.setInfo(info);
                     presentFragment(groupStickersActivity);
                 });
-            } else if (logCell != null) {
-                infoContainer.addView(logCell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
             }
         }
 
