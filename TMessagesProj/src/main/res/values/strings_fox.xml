@@ -290,6 +290,8 @@
     <string name="CopyDate">Copy Date</string>
     <string name="Blur">In-Chat Blur</string>
     <string name="BlurChatIntensity">Chat Blur Intensity</string>
+    <string name="ShowSecretIcons">Show Secret Icons</string>
+    <string name="HideSecretIcons">Hide Secret Icons</string>
     <!-- Folders -->
     <string name="FoldersType">Folders Type</string>
     <string name="FoldersTypeTitles">Titles</string>

@@ -48,6 +48,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import it.foxgram.android.FoxConfig;
+
 public class AppIconsSelectorCell extends RecyclerListView implements NotificationCenter.NotificationCenterDelegate {
     public final static float ICONS_ROUND_RADIUS = 18;
 
@@ -153,13 +155,26 @@ public class AppIconsSelectorCell extends RecyclerListView implements Notificati
     private void updateIconsVisibility() {
         availableIcons.clear();
         availableIcons.addAll(Arrays.asList(LauncherIconController.LauncherIcon.values()));
-        availableIcons.remove(LauncherIconController.LauncherIcon.MONET);
         if (MessagesController.getInstance(currentAccount).premiumLocked) {
             for (int i = 0; i < availableIcons.size(); i++) {
                 if (availableIcons.get(i).premium) {
                     availableIcons.remove(i);
                     i--;
                 }
+            }
+        }
+        for (int i = 0; i < availableIcons.size(); i++) {
+            LauncherIconController.LauncherIcon icon = availableIcons.get(i);
+            if (icon.hidden && !LauncherIconController.isEnabled(icon)) {
+                if (icon == LauncherIconController.LauncherIcon.VINTAGE && FoxConfig.unlockedSecretIcons) {
+                    continue;
+                } else if (icon == LauncherIconController.LauncherIcon.RAINBOW && FoxConfig.unlockedSecretIcons) {
+                    continue;
+                } else if (icon == LauncherIconController.LauncherIcon.ARI && FoxConfig.unlockedSecretIcons) {
+                    continue;
+                }
+                availableIcons.remove(i);
+                i--;
             }
         }
         getAdapter().notifyDataSetChanged();

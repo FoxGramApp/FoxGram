@@ -340,6 +340,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
                 builder.setTitle(LocaleController.getString("DebugMenu", R.string.DebugMenu), true);
                 CharSequence[] items;
                 items = new CharSequence[]{
+                        FoxConfig.unlockedSecretIcons ? LocaleController.getString("HideSecretIcons", R.string.HideSecretIcons) : LocaleController.getString("ShowSecretIcons", R.string.ShowSecretIcons),
                         LocaleController.getString("DebugMenuImportContacts", R.string.DebugMenuImportContacts),
                         LocaleController.getString("DebugMenuReloadContacts", R.string.DebugMenuReloadContacts),
                         LocaleController.getString("DebugMenuResetContacts", R.string.DebugMenuResetContacts),
@@ -366,22 +367,24 @@ public class FoxGramSettings extends BaseSettingsActivity {
                 };
                 builder.setItems(items, (dialog, which) -> {
                     if (which == 0) {
+                        FoxConfig.toggleUnlockedSecretIcons();
+                    } else if (which == 1) {
                         getUserConfig().syncContacts = true;
                         getUserConfig().saveConfig(false);
                         getContactsController().forceImportContacts();
-                    } else if (which == 1) {
-                        getContactsController().loadContacts(false, 0);
                     } else if (which == 2) {
-                        getContactsController().resetImportedContacts();
+                        getContactsController().loadContacts(false, 0);
                     } else if (which == 3) {
-                        getMessagesController().forceResetDialogs();
+                        getContactsController().resetImportedContacts();
                     } else if (which == 4) {
+                        getMessagesController().forceResetDialogs();
+                    } else if (which == 5) {
                         BuildVars.LOGS_ENABLED = !BuildVars.LOGS_ENABLED;
                         SharedPreferences sharedPreferences = ApplicationLoader.applicationContext.getSharedPreferences("systemConfig", Context.MODE_PRIVATE);
                         sharedPreferences.edit().putBoolean("logsEnabled", BuildVars.LOGS_ENABLED).apply();
                         updateRowsId();
                         listAdapter.notifyDataSetChanged();
-                    } else if (which == 5) {
+                    } else if (which == 6) {
                         getMessagesStorage().clearSentMedia();
                         SharedConfig.setNoSoundHintShowed(false);
                         SharedPreferences.Editor editor = MessagesController.getGlobalMainSettings().edit();
@@ -398,17 +401,17 @@ public class FoxGramSettings extends BaseSettingsActivity {
                         ChatThemeController.getInstance(currentAccount).clearCache();
                         getNotificationCenter().postNotificationName(NotificationCenter.newSuggestionsAvailable);
                         RestrictedLanguagesSelectActivity.cleanup();
-                    } else if (which == 6) {
-                        VoIPHelper.showCallDebugSettings(getParentActivity());
                     } else if (which == 7) {
-                        SharedConfig.toggleRoundCamera16to9();
+                        VoIPHelper.showCallDebugSettings(getParentActivity());
                     } else if (which == 8) {
-                        ((LaunchActivity) getParentActivity()).checkAppUpdate(true);
+                        SharedConfig.toggleRoundCamera16to9();
                     } else if (which == 9) {
-                        getMessagesStorage().readAllDialogs(-1);
+                        ((LaunchActivity) getParentActivity()).checkAppUpdate(true);
                     } else if (which == 10) {
-                        SharedConfig.toggleDisableVoiceAudioEffects();
+                        getMessagesStorage().readAllDialogs(-1);
                     } else if (which == 11) {
+                        SharedConfig.toggleDisableVoiceAudioEffects();
+                    } else if (which == 12) {
                         SharedConfig.pendingAppUpdate = null;
                         SharedConfig.saveConfig();
                         FoxConfig.updateData.set(null);
@@ -418,19 +421,19 @@ public class FoxGramSettings extends BaseSettingsActivity {
                         FoxConfig.saveLastUpdateCheck(true);
                         if (!StoreUtils.isDownloadedFromAnyStore()) UpdateManager.deleteUpdate();
                         NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
-                    } else if (which == 12) {
+                    } else if (which == 13) {
                         Set<String> suggestions = getMessagesController().pendingSuggestions;
                         suggestions.add("VALIDATE_PHONE_NUMBER");
                         suggestions.add("VALIDATE_PASSWORD");
                         getNotificationCenter().postNotificationName(NotificationCenter.newSuggestionsAvailable);
-                    } else if (which == 13) {
+                    } else if (which == 14) {
                         ApplicationLoader.applicationContext.deleteDatabase("webview.db");
                         ApplicationLoader.applicationContext.deleteDatabase("webviewCache.db");
                         WebStorage.getInstance().deleteAllData();
-                    } else if (which == 14) {
+                    } else if (which == 15) {
                         SharedConfig.toggleDebugWebView();
                         Toast.makeText(getParentActivity(), LocaleController.getString(SharedConfig.debugWebView ? R.string.DebugMenuWebViewDebugEnabled : R.string.DebugMenuWebViewDebugDisabled), Toast.LENGTH_SHORT).show();
-                    } else if (which == 15) {
+                    } else if (which == 16) {
                         SharedConfig.toggleForceDisableTabletMode();
 
                         Activity activity = AndroidUtilities.findActivity(context);
@@ -439,9 +442,9 @@ public class FoxGramSettings extends BaseSettingsActivity {
                         activity.finishAffinity(); // Finishes all activities.
                         activity.startActivity(intent);    // Start the launch activity
                         System.exit(0);
-                    } else if (which == 16) {
-                        FloatingDebugController.setActive((LaunchActivity) getParentActivity(), !FloatingDebugController.isActive());
                     } else if (which == 17) {
+                        FloatingDebugController.setActive((LaunchActivity) getParentActivity(), !FloatingDebugController.isActive());
+                    } else if (which == 18) {
                         getMessagesController().loadAppConfig();
                         TLRPC.TL_help_dismissSuggestion req = new TLRPC.TL_help_dismissSuggestion();
                         req.suggestion = "VALIDATE_PHONE_NUMBER";
@@ -452,7 +455,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
                             req2.peer = new TLRPC.TL_inputPeerEmpty();
                             getConnectionsManager().sendRequest(req2, (res2, err2) -> getMessagesController().loadAppConfig());
                         });
-                    } else if (which == 18) {
+                    } else if (which == 19) {
                         int cpuCount = ConnectionsManager.CPU_COUNT;
                         int memoryClass = ((ActivityManager) ApplicationLoader.applicationContext.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
                         long minFreqSum = 0, minFreqCount = 0;
@@ -546,7 +549,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
                                 AndroidUtilities.runOnUIThread(() -> BulletinFactory.createInviteSentBulletin(getParentActivity(), contentView, dids.size(), dids.size() == 1 ? dids.valueAt(0).id : 0, count, getThemedColor(Theme.key_undo_background), getThemedColor(Theme.key_undo_infoColor)).show(), 250);
                             }
                         });
-                    } else if (which == 19) {
+                    } else if (which == 20) {
                         AlertDialog.Builder builder2 = new AlertDialog.Builder(getParentActivity(), resourcesProvider);
                         builder2.setTitle("Force performance class");
                         int currentClass = SharedConfig.getDevicePerformanceClass();
@@ -565,15 +568,15 @@ public class FoxGramSettings extends BaseSettingsActivity {
                         });
                         builder2.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
                         builder2.show();
-                    } else if (which == 20) {
-                        SharedConfig.toggleRoundCamera();
                     } else if (which == 21) {
+                        SharedConfig.toggleRoundCamera();
+                    } else if (which == 22) {
                         boolean enabled = DualCameraView.dualAvailableStatic(getContext());
                         MessagesController.getGlobalMainSettings().edit().putBoolean("dual_available", !enabled).apply();
                         try {
                             Toast.makeText(getParentActivity(), LocaleController.getString(!enabled ? R.string.DebugMenuDualOnToast : R.string.DebugMenuDualOffToast), Toast.LENGTH_SHORT).show();
                         } catch (Exception ignored) {}
-                    } else if (which == 22) {
+                    } else if (which == 23) {
                         SharedConfig.toggleSurfaceInStories();
                         for (int i = 0; i < getParentLayout().getFragmentStack().size(); i++) {
                             getParentLayout().getFragmentStack().get(i).storyViewer = null;

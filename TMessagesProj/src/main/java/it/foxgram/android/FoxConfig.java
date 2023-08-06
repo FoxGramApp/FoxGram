@@ -104,6 +104,7 @@ public class FoxConfig extends SettingsController {
     public static boolean translateEntireChat;
     public static boolean tabsUnreadCounter;
     public static boolean blurInApp;
+    public static boolean unlockedSecretIcons;
     public static String translationTarget = "app";
     public static String translationKeyboardTarget = "app";
     public static String oldBuildVersion = null;
@@ -243,6 +244,7 @@ public class FoxConfig extends SettingsController {
             tabsUnreadCounter = getBoolean("tabsUnreadCounter", true);
             blurInApp = getBoolean("blurInApp", true);
             blurAlphaIntensity = getInt("blurAlphaIntensity", 127);
+            unlockedSecretIcons = getBoolean("unlockedSecretIcons", false);
 
             //EXPERIMENTAL OPTIONS
             devOptEnabled = getBoolean("devOptEnabled", false);
@@ -474,6 +476,10 @@ public class FoxConfig extends SettingsController {
 
     public static void toggleBlurInApp() {
         putValue("blurInApp", blurInApp ^= true);
+    }
+
+    public static void toggleUnlockedSecretIcons() {
+        putValue("unlockedSecretIcons", unlockedSecretIcons ^= true);
     }
 
     public static void setXiaomiBlockedInstaller() {
