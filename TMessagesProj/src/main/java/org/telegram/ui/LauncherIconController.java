@@ -36,16 +36,16 @@ public class LauncherIconController {
     public enum LauncherIcon {
         DEFAULT("DefaultIcon", R.drawable.icon_background_sa, R.drawable.icon_launcher_foreground, R.string.AppIconDefault),
         MONET("MonetIcon", R.color.fox_gram_background, R.drawable.fox_fm_my,R.string.MonetIconColor, false, true),
-        AQUA("AquaIcon", R.drawable.icon_4_background_sa, R.drawable.icon_launcher_foreground, R.string.AppIconAqua),
-        DEVELOPER("DeveloperIcon", R.drawable.iconc_1_background_sa, R.drawable.icon_launcher_foreground, R.string.AppIconDeveloper),
-        RAINBOW("RainbowIcon", R.drawable.icon_7_launcher_background, R.drawable.icon_8_launcher_foreground, R.string.AppIconRainbow, false, true),
-        MONO_BLACK("MonoBlackIcon", R.drawable.iconc_2_background_sa, R.drawable.icon_launcher_foreground, R.string.AppIconMonoBlack),
-        ARCTIC("ArcticIcon", R.drawable.iconc_3_background_sa, R.drawable.iconc_3_launcher_foreground, R.string.AppIconArctic),
-        VINTAGE("VintageIcon", R.drawable.icon_6_background_sa, -1, R.string.AppIconVintage, false ,true),
-        ARI("AriIcon", R.color.icon_9_launcher_background, R.mipmap.icon_8_launcher_foreground, R.string.AriIcon, false, true),
-        PREMIUM("PremiumIcon", R.drawable.icon_3_background_sa, R.mipmap.icon_3_foreground, R.string.AppIconPremium, true),
-        GALAXY("GalaxyIcon", R.drawable.icon_10_launcher_background, R.drawable.icon_10_launcher_foreground, R.string.AppIconGalaxy, true),
-        SHINE("ShineIcon", R.drawable.icon_5_launcher_background, R.drawable.icon_7_launcher_foreground, R.string.AppIconFoxgram, true);
+        AQUA("AquaIcon", R.drawable.aqua_bg_sa, R.drawable.icon_launcher_foreground, R.string.AppIconAqua),
+        DEVELOPER("DeveloperIcon", R.drawable.dev_bg_sa, R.drawable.icon_launcher_foreground, R.string.AppIconDeveloper),
+        RAINBOW("RainbowIcon", R.drawable.rainbow_bg, R.drawable.icon_launcher_foreground, R.string.AppIconRainbow, false, true),
+        MONO_BLACK("MonoBlackIcon", R.drawable.black_bg_sa, R.drawable.icon_launcher_foreground, R.string.AppIconMonoBlack),
+        ARCTIC("ArcticIcon", R.drawable.arctic_bg_sa, R.drawable.icon_launcher_foreground_black, R.string.AppIconArctic),
+        VINTAGE("VintageIcon", R.drawable.color_gram_bg_sa, -1, R.string.AppIconVintage, false ,true),
+        ARI("AriIcon", R.color.icon_9_launcher_background, R.mipmap.thank_u_next_fg, R.string.AriIcon, false, true),
+        PREMIUM("PremiumIcon", R.drawable.premium_bg_sa, R.mipmap.premium_icon_fg, R.string.AppIconPremium, true),
+        GALAXY("GalaxyIcon", R.drawable.galaxy_bg, R.drawable.icon_launcher_foreground, R.string.AppIconGalaxy, true),
+        SHINE("ShineIcon", R.drawable.shining_fox_bg, R.drawable.icon_launcher_foreground, R.string.AppIconFoxgram, true);
 
         public final String key;
         public final int background;
