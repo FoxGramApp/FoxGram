@@ -1,3 +1,10 @@
+/*
+ * This is the source code of FoxGram for Android v. 3.0.x.
+ * It is licensed under GNU GPL v. 2 or later.
+ * You should have received a copy of the license in this archive (see LICENSE).
+ *
+ * Copyright Pierlu096, 2023.
+ */
 package it.foxgram.ui;
 
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_NO;

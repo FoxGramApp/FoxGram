@@ -1,10 +1,3 @@
-/*
- * This is the source code of foxgram for Android v. 1.4.x.
- * It is licensed under GNU GPL v. 2 or later.
- * You should have received a copy of the license in this archive (see LICENSE).
- *
- * Copyright Laky64, 2021-2022.
- */
 package it.foxgram.ui.Components;
 
 import android.animation.Animator;
