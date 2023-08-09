@@ -116,4 +116,8 @@ public class FoxTextUtils {
     public static String getUpdatesChannel() {
         return FoxConfig.betaUpdates ? "Release Preview" : LocaleController.getString("Stable", R.string.Stable);
     }
+
+    public static String getOfficialChannel() {
+        return "FoxGramApp";
+    }
 }

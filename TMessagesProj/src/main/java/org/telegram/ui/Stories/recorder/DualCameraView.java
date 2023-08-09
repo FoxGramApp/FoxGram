@@ -1,5 +1,6 @@
 package org.telegram.ui.Stories.recorder;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Matrix;
@@ -29,6 +30,7 @@ import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.AlertDialog;
 
+@SuppressLint("ViewConstructor")
 public class DualCameraView extends CameraView implements CameraController.ErrorCallback {
 
     private boolean dualAvailable;

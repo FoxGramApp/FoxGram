@@ -159,7 +159,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
     @Override
     protected void onItemClick(View view, int position, float x, float y) {
         if (position == channelUpdatesRow) {
-            MessagesController.getInstance(currentAccount).openByUserName(LocaleController.getString("ChannelUsername", R.string.ChannelUsername), this, 1);
+            MessagesController.getInstance(currentAccount).openByUserName(FoxTextUtils.getOfficialChannel(), this, 1);
         } else if (position == sourceCodeRow) {
             Browser.openUrl(getParentActivity(), "https://github.com/Pierlu096/FoxGram");
         } else if (position == supportTranslationRow) {
@@ -284,7 +284,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
                     if (position == supportTranslationRow) {
                         textDetailCell.setTextAndValueAndIcon(LocaleController.getString("TranslateColor", R.string.TranslateColor), LocaleController.getString("TranslateColorDesc", R.string.TranslateColorDesc), R.drawable.round_translate_white_28, false);
                     } else if (position == channelUpdatesRow) {
-                        textDetailCell.setTextAndValueAndIcon(LocaleController.getString("OfficialChannel", R.string.OfficialChannel), LocaleController.getString("OfficialChannelDesc", R.string.OfficialChannelDesc) + " " + "@" + LocaleController.getString("ChannelUsername", R.string.ChannelUsername), R.drawable.msg_channel, true);
+                        textDetailCell.setTextAndValueAndIcon(LocaleController.getString("OfficialChannel", R.string.OfficialChannel), LocaleController.getString("OfficialChannelDesc", R.string.OfficialChannelDesc) + " " + "@" + FoxTextUtils.getOfficialChannel(), R.drawable.msg_channel, true);
                     } else if (position == sourceCodeRow) {
                         String commitInfo = String.format("%s commit, %s", BuildConfig.GIT_COMMIT_HASH, LocaleController.formatDateAudio(BuildConfig.GIT_COMMIT_DATE, false));
                         textDetailCell.setTextAndValueAndIcon(LocaleController.getString("SourceCode", R.string.SourceCode), commitInfo, R.drawable.outline_source_white_28, true);

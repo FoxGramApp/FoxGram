@@ -14,7 +14,6 @@
     <string name="ExperimentalDesc">Try experimental features. Some may not work correctly.</string>
     <string name="DisableExperimentalAlert">Are you sure you want to disable experimental settings?\n\nNote that this will disable the Monet Icon.</string>
     <string name="OfficialChannel">Official Channel</string>
-    <string name="ChannelUsername">SCP_System</string>
     <string name="GroupUsername">chatscpsystem</string>
     <string name="SourceCode">View Source Code</string>
     <string name="TranslateColor">Translate FoxGram</string>
