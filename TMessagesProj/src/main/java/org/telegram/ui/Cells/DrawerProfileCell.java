@@ -263,6 +263,7 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
 
         menuControllerSetting = new ImageView(context);
         menuControllerSetting.setImageResource(R.drawable.msg_newfilter);
+        menuControllerSetting.setColorFilter(Theme.getColor(Theme.key_chats_menuName));
         menuControllerSetting.setScaleType(ImageView.ScaleType.CENTER);
         menuControllerSetting.setClickable(true);
         menuControllerSetting.setOnTouchListener((View view, MotionEvent motionEvent) -> {
