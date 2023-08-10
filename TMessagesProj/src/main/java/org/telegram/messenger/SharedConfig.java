@@ -259,7 +259,7 @@ public class SharedConfig {
     public static boolean recordViaSco = false;
     public static boolean customTabs = true;
     public static boolean directShare = true;
-    public static boolean inappCamera = FoxConfig.cameraEnable;
+    public static boolean inappCamera = FoxConfig.isEnabledCamera;
     public static boolean roundCamera16to9 = true;
     public static boolean noSoundHintShowed = false;
     public static boolean streamMedia = true;

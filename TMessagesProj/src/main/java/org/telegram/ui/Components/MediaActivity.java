@@ -8,44 +8,34 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.StateListAnimator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
-import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.SparseArray;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewOutlineProvider;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 
-import org.checkerframework.checker.units.qual.Angle;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BotWebViewVibrationEffect;
 import org.telegram.messenger.ContactsController;
@@ -498,7 +488,7 @@ public class MediaActivity extends BaseFragment implements SharedMediaLayout.Sha
             floatingButtonContainer = new FrameLayout(context);
             floatingButtonContainer.setVisibility(View.VISIBLE);
             floatingButtonContainer.setOnClickListener(v -> {
-                if (!FoxConfig.cameraEnable) {
+                if (!FoxConfig.isEnabledCamera) {
                     BulletinFactory.of(this).createSimpleBulletin(R.raw.not_available, LocaleController.getString("StoriesCameraOff", R.string.StoriesCameraOff)).show();
                     return;
                 }

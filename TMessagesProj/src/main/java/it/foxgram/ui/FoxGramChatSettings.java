@@ -179,9 +179,9 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
                 ((TextCheckbox2Cell) view).setChecked(FoxConfig.contextMenu.copyPhoto);
             }
         } else if (position == cameraEnableRow) {
-            FoxConfig.toggleCameraEnable();
+            FoxConfig.toggleIsEnabledCamera();
             if (view instanceof TextCheckCell) {
-                ((TextCheckCell) view).setChecked(FoxConfig.cameraEnable);
+                ((TextCheckCell) view).setChecked(FoxConfig.isEnabledCamera);
             }
         } else if (position == cameraXOptimizeRow) {
             FoxConfig.toggleCameraXOptimizedMode();
@@ -402,7 +402,7 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
                     TextCheckCell textCheckCell = (TextCheckCell) holder.itemView;
                     textCheckCell.setEnabled(true, null);
                     if (position == cameraEnableRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("DebugMenuEnableCamera", R.string.DebugMenuEnableCamera), FoxConfig.cameraEnable, true);
+                        textCheckCell.setTextAndCheck(LocaleController.getString("DebugMenuEnableCamera", R.string.DebugMenuEnableCamera), FoxConfig.isEnabledCamera, true);
                     } else if (position == cameraXOptimizeRow) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("PerformanceMode", R.string.PerformanceMode), LocaleController.getString("PerformanceModeDesc", R.string.PerformanceModeDesc), FoxConfig.useCameraXOptimizedMode, true, true);
                     } else if (position == cameraPreviewRow) {

@@ -61,7 +61,7 @@ public class FoxConfig extends SettingsController {
     public static boolean hideKeyboard;
     public static boolean gifAsVideo;
     public static boolean useRearCamera;
-    public static boolean cameraEnable;
+    public static boolean isEnabledCamera;
     public static boolean disableCameraTile;
     public static boolean useSystemFont;
     public static boolean useSystemEmoji;
@@ -177,7 +177,7 @@ public class FoxConfig extends SettingsController {
             hideKeyboard = getBoolean("hideKeyboard", false);
             gifAsVideo = getBoolean("gifAsVideo", false);
             useRearCamera = getBoolean("useRearCamera", false);
-            cameraEnable = getBoolean("cameraEnable", true);
+            isEnabledCamera = getBoolean("isEnabledCamera", true);
             disableCameraTile = getBoolean("disableCameraTile", false);
             useSystemFont = getBoolean("useSystemFont", false);
             useSystemEmoji = getBoolean("useSystemEmoji", false);
@@ -312,8 +312,8 @@ public class FoxConfig extends SettingsController {
     public static void toggleUseRearCamera() {
         putValue("useRearCamera", useRearCamera ^= true);
     }
-    public static  void toggleCameraEnable() {
-        putValue("cameraEnable", cameraEnable ^= true);
+    public static void toggleIsEnabledCamera() {
+        putValue("isEnabledCamera", isEnabledCamera ^= true);
         toggleDisableCameraTile();
     }
     public static void toggleDisableCameraTile() {

@@ -55,7 +55,6 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.util.Property;
 import android.util.TypedValue;
 import android.view.ActionMode;
@@ -5018,7 +5017,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             sendRoundEnabled = ChatObject.canSendRoundVideo(chat);
             sendVoiceEnabled = ChatObject.canSendVoice(chat);
         }
-        if (!FoxConfig.cameraEnable) {
+        if (!FoxConfig.isEnabledCamera) {
             hasRecordVideo = false;
         }
         boolean currentModeVideo = false;
