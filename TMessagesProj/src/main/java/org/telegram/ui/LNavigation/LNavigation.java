@@ -87,17 +87,17 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
     /**
      * Temp rect to calculate if it's ignored view
      */
-    private Rect ignoreRect = new Rect();
+    private final Rect ignoreRect = new Rect();
 
     /**
      * Temp path for clipping
      */
-    private Path path = new Path();
+    private final Path path = new Path();
 
     /**
      * Darker paint
      */
-    private Paint dimmPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint dimmPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     /**
      * Flag if we should remove extra height for action bar
@@ -137,7 +137,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
     /**
      * Overlay layout for containers like shared ActionBar
      */
-    private FrameLayout overlayLayout;
+    private final FrameLayout overlayLayout;
 
     /**
      * Current swipe progress
@@ -152,7 +152,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
     /**
      * Gesture detector for scroll
      */
-    private GestureDetectorCompat gestureDetector;
+    private final GestureDetectorCompat gestureDetector;
 
     /**
      * If there's currently scroll in progress
@@ -207,7 +207,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
     /**
      * Bounds of small preview fragment
      */
-    private Rect previewFragmentRect = new Rect();
+    private final Rect previewFragmentRect = new Rect();
 
     /**
      * Preview expand progress
@@ -217,12 +217,12 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
     /**
      * Paint for blurred snapshot
      */
-    private Paint blurPaint = new Paint(Paint.DITHER_FLAG | Paint.ANTI_ALIAS_FLAG);
+    private final Paint blurPaint = new Paint(Paint.DITHER_FLAG | Paint.ANTI_ALIAS_FLAG);
 
     /**
      * Back button drawable
      */
-    private MenuDrawable menuDrawable = new MenuDrawable(MenuDrawable.TYPE_DEFAULT);
+    private final MenuDrawable menuDrawable = new MenuDrawable(MenuDrawable.TYPE_DEFAULT);
 
     /**
      * View that captured current touch input
@@ -261,23 +261,23 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
 
     // TODO: Split theme logic to another component
     private ValueAnimator themeAnimator;
-    private StartColorsProvider startColorsProvider = new StartColorsProvider();
+    private final StartColorsProvider startColorsProvider = new StartColorsProvider();
     private Theme.MessageDrawable messageDrawableOutStart;
     private Theme.MessageDrawable messageDrawableOutMediaStart;
     private ThemeAnimationSettings.onAnimationProgress animationProgressListener;
-    private ArrayList<ThemeDescription.ThemeDescriptionDelegate> themeAnimatorDelegate = new ArrayList<>();
+    private final ArrayList<ThemeDescription.ThemeDescriptionDelegate> themeAnimatorDelegate = new ArrayList<>();
     int animationIndex = -1;
     private ArrayList<ThemeDescription> presentingFragmentDescriptions;
 
     private float themeAnimationValue;
-    private ArrayList<ArrayList<ThemeDescription>> themeAnimatorDescriptions = new ArrayList<>();
-    private ArrayList<int[]> animateStartColors = new ArrayList<>();
-    private ArrayList<int[]> animateEndColors = new ArrayList<>();
+    private final ArrayList<ArrayList<ThemeDescription>> themeAnimatorDescriptions = new ArrayList<>();
+    private final ArrayList<int[]> animateStartColors = new ArrayList<>();
+    private final ArrayList<int[]> animateEndColors = new ArrayList<>();
 
-    private int fromBackgroundColor;
+    protected int fromBackgroundColor;
 
-    private LinearLayout stiffnessControl;
-    private CheckBoxCell openChatCheckbox;
+    private final LinearLayout stiffnessControl;
+    private final CheckBoxCell openChatCheckbox;
 
     private String titleOverlayTitle;
     private int titleOverlayTitleId;
@@ -2161,7 +2161,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
     private final class FragmentHolderView extends FrameLayout {
         private BaseFragment fragment;
         private int fragmentPanTranslationOffset;
-        private Paint backgroundPaint = new Paint();
+        private final Paint backgroundPaint = new Paint();
         private int backgroundColor;
 
         public FragmentHolderView(@NonNull Context context) {

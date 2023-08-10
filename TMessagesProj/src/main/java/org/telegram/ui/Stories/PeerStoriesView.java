@@ -5,6 +5,7 @@ import static org.telegram.messenger.AndroidUtilities.dp;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
@@ -155,6 +156,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 
+@SuppressLint("ViewConstructor")
 public class PeerStoriesView extends SizeNotifierFrameLayout implements NotificationCenter.NotificationCenterDelegate {
 
     public static final float SHARE_BUTTON_OFFSET = 46;

@@ -210,15 +210,15 @@ public class TopicsController extends BaseController {
         }
 
         if (deletedTopics != null && loadType == LOAD_TYPE_LOAD_UNKNOWN) {
-           for (int i = 0; i < deletedTopics.size(); i++) {
-               for (int j = 0; j < topics.size(); j++) {
-                   if (topics.get(j).id == deletedTopics.get(i)) {
-                       topics.remove(j);
-                       break;
-                   }
-               }
-           }
-           getMessagesStorage().removeTopics(chatId, deletedTopics);
+            for (int i = 0; i < deletedTopics.size(); i++) {
+                for (int j = 0; j < topics.size(); j++) {
+                    if (topics.get(j).id == deletedTopics.get(i)) {
+                        topics.remove(j);
+                        break;
+                    }
+                }
+            }
+            getMessagesStorage().removeTopics(chatId, deletedTopics);
         }
         if (topicsToReload != null && loadType != LOAD_TYPE_LOAD_UNKNOWN) {
             reloadTopics(chatId, topicsToReload, null);
@@ -681,11 +681,11 @@ public class TopicsController extends BaseController {
                     applyPinnedOrder(chatId, prevOrder);
                     AndroidUtilities.runOnUIThread(() -> {
                         fragment.showDialog(
-                            new AlertDialog.Builder(fragment.getContext())
-                                .setTitle(LocaleController.getString("LimitReached", R.string.LimitReached))
-                                .setMessage(LocaleController.formatString("LimitReachedPinnedTopics", R.string.LimitReachedPinnedTopics, MessagesController.getInstance(currentAccount).topicsPinnedLimit))
-                                .setPositiveButton(LocaleController.getString("OK", R.string.OK), null)
-                                .create()
+                                new AlertDialog.Builder(fragment.getContext())
+                                        .setTitle(LocaleController.getString("LimitReached", R.string.LimitReached))
+                                        .setMessage(LocaleController.formatString("LimitReachedPinnedTopics", R.string.LimitReachedPinnedTopics, MessagesController.getInstance(currentAccount).topicsPinnedLimit))
+                                        .setPositiveButton(LocaleController.getString("OK", R.string.OK), null)
+                                        .create()
                         );
                     });
                 } else if ("PINNED_TOPIC_NOT_MODIFIED".equals(error.text)) {
