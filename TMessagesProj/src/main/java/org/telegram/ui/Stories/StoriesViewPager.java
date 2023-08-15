@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.UserConfig;
+import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.Theme;
 
 import java.util.ArrayList;
@@ -51,6 +52,8 @@ public class StoriesViewPager extends ViewPager {
     };
 
     StoryViewer storyViewer;
+    private int selectedPositionInPage;
+    private int updateVisibleItemPosition = -1;
 
     public StoriesViewPager(@NonNull Context context, StoryViewer storyViewer, Theme.ResourcesProvider resourcesProvider) {
         super(context);
@@ -133,9 +136,9 @@ public class StoriesViewPager extends ViewPager {
             if (!pageLayout.isVisible) {
                 pageLayout.setVisible(true);
                 if (days != null) {
-                    pageLayout.peerStoryView.setDay(pageLayout.dialogId, pageLayout.day);
+                    pageLayout.peerStoryView.setDay(pageLayout.dialogId, pageLayout.day, -1);
                 } else {
-                    pageLayout.peerStoryView.setDialogId(pageLayout.dialogId);
+                    pageLayout.peerStoryView.setDialogId(pageLayout.dialogId, -1);
                 }
             }
             pageLayout.peerStoryView.setOffset(position);
@@ -147,7 +150,6 @@ public class StoriesViewPager extends ViewPager {
         setOffscreenPageLimit(0);
 
         addOnPageChangeListener(new OnPageChangeListener() {
-
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -174,6 +176,13 @@ public class StoriesViewPager extends ViewPager {
                 }
                 delegate.onPeerSelected(peerStoriesView.getCurrentPeer(), peerStoriesView.getSelectedPosition());
                 updateActiveStory();
+                if (storyViewer.placeProvider != null) {
+                    if (position < 3) {
+                        storyViewer.placeProvider.loadNext(false);
+                    } else if (position > pagerAdapter.getCount() - 4) {
+                        storyViewer.placeProvider.loadNext(true);
+                    }
+                }
             }
 
             @Override
@@ -270,7 +279,27 @@ public class StoriesViewPager extends ViewPager {
                 delegate.onPeerSelected(peerStoriesView.getCurrentPeer(), peerStoriesView.getSelectedPosition());
             }
         }
+        checkPageVisibility();
         updateActiveStory();
+    }
+
+    public void checkPageVisibility() {
+        if (updateVisibleItemPosition >= 0) {
+            for (int i = 0; i < getChildCount(); i++) {
+                if ((Integer) getChildAt(i).getTag() == getCurrentItem() && getCurrentItem() == updateVisibleItemPosition) {
+                    PageLayout pageLayout = ((PageLayout) getChildAt(i));
+                    if (!pageLayout.isVisible) {
+                        updateVisibleItemPosition = -1;
+                        pageLayout.setVisible(true);
+                        if (days != null) {
+                            pageLayout.peerStoryView.setDay(pageLayout.dialogId, pageLayout.day, selectedPositionInPage);
+                        } else {
+                            pageLayout.peerStoryView.setDialogId(pageLayout.dialogId, selectedPositionInPage);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void setDelegate(PeerStoriesView.Delegate delegate) {
@@ -379,6 +408,10 @@ public class StoriesViewPager extends ViewPager {
         AndroidUtilities.runOnUIThread(lockTouchRunnable, duration);
     }
 
+    public ArrayList<Long> getDialogIds() {
+        return dialogs;
+    }
+
     private class PageLayout extends FrameLayout {
 
         public PeerStoriesView peerStoryView;
@@ -411,4 +444,40 @@ public class StoriesViewPager extends ViewPager {
         }
     }
 
+    public void setCurrentDate(long day, int storyId) {
+        for (int i = 0; i < days.size(); i++) {
+            long currentDay = StoriesController.StoriesList.day(storyViewer.storiesList.findMessageObject(days.get(i).get(0)));
+            if (day == currentDay) {
+                int position = i;
+                int positionInPage = 0;
+                if (storyViewer.reversed) {
+                    position = days.size() - 1 - position;
+                }
+                for (int j = 0; j < days.get(i).size(); j++) {
+                    if (days.get(i).get(j) == storyId) {
+                        positionInPage = j;
+                        break;
+                    }
+                }
+                if (getCurrentPeerView() == null || getCurrentItem() != position) {
+                    setCurrentItem(position, false);
+                    PeerStoriesView peerView = getCurrentPeerView();
+                    if (peerView != null) {
+                        PageLayout pageLayout = (PageLayout) peerView.getParent();
+                        pageLayout.setVisible(true);
+                        if (days != null) {
+                            pageLayout.peerStoryView.setDay(pageLayout.dialogId, pageLayout.day, positionInPage);
+                        } else {
+                            pageLayout.peerStoryView.setDialogId(pageLayout.dialogId, positionInPage);
+                        }
+                    }
+//                    updateVisibleItemPosition = position;
+//                    selectedPositionInPage = positionInPage;
+                } else {
+                    getCurrentPeerView().selectPosition(positionInPage);
+                }
+                break;
+            }
+        }
+    }
 }

@@ -1944,9 +1944,6 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
         public void startRecording(File outputFile, android.opengl.EGLContext sharedContext) {
             int resolution = MessagesController.getInstance(currentAccount).roundVideoSize;
             int bitrate = MessagesController.getInstance(currentAccount).roundVideoBitrate * 1024;
-            AndroidUtilities.runOnUIThread(() -> {
-                NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.stopAllHeavyOperations, 512);
-            });
 
             videoFile = outputFile;
             videoWidth = resolution;
@@ -1988,9 +1985,6 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
 
         public void stopRecording(int send) {
             handler.sendMessage(handler.obtainMessage(MSG_STOP_RECORDING, send, 0));
-            AndroidUtilities.runOnUIThread(() -> {
-                NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.stopAllHeavyOperations, 512);
-            });
         }
 
         long prevTimestamp;
@@ -2892,6 +2886,7 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
                 }
             }
         }
+
 
         @Override
         protected void finalize() throws Throwable {
