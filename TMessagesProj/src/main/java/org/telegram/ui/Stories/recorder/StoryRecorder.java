@@ -143,6 +143,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.foxgram.android.PermissionsUtils;
+
 public class StoryRecorder implements NotificationCenter.NotificationCenterDelegate {
 
     private final Theme.ResourcesProvider resourcesProvider = new DarkThemeResourceProvider();
@@ -4111,19 +4113,16 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
 
     private boolean requestGalleryPermission() {
         if (activity != null) {
-            boolean noGalleryPermission = false;
+            boolean noGalleryPermission;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                noGalleryPermission = (
-                    activity.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED ||
-                    activity.checkSelfPermission(Manifest.permission.READ_MEDIA_VIDEO) != PackageManager.PERMISSION_GRANTED
-                );
+                noGalleryPermission = (!PermissionsUtils.isImagesPermissionGranted() || !PermissionsUtils.isVideoPermissionGranted());
                 if (noGalleryPermission) {
-                    activity.requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO}, 114);
+                    PermissionsUtils.requestImagesAndVideoPermission(activity);
                 }
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                noGalleryPermission = activity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
+                noGalleryPermission = !PermissionsUtils.isStoragePermissionGranted();
                 if (noGalleryPermission) {
-                    activity.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 114);
+                    PermissionsUtils.requestStoragePermission(activity);
                 }
                 return !noGalleryPermission;
             }
@@ -4133,9 +4132,9 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
 
     private boolean requestAudioPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity != null) {
-            boolean granted = activity.checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
+            boolean granted = PermissionsUtils.isAudioPermissionGranted();
             if (!granted) {
-                activity.requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 112);
+                PermissionsUtils.requestAudioPermission(activity);
                 return false;
             }
         }

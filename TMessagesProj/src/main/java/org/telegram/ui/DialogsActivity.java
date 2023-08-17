@@ -215,6 +215,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import it.foxgram.android.FoxConfig;
+import it.foxgram.android.PermissionsUtils;
 import it.foxgram.android.utils.FoxTextUtils;
 import it.foxgram.ui.Components.Dialogs.AppLinkVerifyBottomSheet;
 import it.foxgram.ui.Components.Dialogs.CrashReportBottomSheet;
@@ -6511,10 +6512,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 checkPermission = false;
                 boolean hasNotContactsPermission = activity.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED;
                 boolean hasNotStoragePermission = (Build.VERSION.SDK_INT <= 28 || BuildVars.NO_SCOPED_STORAGE) && activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
-                boolean hasNotNotificationPermission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && activity.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED;
+                boolean hasNotNotificationsPermission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !PermissionsUtils.isNotificationsPermissionGranted();
                 AndroidUtilities.runOnUIThread(() -> {
                     afterSignup = false;
-                    if (hasNotNotificationsPermission || hasNotContactsPermission || hasNotStoragePermission || hasNotNotificationPermission) {
+                    if (hasNotNotificationsPermission || hasNotContactsPermission || hasNotStoragePermission || hasNotNotificationsPermission) {
                         askingForPermissions = true;
                         if (hasNotNotificationsPermission && NotificationPermissionDialog.shouldAsk(activity)) {
                             NotificationPermissionDialog sheet = new NotificationPermissionDialog(activity, granted -> {
@@ -9664,7 +9665,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             if (alert) {
                 showDialog(new NotificationPermissionDialog(activity, granted -> {
                     if (granted) {
-                        activity.requestPermissions(new String[] { Manifest.permission.POST_NOTIFICATIONS }, 1);
+                        PermissionsUtils.requestNotificationsPermission(activity, 1);
                     }
                 }));
                 return;

@@ -1,5 +1,6 @@
 package org.telegram.ui;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -649,16 +650,12 @@ public class CameraScanActivity extends BaseFragment {
                         return;
                     }
                     final Activity activity = getParentActivity();
-                    if (Build.VERSION.SDK_INT >= 33) {
-                        if (activity.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
-                            activity.requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO}, BasePermissionsActivity.REQUEST_CODE_EXTERNAL_STORAGE);
-                            return;
-                        }
-                    } else if (Build.VERSION.SDK_INT >= 23) {
-                        if (activity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                            activity.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, BasePermissionsActivity.REQUEST_CODE_EXTERNAL_STORAGE);
-                            return;
-                        }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && PermissionsUtils.isImagesAndVideoPermissionGranted()) {
+                        PermissionsUtils.requestImagesAndVideoPermission(activity);
+                        return;
+                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        PermissionsUtils.requestStoragePermission(activity);
+                        return;
                     }
                     PhotoAlbumPickerActivity fragment = new PhotoAlbumPickerActivity(PhotoAlbumPickerActivity.SELECT_TYPE_QR, false, false, null);
                     fragment.setMaxSelectedPhotos(1, false);

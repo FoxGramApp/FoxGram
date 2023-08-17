@@ -3508,7 +3508,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                         if (sendPopupWindow != null && sendPopupWindow.isShowing()) {
                             sendPopupWindow.dismiss();
                         }
-                        sendMessageInternal(true, 0, false, true);
+                        sendMessageInternal(true, 0, false, true, false);
                     });
                     sendPopupLayout.addView(sendWithoutMarkdownButton, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48));
                 } else if (MessageHelper.canSendAsDice(messageEditText.getText(), parentFragment, dialog_id)) {
@@ -3519,7 +3519,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                         if (sendPopupWindow != null && sendPopupWindow.isShowing()) {
                             sendPopupWindow.dismiss();
                         }
-                        sendMessageInternal(true, 0, true, false);
+                        sendMessageInternal(true, 0, true, false, false);
                     });
                     sendPopupLayout.addView(sendWithoutMarkdownButton, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48));
                 }
@@ -5406,9 +5406,9 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
 
     private boolean premiumEmojiBulletin = true;
     private void sendMessageInternal(boolean notify, int scheduleDate, boolean allowConfirm) {
-        sendMessageInternal(notify, scheduleDate, true, true);
+        sendMessageInternal(notify, scheduleDate, true, true, allowConfirm);
     }
-    private void sendMessageInternal(boolean notify, int scheduleDate, boolean withMarkdown, boolean withGame) {
+    private void sendMessageInternal(boolean notify, int scheduleDate, boolean withMarkdown, boolean withGame, boolean allowConfirm) {
         if (slowModeTimer == Integer.MAX_VALUE && !isInScheduleMode()) {
             if (delegate != null) {
                 delegate.scrollToSendingMessage();
