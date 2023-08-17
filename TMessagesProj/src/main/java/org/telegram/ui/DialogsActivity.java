@@ -6515,12 +6515,12 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 boolean hasNotNotificationsPermission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !PermissionsUtils.isNotificationsPermissionGranted();
                 AndroidUtilities.runOnUIThread(() -> {
                     afterSignup = false;
-                    if (hasNotNotificationsPermission || hasNotContactsPermission || hasNotStoragePermission || hasNotNotificationsPermission) {
+                    if (hasNotContactsPermission || hasNotStoragePermission || hasNotNotificationsPermission) {
                         askingForPermissions = true;
                         if (hasNotNotificationsPermission && NotificationPermissionDialog.shouldAsk(activity)) {
                             NotificationPermissionDialog sheet = new NotificationPermissionDialog(activity, granted -> {
                                 if (granted) {
-                                    activity.requestPermissions(new String[] { Manifest.permission.POST_NOTIFICATIONS }, 1);
+                                    PermissionsUtils.requestNotificationsPermission(activity, 1);
                                 }
                             });
                             if (showDialog(sheet) == null) {
@@ -9654,7 +9654,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         AndroidUtilities.updateViewVisibilityAnimated(writeButton[1], isNextButton, 0.5f, true);
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
+    @SuppressLint("NewApi")
     private void askForPermissons(boolean alert) {
         Activity activity = getParentActivity();
         if (activity == null) {
@@ -9672,30 +9672,34 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             }
             permissons.add(Manifest.permission.POST_NOTIFICATIONS);
         }
-        if (getUserConfig().syncContacts && askAboutContacts && activity.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            if (alert) {
-                AlertDialog.Builder builder = AlertsCreator.createContactsPermissionDialog(activity, param -> {
-                    askAboutContacts = param != 0;
-                    MessagesController.getGlobalNotificationsSettings().edit().putBoolean("askAboutContacts", askAboutContacts).apply();
-                    askForPermissons(false);
-                });
-                showDialog(permissionDialog = builder.create());
-                return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getUserConfig().syncContacts && askAboutContacts && !PermissionsUtils.isPermissionGranted(Manifest.permission.READ_CONTACTS)) {
+                if (alert) {
+                    AlertDialog.Builder builder = AlertsCreator.createContactsPermissionDialog(activity, param -> {
+                        askAboutContacts = param != 0;
+                        MessagesController.getGlobalNotificationsSettings().edit().putBoolean("askAboutContacts", askAboutContacts).apply();
+                        askForPermissons(false);
+                    });
+                    showDialog(permissionDialog = builder.create());
+                    return;
+                }
+                permissons.add(Manifest.permission.READ_CONTACTS);
+                permissons.add(Manifest.permission.WRITE_CONTACTS);
+                permissons.add(Manifest.permission.GET_ACCOUNTS);
             }
-            permissons.add(Manifest.permission.READ_CONTACTS);
-            permissons.add(Manifest.permission.WRITE_CONTACTS);
-            permissons.add(Manifest.permission.GET_ACCOUNTS);
         }
         if (Build.VERSION.SDK_INT >= 33) {
             permissons.add(Manifest.permission.READ_MEDIA_IMAGES);
             permissons.add(Manifest.permission.READ_MEDIA_VIDEO);
             permissons.add(Manifest.permission.READ_MEDIA_AUDIO);
             permissons.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        } else if ((Build.VERSION.SDK_INT <= 28 || BuildVars.NO_SCOPED_STORAGE) && activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            permissons.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            permissons.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if ((Build.VERSION.SDK_INT <= 28 || BuildVars.NO_SCOPED_STORAGE) && !PermissionsUtils.isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                permissons.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+                permissons.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && activity.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !PermissionsUtils.isNotificationsPermissionGranted()) {
             permissons.add(Manifest.permission.POST_NOTIFICATIONS);
         }
         if (permissons.isEmpty()) {
@@ -9707,7 +9711,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         }
         String[] items = permissons.toArray(new String[0]);
         try {
-            activity.requestPermissions(items, 1);
+            PermissionsUtils.requestPermissions(activity, 1, items);
         } catch (Exception ignore) {
         }
     }
