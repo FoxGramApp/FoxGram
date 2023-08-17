@@ -30,7 +30,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Outline;
 import android.graphics.Paint;
@@ -62,7 +61,6 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
-import android.text.util.Linkify;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.transition.Transition;
@@ -70,7 +68,6 @@ import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.transition.TransitionValues;
 import android.util.FloatProperty;
-import android.util.Log;
 import android.util.Pair;
 import android.util.Property;
 import android.util.Range;
@@ -158,7 +155,6 @@ import org.telegram.messenger.LiteMode;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MediaController;
 import org.telegram.messenger.MediaDataController;
-import org.telegram.messenger.MessageCustomParamsHelper;
 import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.MessagesStorage;
@@ -852,7 +848,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     private boolean dontChangeCaptionPosition;
     private boolean captionHwLayerEnabled;
     private ImageUpdater.AvatarFor setAvatarFor;
-    private boolean lastCaptionTranslating;
+    //private boolean lastCaptionTranslating;
 
     private Paint bitmapPaint = new Paint(Paint.FILTER_BITMAP_FLAG);
 
@@ -1060,7 +1056,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     public void setCaption(CharSequence caption) {
         hasCaptionForAllMedia = true;
         captionForAllMedia = caption;
-        setCurrentCaption(null, caption, false, false);
+        setCurrentCaption(null, caption, false);
+        //setCurrentCaption(null, caption, false, false);
         updateCaptionTextForCurrentPhoto(null);
     }
 
@@ -1652,8 +1649,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     private boolean ignoreDidSetImage;
     private boolean dontAutoPlay;
     boolean fromCamera;
-    private boolean captionTranslated;
-    private String captionDetectedLanguage;
+    //private boolean captionTranslated;
+    //private String captionDetectedLanguage;
 
     private long avatarsDialogId;
     private boolean canEditAvatar;
@@ -1790,9 +1787,9 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     private final static int gallery_menu_share2 = 18;
     private final static int gallery_menu_speed = 19;
     private final static int gallery_menu_paint = 20;
-    private final static int gallery_menu_translate = 94;
+    private final static int gallery_menu_translate = 94; // FoxGram caption translator
     private final static int gallery_menu_copy = 95;
-    //private final static int gallery_menu_translate = 21;
+    //private final static int gallery_menu_translate = 21; // Currently disabled Telegram caption translator
     //private final static int gallery_menu_hide_translation = 22;
 
     private static DecelerateInterpolator decelerateInterpolator;
@@ -5500,13 +5497,13 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         translateItem = menuItem.addSubItem(gallery_menu_translate, R.drawable.msg_translate, LocaleController.getString("TranslateMessage", R.string.TranslateMessage)).setColors(0xfffafafa, 0xfffafafa);
 
         menuItem.addSubItem(gallery_menu_set_as_main, R.drawable.msg_openprofile, LocaleController.getString("SetAsMain", R.string.SetAsMain)).setColors(0xfffafafa, 0xfffafafa);
-        menuItem.addSubItem(gallery_menu_translate, R.drawable.msg_translate, LocaleController.getString(R.string.TranslateMessage)).setColors(0xfffafafa, 0xfffafafa);
-        menuItem.addSubItem(gallery_menu_hide_translation, R.drawable.msg_translate, LocaleController.getString(R.string.HideTranslation)).setColors(0xfffafafa, 0xfffafafa);
+        //menuItem.addSubItem(gallery_menu_translate, R.drawable.msg_translate, LocaleController.getString(R.string.TranslateMessage)).setColors(0xfffafafa, 0xfffafafa);
+        //menuItem.addSubItem(gallery_menu_hide_translation, R.drawable.msg_translate, LocaleController.getString(R.string.HideTranslation)).setColors(0xfffafafa, 0xfffafafa);
         menuItem.addSubItem(gallery_menu_delete, R.drawable.msg_delete, LocaleController.getString("Delete", R.string.Delete)).setColors(0xfffafafa, 0xfffafafa);
         menuItem.addSubItem(gallery_menu_cancel_loading, R.drawable.msg_cancel, LocaleController.getString("StopDownload", R.string.StopDownload)).setColors(0xfffafafa, 0xfffafafa);
         menuItem.redrawPopup(0xf9222222);
-        menuItem.hideSubItem(gallery_menu_translate);
-        menuItem.hideSubItem(gallery_menu_hide_translation);
+        //menuItem.hideSubItem(gallery_menu_translate);
+        //menuItem.hideSubItem(gallery_menu_hide_translation);
         setMenuItemIcon(false, true);
         menuItem.setPopupItemsSelectorColor(0x0fffffff);
 
@@ -8641,7 +8638,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             if (placeProvider != null) {
                 placeProvider.onApplyCaption(caption);
             }
-            setCurrentCaption(null, result[0], false, false);
+            setCurrentCaption(null, result[0], false);
+            //setCurrentCaption(null, caption, false, false);
         }
         captionEditText.setTag(null);
         if (isCurrentVideo && customTitle == null) {
@@ -12304,7 +12302,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
         boolean isVideo = false;
         CharSequence caption = null;
-        boolean captionTranslating = false;
+        //boolean captionTranslating = false;
         String newFileName = getFileName(index);
         MessageObject newMessageObject = null;
 
@@ -12352,8 +12350,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 caption = MessageObject.getMedia(newMessageObject.messageOwner).description;
                 allowShare = false;
 //                captionTextViewSwitcher.setTranslationY(AndroidUtilities.dp(48));
-                menuItem.hideSubItem(gallery_menu_translate);
-                menuItem.hideSubItem(gallery_menu_hide_translation);
+                //menuItem.hideSubItem(gallery_menu_translate);
+                //menuItem.hideSubItem(gallery_menu_hide_translation);
             } else {
                 menuItem.hideSubItem(gallery_menu_translate);
                 if (FoxConfig.showTranslate) {
@@ -12470,11 +12468,11 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 String restrictionReason = MessagesController.getRestrictionReason(newMessageObject.messageOwner.restriction_reason);
                 if (!TextUtils.isEmpty(restrictionReason)) {
                     caption = restrictionReason;
-                } else if (captionTranslated && newMessageObject.messageOwner != null && newMessageObject.messageOwner.translatedText != null && TextUtils.equals(newMessageObject.messageOwner.translatedToLanguage, TranslateAlert2.getToLanguage())) {
-                    caption = postProcessTranslated(newMessageObject);
+                //} else if (captionTranslated && newMessageObject.messageOwner != null && newMessageObject.messageOwner.translatedText != null && TextUtils.equals(newMessageObject.messageOwner.translatedToLanguage, TranslateAlert2.getToLanguage())) {
+                //    caption = postProcessTranslated(newMessageObject);
                 } else {
                     caption = newMessageObject.caption;
-                    captionTranslating = captionTranslated;
+                    //captionTranslating = captionTranslated;
                 }
             }
 
@@ -12610,8 +12608,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             if (index < 0 || index >= imagesArrLocations.size()) {
                 return;
             }
-            menuItem.hideSubItem(gallery_menu_translate);
-            menuItem.hideSubItem(gallery_menu_hide_translation);
+            //menuItem.hideSubItem(gallery_menu_translate);
+            //menuItem.hideSubItem(gallery_menu_hide_translation);
             if (canEditAvatar && !avatarsArr.isEmpty()) {
                 menuItem.showSubItem(gallery_menu_edit_avatar);
                 boolean currentSet = isCurrentAvatarSet();
@@ -12666,8 +12664,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             if (index < 0 || index >= imagesArrLocals.size()) {
                 return;
             }
-            menuItem.hideSubItem(gallery_menu_translate);
-            menuItem.hideSubItem(gallery_menu_hide_translation);
+            //menuItem.hideSubItem(gallery_menu_translate);
+            //menuItem.hideSubItem(gallery_menu_hide_translation);
             Object object = imagesArrLocals.get(index);
             int ttl = 0;
             boolean isFiltered = false;
@@ -12874,8 +12872,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             if (switchingToIndex < 0 || switchingToIndex >= size) {
                 return;
             }
-            menuItem.hideSubItem(gallery_menu_translate);
-            menuItem.hideSubItem(gallery_menu_hide_translation);
+            //menuItem.hideSubItem(gallery_menu_translate);
+            //menuItem.hideSubItem(gallery_menu_hide_translation);
             allowShare = !MessagesController.getInstance(currentAccount).isChatNoForwards(-currentDialogId) && (currentMessageObject == null || !currentMessageObject.hasRevealedExtendedMedia());
             TLRPC.PageBlock pageBlock = pageBlocksAdapter.get(switchingToIndex);
             caption = pageBlocksAdapter.getCaption(switchingToIndex);
@@ -12929,10 +12927,10 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             }
             groupedPhotosListView.fillList();
             pageBlocksAdapter.updateSlideshowCell(pageBlock);
-        } else {
-            menuItem.hideSubItem(gallery_menu_translate);
-            menuItem.hideSubItem(gallery_menu_hide_translation);
-        }
+        } //else {
+            //menuItem.hideSubItem(gallery_menu_translate);
+            //menuItem.hideSubItem(gallery_menu_hide_translation);
+        //}
         if (title != null) {
             if (animated) {
                 if (wasIndex == index) {
@@ -12944,9 +12942,10 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 actionBarContainer.setTitle(title);
             }
         }
-        setCurrentCaption(newMessageObject, caption, captionTranslating, animateCaption);
+        setCurrentCaption(newMessageObject, caption, animateCaption);
     }
 
+    /*
     private void updateCaptionTranslated() {
         if (!imagesArr.isEmpty()) {
             if (switchingToIndex < 0 || switchingToIndex >= imagesArr.size()) {
@@ -12987,6 +12986,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         }
         return message;
     }
+     */
 
     private void showVideoTimeline(boolean show, boolean animated) {
         if (!animated) {
@@ -13393,7 +13393,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         }
     }
 
-    private void setCurrentCaption(MessageObject messageObject, final CharSequence _caption, boolean translating, boolean animated) {
+    private void setCurrentCaption(MessageObject messageObject, final CharSequence _caption, /*boolean translating,*/ boolean animated) {
         final CharSequence caption = AnimatedEmojiSpan.cloneSpans(_caption);
         if (needCaptionLayout) {
             if (captionTextViewSwitcher.getParent() != pickerView) {
@@ -13583,13 +13583,13 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             }
         }
 
-        boolean switchedToNext = false;
+        //boolean switchedToNext = false;
         if (!isCaptionEmpty) {
             Theme.createChatResources(null, true);
             CharSequence str;
-            if (messageObject != null && captionTranslated && messageObject.messageOwner != null && messageObject.messageOwner.translatedText != null && TextUtils.equals(messageObject.messageOwner.translatedToLanguage, TranslateAlert2.getToLanguage())) {
+/*            if (messageObject != null && captionTranslated && messageObject.messageOwner != null && messageObject.messageOwner.translatedText != null && TextUtils.equals(messageObject.messageOwner.translatedToLanguage, TranslateAlert2.getToLanguage())) {
                 str = caption;
-            } else if (messageObject != null && !messageObject.messageOwner.entities.isEmpty()) {
+            } else */if (messageObject != null && !messageObject.messageOwner.entities.isEmpty()) {
                 Spannable spannableString = new SpannableString(caption);
                 messageObject.addEntitiesToText(spannableString, true, false);
                 if (messageObject.isVideo()) {
@@ -13601,7 +13601,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             }
             captionTextViewSwitcher.setTag(str);
             try {
-                switchedToNext = captionTextViewSwitcher.setText(str, animated, lastCaptionTranslating != translating);
+                //switchedToNext = captionTextViewSwitcher.setText(str, animated, lastCaptionTranslating != translating);
+                captionTextViewSwitcher.setText(str, animated);
                 if (captionScrollView != null) {
                     captionScrollView.updateTopMargin();
                 }
@@ -13625,10 +13626,10 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 captionTextViewSwitcher.setTag(null);
             }
         }
-        if (captionTextViewSwitcher.getCurrentView() instanceof CaptionTextView) {
+        /*if (captionTextViewSwitcher.getCurrentView() instanceof CaptionTextView) {
             ((CaptionTextView) captionTextViewSwitcher.getCurrentView()).setLoading(translating);
         }
-        lastCaptionTranslating = !isCaptionEmpty && translating;
+        lastCaptionTranslating = !isCaptionEmpty && translating; */
     }
 
     private void setCaptionHwLayerEnabled(boolean enabled) {
