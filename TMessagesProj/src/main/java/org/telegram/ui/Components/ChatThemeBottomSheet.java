@@ -1129,7 +1129,7 @@ public class ChatThemeBottomSheet extends BottomSheet implements NotificationCen
     }
 
     private void openGalleryForBackground() {
-        chatAttachAlert = new ChatAttachAlert(chatActivity.getParentActivity(), chatActivity, false, false, false, chatActivity.getResourceProvider());
+        chatAttachAlert = new ChatAttachAlert(chatActivity.getParentActivity(), chatActivity, false, false, false, chatActivity.getResourceProvider(), true);
         chatAttachAlert.drawNavigationBar = true;
         chatAttachAlert.setupPhotoPicker(LocaleController.getString("ChooseBackground", R.string.ChooseBackground));
         chatAttachAlert.setDelegate(new ChatAttachAlert.ChatAttachViewDelegate() {

@@ -576,6 +576,10 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
     }
 
     public ChatAttachAlertPhotoLayout(ChatAttachAlert alert, Context context, boolean forceDarkTheme, boolean needCamera, Theme.ResourcesProvider resourcesProvider) {
+        this(alert, context, forceDarkTheme, needCamera, resourcesProvider, false);
+    }
+
+    public ChatAttachAlertPhotoLayout(ChatAttachAlert alert, Context context, boolean forceDarkTheme, boolean needCamera, Theme.ResourcesProvider resourcesProvider, boolean cameraValue) {
         super(alert, context, resourcesProvider);
         this.forceDarkTheme = forceDarkTheme;
         this.needCamera = needCamera;
@@ -651,7 +655,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
         gridView.setFastScrollVisible(true);
         gridView.getFastScroll().setAlpha(0f);
         gridView.getFastScroll().usePadding = false;
-        gridView.setAdapter(adapter = new PhotoAttachAdapter(context, !FoxConfig.disableCameraTile));
+        gridView.setAdapter(adapter = new PhotoAttachAdapter(context, cameraValue ? needCamera : !FoxConfig.disableCameraTile));
         adapter.createCache();
         gridView.setClipToPadding(false);
         gridView.setItemAnimator(null);

@@ -1192,11 +1192,15 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
     float currentPanTranslationY;
 
     public ChatAttachAlert(Context context, final BaseFragment parentFragment, boolean forceDarkTheme, boolean showingFromDialog) {
-        this(context, parentFragment, forceDarkTheme, showingFromDialog, true, null);
+        this(context, parentFragment, forceDarkTheme, showingFromDialog, true, null, false);
+    }
+
+    public ChatAttachAlert(Context context, final BaseFragment parentFragment, boolean forceDarkTheme, boolean showingFromDialog, boolean needCamera, Theme.ResourcesProvider resourcesProvider) {
+        this(context, parentFragment, forceDarkTheme, showingFromDialog, needCamera, resourcesProvider, false);
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    public ChatAttachAlert(Context context, final @Nullable BaseFragment parentFragment, boolean forceDarkTheme, boolean showingFromDialog, boolean needCamera, Theme.ResourcesProvider resourcesProvider) {
+    public ChatAttachAlert(Context context, final @Nullable BaseFragment parentFragment, boolean forceDarkTheme, boolean showingFromDialog, boolean needCamera, Theme.ResourcesProvider resourcesProvider, boolean cameraValue) {
         super(context, false, resourcesProvider);
         if (parentFragment instanceof ChatActivity) {
             setImageReceiverNumLevel(0, 4);
@@ -2071,7 +2075,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
 
         headerView.addView(mediaPreviewView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.MATCH_PARENT));
 
-        layouts[0] = photoLayout = new ChatAttachAlertPhotoLayout(this, context, forceDarkTheme, needCamera, resourcesProvider);
+        layouts[0] = photoLayout = new ChatAttachAlertPhotoLayout(this, context, forceDarkTheme, needCamera, resourcesProvider, cameraValue);
         photoLayout.setTranslationX(0);
         currentAttachLayout = photoLayout;
         selectedId = 1;
