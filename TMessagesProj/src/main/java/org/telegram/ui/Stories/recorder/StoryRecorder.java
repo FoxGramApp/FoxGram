@@ -4113,7 +4113,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
         if (activity != null) {
             boolean noGalleryPermission;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                noGalleryPermission = (!PermissionsUtils.isImagesPermissionGranted() || !PermissionsUtils.isVideoPermissionGranted());
+                noGalleryPermission = !PermissionsUtils.isImagesAndVideoPermissionGranted();
                 if (noGalleryPermission) {
                     PermissionsUtils.requestImagesAndVideoPermission(activity);
                 }
@@ -4130,9 +4130,9 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
 
     private boolean requestAudioPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity != null) {
-            boolean granted = PermissionsUtils.isAudioPermissionGranted();
+            boolean granted = activity.checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
             if (!granted) {
-                PermissionsUtils.requestAudioPermission(activity);
+                activity.requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 112);
                 return false;
             }
         }
