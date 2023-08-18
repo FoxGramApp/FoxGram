@@ -6520,7 +6520,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                         if (hasNotNotificationsPermission && NotificationPermissionDialog.shouldAsk(activity)) {
                             NotificationPermissionDialog sheet = new NotificationPermissionDialog(activity, granted -> {
                                 if (granted) {
-                                    PermissionsUtils.requestNotificationsPermission(activity, 1);
+                                    PermissionsUtils.requestNotificationsPermission(activity);
                                 }
                             });
                             if (showDialog(sheet) == null) {
@@ -9665,7 +9665,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             if (alert) {
                 showDialog(new NotificationPermissionDialog(activity, granted -> {
                     if (granted) {
-                        PermissionsUtils.requestNotificationsPermission(activity, 1);
+                        PermissionsUtils.requestNotificationsPermission(activity);
                     }
                 }));
                 return;
@@ -11950,6 +11950,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     }
 
     public void updateStoriesVisibility(boolean animated) {
+        if (!FoxConfig.showStories) {
+            return;
+        }
         if (dialogStoriesCell == null || storiesVisibilityAnimator != null || rightSlidingDialogContainer != null && rightSlidingDialogContainer.hasFragment() || searchIsShowed || actionBar.isActionModeShowed() || onlySelect) {
             return;
         }
@@ -11968,7 +11971,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         hasOnlySlefStories = onlySelfStories;
 
         boolean oldStoriesCellVisibility = dialogStoriesCellVisible;
-        dialogStoriesCellVisible = onlySelfStories || newVisibility;
+        dialogStoriesCellVisible = (onlySelfStories || newVisibility) && FoxConfig.showStories;
 
         if (newVisibility || dialogStoriesCellVisible) {
             dialogStoriesCell.updateItems(animated, dialogStoriesCellVisible != oldStoriesCellVisibility);

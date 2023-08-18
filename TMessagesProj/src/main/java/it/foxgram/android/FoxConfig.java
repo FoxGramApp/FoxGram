@@ -112,6 +112,7 @@ public class FoxConfig extends SettingsController {
     public static boolean tabsUnreadCounter;
     public static boolean editInAppBlur;
     public static boolean unlockedSecretIcons;
+    public static boolean showStories;
     public static String translationTarget = "app";
     public static String translationKeyboardTarget = "app";
     public static String oldBuildVersion = null;
@@ -252,6 +253,7 @@ public class FoxConfig extends SettingsController {
             editInAppBlur = getBoolean("editInAppBlur", true);
             editInAppBlurAlpha = getInt("editInAppBlurAlpha", 127);
             unlockedSecretIcons = getBoolean("unlockedSecretIcons", false);
+            showStories = getBoolean("showStories", true);
 
             //EXPERIMENTAL OPTIONS
             devOptEnabled = getBoolean("devOptEnabled", false);
@@ -487,6 +489,10 @@ public class FoxConfig extends SettingsController {
 
     public static void toggleUnlockedSecretIcons() {
         putValue("unlockedSecretIcons", unlockedSecretIcons ^= true);
+    }
+
+    public static void toggleShowStories() {
+        putValue("showStories", showStories ^= true);
     }
 
     public static void setXiaomiBlockedInstaller() {

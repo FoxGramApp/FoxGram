@@ -83,6 +83,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
     private int inAppBlurDividerRow;
     private int editInAppBlurRow;
     private int editInAppBlurHeaderRow;
+    private int showStoriesRow;
 
     @Override
     protected String getActionBarTitle() {
@@ -249,12 +250,12 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                 arrayList.add(LocaleController.getString("Username", R.string.Username));
                 types.add(2);
             } else {
-                if (getMessagesController().storiesEnabled()) {
+                if (getMessagesController().storiesEnabled() && FoxConfig.showStories) {
                     arrayList.add(LocaleController.getString("ProfileMyStories", R.string.ProfileMyStories));
                     types.add(2);
                 }
             }
-            if (!TextUtils.isEmpty(selfUser.username) && getMessagesController().storiesEnabled()) {
+            if (!TextUtils.isEmpty(selfUser.username) && getMessagesController().storiesEnabled() && FoxConfig.showStories) {
                 arrayList.add(LocaleController.getString("ProfileMyStories", R.string.ProfileMyStories));
                 types.add(3);
             }
@@ -282,6 +283,17 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                 listAdapter.notifyItemRangeRemoved(inAppBlurDividerRow, 3);
             }
             updateRowsId();
+        } else if (position == showStoriesRow) {
+            FoxConfig.toggleShowStories();
+            if (view instanceof  TextCheckCell) {
+                ((TextCheckCell) view).setChecked(FoxConfig.showStories);
+            }
+            if (FoxConfig.nameType == FoxConfig.MY_STORY) {
+                FoxConfig.saveNameType(FoxConfig.oldTitleText);
+                listAdapter.notifyItemChanged(showInActionBarRow, PARTIAL);
+                reloadDialogs();
+            }
+            restartTooltip.showWithAction(0, UndoView.ACTION_NEED_RESTART, null, null);
         }
     }
 
@@ -352,6 +364,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
 
         chatHeaderRow = rowCount++;
         showInActionBarRow = rowCount++;
+        showStoriesRow = rowCount++;
         appBarShadowRow = rowCount++;
         searchIconInActionBarRow = rowCount++;
         slidingTitleRow = rowCount++;
@@ -439,6 +452,8 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                         textCheckCell.setTextAndCheck(LocaleController.getString("ShowPencilIcon", R.string.ShowPencilIcon), FoxConfig.showPencilIcon, true);
                     } else if (position == inAppBlurRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("Blur", R.string.Blur), FoxConfig.editInAppBlur, false);
+                    } else if (position == showStoriesRow) {
+                        textCheckCell.setTextAndCheck(LocaleController.getString("ProfileMyStories", R.string.ProfileMyStories), FoxConfig.showStories, true);
                     }
                     break;
                 case PROFILE_PREVIEW:
@@ -601,7 +616,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                     position == appBarShadowRow || position == showSantaHatRow ||
                     position == showFallingSnowRow || position == slidingTitleRow ||
                     position == searchIconInActionBarRow || position == showPencilIconRow ||
-                    position == inAppBlurRow) {
+                    position == inAppBlurRow || position == showStoriesRow) {
                 return ViewType.SWITCH;
             } else if (position == drawerRow) {
                 return ViewType.PROFILE_PREVIEW;

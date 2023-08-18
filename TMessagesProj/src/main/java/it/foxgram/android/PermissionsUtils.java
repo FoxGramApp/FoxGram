@@ -23,8 +23,8 @@ public class PermissionsUtils {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public static void requestNotificationsPermission(Activity activity, int requestCode) {
-        requestPermissions(activity, requestCode, Manifest.permission.POST_NOTIFICATIONS);
+    public static void requestNotificationsPermission(Activity activity) {
+        requestPermissions(activity, 1, Manifest.permission.POST_NOTIFICATIONS);
     }
 
     public static boolean isImagesPermissionGranted() {
