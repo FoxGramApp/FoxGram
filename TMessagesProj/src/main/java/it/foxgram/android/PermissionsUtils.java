@@ -17,16 +17,6 @@ public class PermissionsUtils {
         return ApplicationLoader.applicationContext.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public static boolean isNotificationsPermissionGranted() {
-        return isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public static void requestNotificationsPermission(Activity activity) {
-        requestPermissions(activity, 1, Manifest.permission.POST_NOTIFICATIONS);
-    }
-
     public static boolean isImagesPermissionGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             return isPermissionGranted(Manifest.permission.READ_MEDIA_IMAGES);
