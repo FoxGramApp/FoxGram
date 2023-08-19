@@ -47,12 +47,10 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.text.style.CharacterStyle;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.text.style.URLSpan;
-import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -140,8 +138,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import it.foxgram.android.PermissionsUtils;
 
 public class StoryRecorder implements NotificationCenter.NotificationCenterDelegate {
 
@@ -4111,22 +4107,26 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
 
     private boolean requestGalleryPermission() {
         if (activity != null) {
-            boolean noGalleryPermission;
+            boolean noGalleryPermission = false;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                noGalleryPermission = !PermissionsUtils.isImagesAndVideoPermissionGranted();
+                noGalleryPermission = (
+                        activity.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED ||
+                                activity.checkSelfPermission(Manifest.permission.READ_MEDIA_VIDEO) != PackageManager.PERMISSION_GRANTED
+                );
                 if (noGalleryPermission) {
-                    PermissionsUtils.requestImagesAndVideoPermission(activity);
+                    activity.requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO}, 114);
                 }
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                noGalleryPermission = !PermissionsUtils.isStoragePermissionGranted();
+                noGalleryPermission = activity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
                 if (noGalleryPermission) {
-                    PermissionsUtils.requestStoragePermission(activity);
+                    activity.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 114);
                 }
-                return !noGalleryPermission;
             }
+            return !noGalleryPermission;
         }
         return true;
     }
+
 
     private boolean requestAudioPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity != null) {
