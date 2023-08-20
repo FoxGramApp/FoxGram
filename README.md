@@ -17,12 +17,9 @@ will be used from Homebrew if installed, otherwise it will be used the one in th
 8. Please study our [**security guidelines**](https://core.telegram.org/mtproto/security_guidelines) and take good care of your users' data and privacy.
 9. Please remember to publish **your** code too in order to comply with the licences.
 
-## ✨**FoxGram remote assets**
-All remote assets that FoxGram uses are [**here**](https://github.com/Pierlu096/FoxAssets), if you want to visit or made a fork.
-
 ## ✅ Thanks to
 • [**Nekogram**](<https://gitlab.com/Nekogram/Nekogram>)  
 • [**CatoGramX**](<https://github.com/CatogramX/CatogramX>)
 
-## 🦉 **Code based on [**OwlGram**](<http://github.com/OwlgramDev/OwlGram>)**
+## 🦉 **Thanks to [**OwlGram**](<http://github.com/OwlgramDev/OwlGram>)**
 [*Licensed under GNU GPL-2.0*](<https://github.com/Pierlu096/FoxGram/blob/dev/LICENSE>)
