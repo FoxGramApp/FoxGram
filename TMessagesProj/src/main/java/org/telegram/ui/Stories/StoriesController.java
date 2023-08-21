@@ -3,7 +3,6 @@ package org.telegram.ui.Stories;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.SparseArray;
 import android.webkit.MimeTypeMap;
 
