@@ -145,7 +145,7 @@ public class  MessagesController extends BaseController implements NotificationC
     public StoriesController storiesController;
     private boolean hasArchivedChats;
     private boolean hasStories;
-    public long storiesChangelogUserId;
+    public long storiesChangelogUserId = 777000;
 
     public static TLRPC.Peer getPeerFromInputPeer(TLRPC.InputPeer peer) {
         if (peer.chat_id != 0) {
@@ -397,10 +397,9 @@ public class  MessagesController extends BaseController implements NotificationC
                 try {
                     SQLiteDatabase database = MessagesStorage.getInstance(currentAccount).getDatabase();
                     if (database != null) {
-                        if (data == null) {
-                            database.executeFast("DELETE FROM app_config").stepThis().dispose();
-                        } else {
-                            SQLitePreparedStatement state = database.executeFast("REPLACE INTO app_config VALUES(?)");
+                        database.executeFast("DELETE FROM app_config").stepThis().dispose();
+                        if (data != null) {
+                            SQLitePreparedStatement state = database.executeFast("INSERT INTO app_config VALUES(?)");
                             state.requery();
                             NativeByteBuffer buffer = new NativeByteBuffer(data.getObjectSize());
                             data.serializeToStream(buffer);
@@ -16230,7 +16229,7 @@ public class  MessagesController extends BaseController implements NotificationC
                             }
                         }
                     } else if (baseUpdate instanceof TLRPC.TL_updateSentStoryReaction) {
-                        storiesController.updateStoryReaction(((TLRPC.TL_updateSentStoryReaction) baseUpdate).user_id, ((TLRPC.TL_updateSentStoryReaction) baseUpdate).story_id, ((TLRPC.TL_updateSentStoryReaction) baseUpdate).reaction);
+                        getStoriesController().updateStoryReaction(((TLRPC.TL_updateSentStoryReaction) baseUpdate).user_id, ((TLRPC.TL_updateSentStoryReaction) baseUpdate).story_id, ((TLRPC.TL_updateSentStoryReaction) baseUpdate).reaction);
                     }
                 }
                 if (editor != null) {
