@@ -3677,6 +3677,9 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
             }
             return true;
         } else if (getKeyboardHeight() >= AndroidUtilities.dp(20)) {
+            if (chatActivityEnterView != null) {
+                storyViewer.saveDraft(dialogId, currentStory.storyItem, chatActivityEnterView.getEditText());
+            }
             AndroidUtilities.hideKeyboard(chatActivityEnterView);
             return true;
         } else if (storyCaptionView.getVisibility() == View.VISIBLE && storyCaptionView.getProgressToBlackout() > 0) {
@@ -4554,7 +4557,9 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
                 checkReactionsLayout();
                 ReactionsEffectOverlay.dismissAll();
             } else {
-                storyViewer.saveDraft(dialogId, currentStory.storyItem, chatActivityEnterView.getEditText());
+                if (chatActivityEnterView != null) {
+                    storyViewer.saveDraft(dialogId, currentStory.storyItem, chatActivityEnterView.getEditText());
+                }
             }
             if (keyboardVisible && mentionContainer != null) {
                 mentionContainer.setVisibility(View.VISIBLE);

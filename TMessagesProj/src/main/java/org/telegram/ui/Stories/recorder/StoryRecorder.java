@@ -1971,7 +1971,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
                     try {
                         Long userId = Long.parseLong(span.getURL());
                         TLRPC.User user = MessagesController.getInstance(currentAccount).getUser(userId);
-                        if (user != null && UserObject.getPublicUsername(user) != null && !users.contains(user)) {
+                        if (user != null && !UserObject.isUserSelf(user) && UserObject.getPublicUsername(user) != null && !users.contains(user)) {
                             users.add(UserObject.getPublicUsername(user));
                         }
                     } catch (Exception ignore) {}
@@ -1988,7 +1988,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
                     if (u != -1) {
                         String username = caption.subSequence(u, i).toString();
                         TLObject obj = MessagesController.getInstance(currentAccount).getUserOrChat(username);
-                        if (obj instanceof TLRPC.User && !((TLRPC.User) obj).bot && ((TLRPC.User) obj).id != 777000 && !UserObject.isReplyUser((TLRPC.User) obj) && !users.contains(username)) {
+                        if (obj instanceof TLRPC.User && !((TLRPC.User) obj).bot && !UserObject.isUserSelf((TLRPC.User) obj) && ((TLRPC.User) obj).id != 777000 && !UserObject.isReplyUser((TLRPC.User) obj) && !users.contains(username)) {
                             users.add(username);
                         }
                     }
@@ -1998,7 +1998,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
             if (u != -1) {
                 String username = caption.subSequence(u, caption.length()).toString();
                 TLObject obj = MessagesController.getInstance(currentAccount).getUserOrChat(username);
-                if (obj instanceof TLRPC.User && !((TLRPC.User) obj).bot && ((TLRPC.User) obj).id != 777000 && !UserObject.isReplyUser((TLRPC.User) obj) && !users.contains(username)) {
+                if (obj instanceof TLRPC.User && !((TLRPC.User) obj).bot && !UserObject.isUserSelf((TLRPC.User) obj) && ((TLRPC.User) obj).id != 777000 && !UserObject.isReplyUser((TLRPC.User) obj) && !users.contains(username)) {
                     users.add(username);
                 }
             }
