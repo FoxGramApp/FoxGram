@@ -1267,7 +1267,7 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
                                         checkBlackoutMode = true;
                                         storyCaptionView.expand(true);
                                     };
-                                    MessagesController.getInstance(currentAccount).getTranslateController().translateStory(currentStory.storyItem, () -> AndroidUtilities.runOnUIThread(finishTranslate, Math.max(0, 500L - (System.currentTimeMillis() - start))));
+                                    MessagesController.getInstance(currentAccount).getTranslateController().translateStory(currentStory.storyItem, () -> AndroidUtilities.runOnUIThread(finishTranslate, Math.max(0, 500L - (System.currentTimeMillis() - start))), context);
                                     updatePosition();
                                     checkBlackoutMode = true;
                                     storyCaptionView.expand(true);
