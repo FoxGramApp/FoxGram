@@ -75,6 +75,7 @@ import it.foxgram.android.FoxConfig;
 import it.foxgram.android.StoreUtils;
 import it.foxgram.android.updates.UpdateManager;
 import it.foxgram.android.utils.FoxTextUtils;
+import it.foxgram.ui.Components.Dialogs.ExperimentalSettingsBottomSheet;
 
 public class FoxGramSettings extends BaseSettingsActivity {
 
@@ -155,7 +156,6 @@ public class FoxGramSettings extends BaseSettingsActivity {
     protected Theme.ResourcesProvider resourcesProvider;
     protected ProfileActivity.NestedFrameLayout contentView;
 
-    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onItemClick(View view, int position, float x, float y) {
         if (position == channelUpdatesRow) {
@@ -171,7 +171,12 @@ public class FoxGramSettings extends BaseSettingsActivity {
         } else if (position == chatSettingsRow) {
             presentFragment(new FoxGramChatSettings());
         } else if (position == experimentalSettingsRow) {
-            presentFragment(new FoxGramExperimentalSettings());
+            if (FoxConfig.isDevOptEnabled()) {
+                presentFragment(new FoxGramExperimentalSettings());
+            } else {
+                ExperimentalSettingsBottomSheet dialog = new ExperimentalSettingsBottomSheet(this);
+                dialog.show();
+            }
         } else if (position == appearanceSettingsRow) {
             presentFragment(new FoxGramAppearanceSettings());
         } else if (position == updatesSettingsRow) {
@@ -260,12 +265,11 @@ public class FoxGramSettings extends BaseSettingsActivity {
                     } else if (position == chatSettingsRow) {
                         textCell.setTextAndIcon(LocaleController.getString("Chat", R.string.Chat), R.drawable.msg_msgbubble3, true);
                     } else if (position == experimentalSettingsRow) {
-                        String isEnabled = FoxConfig.isDevOptEnabled() ? LocaleController.getString("DevOptEnabled", R.string.DevOptEnabled) : LocaleController.getString("DevOptDisabled", R.string.DevOptDisabled);
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("Experimental", R.string.Experimental), isEnabled, R.drawable.outline_science_white, false);
+                        textCell.setTextAndIcon(LocaleController.getString("Experimental", R.string.Experimental), R.drawable.outline_science_white, false);
                     } else if (position == appearanceSettingsRow) {
                         textCell.setTextAndIcon(LocaleController.getString("Appearance", R.string.Appearance), R.drawable.settings_appearance, true);
                     } else if (position == updatesSettingsRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("ColorUpdates", R.string.ColorUpdates), UpdateManager.isAvailableUpdate() ? LocaleController.getString("UpdateAvailable", R.string.UpdateAvailable) : "", R.drawable.msg_recent, true);
+                        textCell.setTextAndIcon(LocaleController.getString("ColorUpdates", R.string.ColorUpdates), R.drawable.msg_recent, true);
                     }
                     break;
                 case HEADER:
