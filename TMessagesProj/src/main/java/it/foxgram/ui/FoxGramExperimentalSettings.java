@@ -40,7 +40,6 @@ import it.foxgram.android.MonetIconController;
 
 public class FoxGramExperimentalSettings extends BaseSettingsActivity {
 
-    private int checkBoxExperimentalRow;
     private int headerImageRow;
     private int headerExperimental;
     private int betterAudioCallRow;
@@ -54,6 +53,7 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
     private int downloadSpeedBoostRow;
     private int uploadSpeedBoostRow;
     private int bottomSpaceRow;
+    private int disableRow;
 
     @Override
     protected String getActionBarTitle() {
@@ -79,26 +79,22 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
                 FoxConfig.setMaxRecentStickers(Integer.parseInt(types.get(i)));
                 listAdapter.notifyItemChanged(maxRecentStickersRow, PARTIAL);
             });
-        } else if (position == checkBoxExperimentalRow) {
-            if (view instanceof TextCheckCell) {
-                TextCheckCell textCheckCell = (TextCheckCell) view;
+        } else if (position == disableRow) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(LocaleController.getString("AppName", R.string.AppName));
+            builder.setMessage(LocaleController.getString("DisableExperimentalAlert", R.string.DisableExperimentalAlert));
+            builder.setPositiveButton(LocaleController.getString("AutoDeleteConfirm", R.string.AutoDeleteConfirm), (dialogInterface, i) -> {
+                FoxConfig.toggleDevOpt();
                 if (MonetIconController.isSelectedMonet()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle(LocaleController.getString("AppName", R.string.AppName));
-                    builder.setMessage(LocaleController.getString("DisableExperimentalAlert", R.string.DisableExperimentalAlert));
-                    builder.setPositiveButton(LocaleController.getString("AutoDeleteConfirm", R.string.AutoDeleteConfirm), (dialogInterface, i) -> {
-                        MonetIconController.switchToMonet();
-                        toggleExperimentalMode(textCheckCell);
-                        AlertDialog progressDialog = new AlertDialog(getParentActivity(), 3);
-                        progressDialog.show();
-                        AndroidUtilities.runOnUIThread(progressDialog::dismiss, 2000);
-                    });
-                    builder.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
-                    builder.show();
-                } else {
-                    toggleExperimentalMode(textCheckCell);
+                    MonetIconController.switchToMonet();
+                    AlertDialog progressDialog = new AlertDialog(getParentActivity(), 3);
+                    progressDialog.show();
+                    AndroidUtilities.runOnUIThread(progressDialog::dismiss, 2000);
                 }
-            }
+                finishFragment(true);
+            });
+            builder.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
+            builder.show();
         } else if (position == monetIconRow) {
             MonetIconController.switchToMonet();
             AlertDialog progressDialog = new AlertDialog(getParentActivity(), 3);
@@ -125,59 +121,27 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
         }
     }
 
-    private void toggleExperimentalMode(TextCheckCell textCheckCell) {
-        FoxConfig.toggleDevOpt();
-        boolean isEnabled = FoxConfig.isDevOptEnabled();
-        textCheckCell.setChecked(isEnabled);
-        textCheckCell.setText(isEnabled ? LocaleController.getString("DevOptEnabled", R.string.DevOptEnabled) : LocaleController.getString("DevOptDisabled", R.string.DevOptDisabled));
-        textCheckCell.setBackgroundColorAnimated(isEnabled, Theme.getColor(isEnabled ? Theme.key_windowBackgroundChecked : Theme.key_windowBackgroundUnchecked));
-        if (isEnabled) {
-            listAdapter.notifyItemRemoved(experimentalMessageAlert);
-            updateRowsId();
-            listAdapter.notifyItemRangeInserted(headerImageRow, rowCount - headerImageRow);
-        } else {
-            listAdapter.notifyItemRangeRemoved(headerImageRow, rowCount - headerImageRow);
-            updateRowsId();
-            listAdapter.notifyItemInserted(experimentalMessageAlert);
-        }
-    }
-
     @Override
     protected void updateRowsId() {
         super.updateRowsId();
-        headerImageRow = -1;
-        headerExperimental = -1;
-        betterAudioCallRow = -1;
-        sendLargePhotosRow = -1;
-        reduceCameraXLatency = -1;
-        maxRecentStickersRow = -1;
         monetIconRow = -1;
-        downloadDividersRow = -1;
-        headerDownloadSpeed = -1;
-        downloadSpeedBoostRow = -1;
-        uploadSpeedBoostRow = -1;
         experimentalMessageAlert = -1;
-        bottomSpaceRow = -1;
 
-        checkBoxExperimentalRow = rowCount++;
-        if (FoxConfig.isDevOptEnabled()) {
-            headerImageRow = rowCount++;
-            headerExperimental = rowCount++;
-            betterAudioCallRow = rowCount++;
-            sendLargePhotosRow = rowCount++;
-            reduceCameraXLatency = rowCount++;
-            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.S || Build.VERSION.SDK_INT == Build.VERSION_CODES.S_V2) {
-                monetIconRow = rowCount++;
-            }
-            maxRecentStickersRow = rowCount++;
-            downloadDividersRow = rowCount++;
-            headerDownloadSpeed = rowCount++;
-            downloadSpeedBoostRow = rowCount++;
-            uploadSpeedBoostRow = rowCount++;
-            bottomSpaceRow = rowCount++;
-        } else {
-            experimentalMessageAlert = rowCount++;
+        headerImageRow = rowCount++;
+        headerExperimental = rowCount++;
+        betterAudioCallRow = rowCount++;
+        sendLargePhotosRow = rowCount++;
+        reduceCameraXLatency = rowCount++;
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.S || Build.VERSION.SDK_INT == Build.VERSION_CODES.S_V2) {
+            monetIconRow = rowCount++;
         }
+        maxRecentStickersRow = rowCount++;
+        downloadDividersRow = rowCount++;
+        headerDownloadSpeed = rowCount++;
+        downloadSpeedBoostRow = rowCount++;
+        uploadSpeedBoostRow = rowCount++;
+        bottomSpaceRow = rowCount++;
+        disableRow = rowCount++;
     }
 
     @Override
@@ -194,14 +158,6 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
                     TextCheckCell textCheckCell = (TextCheckCell) holder.itemView;
                     if (position == betterAudioCallRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("MediaStreamVoip", R.string.MediaStreamVoip), FoxConfig.betterAudioQuality, true);
-                    } else if (position == checkBoxExperimentalRow) {
-                        boolean isEnabled = FoxConfig.isDevOptEnabled();
-                        textCheckCell.setDrawCheckRipple(true);
-                        textCheckCell.setTextAndCheck(isEnabled ? LocaleController.getString("DevOptEnabled", R.string.DevOptEnabled) : LocaleController.getString("DevOptDisabled", R.string.DevOptDisabled), isEnabled, false);
-                        textCheckCell.setBackgroundColor(Theme.getColor(isEnabled ? Theme.key_windowBackgroundChecked : Theme.key_windowBackgroundUnchecked));
-                        textCheckCell.setColors(Theme.key_windowBackgroundCheckText, Theme.key_switchTrackBlue, Theme.key_switchTrackBlueChecked, Theme.key_switchTrackBlueThumb, Theme.key_switchTrackBlueThumbChecked);
-                        textCheckCell.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
-                        textCheckCell.setHeight(56);
                     } else if (position == monetIconRow) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("MonetIcon", R.string.MonetIcon), LocaleController.getString("MonetIconDesc", R.string.MonetIconDesc), MonetIconController.isSelectedMonet(), true, true);
                     } else if (position == uploadSpeedBoostRow) {
@@ -231,6 +187,11 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
                     textCell.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
                     if (position == maxRecentStickersRow) {
                         textCell.setTextAndValue(LocaleController.getString("MaxRecentStickers", R.string.MaxRecentStickers), String.valueOf(FoxConfig.maxRecentStickers), partial, false);
+                    } else if (position == disableRow) {
+                        textCell.setTag(Theme.key_dialogTextRed);
+                        textCell.setTextColor(Theme.getColor(Theme.key_dialogTextRed));
+                        textCell.setCanDisable(true);
+                        textCell.setText(LocaleController.getString("Disable", R.string.Disable), false);
                     }
                     break;
             }
@@ -238,7 +199,7 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
 
         @Override
         protected boolean isEnabled(ViewType viewType, int position) {
-            return viewType == ViewType.SWITCH && position != checkBoxExperimentalRow || viewType == ViewType.SETTINGS;
+            return viewType == ViewType.SWITCH || viewType == ViewType.SETTINGS;
         }
 
         @Override
@@ -286,8 +247,9 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
         public ViewType getViewType(int position) {
             if (position == downloadDividersRow) {
                 return ViewType.SHADOW;
-            } else if (position == betterAudioCallRow || position == checkBoxExperimentalRow || position == monetIconRow ||
-                    position == uploadSpeedBoostRow || position == sendLargePhotosRow || position == reduceCameraXLatency) {
+            } else if (position == betterAudioCallRow || position == monetIconRow ||
+                    position == uploadSpeedBoostRow || position == sendLargePhotosRow ||
+                    position == reduceCameraXLatency) {
                 return ViewType.SWITCH;
             } else if (position == headerImageRow) {
                 return ViewType.IMAGE_HEADER;
@@ -295,7 +257,7 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
                 return ViewType.TEXT_HINT_WITH_PADDING;
             } else if (position == headerExperimental || position == headerDownloadSpeed) {
                 return ViewType.HEADER;
-            } else if (position == maxRecentStickersRow) {
+            } else if (position == maxRecentStickersRow || position == disableRow) {
                 return ViewType.SETTINGS;
             } else if (position == downloadSpeedBoostRow) {
                 return ViewType.SLIDE_CHOOSE;
