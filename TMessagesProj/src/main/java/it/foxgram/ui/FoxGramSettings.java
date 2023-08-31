@@ -52,6 +52,7 @@ import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.ActionBarMenu;
 import org.telegram.ui.ActionBar.ActionBarMenuItem;
 import org.telegram.ui.ActionBar.AlertDialog;
+import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.BottomSheet;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.HeaderCell;
@@ -171,12 +172,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
         } else if (position == chatSettingsRow) {
             presentFragment(new FoxGramChatSettings());
         } else if (position == experimentalSettingsRow) {
-            if (FoxConfig.isDevOptEnabled()) {
-                presentFragment(new FoxGramExperimentalSettings());
-            } else {
-                ExperimentalSettingsBottomSheet dialog = new ExperimentalSettingsBottomSheet(this);
-                dialog.show();
-            }
+            openDevOpt(this);
         } else if (position == appearanceSettingsRow) {
             presentFragment(new FoxGramAppearanceSettings());
         } else if (position == updatesSettingsRow) {
@@ -202,6 +198,15 @@ public class FoxGramSettings extends BaseSettingsActivity {
             });
             builder1.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
             showDialog(builder1.create());
+        }
+    }
+
+    private void openDevOpt(BaseFragment fragment) {
+        if (FoxConfig.isDevOptEnabled()) {
+            presentFragment(new FoxGramExperimentalSettings());
+        } else {
+            ExperimentalSettingsBottomSheet dialog = new ExperimentalSettingsBottomSheet(fragment);
+            dialog.show();
         }
     }
 

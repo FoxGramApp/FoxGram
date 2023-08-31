@@ -89,9 +89,13 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
                     MonetIconController.switchToMonet();
                     AlertDialog progressDialog = new AlertDialog(getParentActivity(), 3);
                     progressDialog.show();
-                    AndroidUtilities.runOnUIThread(progressDialog::dismiss, 2000);
+                    AndroidUtilities.runOnUIThread(() -> {
+                        progressDialog.dismiss();
+                        finishFragment(true);
+                    }, 2000);
+                } else {
+                    finishFragment(true);
                 }
-                finishFragment(true);
             });
             builder.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
             builder.show();

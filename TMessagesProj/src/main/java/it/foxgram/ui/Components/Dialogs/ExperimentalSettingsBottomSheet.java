@@ -57,7 +57,7 @@ public class ExperimentalSettingsBottomSheet extends BottomSheet {
         buttonTextView.setGravity(Gravity.CENTER);
         buttonTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
         buttonTextView.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
-        buttonTextView.setText(LocaleController.getString("Enable", R.string.Enable));
+        buttonTextView.setText(LocaleController.getString("ExperimentalOn", R.string.ExperimentalOn));
         buttonTextView.setOnClickListener(view -> {
             dismiss();
             toggleDevOpt(fragment);
@@ -66,16 +66,6 @@ public class ExperimentalSettingsBottomSheet extends BottomSheet {
         buttonTextView.setTextColor(Theme.getColor(Theme.key_featuredStickers_buttonText));
         buttonTextView.setBackground(Theme.createSimpleSelectorRoundRectDrawable(AndroidUtilities.dp(6), Theme.getColor(Theme.key_featuredStickers_addButton), ColorUtils.setAlphaComponent(Theme.getColor(Theme.key_windowBackgroundWhite), 120)));
         linearLayout.addView(buttonTextView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 48, 0, 16, 15, 16, 8));
-
-        TextView textView = new TextView(activity);
-        textView.setGravity(Gravity.CENTER);
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
-        textView.setText(LocaleController.getString("Cancel", R.string.Cancel));
-        textView.setTextColor(Theme.getColor(Theme.key_featuredStickers_addButton));
-
-        linearLayout.addView(textView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 48, 0, 16, 0, 16, 0));
-
-        textView.setOnClickListener(view -> dismiss());
 
         ScrollView scrollView = new ScrollView(activity);
         scrollView.addView(frameLayout);
