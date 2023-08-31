@@ -26,7 +26,6 @@ import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.HeaderCell;
 import org.telegram.ui.Cells.TextCheckCell;
-import org.telegram.ui.Cells.TextInfoPrivacyCell;
 import org.telegram.ui.Cells.TextSettingsCell;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.SlideChooseView;
@@ -46,7 +45,6 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
     private int sendLargePhotosRow;
     private int maxRecentStickersRow;
     private int reduceCameraXLatency;
-    private int experimentalMessageAlert;
     private int monetIconRow;
     private int downloadDividersRow;
     private int headerDownloadSpeed;
@@ -129,7 +127,6 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
     protected void updateRowsId() {
         super.updateRowsId();
         monetIconRow = -1;
-        experimentalMessageAlert = -1;
 
         headerImageRow = rowCount++;
         headerExperimental = rowCount++;
@@ -170,12 +167,6 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("HRPhotos", R.string.HRPhotos), LocaleController.getString("HRPhotosDesc", R.string.HRPhotosDesc), FoxConfig.sendLargePhotos, true, true);
                     } else if (position == reduceCameraXLatency) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("ZeroShutterLag", R.string.ZeroShutterLag), LocaleController.getString("ZeroShutterLagDesc", R.string.ZeroShutterLagDesc), FoxConfig.reduceCameraXLatency, true, true);
-                    }
-                    break;
-                case TEXT_HINT_WITH_PADDING:
-                    TextInfoPrivacyCell textInfoPrivacyCell = (TextInfoPrivacyCell) holder.itemView;
-                    if (position == experimentalMessageAlert) {
-                        textInfoPrivacyCell.setText(LocaleController.getString("ExperimentalOff", R.string.ExperimentalOff));
                     }
                     break;
                 case HEADER:
@@ -257,8 +248,6 @@ public class FoxGramExperimentalSettings extends BaseSettingsActivity {
                 return ViewType.SWITCH;
             } else if (position == headerImageRow) {
                 return ViewType.IMAGE_HEADER;
-            } else if (position == experimentalMessageAlert) {
-                return ViewType.TEXT_HINT_WITH_PADDING;
             } else if (position == headerExperimental || position == headerDownloadSpeed) {
                 return ViewType.HEADER;
             } else if (position == maxRecentStickersRow || position == disableRow) {
