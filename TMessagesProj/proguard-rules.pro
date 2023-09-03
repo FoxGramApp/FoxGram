@@ -134,6 +134,8 @@
 -dontwarn androidx.camera.extensions.**
 -dontwarn javax.script.**
 -dontwarn com.google.android.exoplayer2.util.NonNullApi
+-dontwarn com.google.j2objc.annotations.RetainedWith
+-dontwarn com.google.j2objc.annotations.Weak
 
 -repackageclasses
 -allowaccessmodification

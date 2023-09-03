@@ -74,7 +74,7 @@ android {
 
     defaultConfig.versionCode = Integer.parseInt(APP_VERSION_CODE)
 
-    applicationVariants.all { variant ->
+    applicationVariants.configureEach { variant ->
         variant.outputs.all { output ->
             def abi = output.getFilter('ABI')
             if (abi == null) abi = 'universal'
@@ -103,7 +103,7 @@ android {
     dependenciesInfo.includeInApk false
 }
 
-task("buildRelease") {
+tasks.register('buildRelease') {
     dependsOn("assembleRelease")
     dependsOn("bundlePlay")
 }
