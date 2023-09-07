@@ -100,7 +100,7 @@ public class UpdateManager {
                     PackageInfo pInfo = ApplicationLoader.applicationContext.getPackageManager().getPackageInfo(ApplicationLoader.applicationContext.getPackageName(), 0);
                     String url = betaMode ? String.format("https://raw.githubusercontent.com/Pierlu096/FoxAssets/main/Updates/Previews/updates_info_%s.json", locale.getLanguage()) : String.format("https://raw.githubusercontent.com/Pierlu096/FoxAssets/main/Updates/updates_info_%s.json", locale.getLanguage());
                     JSONObject update = new JSONObject(new StandardHTTPRequest(url).request());
-                    int remoteVersion = BuildVars.IGNORE_VERSION_CHECK ? Integer.MAX_VALUE : (psAppUpdateInfo != null ? PlayStoreAPI.getVersionCode(psAppUpdateInfo) : update.getInt("tag_name"));
+                    int remoteVersion = BuildVars.IGNORE_VERSION_CHECK ? Integer.MAX_VALUE : (psAppUpdateInfo != null ? PlayStoreAPI.getVersionCode(psAppUpdateInfo) : update.getInt("build_number"));
                     int code = pInfo.versionCode / 10;
                     if (remoteVersion > code) {
                         FOXENC.UpdateAvailable updateAvailable = loadUpdate(update);
