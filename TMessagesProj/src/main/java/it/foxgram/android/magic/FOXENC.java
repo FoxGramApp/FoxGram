@@ -1,7 +1,5 @@
 package it.foxgram.android.magic;
 
-import android.content.pm.PackageManager;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -17,11 +15,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Objects;
 
 import it.foxgram.android.FoxConfig;
 import it.foxgram.android.MenuOrderController;
-import it.foxgram.android.StoreUtils;
 import it.foxgram.android.updates.PlayStoreAPI;
 import it.foxgram.android.utils.FoxTextUtils;
 
@@ -99,35 +95,20 @@ public class FOXENC {
         public String fileLink;
         public long fileSize;
 
-        public UpdateAvailable(JSONObject object, JSONObject obj) {
-            fromJSON(object, obj);
+        public UpdateAvailable(JSONObject object) throws JSONException {
+            fromJSON(object);
         }
 
         public UpdateAvailable() {}
 
-        public void fromJSON(JSONObject updateInfo, JSONObject updates) {
-            try {
-                title = updates.getString("title");
-                description = updates.getString("description");
-                note = updates.getString("note");
-                banner = FoxConfig.betaUpdates && !StoreUtils.isDownloadedFromAnyStore() ? "https://raw.githubusercontent.com/Pierlu096/FoxAssets/main/Updates/Previews/color_update.png" : "https://raw.githubusercontent.com/Pierlu096/FoxAssets/main/Updates/color_update.png";
-                version = updateInfo.getInt("tag_name");
-                JSONArray arr = updateInfo.getJSONArray("assets");
-                String[] supportedTypes = {"arm64-v8a", "armeabi-v7a", "x86", "x86_64", "universal"};
-                loop:
-                for (int i = 0; i < arr.length(); i++) {
-                    fileLink = arr.getJSONObject(i).getString("browser_download_url");
-                    fileSize = arr.getJSONObject(i).getLong("size");
-                    for (String type : supportedTypes) {
-                        if (fileLink.contains(type) && Objects.equals(FoxTextUtils.getAbi(), type)) {
-                            break loop;
-                        }
-                    }
-                }
-            } catch (JSONException ignored) {
-            } catch (PackageManager.NameNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+        public void fromJSON(JSONObject updateInfo) throws JSONException {
+            title = updateInfo.getString("title");
+            description = updateInfo.getString("description");
+            note = updateInfo.getString("note");
+            banner = updateInfo.getString("banner");
+            version = updateInfo.getInt("build_number");
+            fileLink = updateInfo.getString(FoxTextUtils.getAbi());
+            fileSize = updateInfo.getLong(String.format("size_%s", FoxTextUtils.getAbi()));
         }
 
         @Override

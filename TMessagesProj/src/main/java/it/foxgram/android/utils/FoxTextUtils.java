@@ -8,7 +8,6 @@
 package it.foxgram.android.utils;
 
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildConfig;
@@ -91,25 +90,30 @@ public class FoxTextUtils {
         }
     }
 
-    public static String getAbi() throws PackageManager.NameNotFoundException {
-        PackageInfo pInfo = ApplicationLoader.applicationContext.getPackageManager().getPackageInfo(ApplicationLoader.applicationContext.getPackageName(), 0);
-        switch (pInfo.versionCode % 10) {
-            case 1:
-            case 3:
-                return "arm-v7a";
-            case 2:
-            case 4:
-                return "x86";
-            case 5:
-            case 7:
-                return "arm64-v8a";
-            case 6:
-            case 8:
-                return  "x86_64";
-            case 0:
-            case 9:
-            default:
-                return "universal";
+    public static String getAbi() {
+        PackageInfo pInfo;
+        try {
+            pInfo = ApplicationLoader.applicationContext.getPackageManager().getPackageInfo(ApplicationLoader.applicationContext.getPackageName(), 0);
+            switch (pInfo.versionCode % 10) {
+                case 1:
+                case 3:
+                    return "arm-v7a";
+                case 2:
+                case 4:
+                    return "x86";
+                case 5:
+                case 7:
+                    return "arm64-v8a";
+                case 6:
+                case 8:
+                    return "x86_64";
+                case 0:
+                case 9:
+                default:
+                    return "universal";
+            }
+        } catch (Exception e) {
+            return "universal";
         }
     }
 
