@@ -85,6 +85,9 @@ public class FoxTextUtils {
             return LocaleController.getString("ColorVersionAppNameBeta", R.string.ColorVersionAppNameBeta);
         } else if (BuildConfig.BUILD_VERSION_STRING.contains("Alpha")) {
             return LocaleController.getString("ColorVersionAppNameAlpha", R.string.ColorVersionAppNameAlpha);
+        } else if (BuildConfig.BUILD_TYPE.equals("pbeta") || BuildConfig.BUILD_TYPE.equals("debug")) {
+            String gitBranch = BuildConfig.GIT_COMMIT_HASH;
+            return "FoxGram" + " #" + gitBranch;
         } else {
             return LocaleController.getString("ColorVersionAppName", R.string.ColorVersionAppName);
         }
