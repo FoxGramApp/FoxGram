@@ -11,6 +11,7 @@ import android.content.pm.PackageInfo;
 
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildConfig;
+import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
 import org.telegram.messenger.UserConfig;
@@ -19,12 +20,22 @@ import org.telegram.tgnet.TLRPC;
 import it.foxgram.android.FoxConfig;
 
 public class FoxTextUtils {
+
+    public static class appInfo {
+        public static String appName = getAppName();
+        public static String appVersion = BuildConfig.BUILD_VERSION_STRING;
+        public static String buildType = BuildConfig.BUILD_TYPE;
+        public static int buildNumber = BuildConfig.BUILD_VERSION;
+        public static String telegramVersion = BuildVars.TELEGRAM_VERSION_STRING;
+        public static int telegramBuildNumber = BuildVars.TELEGRAM_BUILD_VERSION;
+    }
+
     public static String getTitleText() {
         int currentAccount = UserConfig.selectedAccount;
         TLRPC.User selfUser = UserConfig.getInstance(currentAccount).getCurrentUser();
         switch (FoxConfig.nameType) {
             case FoxConfig.DEFAULT_NAME:
-                return getAppName();
+                return appInfo.appName;
             case FoxConfig.USER_NAME:
                 return selfUser.first_name + " " + (selfUser.last_name != null ? selfUser.last_name : "");
             case FoxConfig.TG_USER_NAME:
@@ -34,7 +45,7 @@ public class FoxTextUtils {
                     case FoxConfig.DEFAULT_NAME:
                     case FoxConfig.MY_STORY:
                     default:
-                        return getAppName();
+                        return appInfo.appName;
                     case FoxConfig.USER_NAME:
                         return selfUser.first_name + " " + (selfUser.last_name != null ? selfUser.last_name : "");
                     case FoxConfig.TG_USER_NAME:

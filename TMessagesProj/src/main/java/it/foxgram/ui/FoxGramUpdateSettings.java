@@ -166,15 +166,15 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
                 });
             }
         } else if (position == versionInfoRow) {
-            AndroidUtilities.addToClipboard(BuildConfig.BUILD_VERSION_STRING);
+            AndroidUtilities.addToClipboard(FoxTextUtils.appInfo.appVersion);
         } else if (position == baseVersionRow) {
-            AndroidUtilities.addToClipboard(BuildVars.TELEGRAM_VERSION_STRING);
+            AndroidUtilities.addToClipboard(FoxTextUtils.appInfo.telegramVersion);
         } else if (position == buildInfoRow) {
-            AndroidUtilities.addToClipboard(String.valueOf(BuildConfig.BUILD_VERSION));
+            AndroidUtilities.addToClipboard(String.valueOf(FoxTextUtils.appInfo.buildNumber));
         } else if (position == buildTypeRow) {
-            AndroidUtilities.addToClipboard(BuildConfig.BUILD_TYPE);
+            AndroidUtilities.addToClipboard(FoxTextUtils.appInfo.buildType);
         } else if (position == updateTypeRow) {
-            AndroidUtilities.addToClipboard(FoxTextUtils.getAppName());
+            AndroidUtilities.addToClipboard(FoxTextUtils.appInfo.appName);
         } else if (position == downloadSourceRow) {
             String source = StoreUtils.isFromPlayStore() ? "Play Store" : StoreUtils.isFromHuaweiStore() ? "Huawei Store" : "APK";
             AndroidUtilities.addToClipboard(source);
@@ -273,15 +273,21 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
                         changeBetaMode = textCell;
                         changeBetaMode.setTextAndValue(LocaleController.getString("APKsChannel", R.string.APKsChannel), FoxTextUtils.getUpdatesChannel(),partial, false);
                     } else if (position == versionInfoRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("InstalledVersion", R.string.InstalledVersion), BuildConfig.BUILD_VERSION_STRING, R.drawable.msg_info, true);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString("InstalledVersion", R.string.InstalledVersion), FoxTextUtils.appInfo.appVersion, R.drawable.msg_info, true);
                     } else if (position == baseVersionRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("BaseVersionUpdated", R.string.BaseVersionUpdated), BuildVars.TELEGRAM_VERSION_STRING + " (" + BuildVars.TELEGRAM_BUILD_VERSION + ")", R.drawable.msg_draw_arrow, true);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString("BaseVersionUpdated", R.string.BaseVersionUpdated), FoxTextUtils.appInfo.telegramVersion + " (" + FoxTextUtils.appInfo.telegramBuildNumber + ")", R.drawable.msg_draw_arrow, true);
                     } else if (position == buildTypeRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("BuildType", R.string.BuildType), BuildConfig.BUILD_TYPE,R.drawable.msg_map_type, true);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString("BuildType", R.string.BuildType), FoxTextUtils.appInfo.buildType,R.drawable.msg_map_type, true);
                     } else if (position == buildInfoRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("BuildVersion", R.string.BuildVersion), String.valueOf(BuildConfig.BUILD_VERSION), R.drawable.msg_text_check, true);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString("BuildVersion", R.string.BuildVersion), String.valueOf(FoxTextUtils.appInfo.buildNumber), R.drawable.msg_text_check, true);
                     } else if (position == updateTypeRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("UpdateType", R.string.UpdateType), FoxTextUtils.getAppName(),R.drawable.round_update_white_28, true);
+                        String updateType;
+                        if (FoxTextUtils.appInfo.appName.contains("Beta") || FoxTextUtils.appInfo.appName.contains("Alpha") || BuildConfig.DEBUG_PRIVATE_VERSION) {
+                            updateType = "Preview";
+                        } else {
+                            updateType = LocaleController.getString("Stable", R.string.Stable);
+                        }
+                        textCell.setTextAndValueAndIcon(LocaleController.getString("UpdateType", R.string.UpdateType), updateType,R.drawable.round_update_white_28, true);
                     } else if (position == downloadSourceRow) {
                         String source = StoreUtils.isFromPlayStore() ? "Play Store" : StoreUtils.isFromHuaweiStore() ? "Huawei Store" : "APK";
                         textCell.setTextAndValueAndIcon(LocaleController.getString("DownloadSource", R.string.DownloadSource), source, R.drawable.msg_current_location, true);
