@@ -8,7 +8,6 @@
 package it.foxgram.android.utils;
 
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildConfig;
@@ -86,30 +85,38 @@ public class FoxTextUtils {
             return LocaleController.getString("ColorVersionAppNameBeta", R.string.ColorVersionAppNameBeta);
         } else if (BuildConfig.BUILD_VERSION_STRING.contains("Alpha")) {
             return LocaleController.getString("ColorVersionAppNameAlpha", R.string.ColorVersionAppNameAlpha);
+        } else if (BuildConfig.BUILD_TYPE.equals("pbeta") || BuildConfig.BUILD_TYPE.equals("debug")) {
+            String gitBranch = BuildConfig.GIT_COMMIT_HASH;
+            return "FoxGram" + " #" + gitBranch;
         } else {
             return LocaleController.getString("ColorVersionAppName", R.string.ColorVersionAppName);
         }
     }
 
-    public static String getAbi() throws PackageManager.NameNotFoundException {
-        PackageInfo pInfo = ApplicationLoader.applicationContext.getPackageManager().getPackageInfo(ApplicationLoader.applicationContext.getPackageName(), 0);
-        switch (pInfo.versionCode % 10) {
-            case 1:
-            case 3:
-                return "arm-v7a";
-            case 2:
-            case 4:
-                return "x86";
-            case 5:
-            case 7:
-                return "arm64-v8a";
-            case 6:
-            case 8:
-                return  "x86_64";
-            case 0:
-            case 9:
-            default:
-                return "universal";
+    public static String getAbi() {
+        PackageInfo pInfo;
+        try {
+            pInfo = ApplicationLoader.applicationContext.getPackageManager().getPackageInfo(ApplicationLoader.applicationContext.getPackageName(), 0);
+            switch (pInfo.versionCode % 10) {
+                case 1:
+                case 3:
+                    return "arm-v7a";
+                case 2:
+                case 4:
+                    return "x86";
+                case 5:
+                case 7:
+                    return "arm64-v8a";
+                case 6:
+                case 8:
+                    return "x86_64";
+                case 0:
+                case 9:
+                default:
+                    return "universal";
+            }
+        } catch (Exception e) {
+            return "universal";
         }
     }
 

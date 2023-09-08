@@ -2,16 +2,12 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven { url 'https://developer.huawei.com/repo/' }
-    }
-    dependencies {
-        classpath group: 'com.huawei.agconnect', name: 'agcp', version: '1.6.0.300'
     }
 }
 
 plugins {
-    id 'com.android.application' version '7.4.2' apply false
-    id 'com.google.gms.google-services' version '4.3.10' apply false
+    id 'com.android.application' version '8.1.0' apply false
+    id 'com.google.gms.google-services' version '4.3.15' apply false
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1' apply false
 }
 
