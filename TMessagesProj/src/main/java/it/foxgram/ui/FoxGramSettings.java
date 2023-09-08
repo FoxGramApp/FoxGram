@@ -323,7 +323,10 @@ public class FoxGramSettings extends BaseSettingsActivity {
                 imageView.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_dialogIcon, resourcesProvider), PorterDuff.Mode.MULTIPLY));
                 imageView.setScaleType(ImageView.ScaleType.CENTER);
                 imageView.setClickable(true);
-                imageView.setOnClickListener((view1) -> showDebugMenu());
+                imageView.setOnLongClickListener((view1) -> {
+                    showDebugMenu();
+                    return true;
+                });
                 imageCell.addView(imageView, LayoutHelper.createLinear(140, 140, Gravity.CENTER, 0, 0, 0, -23));
 
                 TextView textView = new TextView(context);
@@ -602,7 +605,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
                 showDialog(builder.create());
             } else {
                 try {
-                    Toast.makeText(getParentActivity(), LocaleController.getString("OnDebugClick", R.string.OnDebugClick), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getParentActivity(), LocaleController.getString("DebugMenuLongPress", R.string.DebugMenuLongPress), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     FileLog.e(e);
                 }
