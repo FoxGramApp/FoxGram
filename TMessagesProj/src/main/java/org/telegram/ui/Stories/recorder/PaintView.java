@@ -119,6 +119,7 @@ import org.telegram.ui.Components.Paint.Views.TextPaintView;
 import org.telegram.ui.Components.Point;
 import org.telegram.ui.Components.RLottieDrawable;
 import org.telegram.ui.Components.Size;
+import org.telegram.ui.Components.SizeNotifierFrameLayout;
 import org.telegram.ui.Components.SizeNotifierFrameLayoutPhoto;
 import org.telegram.ui.LaunchActivity;
 import org.telegram.ui.PhotoViewer;

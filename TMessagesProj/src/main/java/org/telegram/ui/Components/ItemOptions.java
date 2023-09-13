@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -197,7 +196,7 @@ public class ItemOptions {
         if (lastChild instanceof ActionBarMenuSubItem) {
             TextView textView = ((ActionBarMenuSubItem) lastChild).getTextView();
             textView.setMaxWidth(
-                HintView2.cutInFancyHalf(textView.getText(), textView.getPaint()) + textView.getPaddingLeft() + textView.getPaddingRight()
+                    HintView2.cutInFancyHalf(textView.getText(), textView.getPaint()) + textView.getPaddingLeft() + textView.getPaddingRight()
             );
         }
 
@@ -482,18 +481,6 @@ public class ItemOptions {
         dimView.setAlpha(0);
         dimView.animate().alpha(1f).setDuration(150);
         layout.measure(View.MeasureSpec.makeMeasureSpec(container.getMeasuredWidth(), View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(container.getMeasuredHeight(), View.MeasureSpec.UNSPECIFIED));
-        if (dimAlpha > 0) {
-            View dimViewLocal = dimView = new DimView(context);
-            preDrawListener = () -> {
-                dimViewLocal.invalidate();
-                return true;
-            };
-            container.getViewTreeObserver().addOnPreDrawListener(preDrawListener);
-            container.addView(dimView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
-            dimView.setAlpha(0);
-            dimView.animate().alpha(1f).setDuration(150);
-        }
-        layout.measure(View.MeasureSpec.makeMeasureSpec(container.getMeasuredWidth(), View.MeasureSpec.AT_MOST), View.MeasureSpec.makeMeasureSpec(container.getMeasuredHeight(), View.MeasureSpec.AT_MOST));
 
         actionBarPopupWindow = new ActionBarPopupWindow(layout, LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT);
         actionBarPopupWindow.setOnDismissListener(() -> {

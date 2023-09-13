@@ -939,7 +939,9 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
                 return;
             }
 
-        webView.evaluateJavascript(script, value -> {});
+            webView.evaluateJavascript(script, value -> {
+            });
+        });
     }
 
     @Override

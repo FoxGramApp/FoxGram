@@ -74,7 +74,6 @@ import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.transition.TransitionValues;
 import android.util.FloatProperty;
-import android.util.Log;
 import android.util.Pair;
 import android.util.Property;
 import android.util.Range;
@@ -94,7 +93,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
-import android.view.ViewPropertyAnimator;
 import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
 import android.view.WindowManager;
@@ -108,7 +106,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.OverScroller;
-import android.widget.ScrollView;
 import android.widget.Scroller;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -137,9 +134,6 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.gms.vision.Frame;
-import com.google.android.gms.vision.face.Face;
-import com.google.android.gms.vision.face.FaceDetector;
 
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
@@ -224,7 +218,6 @@ import org.telegram.ui.Components.Forum.ForumUtilities;
 import org.telegram.ui.Components.GestureDetector2;
 import org.telegram.ui.Components.GroupedPhotosListView;
 import org.telegram.ui.Components.HideViewAfterAnimation;
-import org.telegram.ui.Components.IPhotoPaintView;
 import org.telegram.ui.Components.ImageUpdater;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.LinkPath;
@@ -1482,7 +1475,9 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                         currentBitmap = ((BitmapDrawable) drawable).getBitmap();
                     } else {
                         currentBitmap = Bitmaps.createBitmap(videoSurfaceView.getWidth(), videoSurfaceView.getHeight(), Bitmap.Config.ARGB_8888);
-                        AndroidUtilities.getBitmapFromSurface(videoSurfaceView, currentBitmap);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            AndroidUtilities.getBitmapFromSurface(videoSurfaceView, currentBitmap);
+                        }
                     }
                 } else {
                     currentBitmap = Bitmaps.createBitmap(videoTextureView.getWidth(), videoTextureView.getHeight(), Bitmap.Config.ARGB_8888);
@@ -4417,35 +4412,24 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
                 int widthSize = MeasureSpec.getSize(widthMeasureSpec);
                 int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-                if (lastInsets != null) {
-                    WindowInsets insets = (WindowInsets) lastInsets;
-                    if (!inBubbleMode) {
-                        if (AndroidUtilities.incorrectDisplaySizeFix) {
-                            if (heightSize > AndroidUtilities.displaySize.y) {
-                                heightSize = AndroidUtilities.displaySize.y;
-                            }
-                            heightSize += AndroidUtilities.statusBarHeight;
-                        } else {
-                            int insetBottom = insets.bottom;
-                            if (insetBottom >= 0 && AndroidUtilities.statusBarHeight >= 0) {
-                                int newSize = heightSize - AndroidUtilities.statusBarHeight - insets.bottom;
-                                if (newSize > 0 && newSize < 4096) {
-                                    AndroidUtilities.displaySize.y = newSize;
-                                }
+                if (!inBubbleMode) {
+                    if (AndroidUtilities.incorrectDisplaySizeFix) {
+                        if (heightSize > AndroidUtilities.displaySize.y) {
+                            heightSize = AndroidUtilities.displaySize.y;
+                        }
+                        heightSize += AndroidUtilities.statusBarHeight;
+                    } else {
+                        int insetBottom = insets.bottom;
+                        if (insetBottom >= 0 && AndroidUtilities.statusBarHeight >= 0) {
+                            int newSize = heightSize - AndroidUtilities.statusBarHeight - insets.bottom;
+                            if (newSize > 0 && newSize < 4096) {
+                                AndroidUtilities.displaySize.y = newSize;
                             }
                         }
                     }
-                    int bottomInsets = insets.bottom;
-                    heightSize -= bottomInsets;
-                } else {
-                    if (Build.VERSION.SDK_INT < 21) {
-                        insets.top = AndroidUtilities.statusBarHeight;
-                        insets.bottom = AndroidUtilities.navigationBarHeight;
-                    }
-                    if (heightSize > AndroidUtilities.displaySize.y) {
-                        heightSize = AndroidUtilities.displaySize.y;
-                    }
                 }
+                int bottomInsets = insets.bottom;
+                heightSize -= bottomInsets;
                 widthSize -= getPaddingLeft() + getPaddingRight();
                 heightSize -= getPaddingBottom();
                 setMeasuredDimension(widthSize, heightSize);
@@ -7402,7 +7386,9 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 if (bitmap != null) {
                     try {
                         if (usedSurfaceView) {
-                            AndroidUtilities.getBitmapFromSurface(videoSurfaceView, bitmap);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                AndroidUtilities.getBitmapFromSurface(videoSurfaceView, bitmap);
+                            }
                         } else {
                             Bitmap src = videoTextureView.getBitmap(bitmap.getWidth(), bitmap.getHeight());
                             Canvas canvas = new Canvas(bitmap);
@@ -7460,7 +7446,9 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 textureImageView.setVisibility(View.VISIBLE);
                 if (usedSurfaceView) {
                     Bitmap bitmap = Bitmaps.createBitmap(videoSurfaceView.getWidth(), videoSurfaceView.getHeight(), Bitmap.Config.ARGB_8888);
-                    AndroidUtilities.getBitmapFromSurface(videoSurfaceView, bitmap);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        AndroidUtilities.getBitmapFromSurface(videoSurfaceView, bitmap);
+                    }
                     textureImageView.setImageBitmap(bitmap);
                 }
                 videoSurfaceView.setVisibility(View.INVISIBLE);
@@ -10114,7 +10102,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 paintingOverlay.showAll();
                 containerView.invalidate();
                 photoPaintView.shutdown();
-                animators.add(animator);
+                animators.add(animatorX);
+                animators.add(animatorY);
                 animators.add(ObjectAnimator.ofFloat(PhotoViewer.this, AnimationProperties.PHOTO_VIEWER_ANIMATION_VALUE, 0, 1));
                 photoPaintView.onAnimationStateChanged(true);
             }
@@ -15073,7 +15062,9 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                     Bitmap bitmap = animation.getAnimatedBitmap();
                     if (bitmap != null) {
                         if (usedSurfaceView) {
-                            AndroidUtilities.getBitmapFromSurface(videoSurfaceView, bitmap);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                AndroidUtilities.getBitmapFromSurface(videoSurfaceView, bitmap);
+                            }
                         } else {
                             try {
                                 Bitmap src = videoTextureView.getBitmap(bitmap.getWidth(), bitmap.getHeight());
