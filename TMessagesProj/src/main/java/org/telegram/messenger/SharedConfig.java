@@ -1696,15 +1696,15 @@ public class SharedConfig {
 
 
     //DEBUG
-    public static boolean drawActionBarShadow = true;
+    public static boolean drawActionBarShadow = FoxConfig.showAppBarShadow;
 
     private static void loadDebugConfig(SharedPreferences preferences) {
-        drawActionBarShadow = preferences.getBoolean("drawActionBarShadow", true);
+        drawActionBarShadow = preferences.getBoolean("drawActionBarShadow", FoxConfig.showAppBarShadow);
     }
 
     public static void saveDebugConfig() {
         SharedPreferences pref = ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE);
-        pref.edit().putBoolean("drawActionBarShadow", drawActionBarShadow);
+        pref.edit().putBoolean("drawActionBarShadow", drawActionBarShadow).apply();
     }
 
 
