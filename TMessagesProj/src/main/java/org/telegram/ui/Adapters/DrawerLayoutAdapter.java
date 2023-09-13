@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.LocaleController;
+import org.telegram.messenger.MediaDataController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.R;
 import org.telegram.messenger.UserConfig;
@@ -446,10 +447,23 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
         return 1 + accountNumbers.size();
     }
 
+    public TLRPC.TL_attachMenuBot getAttachMenuBot(int position) {
+        position -= 2;
+        if (accountsShown) {
+            position -= getAccountRowsCount();
+        }
+        if (position < 0 || position >= items.size()) {
+            return null;
+        }
+        Item item = items.get(position);
+        return item != null ? item.bot : null;
+    }
+
     private static class Item {
         public int icon;
         public String text;
         public int id;
+        TLRPC.TL_attachMenuBot bot;
 
         public Item(int id, String text, int icon) {
             this.icon = icon;
@@ -457,8 +471,17 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             this.text = text;
         }
 
+        public Item(TLRPC.TL_attachMenuBot bot) {
+            this.bot = bot;
+            this.id = (int) (100 + (bot.bot_id >> 16));
+        }
+
         public void bind(DrawerActionCell actionCell) {
-            actionCell.setTextAndIcon(id, text, icon);
+            if (this.bot != null) {
+                actionCell.setBot(bot);
+            } else {
+                actionCell.setTextAndIcon(id, text, icon);
+            }
         }
     }
 }

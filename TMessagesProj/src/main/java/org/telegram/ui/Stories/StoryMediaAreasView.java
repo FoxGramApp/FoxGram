@@ -30,6 +30,8 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.AnimatedFloat;
 import org.telegram.ui.Components.ColoredImageSpan;
 import org.telegram.ui.Components.LayoutHelper;
+import org.telegram.ui.Components.ScaleStateListAnimator;
+import org.telegram.ui.EmojiAnimationsOverlay;
 import org.telegram.ui.LocationActivity;
 import org.telegram.ui.Stories.recorder.HintView2;
 
@@ -43,12 +45,15 @@ public class StoryMediaAreasView extends FrameLayout implements View.OnClickList
     private final FrameLayout hintsContainer;
     private boolean malicious;
 
+    Matrix matrix = new Matrix();
+    float[] point = new float[2];
+
     private Theme.ResourcesProvider resourcesProvider;
 
     public StoryMediaAreasView(Context context, Theme.ResourcesProvider resourcesProvider) {
         super(context);
         this.resourcesProvider = resourcesProvider;
-
+        setClipChildren(false);
         addView(hintsContainer = new FrameLayout(context));
     }
 
@@ -146,7 +151,12 @@ public class StoryMediaAreasView extends FrameLayout implements View.OnClickList
                 onHintVisible(false);
             }, 200);
 
-            LocationActivity fragment = new LocationActivity(3);
+            LocationActivity fragment = new LocationActivity(3) {
+                @Override
+                protected boolean disablePermissionCheck() {
+                    return true;
+                }
+            };
             fragment.setResourceProvider(resourcesProvider);
             TLRPC.TL_message message = new TLRPC.TL_message();
             if (selectedArea.mediaArea instanceof TLRPC.TL_mediaAreaVenue) {

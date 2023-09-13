@@ -135,6 +135,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
     Drawable shadowDrawable;
     private boolean checkAutoscroll;
     private boolean showServerErrorText;
+    private long dialogId;
 
     private boolean isStoryShownToUser(TLRPC.TL_storyView view) {
         if (MessagesController.getInstance(currentAccount).getStoriesController().isBlocked(view)) {
@@ -700,6 +701,10 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
     }
 
     public boolean onBackPressed() {
+        if (popupMenu != null && popupMenu.isShowing()) {
+            popupMenu.dismiss();
+            return true;
+        }
         if (Math.abs(topViewsContainer.getTranslationY() - recyclerListView.getPaddingTop()) > AndroidUtilities.dp(2)) {
             recyclerListView.dispatchTouchEvent(AndroidUtilities.emptyMotionEvent());
             recyclerListView.smoothScrollToPosition(0);
@@ -1064,12 +1069,21 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
                     if (storyItem.views == null) {
                         storyItem.views = new TLRPC.TL_storyViews();
                     }
+                    boolean counterUpdated = false;
                     if (res.count > storyItem.views.views_count) {
                         storyItem.views.recent_viewers.clear();
                         for (int i = 0; i < (Math.min(3, res.users.size())); i++) {
                             storyItem.views.recent_viewers.add(res.users.get(i).id);
                         }
                         storyItem.views.views_count = res.count;
+                        counterUpdated = true;
+                    }
+                    if (storyItem.views.reactions_count != res.reactions_count) {
+                        storyItem.views.reactions_count = res.reactions_count;
+                        counterUpdated = true;
+                    }
+                    if (counterUpdated) {
+                        NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.storiesUpdated);
                     }
                 } else {
                     hasNext = false;
@@ -1219,6 +1233,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
             ImageView imageView = new ImageView(getContext());
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setImageDrawable(replacableDrawable);
+            imageView.setPadding(AndroidUtilities.dp(1), AndroidUtilities.dp(1), AndroidUtilities.dp(1), AndroidUtilities.dp(1));
             buttonContainer.addView(imageView, LayoutHelper.createLinear(26, 26));
 
             ImageView arrowImage = new ImageView(getContext());

@@ -289,8 +289,7 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
             }
             if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                 if (previewMenu != null && highlightActionButtons) {
-                    int alpha = 255;
-                    alpha = Theme.moveUpDrawable.getAlpha();
+                    int alpha = Theme.moveUpDrawable.getAlpha();
                     ValueAnimator arrowAlphaUpdate = ValueAnimator.ofFloat(alpha, 0);
                     arrowAlphaUpdate.addUpdateListener(a -> {
                         Theme.moveUpDrawable.setAlpha(((Float) a.getAnimatedValue()).intValue());
@@ -490,7 +489,8 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
 
     @Override
     public void drawHeaderShadow(Canvas canvas, int alpha, int y) {
-        if (headerShadowDrawable != null) {
+        if (headerShadowDrawable != null && SharedConfig.drawActionBarShadow) {
+            alpha = alpha / 2;
             if (headerShadowDrawable.getAlpha() != alpha) {
                 headerShadowDrawable.setAlpha(alpha);
             }

@@ -278,7 +278,7 @@ public class StoryViewer implements NotificationCenter.NotificationCenterDelegat
     public void open(Context context, int startStoryId, StoriesController.StoriesList storiesList, PlaceProvider placeProvider) {
         currentAccount = UserConfig.selectedAccount;
         ArrayList<Long> peerIds = new ArrayList<>();
-        peerIds.add(storiesList.userId);
+        peerIds.add(storiesList.dialogId);
         dayStoryId = startStoryId;
         open(context, null, peerIds, 0, storiesList, null, placeProvider, false);
     }
@@ -297,7 +297,7 @@ public class StoryViewer implements NotificationCenter.NotificationCenterDelegat
     public void open(Context context, TLRPC.StoryItem storyItem, int startStoryId, StoriesController.StoriesList storiesList, boolean reversed, PlaceProvider placeProvider) {
         currentAccount = UserConfig.selectedAccount;
         ArrayList<Long> peerIds = new ArrayList<>();
-        peerIds.add(storiesList.userId);
+        peerIds.add(storiesList.dialogId);
         dayStoryId = startStoryId;
         open(context, storyItem, peerIds, 0, storiesList, null, placeProvider, reversed);
     }
@@ -1173,7 +1173,7 @@ public class StoryViewer implements NotificationCenter.NotificationCenterDelegat
                             close(false);
                         } else {
                             storiesViewPager.onNextIdle(() -> {
-                                storiesViewPager.setDays(storiesList.userId, newDays, currentAccount);
+                                storiesViewPager.setDays(storiesList.dialogId, newDays, currentAccount);
                             });
                         }
                     } else {
@@ -1474,7 +1474,7 @@ public class StoryViewer implements NotificationCenter.NotificationCenterDelegat
             updateTransitionParams();
         }
         if (storiesList != null) {
-            storiesViewPager.setDays(storiesList.userId, storiesList.getDays(), currentAccount);
+            storiesViewPager.setDays(storiesList.dialogId, storiesList.getDays(), currentAccount);
         } else {
             storiesViewPager.setPeerIds(peerIds, currentAccount, position);
         }
@@ -2441,7 +2441,7 @@ public class StoryViewer implements NotificationCenter.NotificationCenterDelegat
             StoriesController.StoriesList list = (StoriesController.StoriesList) args[0];
             if (storiesList == list) {
                 PeerStoriesView peerStoriesView = getCurrentPeerView();
-                storiesViewPager.setDays(storiesList.userId, storiesList.getDays(), currentAccount);
+                storiesViewPager.setDays(storiesList.dialogId, storiesList.getDays(), currentAccount);
                 if (selfStoryViewsView != null) {
                     TLRPC.StoryItem currentSelectedStory = selfStoryViewsView.getSelectedStory();
                     ArrayList<TLRPC.StoryItem> storyItems = new ArrayList<>();

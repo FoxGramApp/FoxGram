@@ -72,6 +72,7 @@ import org.telegram.ui.EditWidgetActivity;
 import org.telegram.ui.LaunchActivity;
 import org.telegram.ui.PremiumPreviewFragment;
 import org.telegram.ui.ProfileActivity;
+import org.telegram.ui.SecretMediaViewer;
 import org.telegram.ui.Stories.StoriesController;
 import org.telegram.ui.TopicsFragment;
 
@@ -143,6 +144,7 @@ public class  MessagesController extends BaseController implements NotificationC
     public int stealthModePast;
     public int stealthModeCooldown;
     public StoriesController storiesController;
+    public UnconfirmedAuthController unconfirmedAuthController;
     private boolean hasArchivedChats;
     private boolean hasStories;
     public long storiesChangelogUserId = 777000;
@@ -491,6 +493,7 @@ public class  MessagesController extends BaseController implements NotificationC
     public int ringtoneDurationMax;
     public int ringtoneSizeMax;
     public boolean storiesExportNopublicLink;
+    public int authorizationAutoconfirmPeriod;
 
     public int channelsLimitDefault;
     public int channelsLimitPremium;
@@ -1388,6 +1391,7 @@ public class  MessagesController extends BaseController implements NotificationC
         storiesPosting = mainPreferences.getString("storiesPosting", "enabled");
         storiesEntities = mainPreferences.getString("storiesEntities", "premium");
         storiesExportNopublicLink = mainPreferences.getBoolean("storiesExportNopublicLink", false);
+        authorizationAutoconfirmPeriod = mainPreferences.getInt("authorization_autoconfirm_period", 604800);
         BuildVars.GOOGLE_AUTH_CLIENT_ID = mainPreferences.getString("googleAuthClientId", BuildVars.GOOGLE_AUTH_CLIENT_ID);
         if (mainPreferences.contains("dcDomainName2")) {
             dcDomainName = mainPreferences.getString("dcDomainName2", "apv3.stel.com");
@@ -3325,6 +3329,7 @@ public class  MessagesController extends BaseController implements NotificationC
                             changed = storiesChanged = true;
                         }
                     }
+                    break;
                 }
                 case "stories_entities": {
                     if (value.value instanceof TLRPC.TL_jsonString) {
@@ -3335,6 +3340,7 @@ public class  MessagesController extends BaseController implements NotificationC
                             changed = true;
                         }
                     }
+                    break;
                 }
                 case "stories_export_nopublic_link": {
                     if (value.value instanceof TLRPC.TL_jsonBool) {
@@ -3345,6 +3351,7 @@ public class  MessagesController extends BaseController implements NotificationC
                             changed = true;
                         }
                     }
+                    break;
                 }
                 case "stories_venue_search_username": {
                     if (value.value instanceof TLRPC.TL_jsonString) {
@@ -3355,6 +3362,18 @@ public class  MessagesController extends BaseController implements NotificationC
                             changed = true;
                         }
                     }
+                    break;
+                }
+                case "authorization_autoconfirm_period": {
+                    if (value.value instanceof TLRPC.TL_jsonNumber) {
+                        TLRPC.TL_jsonNumber num = (TLRPC.TL_jsonNumber) value.value;
+                        if (authorizationAutoconfirmPeriod != num.value) {
+                            authorizationAutoconfirmPeriod = (int) num.value;
+                            editor.putInt("authorizationAutoconfirmPeriod", authorizationAutoconfirmPeriod);
+                            changed = true;
+                        }
+                    }
+                    break;
                 }
             }
         }
@@ -4117,6 +4136,9 @@ public class  MessagesController extends BaseController implements NotificationC
         getTranslateController().cleanup();
         if (storiesController != null) {
             storiesController.cleanup();
+        }
+        if (unconfirmedAuthController != null) {
+            unconfirmedAuthController.cleanup();
         }
 
         showFiltersTooltip = false;
@@ -5632,8 +5654,22 @@ public class  MessagesController extends BaseController implements NotificationC
                     }
                 }
                 if (taskMedia != null) {
+                    final boolean checkViewer = SecretMediaViewer.hasInstance() && SecretMediaViewer.getInstance().isVisible();
+                    final MessageObject viewerObject = checkViewer ? SecretMediaViewer.getInstance().getCurrentMessageObject() : null;
                     for (int a = 0, N = taskMedia.size(); a < N; a++) {
-                        getMessagesStorage().emptyMessagesMedia(taskMedia.keyAt(a), taskMedia.valueAt(a));
+                        long dialogId = taskMedia.keyAt(a);
+                        ArrayList<Integer> mids = taskMedia.valueAt(a);
+                        if (checkViewer && viewerObject != null && viewerObject.currentAccount == currentAccount && viewerObject.getDialogId() == dialogId && mids.contains(viewerObject.getId())) {
+                            final int id = viewerObject.getId();
+                            mids.remove((Integer) id);
+                            viewerObject.forceExpired = true;
+                            final long taskId = createDeleteShowOnceTask(dialogId, id);
+                            SecretMediaViewer.getInstance().setOnClose(() -> doDeleteShowOnceTask(taskId, dialogId, id));
+                            getNotificationCenter().postNotificationName(NotificationCenter.updateMessageMedia, viewerObject.messageOwner);
+                        }
+                        if (!mids.isEmpty()) {
+                            getMessagesStorage().emptyMessagesMedia(dialogId, mids);
+                        }
                     }
                 }
                 Utilities.stageQueue.postRunnable(() -> {
@@ -5845,7 +5881,7 @@ public class  MessagesController extends BaseController implements NotificationC
                         AndroidUtilities.runOnUIThread(() -> {
                             BaseFragment lastFragment = LaunchActivity.getLastFragment();
                             if (lastFragment != null && lastFragment.getParentActivity() != null) {
-                                LimitReachedBottomSheet restricterdUsersBottomSheet = new LimitReachedBottomSheet(lastFragment, lastFragment.getParentActivity(), LimitReachedBottomSheet.TYPE_ADD_MEMBERS_RESTRICTED, currentAccount);
+                                LimitReachedBottomSheet restricterdUsersBottomSheet = new LimitReachedBottomSheet(lastFragment, lastFragment.getParentActivity(), LimitReachedBottomSheet.TYPE_ADD_MEMBERS_RESTRICTED, currentAccount, null);
                                 ArrayList<TLRPC.User> users = new ArrayList<TLRPC.User>();
                                 users.add(user);
                                 restricterdUsersBottomSheet.setRestrictedUsers(chat, users);
@@ -10656,7 +10692,7 @@ public class  MessagesController extends BaseController implements NotificationC
         }
         arrayList.add(messageObject.getId());
         long dialogId = messageObject.getDialogId();
-        getMessagesStorage().markMessagesContentAsRead(dialogId, arrayList, 0);
+        getMessagesStorage().markMessagesContentAsRead(dialogId, arrayList, 0, 0);
         getNotificationCenter().postNotificationName(NotificationCenter.messagesReadContent, dialogId, arrayList);
         if (messageObject.getId() < 0) {
             markMessageAsRead(messageObject.getDialogId(), messageObject.messageOwner.random_id, Integer.MIN_VALUE);
@@ -10708,8 +10744,32 @@ public class  MessagesController extends BaseController implements NotificationC
         }
     }
 
+    public long createDeleteShowOnceTask(long dialogId, int mid) {
+        NativeByteBuffer data = null;
+        try {
+            data = new NativeByteBuffer(16);
+            data.writeInt32(102);
+            data.writeInt64(dialogId);
+            data.writeInt32(mid);
+        } catch (Exception e) {
+            FileLog.e(e);
+        }
+        return getMessagesStorage().createPendingTask(data);
+    }
+
+    public void doDeleteShowOnceTask(long taskId, long dialogId, int mid) {
+        getMessagesStorage().removePendingTask(taskId);
+        ArrayList<Integer> mids = new ArrayList<>();
+        mids.add(mid);
+        getMessagesStorage().emptyMessagesMedia(dialogId, mids);
+    }
+
     public void markMessageAsRead2(long dialogId, int mid, TLRPC.InputChannel inputChannel, int ttl, long taskId) {
-        if (mid == 0 || ttl <= 0) {
+        markMessageAsRead2(dialogId, mid, inputChannel, ttl, taskId, true);
+    }
+
+    public void markMessageAsRead2(long dialogId, int mid, TLRPC.InputChannel inputChannel, int ttl, long taskId, boolean createDeleteTask) {
+        if (mid == 0 || ttl < 0) {
             return;
         }
         if (DialogObject.isChatDialog(dialogId) && inputChannel == null) {
@@ -10723,7 +10783,7 @@ public class  MessagesController extends BaseController implements NotificationC
             NativeByteBuffer data = null;
             try {
                 data = new NativeByteBuffer(20 + (inputChannel != null ? inputChannel.getObjectSize() : 0));
-                data.writeInt32(23);
+                data.writeInt32(createDeleteTask ? 23 : 101);
                 data.writeInt64(dialogId);
                 data.writeInt32(mid);
                 data.writeInt32(ttl);
@@ -10738,7 +10798,9 @@ public class  MessagesController extends BaseController implements NotificationC
             newTaskId = taskId;
         }
         int time = getConnectionsManager().getCurrentTime();
-        getMessagesStorage().createTaskForMid(dialogId, mid, time, time, ttl, false);
+        if (createDeleteTask) {
+            getMessagesStorage().createTaskForMid(dialogId, mid, time, time, ttl, false);
+        }
         if (inputChannel != null) {
             TLRPC.TL_channels_readMessageContents req = new TLRPC.TL_channels_readMessageContents();
             req.channel = inputChannel;
@@ -11477,7 +11539,7 @@ public class  MessagesController extends BaseController implements NotificationC
                 BaseFragment lastFragment = LaunchActivity.getLastFragment();
                 if (lastFragment != null && lastFragment.getParentActivity() != null && !lastFragment.getParentActivity().isFinishing()) {
 //                    if (ChatObject.canUserDoAdminAction(currentChat, ChatObject.ACTION_INVITE)) {
-                    LimitReachedBottomSheet restricterdUsersBottomSheet = new LimitReachedBottomSheet(lastFragment, lastFragment.getParentActivity(), LimitReachedBottomSheet.TYPE_ADD_MEMBERS_RESTRICTED, currentAccount);
+                    LimitReachedBottomSheet restricterdUsersBottomSheet = new LimitReachedBottomSheet(lastFragment, lastFragment.getParentActivity(), LimitReachedBottomSheet.TYPE_ADD_MEMBERS_RESTRICTED, currentAccount, null);
                     restricterdUsersBottomSheet.setRestrictedUsers(currentChat, userRestrictedPrivacy);
                     restricterdUsersBottomSheet.show();
 //                    } else {
@@ -14202,6 +14264,7 @@ public class  MessagesController extends BaseController implements NotificationC
         LongSparseIntArray markAsReadMessagesInbox = null;
         LongSparseIntArray stillUnreadMessagesCount = null;
         LongSparseIntArray markAsReadMessagesOutbox = null;
+        int markContentAsReadMessagesDate = 0;
         LongSparseArray<ArrayList<Integer>> markContentAsReadMessages = null;
         SparseIntArray markAsReadEncrypted = null;
         LongSparseArray<ArrayList<Integer>> deletedMessages = null;
@@ -14456,6 +14519,7 @@ public class  MessagesController extends BaseController implements NotificationC
                 }
             } else if (baseUpdate instanceof TLRPC.TL_updateReadMessagesContents) {
                 TLRPC.TL_updateReadMessagesContents update = (TLRPC.TL_updateReadMessagesContents) baseUpdate;
+                markContentAsReadMessagesDate = update.date;
                 if (markContentAsReadMessages == null) {
                     markContentAsReadMessages = new LongSparseArray<>();
                 }
@@ -14849,6 +14913,11 @@ public class  MessagesController extends BaseController implements NotificationC
                     getStoriesController().updateBlockUser(id, finalUpdate.blocked_my_stories_from, false);
                 }));
             } else if (baseUpdate instanceof TLRPC.TL_updateNotifySettings) {
+                if (updatesOnMainThread == null) {
+                    updatesOnMainThread = new ArrayList<>();
+                }
+                updatesOnMainThread.add(baseUpdate);
+            } else if (baseUpdate instanceof TLRPC.TL_updateNewAuthorization) {
                 if (updatesOnMainThread == null) {
                     updatesOnMainThread = new ArrayList<>();
                 }
@@ -15819,6 +15888,8 @@ public class  MessagesController extends BaseController implements NotificationC
                             }
                             getMessagesStorage().updateMutedDialogsFiltersCounters();
                         }
+                    } else if (baseUpdate instanceof TLRPC.TL_updateNewAuthorization) {
+                        getUnconfirmedAuthController().processUpdate((TLRPC.TL_updateNewAuthorization) baseUpdate);
                     } else if (baseUpdate instanceof TLRPC.TL_updateChannel) {
                         TLRPC.TL_updateChannel update = (TLRPC.TL_updateChannel) baseUpdate;
                         TLRPC.Dialog dialog = dialogs_dict.get(-update.channel_id);
@@ -16583,11 +16654,11 @@ public class  MessagesController extends BaseController implements NotificationC
             getTopicsController().updateReadOutbox(topicsReadOutbox);
         }
         if (markContentAsReadMessages != null) {
-            int time = getConnectionsManager().getCurrentTime();
+            int currentTime2 = getConnectionsManager().getCurrentTime();
             for (int a = 0, size = markContentAsReadMessages.size(); a < size; a++) {
                 long key = markContentAsReadMessages.keyAt(a);
                 ArrayList<Integer> arrayList = markContentAsReadMessages.valueAt(a);
-                getMessagesStorage().markMessagesContentAsRead(key, arrayList, time);
+                getMessagesStorage().markMessagesContentAsRead(key, arrayList, currentTime2, markContentAsReadMessagesDate);
             }
         }
         if (deletedMessages != null) {
@@ -18383,6 +18454,19 @@ public class  MessagesController extends BaseController implements NotificationC
             storiesController = new StoriesController(currentAccount);
         }
         return storiesController;
+    }
+
+    public UnconfirmedAuthController getUnconfirmedAuthController() {
+        if (unconfirmedAuthController != null) {
+            return unconfirmedAuthController;
+        }
+        synchronized (lockObjects[currentAccount]) {
+            if (unconfirmedAuthController != null) {
+                return unconfirmedAuthController;
+            }
+            unconfirmedAuthController = new UnconfirmedAuthController(currentAccount);
+        }
+        return unconfirmedAuthController;
     }
 
     public boolean storiesEnabled() {

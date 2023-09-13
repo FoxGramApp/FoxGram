@@ -427,10 +427,11 @@ public class ProfileStoriesView extends View implements NotificationCenter.Notif
     @Override
     protected void dispatchDraw(Canvas canvas) {
         float rright = rightAnimated.set(this.right);
-        float ax = avatarContainer.getX();
-        float ay = avatarContainer.getY();
-        float aw = avatarContainer.getWidth() * avatarContainer.getScaleX();
-        float ah = avatarContainer.getHeight() * avatarContainer.getScaleY();
+        float insetMain = 0;
+        float ax = avatarContainer.getX() + insetMain * avatarContainer.getScaleX();
+        float ay = avatarContainer.getY() + insetMain * avatarContainer.getScaleY();
+        float aw = (avatarContainer.getWidth() - insetMain * 2) * avatarContainer.getScaleX();
+        float ah = (avatarContainer.getHeight() - insetMain * 2) * avatarContainer.getScaleY();
         rect1.set(ax, ay, ax + aw, ay + ah);
 
         float maxX = this.left;
