@@ -484,11 +484,11 @@ public class FloatingDebugView extends FrameLayout implements NotificationCenter
         List<FloatingDebugController.DebugItem> items = new ArrayList<>();
 
         items.add(new FloatingDebugController.DebugItem("Theme"));
-        items.add(new FloatingDebugController.DebugItem("Draw action bar shadow", () -> {
-            SharedConfig.drawActionBarShadow = !SharedConfig.drawActionBarShadow;
-            SharedConfig.saveDebugConfig();
-            AndroidUtilities.forEachViews(LaunchActivity.instance.drawerLayoutContainer.getRootView(), View::invalidate);
-        }));
+        //items.add(new FloatingDebugController.DebugItem("Draw action bar shadow", () -> {
+        //    SharedConfig.drawActionBarShadow = !SharedConfig.drawActionBarShadow;
+        //    SharedConfig.saveDebugConfig();
+        //    AndroidUtilities.forEachViews(LaunchActivity.instance.drawerLayoutContainer.getRootView(), View::invalidate);
+        //}));
         items.add(new FloatingDebugController.DebugItem("Show blur settings", () -> {
             BlurSettingsBottomSheet.show(LaunchActivity.getLastFragment());
             showBigMenu(false);

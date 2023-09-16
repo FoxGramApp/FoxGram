@@ -1707,6 +1707,4 @@ public class SharedConfig {
         pref.edit().putBoolean("drawActionBarShadow", drawActionBarShadow).apply();
     }
 
-
-
 }
