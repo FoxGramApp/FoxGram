@@ -22,6 +22,7 @@ import org.telegram.messenger.Emoji;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.FileRefController;
+import org.telegram.messenger.ImageLoader;
 import org.telegram.messenger.MediaController;
 import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.MessagesController;
@@ -79,6 +80,7 @@ public class StoryEntry extends IStoryPart {
     public File file;
     public boolean fileDeletable;
     public String thumbPath;
+    public Bitmap thumbPathBitmap;
 
     public boolean muted;
     public float left, right = 1;
@@ -482,7 +484,7 @@ public class StoryEntry extends IStoryPart {
             clearFilter();
             if (file != null) {
                 if (fileDeletable && (!isEdit || editedMedia)) {
-                    file.delete();
+                       file.delete();
                 }
                 file = null;
             }
@@ -499,6 +501,10 @@ public class StoryEntry extends IStoryPart {
                 part.file = null;
             }
         }
+        if (thumbPathBitmap != null) {
+            thumbPathBitmap.recycle();
+            thumbPathBitmap = null;
+        }
         cancelCheckStickers();
     }
 
@@ -507,7 +513,7 @@ public class StoryEntry extends IStoryPart {
         entry.isEdit = true;
         entry.editStoryId = storyItem.id;
         entry.file = file;
-        entry.fileDeletable = true;
+        entry.fileDeletable = false;
         entry.width = 720;
         entry.height = 1280;
         if (storyItem.media instanceof TLRPC.TL_messageMediaPhoto) {
@@ -535,7 +541,8 @@ public class StoryEntry extends IStoryPart {
                     for (int i = 0; i < storyItem.media.document.thumbs.size(); ++i) {
                         TLRPC.PhotoSize photoSize = storyItem.media.document.thumbs.get(i);
                         if (photoSize instanceof TLRPC.TL_photoStrippedSize) {
-                            continue;
+                            entry.thumbPathBitmap = ImageLoader.getStrippedPhotoBitmap(photoSize.bytes, null);
+                            break;
                         }
                         File path = FileLoader.getInstance(entry.currentAccount).getPathToAttach(photoSize, true);
                         if (path != null && path.exists()) {
@@ -689,6 +696,14 @@ public class StoryEntry extends IStoryPart {
                         }
                     });
                 }
+            } else if (thumbPathBitmap != null) {
+                DominantColors.getColors(true, thumbPathBitmap, true, colors -> {
+                    gradientTopColor = colors[0];
+                    gradientBottomColor = colors[1];
+                    if (done != null) {
+                        done.run();
+                    }
+                });
             }
         }
     }
@@ -1014,5 +1029,86 @@ public class StoryEntry extends IStoryPart {
         if (checkStickersReqId != 0) {
             ConnectionsManager.getInstance(currentAccount).cancelRequest(checkStickersReqId, true);
         }
+    }
+
+    public StoryEntry copy() {
+        StoryEntry newEntry = new StoryEntry();
+        newEntry.draftId = draftId;
+        newEntry.isDraft = isDraft;
+        newEntry.draftDate = draftDate;
+        newEntry.editStoryPeerId = editStoryPeerId;
+        newEntry.editStoryId = editStoryId;
+        newEntry.isEdit = isEdit;
+        newEntry.isEditSaved = isEditSaved;
+        newEntry.fileDuration = fileDuration;
+        newEntry.editedMedia = editedMedia;
+        newEntry.editedCaption = editedCaption;
+        newEntry.editedPrivacy = editedPrivacy;
+        newEntry.editedMediaAreas = editedMediaAreas;
+        newEntry.isError = isError;
+        newEntry.error = error;
+        newEntry.audioPath = audioPath;
+        newEntry.audioAuthor = audioAuthor;
+        newEntry.audioTitle = audioTitle;
+        newEntry.audioDuration = audioDuration;
+        newEntry.audioOffset = audioOffset;
+        newEntry.audioLeft = audioLeft;
+        newEntry.audioRight = audioRight;
+        newEntry.audioVolume = audioVolume;
+        newEntry.editDocumentId = editDocumentId;
+        newEntry.editPhotoId = editPhotoId;
+        newEntry.editExpireDate = editExpireDate;
+        newEntry.isVideo = isVideo;
+        newEntry.file = file;
+        newEntry.fileDeletable = fileDeletable;
+        newEntry.thumbPath = thumbPath;
+        newEntry.muted = muted;
+        newEntry.left = left;
+        newEntry.right = right;
+        newEntry.duration = duration;
+        newEntry.width = width;
+        newEntry.height = height;
+        newEntry.resultWidth = resultWidth;
+        newEntry.resultHeight = resultHeight;
+        newEntry.partsMaxId = partsMaxId;
+        newEntry.parts.clear();
+        newEntry.parts.addAll(parts);
+        newEntry.peer = peer;
+        newEntry.invert = invert;
+        newEntry.matrix.set(matrix);
+        newEntry.gradientTopColor = gradientTopColor;
+        newEntry.gradientBottomColor = gradientBottomColor;
+        newEntry.caption = caption;
+        newEntry.captionEntitiesAllowed = captionEntitiesAllowed;
+        newEntry.privacy = privacy;
+        newEntry.privacyRules.clear();
+        newEntry.privacyRules.addAll(privacyRules);
+        newEntry.pinned = pinned;
+        newEntry.allowScreenshots = allowScreenshots;
+        newEntry.period = period;
+        newEntry.shareUserIds = shareUserIds;
+        newEntry.silent = silent;
+        newEntry.scheduleDate = scheduleDate;
+        newEntry.blurredVideoThumb = blurredVideoThumb;
+        newEntry.uploadThumbFile = uploadThumbFile;
+        newEntry.draftThumbFile = draftThumbFile;
+        newEntry.paintFile = paintFile;
+        newEntry.paintBlurFile = paintBlurFile;
+        newEntry.paintEntitiesFile = paintEntitiesFile;
+        newEntry.averageDuration = averageDuration;
+        newEntry.mediaEntities = new ArrayList<>();
+        if (mediaEntities != null) {
+            for (int i = 0; i < mediaEntities.size(); ++i) {
+                newEntry.mediaEntities.add(mediaEntities.get(i).copy());
+            }
+        }
+        newEntry.stickers = stickers;
+        newEntry.editStickers = editStickers;
+        newEntry.filterFile = filterFile;
+        newEntry.filterState = filterState;
+        newEntry.thumbBitmap = thumbBitmap;
+        newEntry.fromCamera = fromCamera;
+        newEntry.thumbPathBitmap = thumbPathBitmap;
+        return newEntry;
     }
 }

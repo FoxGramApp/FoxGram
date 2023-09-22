@@ -36,8 +36,8 @@ public class BuildVars {
     public static boolean NO_SCOPED_STORAGE = Build.VERSION.SDK_INT <= 29;
 
     // Telegram
-    public static int TELEGRAM_BUILD_VERSION = 3872;
-    public static String TELEGRAM_VERSION_STRING = "10.0.9";
+    public static int TELEGRAM_BUILD_VERSION = 3919;
+    public static String TELEGRAM_VERSION_STRING = "10.1.0";
 
     // App ID and HASH
     // If you want make a fork you have to replace ID and HASH with yours
@@ -55,6 +55,7 @@ public class BuildVars {
     // Add if you have your app published on App Gallery
     // The Huawei part of code is available in Telegram's repo
     // public static String HUAWEI_APP_ID = "101184875";
+    // public static String HUAWEI_STORE_URL = "https://appgallery.huawei.com/app/C101184875";
 
     // Billing
     // You can use this flag to disable Google Play Billing
