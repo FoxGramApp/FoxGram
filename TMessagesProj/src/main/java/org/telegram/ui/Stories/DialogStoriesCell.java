@@ -432,29 +432,6 @@ public class DialogStoriesCell extends FrameLayout implements NotificationCenter
             titleView.setText(currentTitle, animated);
             return;
         }
-        oldItems.clear();
-        oldItems.addAll(items);
-        oldMiniItems.clear();
-        oldMiniItems.addAll(miniItems);
-        items.clear();
-        if (type != TYPE_ARCHIVE) {
-            items.add(new Item(UserConfig.getInstance(currentAccount).getClientUserId()));
-        }
-
-        ArrayList<TLRPC.PeerStories> allStories = type == TYPE_ARCHIVE ? storiesController.getHiddenList() : storiesController.getDialogListStories();
-        for (int i = 0; i < allStories.size(); i++) {
-            long dialogId = DialogObject.getPeerDialogId(allStories.get(i).peer);
-            if (dialogId != UserConfig.getInstance(currentAccount).getClientUserId()) {
-                items.add(new Item(dialogId));
-            }
-        }
-        int size = items.size();
-        if (!storiesController.hasSelfStories()) {
-            size--;
-        }
-        int totalCount;
-        boolean hidden = type == TYPE_ARCHIVE;
-        totalCount = Math.max(1, Math.max(storiesController.getTotalStoriesCount(hidden), size));
 
         if (storiesController.hasOnlySelfStories()) {
             if (storiesController.hasUploadingStories(UserConfig.getInstance(currentAccount).getClientUserId())) {
@@ -498,10 +475,11 @@ public class DialogStoriesCell extends FrameLayout implements NotificationCenter
             items.add(new Item(UserConfig.getInstance(currentAccount).getClientUserId()));
         }
 
-        ArrayList<TLRPC.TL_userStories> allStories = type == TYPE_ARCHIVE ? storiesController.getHiddenList() : storiesController.getDialogListStories();
+        ArrayList<TLRPC.PeerStories> allStories = type == TYPE_ARCHIVE ? storiesController.getHiddenList() : storiesController.getDialogListStories();
         for (int i = 0; i < allStories.size(); i++) {
-            if (allStories.get(i).user_id != UserConfig.getInstance(currentAccount).getClientUserId()) {
-                items.add(new Item(allStories.get(i).user_id));
+            long dialogId = DialogObject.getPeerDialogId(allStories.get(i).peer);
+            if (dialogId != UserConfig.getInstance(currentAccount).getClientUserId()) {
+                items.add(new Item(dialogId));
             }
         }
         int size = items.size();

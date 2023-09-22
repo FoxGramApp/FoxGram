@@ -83,6 +83,7 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
     private final static float SPRING_STIFFNESS_PREVIEW_EXPAND = 750f;
     private final static float SPRING_MULTIPLIER = 1000f;
     private List<BackButtonMenu.PulledDialog> pulledDialogs = new ArrayList<>();
+    private boolean isSheet;
 
     /**
      * Temp rect to calculate if it's ignored view
@@ -1145,6 +1146,16 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
     public void setFragmentStack(List<BaseFragment> fragmentStack) {
         this.fragmentStack = fragmentStack;
         unmodifiableFragmentStack = Collections.unmodifiableList(fragmentStack);
+    }
+
+    @Override
+    public void setIsSheet(boolean isSheet) {
+        this.isSheet = isSheet;
+    }
+
+    @Override
+    public boolean isSheet() {
+        return isSheet;
     }
 
     @Override
