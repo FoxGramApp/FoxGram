@@ -325,10 +325,6 @@ public class DialogStoriesCell extends FrameLayout implements NotificationCenter
         if (cell == null) {
             return;
         }
-        if (!FoxConfig.isEnabledCamera && cell.isSelf) {
-            showCameraHint();
-            return;
-        }
         if (cell.isSelf && !storiesController.hasSelfStories()) {
             if (!MessagesController.getInstance(currentAccount).storiesEnabled()) {
                 showPremiumHint();
@@ -1802,39 +1798,6 @@ public class DialogStoriesCell extends FrameLayout implements NotificationCenter
     }
 
     private HintView2 cameraHint;
-
-    public void showCameraHint() {
-        makeCameraHint();
-        if (cameraHint != null) {
-            if (cameraHint.shown()) {
-                BotWebViewVibrationEffect.APP_ERROR.vibrate();
-            }
-            cameraHint.show();
-        }
-    }
-
-    private HintView2 makeCameraHint() {
-        if (cameraHint != null) {
-            return cameraHint;
-        }
-        cameraHint = new HintView2(getContext(), HintView2.DIRECTION_TOP)
-                .setBgColor(Theme.getColor(Theme.key_undo_background))
-                .setMultilineText(true)
-                .setTextAlign(Layout.Alignment.ALIGN_CENTER)
-                .setJoint(0, 37 - 8);
-        Spannable text = AndroidUtilities.replaceSingleTag(LocaleController.getString("StoriesCameraOff").replace('\n', ' '), Theme.key_undo_cancelColor, 0, () -> {
-            if (cameraHint != null) {
-                cameraHint.hide();
-            }
-        });
-        cameraHint.setMaxWidthPx(HintView2.cutInFancyHalf(text, cameraHint.getTextPaint()));
-        cameraHint.setText(text);
-        cameraHint.setPadding(AndroidUtilities.dp(8), AndroidUtilities.dp(24), AndroidUtilities.dp(8), 0);
-        if (getParent() instanceof FrameLayout) {
-            ((FrameLayout) getParent()).addView(cameraHint, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 150, Gravity.LEFT | Gravity.TOP));
-        }
-        return cameraHint;
-    }
 
     public void showPremiumHint() {
         makePremiumHint();

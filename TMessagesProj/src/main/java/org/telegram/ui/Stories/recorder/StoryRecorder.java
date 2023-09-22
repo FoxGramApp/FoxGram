@@ -146,6 +146,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.foxgram.android.FoxConfig;
+
 public class StoryRecorder implements NotificationCenter.NotificationCenterDelegate {
 
     private final Theme.ResourcesProvider resourcesProvider = new DarkThemeResourceProvider();
@@ -4052,7 +4054,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
 
     @SuppressLint("ClickableViewAccessibility")
     private void createCameraView() {
-        if (cameraView != null || getContext() == null) {
+        if (cameraView != null || getContext() == null || !FoxConfig.isEnabledCamera) {
             return;
         }
         cameraView = new DualCameraView(getContext(), getCameraFace(), false) {

@@ -495,10 +495,6 @@ public class MediaActivity extends BaseFragment implements SharedMediaLayout.Sha
             floatingButtonContainer = new FrameLayout(context);
             floatingButtonContainer.setVisibility(View.VISIBLE);
             floatingButtonContainer.setOnClickListener(v -> {
-                if (!FoxConfig.isEnabledCamera) {
-                    BulletinFactory.of(this).createSimpleBulletin(R.raw.not_available, LocaleController.getString("StoriesCameraOff", R.string.StoriesCameraOff)).show();
-                    return;
-                }
                 StoryRecorder.getInstance(getParentActivity(), getCurrentAccount())
                         .open(StoryRecorder.SourceView.fromFloatingButton(floatingButtonContainer));
             });
