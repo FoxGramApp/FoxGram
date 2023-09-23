@@ -422,6 +422,7 @@ public abstract class BaseFragment {
             FileLog.e(e);
         }
         if (storyViewer != null) {
+            storyViewer.onPause();
             storyViewer.updatePlayingMode();
         }
         if (overlayStoryViewer != null) {

@@ -221,6 +221,8 @@ public class StoryViewer implements NotificationCenter.NotificationCenterDelegat
 
     private static final LongSparseArray<CharSequence> replyDrafts = new LongSparseArray<>();
     public boolean fromBottomSheet;
+    private boolean paused;
+    private long playerSavedPosition;
 
     public static boolean isShowingImage(MessageObject messageObject) {
         if (lastStoryItem == null || messageObject.type != MessageObject.TYPE_STORY && !messageObject.isWebpage() || runOpenAnimationAfterLayout) {
@@ -1297,6 +1299,10 @@ public class StoryViewer implements NotificationCenter.NotificationCenterDelegat
                             currentPlayerScope.surfaceView = surfaceView;
                             FileStreamLoadOperation.setPriorityForDocument(playerHolder.document, FileLoader.PRIORITY_HIGH);
                             FileLoader.getInstance(currentAccount).changePriority(FileLoader.PRIORITY_HIGH, playerHolder.document, null, null, null, null, null);
+                            if (t == 0 && playerSavedPosition != 0) {
+                                t = playerSavedPosition;
+                                currentPlayerScope.firstFrameRendered = true;
+                            }
                             currentPlayerScope.player.start(isPaused(), uri, t, isInSilentMode);
                             currentPlayerScope.invalidate();
                         }
@@ -1315,6 +1321,7 @@ public class StoryViewer implements NotificationCenter.NotificationCenterDelegat
                             surfaceView.setVisibility(View.VISIBLE);
                         }
                     }
+                    playerSavedPosition = 0;
                     updatePlayingMode();
                 }
 
@@ -2495,6 +2502,20 @@ public class StoryViewer implements NotificationCenter.NotificationCenterDelegat
             }
         } else if (id == NotificationCenter.openArticle || id == NotificationCenter.articleClosed) {
             updatePlayingMode();
+            if (id == NotificationCenter.openArticle) {
+                if (playerHolder != null) {
+                    playerSavedPosition = playerHolder.currentPosition;
+                    playerHolder.release(null);
+                    playerHolder = null;
+                } else {
+                    playerSavedPosition = 0;
+                }
+            } else if (!paused) {
+                PeerStoriesView peerView = getCurrentPeerView();
+                if (peerView != null) {
+                    getCurrentPeerView().updatePosition();
+                }
+            }
         }
     }
 
@@ -2524,9 +2545,20 @@ public class StoryViewer implements NotificationCenter.NotificationCenterDelegat
     }
 
     public void onResume() {
-        PeerStoriesView peerView = getCurrentPeerView();
-        if (peerView != null) {
-            getCurrentPeerView().updatePosition();
+        paused = false;
+        if (!ArticleViewer.getInstance().isVisible()) {
+            PeerStoriesView peerView = getCurrentPeerView();
+            if (peerView != null) {
+                getCurrentPeerView().updatePosition();
+            }
+        }
+    }
+
+    public void onPause() {
+        paused = true;
+        if (playerHolder != null) {
+            playerHolder.release(null);
+            playerHolder = null;
         }
     }
 
