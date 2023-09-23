@@ -6326,19 +6326,20 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             if (writeButton != null) {
                 writeButton.setTranslationY((actionBar.getOccupyStatusBar() ? AndroidUtilities.statusBarHeight : 0) + ActionBar.getCurrentActionBarHeight() + extraHeight + searchTransitionOffset - AndroidUtilities.dp(29.5f));
 
-                boolean writeButtonVisible = diff > 0.2f && !searchMode && (imageUpdater == null || setAvatarRow == -1);
-                if (writeButtonVisible && chatId != 0) {
-                    writeButtonVisible = ChatObject.isChannel(currentChat) && !currentChat.megagroup && chatInfo != null && chatInfo.linked_chat_id != 0 && infoHeaderRow != -1;
+                boolean setVisible = diff > 0.2f && !searchMode && (imageUpdater == null || setAvatarRow == -1);
+                if (setVisible && chatId != 0) {
+                    setVisible = ChatObject.isChannel(currentChat) && /*  !currentChat.megagroup && */ chatInfo != null && chatInfo.linked_chat_id != 0 && infoHeaderRow != -1;
                 }
+                setVisible = ActionButtonController.canShowButtons(isTopic) && setVisible;
+
+                if (storyView != null) {
+                    storyView.setExpandCoords(avatarContainer2.getMeasuredWidth() - AndroidUtilities.dp(111), (actionBar.getOccupyStatusBar() ? AndroidUtilities.statusBarHeight : 0) + ActionBar.getCurrentActionBarHeight() + extraHeight + searchTransitionOffset);
+                }
+
                 if (!openAnimationInProgress) {
-                    boolean setVisible = diff > 0.2f && !searchMode && (imageUpdater == null || setAvatarRow == -1);
-                    if (setVisible && chatId != 0) {
-                        setVisible = ChatObject.isChannel(currentChat) && /*  !currentChat.megagroup && */ chatInfo != null && chatInfo.linked_chat_id != 0 && infoHeaderRow != -1;
-                    }
-                    setVisible = ActionButtonController.canShowButtons(isTopic) && setVisible;
                     boolean currentVisible = writeButton.getTag() == null;
-                    if (writeButtonVisible != currentVisible) {
-                        if (writeButtonVisible) {
+                    if (setVisible != currentVisible) {
+                        if (setVisible) {
                             writeButton.setTag(null);
                         } else {
                             writeButton.setTag(0);
@@ -6350,7 +6351,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         }
                         if (animated) {
                             writeButtonAnimation = new AnimatorSet();
-                            if (writeButtonVisible) {
+                            if (setVisible) {
                                 writeButtonAnimation.setInterpolator(new DecelerateInterpolator());
                                 writeButtonAnimation.playTogether(
                                         ObjectAnimator.ofFloat(writeButton, View.SCALE_X, 1.0f),
@@ -6376,9 +6377,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                             });
                             writeButtonAnimation.start();
                         } else {
-                            writeButton.setScaleX(writeButtonVisible ? 1.0f : 0.2f);
-                            writeButton.setScaleY(writeButtonVisible ? 1.0f : 0.2f);
-                            writeButton.setAlpha(writeButtonVisible ? 1.0f : 0.0f);
+                            writeButton.setScaleX(setVisible ? 1.0f : 0.2f);
+                            writeButton.setScaleY(setVisible ? 1.0f : 0.2f);
+                            writeButton.setAlpha(setVisible ? 1.0f : 0.0f);
                         }
                     }
                     if (callItem != null && callItemVisible && ActionButtonController.canShowButtons(isTopic) && chatId != 0) {
@@ -6443,7 +6444,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
 
                 if (storyView != null) {
-                    storyView.setExpandCoords(avatarContainer2.getMeasuredWidth() - AndroidUtilities.dp(writeButtonVisible ? 111 : 40), (actionBar.getOccupyStatusBar() ? AndroidUtilities.statusBarHeight : 0) + ActionBar.getCurrentActionBarHeight() + extraHeight + searchTransitionOffset);
+                    storyView.setExpandCoords(avatarContainer2.getMeasuredWidth() - AndroidUtilities.dp(setVisible ? 111 : 40), (actionBar.getOccupyStatusBar() ? AndroidUtilities.statusBarHeight : 0) + ActionBar.getCurrentActionBarHeight() + extraHeight + searchTransitionOffset);
                 }
             }
 
