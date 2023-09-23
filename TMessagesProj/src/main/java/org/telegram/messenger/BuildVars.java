@@ -55,7 +55,7 @@ public class BuildVars {
     // Add if you have your app published on App Gallery
     // The Huawei part of code is available in Telegram's repo
     // public static String HUAWEI_APP_ID = "101184875";
-    // public static String HUAWEI_STORE_URL = "https://appgallery.huawei.com/app/C101184875";
+    public static String HUAWEI_STORE_URL = "https://appgallery.huawei.com/app/your_app";
 
     // Billing
     // You can use this flag to disable Google Play Billing
