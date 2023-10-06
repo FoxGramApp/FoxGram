@@ -34,21 +34,21 @@ public class FoxTextUtils {
         int currentAccount = UserConfig.selectedAccount;
         TLRPC.User selfUser = UserConfig.getInstance(currentAccount).getCurrentUser();
         switch (FoxConfig.nameType) {
-            case FoxConfig.DEFAULT_NAME:
+            case FoxConfig.NAME_APP:
                 return appInfo.appName;
-            case FoxConfig.USER_NAME:
+            case FoxConfig.NAME_DEFAULT_USER:
                 return selfUser.first_name + " " + (selfUser.last_name != null ? selfUser.last_name : "");
-            case FoxConfig.TG_USER_NAME:
+            case FoxConfig.NAME_USERNAME:
                 return selfUser.username;
-            case FoxConfig.MY_STORY:
+            case FoxConfig.NAME_STORIES:
                 switch (FoxConfig.oldTitleText) {
-                    case FoxConfig.DEFAULT_NAME:
-                    case FoxConfig.MY_STORY:
+                    case FoxConfig.NAME_APP:
+                    case FoxConfig.NAME_STORIES:
                     default:
                         return appInfo.appName;
-                    case FoxConfig.USER_NAME:
+                    case FoxConfig.NAME_DEFAULT_USER:
                         return selfUser.first_name + " " + (selfUser.last_name != null ? selfUser.last_name : "");
-                    case FoxConfig.TG_USER_NAME:
+                    case FoxConfig.NAME_USERNAME:
                         return selfUser.username;
                 }
         }
@@ -57,15 +57,15 @@ public class FoxTextUtils {
 
     public static void saveOldTitleText(int type) {
         switch (type) {
-            case FoxConfig.DEFAULT_NAME:
-            case FoxConfig.MY_STORY:
+            case FoxConfig.NAME_APP:
+            case FoxConfig.NAME_STORIES:
             default:
                 FoxConfig.oldTitleText = 0;
                 break;
-            case FoxConfig.USER_NAME:
+            case FoxConfig.NAME_DEFAULT_USER:
                 FoxConfig.oldTitleText = 1;
                 break;
-            case FoxConfig.TG_USER_NAME:
+            case FoxConfig.NAME_USERNAME:
                 FoxConfig.oldTitleText = 2;
                 break;
         }

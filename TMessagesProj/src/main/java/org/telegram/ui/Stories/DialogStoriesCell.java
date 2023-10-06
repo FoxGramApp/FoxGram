@@ -423,7 +423,7 @@ public class DialogStoriesCell extends FrameLayout implements NotificationCenter
     }
 
     public void setTitle(boolean animated, int totalCount) {
-        if (FoxConfig.nameType != FoxConfig.MY_STORY) {
+        if (FoxConfig.nameType != FoxConfig.NAME_STORIES) {
             currentTitle = FoxTextUtils.getTitleText();
             titleView.setText(currentTitle, animated);
             return;

@@ -38,10 +38,10 @@ public class FoxConfig extends SettingsController {
     public static final int CAMERA_X = 1;
     public static final int SYSTEM_CAMERA = 2;
 
-    public static final int DEFAULT_NAME = 0;
-    public static final int USER_NAME = 1;
-    public static final int TG_USER_NAME = 2;
-    public static final int MY_STORY = 3;
+    public static final int NAME_APP = 0;
+    public static final int NAME_DEFAULT_USER = 1;
+    public static final int NAME_USERNAME = 2;
+    public static final int NAME_STORIES = 3;
 
     public static final int DOUBLE_TAP_DISABLED = 0;
     public static final int DOUBLE_TAP_REACT = 1;
@@ -218,7 +218,7 @@ public class FoxConfig extends SettingsController {
             showSantaHat = getBoolean("showSantaHat", true);
             showSnowFalling = getBoolean("showSnowFalling", true);
             cameraType = getInt("cameraType", CameraXUtils.getDefault());
-            nameType = getInt("nameType", DEFAULT_NAME);
+            nameType = getInt("nameType", NAME_APP);
             doubleTapType = getInt("doubleTapType", DOUBLE_TAP_REACT);
             cameraResolution = getInt("cameraResolution", CameraXUtils.getCameraResolution());
             cameraPreview = getBoolean("cameraPreview", true);

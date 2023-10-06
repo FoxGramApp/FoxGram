@@ -309,6 +309,12 @@ public class SettingsController extends SharedPreferencesHelper {
                     return integerValue >= 20 && integerValue <= 200;
                 case "stickerSizeStack":
                     return integerValue >= 2 && integerValue <= 20;
+                case "editInAppBlurAlpha":
+                    return integerValue >= 0 && integerValue <= 255;
+                case "nameType":
+                    return integerValue >= 0 && integerValue <= 3;
+                case "doubleTapType":
+                    return integerValue >= 0 && integerValue <= 6;
             }
         }
         return value instanceof Boolean;

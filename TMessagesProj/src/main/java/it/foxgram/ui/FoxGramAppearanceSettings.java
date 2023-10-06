@@ -290,7 +290,7 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
             if (view instanceof  TextCheckCell) {
                 ((TextCheckCell) view).setChecked(FoxConfig.showStories);
             }
-            if (FoxConfig.nameType == FoxConfig.MY_STORY) {
+            if (FoxConfig.nameType == FoxConfig.NAME_STORIES) {
                 FoxConfig.saveNameType(FoxConfig.oldTitleText);
                 listAdapter.notifyItemChanged(showInActionBarRow, PARTIAL);
                 reloadDialogs();
@@ -479,16 +479,16 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                     } else if (position == showInActionBarRow) {
                         String defaultName;
                         switch (FoxConfig.nameType) {
-                            case FoxConfig.DEFAULT_NAME:
+                            case FoxConfig.NAME_APP:
                                 defaultName = LocaleController.getString("Default", R.string.Default);
                                 break;
-                            case FoxConfig.USER_NAME:
+                            case FoxConfig.NAME_DEFAULT_USER:
                                 defaultName = LocaleController.getString("AccountNameTitleBar", R.string.AccountNameTitleBar);
                                 break;
-                            case FoxConfig.TG_USER_NAME:
+                            case FoxConfig.NAME_USERNAME:
                                 defaultName = LocaleController.getString("Username", R.string.Username);
                                 break;
-                            case FoxConfig.MY_STORY:
+                            case FoxConfig.NAME_STORIES:
                                 defaultName = LocaleController.getString("ProfileMyStories", R.string.ProfileMyStories);
                                 break;
                             default:
