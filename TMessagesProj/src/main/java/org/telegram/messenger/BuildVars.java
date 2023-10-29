@@ -36,8 +36,8 @@ public class BuildVars {
     public static boolean NO_SCOPED_STORAGE = Build.VERSION.SDK_INT <= 29;
 
     // Telegram
-    public static int TELEGRAM_BUILD_VERSION = 3926;
-    public static String TELEGRAM_VERSION_STRING = "10.1.1";
+    public static int TELEGRAM_BUILD_VERSION = 4056;
+    public static String TELEGRAM_VERSION_STRING = "10.2.0";
 
     // App ID and HASH
     // If you want make a fork you have to replace ID and HASH with yours

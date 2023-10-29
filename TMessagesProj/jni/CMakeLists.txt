@@ -311,10 +311,7 @@ target_include_directories(breakpad PUBLIC
 #voip
 include(${CMAKE_HOME_DIRECTORY}/voip/CMakeLists.txt)
 
-#ping
-include(${CMAKE_HOME_DIRECTORY}/ping/CMakeLists.txt)
-
-set(NATIVE_LIB "fox.46")
+set(NATIVE_LIB "fox.47")
 
 #fox
 add_library(${NATIVE_LIB} SHARED

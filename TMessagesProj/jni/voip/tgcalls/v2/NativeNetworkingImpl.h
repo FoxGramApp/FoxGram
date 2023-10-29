@@ -18,6 +18,7 @@
 #include <functional>
 #include <memory>
 
+#include "InstanceNetworking.h"
 #include "Message.h"
 #include "ThreadLocalObject.h"
 #include "Instance.h"
@@ -50,7 +51,7 @@ struct Message;
 class SctpDataChannelProviderInterfaceImpl;
 class Threads;
 
-class NativeNetworkingImpl : public sigslot::has_slots<>, public std::enable_shared_from_this<NativeNetworkingImpl> {
+class NativeNetworkingImpl : public InstanceNetworking, public sigslot::has_slots<>, public std::enable_shared_from_this<NativeNetworkingImpl> {
 public:
     struct RouteDescription {
         explicit RouteDescription(std::string const &localDescription_, std::string const &remoteDescription_) :
@@ -145,22 +146,21 @@ public:
     };
 
     static webrtc::CryptoOptions getDefaulCryptoOptions();
-    static ConnectionDescription::CandidateDescription connectionDescriptionFromCandidate(cricket::Candidate const &candidate);
 
     NativeNetworkingImpl(Configuration &&configuration);
-    ~NativeNetworkingImpl();
+    virtual ~NativeNetworkingImpl();
 
-    void start();
-    void stop();
+    virtual void start() override;
+    virtual void stop() override;
 
-    PeerIceParameters getLocalIceParameters();
-    std::unique_ptr<rtc::SSLFingerprint> getLocalFingerprint();
-    void setRemoteParams(PeerIceParameters const &remoteIceParameters, rtc::SSLFingerprint *fingerprint, std::string const &sslSetup);
-    void addCandidates(std::vector<cricket::Candidate> const &candidates);
+    virtual PeerIceParameters getLocalIceParameters() override;
+    virtual std::unique_ptr<rtc::SSLFingerprint> getLocalFingerprint() override;
+    virtual void setRemoteParams(PeerIceParameters const &remoteIceParameters, rtc::SSLFingerprint *fingerprint, std::string const &sslSetup) override;
+    virtual void addCandidates(std::vector<cricket::Candidate> const &candidates) override;
 
-    void sendDataChannelMessage(std::string const &message);
+    virtual void sendDataChannelMessage(std::string const &message) override;
 
-    webrtc::RtpTransport *getRtpTransport();
+    virtual webrtc::RtpTransport *getRtpTransport() override;
 
 private:
     void resetDtlsSrtpTransport();
@@ -191,7 +191,7 @@ private:
     std::vector<RtcServer> _rtcServers;
     absl::optional<Proxy> _proxy;
 
-    std::function<void(const NativeNetworkingImpl::State &)> _stateUpdated;
+    std::function<void(const InstanceNetworking::State &)> _stateUpdated;
     std::function<void(const cricket::Candidate &)> _candidateGathered;
     std::function<void(rtc::CopyOnWriteBuffer const &, bool)> _transportMessageReceived;
     std::function<void(rtc::CopyOnWriteBuffer const &, int64_t)> _rtcpPacketReceived;

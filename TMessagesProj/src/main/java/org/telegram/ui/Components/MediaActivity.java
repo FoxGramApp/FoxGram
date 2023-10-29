@@ -1,7 +1,6 @@
 package org.telegram.ui.Components;
 
 import static org.telegram.messenger.AndroidUtilities.dp;
-import static org.telegram.messenger.AndroidUtilities.dpf2;
 import static org.telegram.messenger.AndroidUtilities.lerp;
 
 import android.animation.Animator;
@@ -17,12 +16,9 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.Layout;
-import android.text.StaticLayout;
-import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.Gravity;
@@ -34,6 +30,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 
 import org.telegram.messenger.AndroidUtilities;
@@ -48,9 +45,9 @@ import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.messenger.UserObject;
-import org.telegram.messenger.Utilities;
 import org.telegram.tgnet.TLObject;
 import org.telegram.tgnet.TLRPC;
+import org.telegram.tgnet.tl.TL_stories;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.ActionBarMenu;
 import org.telegram.ui.ActionBar.ActionBarMenuItem;
@@ -187,7 +184,7 @@ public class MediaActivity extends BaseFragment implements SharedMediaLayout.Sha
                     finishFragment();
                 } else if (id == 2) {
                     if (actionModeMessageObjects != null) {
-                        ArrayList<TLRPC.StoryItem> storyItems = new ArrayList<>();
+                        ArrayList<TL_stories.StoryItem> storyItems = new ArrayList<>();
                         for (int i = 0; i < actionModeMessageObjects.size(); ++i) {
                             MessageObject messageObject = actionModeMessageObjects.valueAt(i);
                             if (messageObject.storyItem != null) {
@@ -202,7 +199,7 @@ public class MediaActivity extends BaseFragment implements SharedMediaLayout.Sha
                             builder.setPositiveButton(LocaleController.getString("Delete", R.string.Delete), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    getMessagesController().getStoriesController().deleteStories(storyItems);
+                                    getMessagesController().getStoriesController().deleteStories(dialogId, storyItems);
                                     sharedMediaLayout.closeActionMode(false);
                                 }
                             });
@@ -430,7 +427,7 @@ public class MediaActivity extends BaseFragment implements SharedMediaLayout.Sha
                 Bulletin.hideVisible();
                 boolean pin = sharedMediaLayout.getClosestTab() == SharedMediaLayout.TAB_ARCHIVED_STORIES;
                 int count = 0;
-                ArrayList<TLRPC.StoryItem> storyItems = new ArrayList<>();
+                ArrayList<TL_stories.StoryItem> storyItems = new ArrayList<>();
                 if (actionModeMessageObjects != null) {
                     for (int i = 0; i < actionModeMessageObjects.size(); ++i) {
                         MessageObject messageObject = actionModeMessageObjects.valueAt(i);
@@ -450,7 +447,7 @@ public class MediaActivity extends BaseFragment implements SharedMediaLayout.Sha
                 }
                 boolean[] pastValues = new boolean[storyItems.size()];
                 for (int i = 0; i < storyItems.size(); ++i) {
-                    TLRPC.StoryItem storyItem = storyItems.get(i);
+                    TL_stories.StoryItem storyItem = storyItems.get(i);
                     pastValues[i] = storyItem.pinned;
                     storyItem.pinned = pin;
                 }
@@ -463,7 +460,7 @@ public class MediaActivity extends BaseFragment implements SharedMediaLayout.Sha
                     undone[0] = true;
                     AndroidUtilities.cancelRunOnUIThread(applyBulletin);
                     for (int i = 0; i < storyItems.size(); ++i) {
-                        TLRPC.StoryItem storyItem = storyItems.get(i);
+                        TL_stories.StoryItem storyItem = storyItems.get(i);
                         storyItem.pinned = pastValues[i];
                     }
                     getMessagesController().getStoriesController().updateStoriesInLists(dialogId, storyItems);
@@ -564,6 +561,7 @@ public class MediaActivity extends BaseFragment implements SharedMediaLayout.Sha
         }, SharedMediaLayout.VIEW_TYPE_MEDIA_ACTIVITY, getResourceProvider()) {
             @Override
             protected void onSelectedTabChanged() {
+                super.onSelectedTabChanged();
                 updateMediaCount();
             }
 
@@ -853,6 +851,9 @@ public class MediaActivity extends BaseFragment implements SharedMediaLayout.Sha
 
     private int lastTab;
     private void updateMediaCount() {
+        if (sharedMediaLayout == null) {
+            return;
+        }
         int id = sharedMediaLayout.getClosestTab();
         int[] mediaCount = sharedMediaPreloader.getLastMediaCount();
         final boolean animated = !LocaleController.isRTL;

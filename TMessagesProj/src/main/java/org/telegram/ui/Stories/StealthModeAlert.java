@@ -21,6 +21,7 @@ import org.telegram.messenger.R;
 import org.telegram.messenger.UserConfig;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
+import org.telegram.tgnet.tl.TL_stories;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.BottomSheet;
 import org.telegram.ui.ActionBar.SimpleTextView;
@@ -76,7 +77,7 @@ public class StealthModeAlert extends BottomSheet {
         title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
         title.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
         title.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText, resourcesProvider));
-        title.setText(LocaleController.getString("StealthMode", R.string.StealthMode));
+        title.setText(LocaleController.getString("StealthModeTitle", R.string.StealthModeTitle));
         linearLayout.addView(title, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL));
 
         SimpleTextView subtitle = new SimpleTextView(getContext());
@@ -144,12 +145,12 @@ public class StealthModeAlert extends BottomSheet {
                     return;
                 }
                 StoriesController storiesController = MessagesController.getInstance(currentAccount).getStoriesController();
-                TLRPC.TL_storiesStealthMode stealthMode = storiesController.getStealthMode();
+                TL_stories.TL_storiesStealthMode stealthMode = storiesController.getStealthMode();
                 if (stealthMode == null || ConnectionsManager.getInstance(currentAccount).getCurrentTime() > stealthMode.cooldown_until_date) {
-                    TLRPC.TL_stories_activateStealthMode req = new TLRPC.TL_stories_activateStealthMode();
+                    TL_stories.TL_stories_activateStealthMode req = new TL_stories.TL_stories_activateStealthMode();
                     req.future = true;
                     req.past = true;
-                    stealthMode = new TLRPC.TL_storiesStealthMode();
+                    stealthMode = new TL_stories.TL_storiesStealthMode();
                     stealthMode.flags |= 1 + 2;
                     stealthMode.cooldown_until_date = ConnectionsManager.getInstance(currentAccount).getCurrentTime() +MessagesController.getInstance(currentAccount).stealthModeCooldown;
                     stealthMode.active_until_date = ConnectionsManager.getInstance(currentAccount).getCurrentTime() + MessagesController.getInstance(currentAccount).stealthModeFuture;
@@ -198,7 +199,7 @@ public class StealthModeAlert extends BottomSheet {
 
     private void updateButton(boolean animated) {
         StoriesController storiesController = MessagesController.getInstance(currentAccount).getStoriesController();
-        TLRPC.TL_storiesStealthMode stealthMode = storiesController.getStealthMode();
+        TL_stories.TL_storiesStealthMode stealthMode = storiesController.getStealthMode();
         if (stealthMode != null && ConnectionsManager.getInstance(currentAccount).getCurrentTime() < stealthMode.active_until_date) {
             stealthModeIsActive = true;
             button.setOverlayText(LocaleController.getString("StealthModeIsActive", R.string.StealthModeIsActive), true, animated);

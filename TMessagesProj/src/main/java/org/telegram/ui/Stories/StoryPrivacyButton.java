@@ -18,7 +18,7 @@ import android.view.View;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.R;
-import org.telegram.tgnet.TLRPC;
+import org.telegram.tgnet.tl.TL_stories;
 import org.telegram.ui.Components.AnimatedFloat;
 import org.telegram.ui.Components.ButtonBounce;
 import org.telegram.ui.Components.CubicBezierInterpolator;
@@ -52,7 +52,7 @@ public class StoryPrivacyButton extends View {
         arrowPaint.setColor(Color.WHITE);
     }
 
-    public boolean set(boolean mine, TLRPC.StoryItem storyItem, boolean animated) {
+    public boolean set(boolean mine, TL_stories.StoryItem storyItem, boolean animated) {
         drawArrow = mine;
         draw = true;
         if (storyItem == null) {

@@ -76,6 +76,7 @@ import android.telephony.TelephonyManager;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.util.LruCache;
 import android.view.KeyEvent;
 import android.view.View;
@@ -2915,7 +2916,8 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 			builder.setSmallIcon(isMicMute() ? R.drawable.voicechat_muted : R.drawable.voicechat_active);
 		} else {
 			builder.setContentTitle(LocaleController.getString("VoipOutgoingCall", R.string.VoipOutgoingCall));
-			builder.setSmallIcon(R.drawable.notification);
+			builder.setSmallIcon(R.drawable.ic_call);
+            builder.setOngoing(true);
 		}
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
 			Intent endIntent = new Intent(this, VoIPActionsReceiver.class);
@@ -3581,7 +3583,7 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 			if (groupCall != null) {
 				bldr.setSmallIcon(isMicMute() ? R.drawable.voicechat_muted : R.drawable.voicechat_active);
 			} else {
-				bldr.setSmallIcon(R.drawable.notification);
+				bldr.setSmallIcon(R.drawable.ic_call);
 			}
 			startForeground(ID_ONGOING_CALL_NOTIFICATION, bldr.build());
 		}
@@ -4030,11 +4032,10 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 		Notification.Builder builder = new Notification.Builder(this)
 				.setContentTitle(video ? LocaleController.getString("VoipInVideoCallBranding", R.string.VoipInVideoCallBranding) : LocaleController.getString("VoipInCallBranding", R.string.VoipInCallBranding))
 				.setContentText(name)
-				.setSmallIcon(R.drawable.notification)
+				.setSmallIcon(R.drawable.ic_call)
 				.setSubText(subText)
 				.setContentIntent(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE));
-		Uri soundProviderUri = Uri.parse("content://" + ApplicationLoader.getApplicationId() + ".call_sound_provider/start_ringing");
-		if (Build.VERSION.SDK_INT >= 26) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 			SharedPreferences nprefs = MessagesController.getGlobalNotificationsSettings();
 			int chanIndex = nprefs.getInt("calls_notification_channel", 0);
 			NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -4042,14 +4043,18 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 			if (oldChannel != null) {
 				nm.deleteNotificationChannel(oldChannel.getId());
 			}
-			NotificationChannel existingChannel = nm.getNotificationChannel("incoming_calls3" + chanIndex);
+            oldChannel = nm.getNotificationChannel("incoming_calls3" + chanIndex);
+            if (oldChannel != null) {
+                nm.deleteNotificationChannel(oldChannel.getId());
+            }
+			NotificationChannel existingChannel = nm.getNotificationChannel("incoming_calls4" + chanIndex);
 			boolean needCreate = true;
 			if (existingChannel != null) {
-				if (existingChannel.getImportance() < NotificationManager.IMPORTANCE_HIGH || !soundProviderUri.equals(existingChannel.getSound()) || existingChannel.getVibrationPattern() != null || existingChannel.shouldVibrate()) {
+				if (existingChannel.getImportance() < NotificationManager.IMPORTANCE_HIGH || existingChannel.getSound() != null) {
 					if (BuildVars.LOGS_ENABLED) {
 						FileLog.d("User messed up the notification channel; deleting it and creating a proper one");
 					}
-					nm.deleteNotificationChannel("incoming_calls3" + chanIndex);
+					nm.deleteNotificationChannel("incoming_calls4" + chanIndex);
 					chanIndex++;
 					nprefs.edit().putInt("calls_notification_channel", chanIndex).apply();
 				} else {
@@ -4062,8 +4067,13 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 						.setLegacyStreamType(AudioManager.STREAM_RING)
 						.setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION)
 						.build();
-				NotificationChannel chan = new NotificationChannel("incoming_calls3" + chanIndex, LocaleController.getString("IncomingCalls", R.string.IncomingCalls), NotificationManager.IMPORTANCE_HIGH);
-				chan.setSound(soundProviderUri, attrs);
+				NotificationChannel chan = new NotificationChannel("incoming_calls4" + chanIndex, LocaleController.getString("IncomingCallsSystemSetting", R.string.IncomingCallsSystemSetting), NotificationManager.IMPORTANCE_HIGH);
+                try {
+                    chan.setSound(null, attrs);
+                } catch (Exception e) {
+                    FileLog.e(e);
+                }
+                chan.setDescription(LocaleController.getString("IncomingCallsSystemSettingDescription", R.string.IncomingCallsSystemSettingDescription));
 				chan.enableVibration(false);
 				chan.enableLights(false);
 				chan.setBypassDnd(true);
@@ -4075,9 +4085,9 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 					return;
 				}
 			}
-			builder.setChannelId("incoming_calls3" + chanIndex);
+			builder.setChannelId("incoming_calls4" + chanIndex);
 		} else {
-			builder.setSound(soundProviderUri, AudioManager.STREAM_RING);
+			builder.setSound(null);
 		}
 		Intent endIntent = new Intent(this, VoIPActionsReceiver.class);
 		endIntent.setAction(getPackageName() + ".DECLINE_CALL");

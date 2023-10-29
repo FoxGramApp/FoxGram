@@ -68,6 +68,8 @@ public class ItemOptions {
     private ActionBarPopupWindow actionBarPopupWindow;
     private final float[] point = new float[2];
 
+    private Runnable dismissListener;
+
     private float translateX, translateY;
     private int dimAlpha;
 
@@ -107,7 +109,15 @@ public class ItemOptions {
     }
 
     private void init() {
-        lastLayout = new ActionBarPopupWindow.ActionBarPopupWindowLayout(context, resourcesProvider);
+        lastLayout = new ActionBarPopupWindow.ActionBarPopupWindowLayout(context, resourcesProvider) {
+            @Override
+            protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+                if (this == layout && maxHeight > 0) {
+                    heightMeasureSpec = MeasureSpec.makeMeasureSpec(Math.min(maxHeight, MeasureSpec.getSize(heightMeasureSpec)), MeasureSpec.getMode(heightMeasureSpec));
+                }
+                super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            }
+        };
         lastLayout.setDispatchKeyEventListener(keyEvent -> {
             if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_BACK && keyEvent.getRepeatCount() == 0 && actionBarPopupWindow != null && actionBarPopupWindow.isShowing()) {
                 actionBarPopupWindow.dismiss();
@@ -135,6 +145,10 @@ public class ItemOptions {
         return add(iconResId, text, Theme.key_actionBarDefaultSubmenuItemIcon, Theme.key_actionBarDefaultSubmenuItem, onClickListener);
     }
 
+    public ItemOptions add(CharSequence text, Runnable onClickListener) {
+        return add(0, text, false, onClickListener);
+    }
+
     public ItemOptions add(int iconResId, CharSequence text, Runnable onClickListener) {
         return add(iconResId, text, false, onClickListener);
     }
@@ -154,7 +168,11 @@ public class ItemOptions {
 
         ActionBarMenuSubItem subItem = new ActionBarMenuSubItem(context, false, false, resourcesProvider);
         subItem.setPadding(dp(18), 0, dp(18 + (LocaleController.isRTL ? 0 : 8)), 0);
-        subItem.setTextAndIcon(text, iconResId);
+        if (iconResId != 0) {
+            subItem.setTextAndIcon(text, iconResId);
+        } else {
+            subItem.setText(text);
+        }
 
         subItem.setColors(Theme.getColor(textColorKey, resourcesProvider), Theme.getColor(iconColorKey, resourcesProvider));
         subItem.setSelectorColor(Theme.multAlpha(Theme.getColor(textColorKey, resourcesProvider), .12f));
@@ -321,6 +339,16 @@ public class ItemOptions {
         return this;
     }
 
+    private int maxHeight;
+    public ItemOptions setMaxHeight(int px) {
+        this.maxHeight = px;
+        return this;
+    }
+
+    public ViewGroup getLayout() {
+        return layout;
+    }
+
     public ItemOptions setBlurBackground(BlurringShader.BlurManager blurManager, float ox, float oy) {
         Drawable baseDrawable = context.getResources().getDrawable(R.drawable.popup_fixed_alert2).mutate();
         if (layout instanceof ActionBarPopupWindow.ActionBarPopupWindowLayout) {
@@ -484,19 +512,29 @@ public class ItemOptions {
         dimView.animate().alpha(1f).setDuration(150);
         layout.measure(View.MeasureSpec.makeMeasureSpec(container.getMeasuredWidth(), View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(container.getMeasuredHeight(), View.MeasureSpec.UNSPECIFIED));
 
-        actionBarPopupWindow = new ActionBarPopupWindow(layout, LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT);
-        actionBarPopupWindow.setOnDismissListener(() -> {
-            actionBarPopupWindow = null;
-            dimView.animate().cancel();
-            dimView.animate().alpha(0).setDuration(150).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    if (dimView.getParent() != null) {
-                        container.removeView(dimView);
-                    }
-                    container.getViewTreeObserver().removeOnPreDrawListener(preDrawListener);
+        actionBarPopupWindow = new ActionBarPopupWindow(layout, LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT) {
+            @Override
+            public void dismiss() {
+                super.dismiss();
+                ItemOptions.this.dismissDim(container);
+
+                if (dismissListener != null) {
+                    dismissListener.run();
+                    dismissListener = null;
                 }
-            });
+            }
+        };
+        actionBarPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                actionBarPopupWindow = null;
+                dismissDim(container);
+
+                if (dismissListener != null) {
+                    dismissListener.run();
+                    dismissListener = null;
+                }
+            }
         });
         actionBarPopupWindow.setClippingEnabled(true);
         actionBarPopupWindow.getContentView().setFocusableInTouchMode(true);
@@ -549,6 +587,16 @@ public class ItemOptions {
         return this;
     }
 
+    public ItemOptions setBackgroundColor(int color) {
+        for (int j = 0; j < layout.getChildCount(); ++j) {
+            View child = j == layout.getChildCount() - 1 ? lastLayout : layout.getChildAt(j);
+            if (child instanceof ActionBarPopupWindow.ActionBarPopupWindowLayout) {
+                child.setBackgroundColor(color);
+            }
+        }
+        return this;
+    }
+
     public float getOffsetX() {
         return offsetX;
     }
@@ -579,6 +627,11 @@ public class ItemOptions {
 
     public boolean isShown() {
         return actionBarPopupWindow != null && actionBarPopupWindow.isShowing();
+    }
+
+    public ItemOptions setOnDismiss(Runnable dismissListener) {
+        this.dismissListener = dismissListener;
+        return this;
     }
 
     public void dismiss() {

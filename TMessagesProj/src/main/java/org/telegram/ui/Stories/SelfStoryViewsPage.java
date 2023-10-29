@@ -43,6 +43,7 @@ import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
+import org.telegram.tgnet.tl.TL_stories;
 import org.telegram.ui.ActionBar.ActionBarMenuItem;
 import org.telegram.ui.ActionBar.ActionBarMenuSubItem;
 import org.telegram.ui.ActionBar.ActionBarPopupWindow;
@@ -137,7 +138,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
     private boolean showServerErrorText;
     private long dialogId;
 
-    private boolean isStoryShownToUser(TLRPC.TL_storyView view) {
+    private boolean isStoryShownToUser(TL_stories.TL_storyView view) {
         if (MessagesController.getInstance(currentAccount).getStoriesController().isBlocked(view)) {
             return false;
         }
@@ -231,7 +232,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
             if (position < 0 || position >= listAdapter.items.size()) {
                 return;
             }
-            TLRPC.TL_storyView user = listAdapter.items.get(position).user;
+            TL_stories.TL_storyView user = listAdapter.items.get(position).user;
             if (user != null) {
                 storyViewer.presentFragment(ProfileActivity.of(user.user_id));
             }
@@ -246,7 +247,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
                 if (storyViewer == null || storyViewer.containerView == null) {
                     return false;
                 }
-                TLRPC.TL_storyView viewUser = listAdapter.items.get(position).user;
+                TL_stories.TL_storyView viewUser = listAdapter.items.get(position).user;
                 if (viewUser == null) {
                     return false;
                 }
@@ -498,7 +499,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
         this.showReactionsSort = false;
         boolean forceHideTitle = false;
         if (storyItem.storyItem != null) {
-            TLRPC.StoryItem serverItem = storyItem.storyItem;
+            TL_stories.StoryItem serverItem = storyItem.storyItem;
             if (serverItem.views != null) {
                 showSearch = serverItem.views.views_count >= 15;
                 showReactionsSort = serverItem.views.reactions_count >= (BuildVars.DEBUG_PRIVATE_VERSION ? 5 : 10);
@@ -584,7 +585,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
         ((MarginLayoutParams) shadowView2.getLayoutParams()).topMargin = AndroidUtilities.dp(TOP_PADDING - 17);
     }
 
-    public static void preload(int currentAccount, long dialogId, TLRPC.StoryItem storyItem) {
+    public static void preload(int currentAccount, long dialogId, TL_stories.StoryItem storyItem) {
         if (storyItem == null) {
             return;
         }
@@ -654,10 +655,10 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
     public void didReceivedNotification(int id, int account, Object... args) {
         if (id == NotificationCenter.storiesUpdated) {
             if (storyItem.uploadingStory != null) {
-                TLRPC.PeerStories stories = MessagesController.getInstance(currentAccount).storiesController.getStories(UserConfig.getInstance(currentAccount).clientUserId);
+                TL_stories.PeerStories stories = MessagesController.getInstance(currentAccount).storiesController.getStories(UserConfig.getInstance(currentAccount).clientUserId);
                 if (stories != null) {
                     for (int i = 0; i < stories.stories.size(); i++) {
-                        TLRPC.StoryItem storyItem = stories.stories.get(i);
+                        TL_stories.StoryItem storyItem = stories.stories.get(i);
                         if (storyItem.attachPath != null && storyItem.attachPath.equals(this.storyItem.uploadingStory.path)) {
                             this.storyItem.uploadingStory = null;
                             this.storyItem.storyItem = storyItem;
@@ -943,13 +944,13 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
 
     private class Item {
         final int viewType;
-        TLRPC.TL_storyView user;
+        TL_stories.TL_storyView user;
 
         private Item(int viewType) {
             this.viewType = viewType;
         }
 
-        private Item(int viewType, TLRPC.TL_storyView user) {
+        private Item(int viewType, TL_stories.TL_storyView user) {
             this.viewType = viewType;
             this.user = user;
         }
@@ -958,12 +959,12 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
     public static class ViewsModel {
 
         public int totalCount;
-        TLRPC.StoryItem storyItem;
+        TL_stories.StoryItem storyItem;
         private long dialogId;
         int currentAccount;
         boolean loading;
-        ArrayList<TLRPC.TL_storyView> views = new ArrayList<>();
-        ArrayList<TLRPC.TL_storyView> originalViews = new ArrayList<>();
+        ArrayList<TL_stories.TL_storyView> views = new ArrayList<>();
+        ArrayList<TL_stories.TL_storyView> originalViews = new ArrayList<>();
         boolean isExpiredViews;
         boolean showReactionOnly;
         boolean initial;
@@ -976,7 +977,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
         ArrayList<SelfStoryViewsPage> listeners = new ArrayList<>();
         FiltersState state = new FiltersState();
 
-        public ViewsModel(int currentAccount, long dialogId, TLRPC.StoryItem storyItem, boolean isDefault) {
+        public ViewsModel(int currentAccount, long dialogId, TL_stories.StoryItem storyItem, boolean isDefault) {
             this.currentAccount = currentAccount;
             this.storyItem = storyItem;
             this.dialogId = dialogId;
@@ -997,7 +998,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
                         if (MessagesController.getInstance(currentAccount).getUser(uid) == null) {
                             continue;
                         }
-                        TLRPC.TL_storyView storyView = new TLRPC.TL_storyView();
+                        TL_stories.TL_storyView storyView = new TL_stories.TL_storyView();
                         storyView.user_id = uid;
                         storyView.date = 0;
                         views.add(storyView);
@@ -1010,7 +1011,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
             if (loading || !hasNext || isExpiredViews) {
                 return;
             }
-            TLRPC.TL_stories_getStoryViewsList req = new TLRPC.TL_stories_getStoryViewsList();
+            TL_stories.TL_stories_getStoryViewsList req = new TL_stories.TL_stories_getStoryViewsList();
             req.id = storyItem.id;
             req.peer = MessagesController.getInstance(currentAccount).getInputPeer(dialogId);
             if (useLocalFilters) {
@@ -1042,7 +1043,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
                 loading = false;
                 reqId = -1;
                 if (response != null) {
-                    TLRPC.TL_stories_storyViewsList res = (TLRPC.TL_stories_storyViewsList) response;
+                    TL_stories.TL_stories_storyViewsList res = (TL_stories.TL_stories_storyViewsList) response;
                     MessagesController.getInstance(currentAccount).getStoriesController().applyStoryViewsBlocked(res);
                     MessagesController.getInstance(currentAccount).putUsers(res.users, false);
                     if (initial) {
@@ -1071,7 +1072,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
                     }
 
                     if (storyItem.views == null) {
-                        storyItem.views = new TLRPC.TL_storyViews();
+                        storyItem.views = new TL_stories.TL_storyViews();
                     }
                     boolean counterUpdated = false;
                     if (res.count > storyItem.views.views_count) {

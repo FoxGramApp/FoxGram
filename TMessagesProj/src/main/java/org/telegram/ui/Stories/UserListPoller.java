@@ -11,9 +11,9 @@ import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.support.LongSparseLongArray;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
+import org.telegram.tgnet.tl.TL_stories;
 import org.telegram.ui.Cells.DialogCell;
 import org.telegram.ui.Cells.UserCell;
-import org.telegram.ui.Components.Paint.Path;
 import org.telegram.ui.Components.RecyclerListView;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class UserListPoller {
             if (!collectedDialogIds.isEmpty()) {
                 ArrayList<Long> dialogsFinal = new ArrayList<>(collectedDialogIds);
                 collectedDialogIds.clear();
-                TLRPC.TL_stories_getPeerMaxIDs request = new TLRPC.TL_stories_getPeerMaxIDs();
+                TL_stories.TL_stories_getPeerMaxIDs request = new TL_stories.TL_stories_getPeerMaxIDs();
                 for (int i = 0; i < dialogsFinal.size(); i++) {
                     request.id.add(MessagesController.getInstance(currentAccount).getInputPeer(dialogsFinal.get(i)));
                 }

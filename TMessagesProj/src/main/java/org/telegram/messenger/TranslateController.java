@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 
 import org.telegram.tgnet.TLRPC;
+import org.telegram.tgnet.tl.TL_stories;
 import org.telegram.ui.Components.Bulletin;
 import org.telegram.ui.Components.TranslateAlert2;
 
@@ -1100,7 +1101,7 @@ public class TranslateController extends BaseController {
     private final HashSet<StoryKey> translatingStories = new HashSet<>();
 
     // ensure dialogId in storyItem is valid
-    public void detectStoryLanguage(TLRPC.StoryItem storyItem) {
+    public void detectStoryLanguage(TL_stories.StoryItem storyItem) {
         if (storyItem == null || storyItem.detectedLng != null || storyItem.caption == null || storyItem.caption.length() == 0 || !LanguageDetector.hasSupport()) {
             return;
         }
@@ -1122,14 +1123,14 @@ public class TranslateController extends BaseController {
         }));
     }
 
-    public boolean canTranslateStory(TLRPC.StoryItem storyItem) {
+    public boolean canTranslateStory(TL_stories.StoryItem storyItem) {
         return storyItem != null && !TextUtils.isEmpty(storyItem.caption) && !Emoji.fullyConsistsOfEmojis(storyItem.caption) && (
             storyItem.detectedLng == null && storyItem.translatedText != null ||
             storyItem.detectedLng != null && !DoNotTranslateSettings.getRestrictedLanguages().contains(storyItem.detectedLng)
         );
     }
 
-    public void translateStory(TLRPC.StoryItem storyItem, Runnable done, Context context) {
+    public void translateStory(TL_stories.StoryItem storyItem, Runnable done, Context context) {
         if (storyItem == null) {
             return;
         }
@@ -1176,7 +1177,7 @@ public class TranslateController extends BaseController {
         });
     }
 
-    public boolean isTranslatingStory(TLRPC.StoryItem storyItem) {
+    public boolean isTranslatingStory(TL_stories.StoryItem storyItem) {
         if (storyItem == null) {
             return false;
         }
@@ -1187,7 +1188,7 @@ public class TranslateController extends BaseController {
         public long dialogId;
         public int storyId;
 
-        public StoryKey(TLRPC.StoryItem storyItem) {
+        public StoryKey(TL_stories.StoryItem storyItem) {
             dialogId = storyItem.dialogId;
             storyId = storyItem.id;
         }
