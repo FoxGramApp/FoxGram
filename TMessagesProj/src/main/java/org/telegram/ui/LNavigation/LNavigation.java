@@ -27,6 +27,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -2368,4 +2369,13 @@ public class LNavigation extends FrameLayout implements INavigationLayout, Float
 
         return v.canScrollHorizontally(-1) || v instanceof SeekBarView;
     }
+
+    @Override
+    public void updateTitleOverlay() {
+    }
+
+    @Override
+    public void setWindow(Window window) {
+    }
+
 }

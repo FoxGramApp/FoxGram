@@ -373,9 +373,5 @@ public class CopyUtilities {
             this.language = language;
             this.lng = null;
         }
-        private ParsedSpan(int type, String lng) {
-            this.type = type;
-            this.lng = lng;
-        }
     }
 }

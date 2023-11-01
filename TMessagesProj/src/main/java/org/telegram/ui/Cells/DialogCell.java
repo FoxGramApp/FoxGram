@@ -999,16 +999,6 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
 
         int messageFormatType;
         if ((!useForceThreeLines && !SharedConfig.useThreeLinesLayout || currentDialogFolderId != 0) || isForumCell()) {
-            //1 - "%2$s: \u2068%1$s\u2069";
-            messageFormatType = 1;
-            hasNameInMessage = true;
-        } else {
-            //2 - "\u2068%1$s\u2069";
-            messageFormatType = 2;
-            hasNameInMessage = false;
-        }
-    } else {
-        if ((!useForceThreeLines && !SharedConfig.useThreeLinesLayout || currentDialogFolderId != 0) || isForumCell()) {
             //3 - "%2$s: %1$s";
             messageFormatType = 3;
             hasNameInMessage = true;
@@ -2825,8 +2815,8 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
 
                 if (!continueUpdate) {
                     //if (invalidate) {
-                        invalidate();
-                   // }
+                    invalidate();
+                    // }
                     return requestLayout;
                 }
             }
@@ -3018,9 +3008,9 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                 countAnimator.cancel();
             }
         }
-       // if (invalidate) {
-            invalidate();
-       // }
+        // if (invalidate) {
+        invalidate();
+        // }
         if (isForumCell() != oldIsForumCell) {
             requestLayout = true;
         }

@@ -475,44 +475,7 @@ public class SelectAnimatedEmojiDialog extends FrameLayout implements Notificati
 
             @Override
             protected void dispatchDraw(Canvas canvas) {
-                if (!drawBackground) {
-                    super.dispatchDraw(canvas);
-                    return;
-                }
-                if (beforeLollipop) {
-                    canvas.save();
-                    if (needBackgroundShadow) {
-                        Theme.applyDefaultShadow(paintApi20);
-                    }
-                    paintApi20.setColor(Theme.getColor(Theme.key_actionBarDefaultSubmenuBackground, resourcesProvider));
-                    paintApi20.setAlpha((int) (255 * getAlpha()));
-                    float px = (bubbleX == null ? getWidth() / 2f : bubbleX) + AndroidUtilities.dp(20);
-                    float w = getWidth() - getPaddingLeft() - getPaddingRight();
-                    float h = getHeight() - getPaddingBottom() - getPaddingTop();
-                    if (isBottom()) {
-                        AndroidUtilities.rectTmp.set(
-                            (getPaddingLeft() + (px - px * scaleX)),
-                            (getPaddingTop() + h * (1f - scaleY)),
-                            (getPaddingLeft() + px + (w - px) * scaleX),
-                            (getPaddingTop() + h)
-                        );
-                    } else {
-                        AndroidUtilities.rectTmp.set(
-                            (getPaddingLeft() + (px - px * scaleX)),
-                            getPaddingTop(),
-                            (getPaddingLeft() + px + (w - px) * scaleX),
-                            (getPaddingTop() + h * scaleY)
-                        );
-                    }
-                    pathApi20.rewind();
-                    pathApi20.addRoundRect(AndroidUtilities.rectTmp, AndroidUtilities.dp(12), AndroidUtilities.dp(12), Path.Direction.CW);
-                    canvas.drawPath(pathApi20, paintApi20);
-                    canvas.clipPath(pathApi20);
-                    super.dispatchDraw(canvas);
-                    canvas.restore();
-                } else {
-                    super.dispatchDraw(canvas);
-                }
+                super.dispatchDraw(canvas);
             }
         };
 

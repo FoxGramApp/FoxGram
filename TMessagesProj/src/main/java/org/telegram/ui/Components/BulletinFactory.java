@@ -184,13 +184,17 @@ public final class BulletinFactory {
         return createSimpleBulletinWithIconSize(iconRawId, text, 36);
     }
 
-    public Bulletin createSimpleBulletinWithIconSize(int iconRawId, CharSequence text, int iconSize) {
+    public Bulletin createSimpleBulletinWithIconSize(int iconRawId, CharSequence text, int iconSize, boolean multiLine) {
         final Bulletin.LottieLayout layout = new Bulletin.LottieLayout(getContext(), resourcesProvider);
         layout.setAnimation(iconRawId, iconSize, iconSize);
         layout.textView.setText(text);
         layout.textView.setSingleLine(false);
         layout.textView.setMaxLines(multiLine ? 4:2);
         return create(layout, Bulletin.DURATION_SHORT);
+    }
+
+    public Bulletin createSimpleBulletinWithIconSize(int iconRawId, CharSequence text, int iconSize) {
+        return createSimpleBulletinWithIconSize(iconRawId, text, iconSize, false);
     }
 
     public Bulletin createSimpleLargeBulletin(int iconRawId, CharSequence title, CharSequence subtitle) {

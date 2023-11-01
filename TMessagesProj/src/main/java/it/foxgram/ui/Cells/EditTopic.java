@@ -64,11 +64,11 @@ public class EditTopic extends FrameLayout {
         this.topic = topic;
         textView.setText(topic.title);
         if (topic.id == 1) {
-            imageView.setImageDrawable(ForumUtilities.createGeneralTopicDrawable(getContext(), 0.75f, Theme.getColor(Theme.key_chat_inMenu)));
+            imageView.setImageDrawable(ForumUtilities.createGeneralTopicDrawable(getContext(), 0.75f, Theme.getColor(Theme.key_chat_inMenu), false));
         } else if (topic.icon_emoji_id != 0) {
             imageView.setAnimatedEmojiDrawable(new AnimatedEmojiDrawable(AnimatedEmojiDrawable.CACHE_TYPE_MESSAGES, UserConfig.selectedAccount, topic.icon_emoji_id));
         } else {
-            imageView.setImageDrawable(ForumUtilities.createTopicDrawable(topic));
+            imageView.setImageDrawable(ForumUtilities.createTopicDrawable(topic, false));
         }
     }
 

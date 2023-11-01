@@ -63,7 +63,6 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.text.style.URLSpan;
-import android.util.Log;
 import android.util.Pair;
 import android.util.Property;
 import android.util.SparseArray;
@@ -655,7 +654,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     private MessageObject selectedObjectToEditCaption;
     private MessageObject selectedObject;
     private MessageObject.GroupedMessages selectedObjectGroup;
-    public ForwardingMessagesParams forwardingMessages;
     private boolean forbidForwardingWithDismiss;
     public MessagePreviewParams messagePreviewParams;
     private CharSequence formwardingNameText;
@@ -2967,7 +2965,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 chatActivity != null && chatActivity.getCurrentEncryptedChat() == null && !chatActivity.textSelectionHelper.isDescription &&
                 selectedView != null && selectedView.getMessageObject() != null && selectedView.getMessageObject().type != MessageObject.TYPE_STORY &&
                 !selectedView.getMessageObject().isVoiceTranscriptionOpen() && !selectedView.getMessageObject().isInvoice() &&
-                !chatActivity.getMessagesController().getTranslateController().isTranslatingDialog(chatActivity.dialog_id)
+                !chatActivity.getMessagesController().getTranslateController().isTranslatingDialog(chatActivity.dialog_id, chatActivity.getTopicId())
             );
         }
 
@@ -8461,15 +8459,11 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             @Override
             protected void selectAnotherChat(boolean forward) {
                 dismiss(false);
-                if (forwardingMessages != null) {
-                    setForwardParams(
-                            forwardingMessages.hideForwardSendersName,
-                            forwardingMessages.hideCaption
-                    );
                 if (messagePreviewParams != null) {
                     if (!forward) {
                         ignoreDraft = true;
                     }
+                    setForwardParams(messagePreviewParams.hideForwardSendersName, messagePreviewParams.hideCaption);
                     int hasPoll = 0;
                     boolean hasInvoice = false;
                     if (messagePreviewParams.forwardMessages != null) {
@@ -12062,15 +12056,12 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 }
                 editingMessageObject = null;
                 chatActivityEnterView.setEditingMessageObject(null, false);
-                if (forwardingMessages == null) {
-                    forwardingMessages = new ForwardingMessagesParams(messageObjectsToForward, dialog_id);
-                }
                 if (foundWebPage != null) {
                     return;
                 }
                 if (forwardParams.noQuote || forwardParams.noCaption) {
-                    forwardingMessages.hideForwardSendersName = forwardParams.noQuote;
-                    forwardingMessages.hideCaption = forwardParams.noCaption;
+                    messagePreviewParams.hideForwardSendersName = forwardParams.noQuote;
+                    messagePreviewParams.hideCaption = forwardParams.noCaption;
                     setForwardParams(false, false);
                 }
                 forbidForwardingWithDismiss = false;
@@ -28068,7 +28059,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 if (messageObject.isAnyKindOfSticker() && !messageObject.isAnimatedEmojiStickers() && !messageObject.isAnimatedEmoji() && !messageObject.isDice()) {
                     getSendMessagesHelper().sendSticker(
                             selectedObject.getDocument(), null, dialog_id, longClick ? messageObject : threadMessageObject,
-                            threadMessageObject, null, null, true, 0, false, 0);
+                            threadMessageObject, null, null, null, true, 0, false, 0);
                     return true;
                 } else {
                     String message = messageObject.messageOwner.message;

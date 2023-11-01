@@ -2965,7 +2965,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE);
             preferences.edit().remove("sms_hash_code").apply();
             if (settings.allow_app_hash) {
-                preferences.edit().putString("sms_hash", BuildVars.getSmsHash()).apply();
+                preferences.edit().putString("sms_hash", BuildVars.SMS_HASH).apply();
             } else {
                 preferences.edit().remove("sms_hash").apply();
             }
