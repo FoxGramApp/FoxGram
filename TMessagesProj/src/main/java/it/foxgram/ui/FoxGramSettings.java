@@ -304,7 +304,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
                     } else if (position == clearLogsRow) {
                         textDetailCell.setTextAndValueAndIcon(LocaleController.getString("DebugClearLogs", R.string.DebugClearLogs), LocaleController.getString("ClearLogsDesc", R.string.ClearLogsDesc), R.drawable.msg_clear, switchBackendRow != -1);
                     } else if (position == switchBackendRow) {
-                        textDetailCell.setTextAndValueAndIcon("Switch Backend", "Switch to test Server", R.drawable.msg_switch, false);
+                        textDetailCell.setTextAndValueAndIcon("Switch Backend", "Switch to test Server", R.drawable.msg_photo_switch2, false);
                     }
                     break;
             }

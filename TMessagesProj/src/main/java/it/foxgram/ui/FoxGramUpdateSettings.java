@@ -275,7 +275,7 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
                     } else if (position == versionInfoRow) {
                         textCell.setTextAndValueAndIcon(LocaleController.getString("InstalledVersion", R.string.InstalledVersion), FoxTextUtils.appInfo.appVersion, R.drawable.msg_info, true);
                     } else if (position == baseVersionRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("BaseVersionUpdated", R.string.BaseVersionUpdated), FoxTextUtils.appInfo.telegramVersion + " (" + FoxTextUtils.appInfo.telegramBuildNumber + ")", R.drawable.msg_draw_arrow, true);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString("BaseVersionUpdated", R.string.BaseVersionUpdated), FoxTextUtils.appInfo.telegramVersion + " (" + FoxTextUtils.appInfo.telegramBuildNumber + ")", R.drawable.msg_photo_switch2, true);
                     } else if (position == buildTypeRow) {
                         textCell.setTextAndValueAndIcon(LocaleController.getString("BuildType", R.string.BuildType), FoxTextUtils.appInfo.buildType,R.drawable.msg_map_type, true);
                     } else if (position == buildInfoRow) {
