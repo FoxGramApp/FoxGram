@@ -75,7 +75,7 @@ android {
     defaultConfig.versionCode = Integer.parseInt(APP_VERSION_CODE)
 
     applicationVariants.configureEach { variant ->
-        variant.outputs.all { output ->
+        variant.outputs.configureEach { output ->
             def abi = output.getFilter('ABI')
             if (abi == null) abi = 'universal'
             outputFileName = "FoxGram-${defaultConfig.versionName}-${defaultConfig.versionCode}-${abi}.apk"
