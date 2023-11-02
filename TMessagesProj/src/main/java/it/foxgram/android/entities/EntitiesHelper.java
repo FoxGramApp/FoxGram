@@ -7,11 +7,8 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.LocaleSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
@@ -20,12 +17,14 @@ import android.text.style.UnderlineSpan;
 import android.view.View;
 
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.CodeHighlighting;
 import org.telegram.messenger.Emoji;
 import org.telegram.messenger.MediaDataController;
 import org.telegram.messenger.UserConfig;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.AnimatedEmojiSpan;
+import org.telegram.ui.Components.QuoteSpan;
 import org.telegram.ui.Components.TextStyleSpan;
 import org.telegram.ui.Components.URLSpanMono;
 import org.telegram.ui.Components.URLSpanNoUnderline;
@@ -33,13 +32,6 @@ import org.telegram.ui.Components.URLSpanReplacement;
 import org.telegram.ui.Components.URLSpanUserMention;
 
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Optional;
-
-import io.noties.prism4j.DefaultGrammarLocator;
-import io.noties.prism4j.Grammar;
-import io.noties.prism4j.Prism4j;
-import it.foxgram.android.entities.syntax_highlight.SyntaxHighlight;
 
 public class EntitiesHelper {
 
@@ -109,12 +101,14 @@ public class EntitiesHelper {
                     spannableString.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
                 if ((((TextStyleSpan) mSpan).getStyleFlags() & TextStyleSpan.FLAG_STYLE_MONO) > 0) {
-                    TextStyleSpan.TextStyleRun runner = ((TextStyleSpan) mSpan).getTextStyleRun();
-                    if (runner.urlEntity != null && !TextUtils.isEmpty(runner.urlEntity.language)) {
-                        spannableString.setSpan(new LocaleSpan(Locale.forLanguageTag(runner.urlEntity.language + "-og")), runner.urlEntity.offset, runner.urlEntity.offset + runner.urlEntity.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        SyntaxHighlight.highlight(runner.urlEntity.language, runner.urlEntity.offset, runner.urlEntity.offset + runner.urlEntity.length, spannableString);
-                    }
                     spannableString.setSpan(new TypefaceSpan("monospace"), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                if ((((TextStyleSpan) mSpan).getStyleFlags() & TextStyleSpan.FLAG_STYLE_CODE) > 0) {
+                    TextStyleSpan.TextStyleRun textStyleRun = new TextStyleSpan.TextStyleRun();
+                    spannableString.setSpan(new CodeHighlighting.Span(true, textStyleRun.getTypeface().getStyle(), textStyleRun, textStyleRun.lng, textStyleRun.toString()), textStyleRun.start, textStyleRun.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                if (((TextStyleSpan) mSpan).getStyleFlags() >= 0 && TextStyleSpan.FLAG_STYLE_QUOTE > 0) {
+                    spannableString.setSpan(new QuoteSpan(false, null), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
                 if ((((TextStyleSpan) mSpan).getStyleFlags() & TextStyleSpan.FLAG_STYLE_UNDERLINE) > 0) {
                     spannableString.setSpan(new UnderlineSpan(), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -151,120 +145,6 @@ public class EntitiesHelper {
         }
     }
 
-    static class RawSpannableInfo {
-        public final TextStyleSpan textStyleSpan;
-        public final int start;
-        public final int end;
-
-        public RawSpannableInfo(TextStyleSpan textStyleSpan, int start, int end) {
-            this.textStyleSpan = textStyleSpan;
-            this.start = start;
-            this.end = end;
-        }
-    }
-
-    private static void applyTelegramSpannable(Editable outputSpannable, Editable spannableString, int endSpan) {
-        CharacterStyle[] mSpans = spannableString.getSpans(0, endSpan, CharacterStyle.class);
-        RawSpannableInfo rawSpannableInfo = null;
-        for (CharacterStyle mSpan : mSpans) {
-            int start = spannableString.getSpanStart(mSpan);
-            int end = spannableString.getSpanEnd(mSpan);
-            CharacterStyle result = null;
-            if (mSpan instanceof URLSpan) {
-                URLSpan urlSpan = (URLSpan) mSpan;
-                if (urlSpan.getURL() != null) {
-                    if (urlSpan.getURL().startsWith("tg://user?id=")) {
-                        String id = urlSpan.getURL().replace("tg://user?id=", "");
-                        result = new URLSpanUserMention(id, 1);
-                    } else {
-                        result = new URLSpanReplacement(urlSpan.getURL());
-                    }
-                }
-            } else if (mSpan instanceof StyleSpan) {
-                StyleSpan styleSpan = (StyleSpan) mSpan;
-                switch (styleSpan.getStyle()) {
-                    case Typeface.BOLD:
-                        TextStyleSpan.TextStyleRun run = new TextStyleSpan.TextStyleRun();
-                        run.flags |= TextStyleSpan.FLAG_STYLE_BOLD;
-                        result = new TextStyleSpan(run);
-                        break;
-                    case Typeface.ITALIC:
-                        TextStyleSpan.TextStyleRun run2 = new TextStyleSpan.TextStyleRun();
-                        run2.flags |= TextStyleSpan.FLAG_STYLE_ITALIC;
-                        result = new TextStyleSpan(run2);
-                        break;
-                    case Typeface.BOLD_ITALIC:
-                        TextStyleSpan.TextStyleRun run3 = new TextStyleSpan.TextStyleRun();
-                        run3.flags |= TextStyleSpan.FLAG_STYLE_ITALIC;
-                        run3.flags |= TextStyleSpan.FLAG_STYLE_BOLD;
-                        result = new TextStyleSpan(run3);
-                        break;
-                }
-            } else if (mSpan instanceof TypefaceSpan) {
-                TextStyleSpan.TextStyleRun run = new TextStyleSpan.TextStyleRun();
-                run.flags |= TextStyleSpan.FLAG_STYLE_MONO;
-                LocaleSpan[] localeSpans = spannableString.getSpans(start, end, LocaleSpan.class);
-                if (localeSpans != null && localeSpans.length > 0 && localeSpans[0].getLocale() != null && "og".equalsIgnoreCase(localeSpans[0].getLocale().getCountry())) {
-                    TLRPC.TL_messageEntityPre entity = new TLRPC.TL_messageEntityPre();
-                    entity.offset = start;
-                    entity.length = end - entity.offset;
-                    entity.language = localeSpans[0].getLocale().getLanguage();
-                    run.urlEntity = entity;
-                }
-                result = new TextStyleSpan(run);
-            } else if (mSpan instanceof UnderlineSpan) {
-                TextStyleSpan.TextStyleRun run = new TextStyleSpan.TextStyleRun();
-                run.flags |= TextStyleSpan.FLAG_STYLE_UNDERLINE;
-                result = new TextStyleSpan(run);
-            } else if (mSpan instanceof StrikethroughSpan) {
-                TextStyleSpan.TextStyleRun run = new TextStyleSpan.TextStyleRun();
-                run.flags |= TextStyleSpan.FLAG_STYLE_STRIKE;
-                result = new TextStyleSpan(run);
-            } else if ((mSpan instanceof ForegroundColorSpan && ((ForegroundColorSpan) mSpan).getForegroundColor() == Theme.getColor(Theme.key_chat_messagePanelText)) || mSpan instanceof BackgroundColorSpan) {
-                if (mSpan instanceof BackgroundColorSpan) {
-                    ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Theme.getColor(Theme.key_chat_messagePanelText));
-                    outputSpannable.removeSpan(mSpan);
-                    outputSpannable.setSpan(foregroundColorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
-                TextStyleSpan.TextStyleRun run = new TextStyleSpan.TextStyleRun();
-                run.flags |= TextStyleSpan.FLAG_STYLE_SPOILER;
-                result = new TextStyleSpan(run);
-            } else if (mSpan instanceof ForegroundColorSpan) {
-                outputSpannable.removeSpan(mSpan);
-                continue;
-            } else if (mSpan instanceof AnimatedEmojiSpan) {
-                AnimatedEmojiSpan[] spans = outputSpannable.getSpans(start, end, AnimatedEmojiSpan.class);
-                if (spans != null && spans.length > 0) {
-                    continue;
-                }
-                result = mSpan;
-            }
-            if (result != null) {
-                if (result instanceof TextStyleSpan) {
-                    if (rawSpannableInfo != null) {
-                        if (rawSpannableInfo.start == start && rawSpannableInfo.end == end) {
-                            rawSpannableInfo.textStyleSpan.getTextStyleRun().merge(((TextStyleSpan) result).getTextStyleRun());
-                        } else {
-                            outputSpannable.setSpan(rawSpannableInfo.textStyleSpan, rawSpannableInfo.start, rawSpannableInfo.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                            rawSpannableInfo = new RawSpannableInfo((TextStyleSpan) result, start, end);
-                        }
-                    } else {
-                        rawSpannableInfo = new RawSpannableInfo((TextStyleSpan) result, start, end);
-                    }
-                } else {
-                    if (rawSpannableInfo != null) {
-                        outputSpannable.setSpan(rawSpannableInfo.textStyleSpan, rawSpannableInfo.start, rawSpannableInfo.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        rawSpannableInfo = null;
-                    }
-                    outputSpannable.setSpan(result, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
-            }
-        }
-        if (rawSpannableInfo != null) {
-            outputSpannable.setSpan(rawSpannableInfo.textStyleSpan, rawSpannableInfo.start, rawSpannableInfo.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-    }
-
     public static CharSequence getUrlNoUnderlineText(CharSequence charSequence) {
         Spannable spannable = new SpannableString(charSequence);
         URLSpan[] spans = spannable.getSpans(0, charSequence.length(), URLSpan.class);
@@ -290,19 +170,6 @@ public class EntitiesHelper {
         return MediaDataController.getInstance(UserConfig.selectedAccount).getEntities(message, true, false).size() > 0;
     }
 
-    private static CharSequence extractLanguage(CharSequence lang) {
-        StringBuilder result = new StringBuilder();
-        for (int a = 0; a < lang.length(); a++) {
-            char c = lang.charAt(a);
-            if (AndroidUtilities.getTrimmedString(result).length() == 0 || (c != '\n' && c != '\t' && c != '\r')) {
-                result.append(c);
-            } else {
-                break;
-            }
-        }
-        return result.toString();
-    }
-
     private static int getLengthSpace(CharSequence ch) {
         int length = 0;
         for (int a = 0; a < ch.length(); a++) {
@@ -314,38 +181,6 @@ public class EntitiesHelper {
             }
         }
         return length;
-    }
-
-    public static CharSequence applySyntaxHighlight(CharSequence text, ArrayList<TLRPC.MessageEntity> entities) {
-        Editable messSpan = new SpannableStringBuilder(text);
-        applyTelegramSpannable(messSpan, (Editable) getSpannableString(text.toString(), entities), text.length());
-        Prism4j grammarCheck = new Prism4j(new DefaultGrammarLocator());
-        TextStyleSpan[] result = messSpan.getSpans(0, messSpan.length(), TextStyleSpan.class);
-        for (TextStyleSpan span : result) {
-            if (span.isMono()) {
-                CharSequence language = extractLanguage(messSpan.subSequence(messSpan.getSpanStart(span), messSpan.getSpanEnd(span)));
-                String fixedLanguage = AndroidUtilities.getTrimmedString(language).toString().toLowerCase();
-                Optional<Grammar> grammar = Optional.ofNullable(grammarCheck.grammar(fixedLanguage));
-                if (grammar.isPresent()) {
-                    int start = messSpan.getSpanStart(span);
-                    int end = messSpan.getSpanEnd(span);
-                    int endCode = language.length() + getLengthSpace(messSpan.subSequence(start + language.length(), end));
-                    messSpan = messSpan.delete(start, start + endCode);
-                    TLRPC.TL_messageEntityPre entity = new TLRPC.TL_messageEntityPre();
-                    entity.offset = start;
-                    entity.length = end - entity.offset;
-                    entity.language = grammar.get().name();
-                    span.getTextStyleRun().urlEntity = entity;
-                    span.getTextStyleRun().end -= endCode;
-                }
-            }
-        }
-        messSpan = (SpannableStringBuilder) AndroidUtilities.getTrimmedString(messSpan);
-        CharSequence[] message = new CharSequence[]{messSpan};
-        ArrayList<TLRPC.MessageEntity> entitiesNew = MediaDataController.getInstance(UserConfig.selectedAccount).getEntities(message, true, true, false);
-        entities.clear();
-        entities.addAll(entitiesNew);
-        return message[0];
     }
 
     public static boolean isEmoji(String message) {

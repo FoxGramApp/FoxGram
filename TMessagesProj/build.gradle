@@ -109,7 +109,6 @@ dependencies {
     implementation 'com.google.mlkit:language-id:17.0.4'
     implementation 'com.android.billingclient:billing:6.0.1'
     implementation 'org.apache.commons:commons-text:1.10.0'
-    implementation 'org.codeberg.qwerty287:prism4j:003cb5e380'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation ('com.google.guava:guava:31.0.1-android') {
         exclude group: 'com.google.code.findbugs', module: 'jsr305'

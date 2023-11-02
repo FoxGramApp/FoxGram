@@ -147,7 +147,6 @@ import java.util.concurrent.CountDownLatch;
 
 import it.foxgram.android.FoxConfig;
 import it.foxgram.android.MonetThemeController;
-import it.foxgram.android.entities.syntax_highlight.SyntaxHighlight;
 
 public class Theme {
 
@@ -4072,39 +4071,6 @@ public class Theme {
     public static final int key_sheet_scrollUp = colorsCount++;
     public static final int key_sheet_other = colorsCount++;
 
-    // CUSTOM HIGHLIGHTS BASED ON PRISM4
-    public static final int key_code_high_light_annotation = colorsCount++;
-    public static final int key_code_high_light_atrule = colorsCount++;
-    public static final int key_code_high_light_attr_name = colorsCount++;
-    public static final int key_code_high_light_attr_value = colorsCount++;
-    public static final int key_code_high_light_boolean = colorsCount++;
-    public static final int key_code_high_light_builtin = colorsCount++;
-    public static final int key_code_high_light_cdata = colorsCount++;
-    public static final int key_code_high_light_char = colorsCount++;
-    public static final int key_code_high_light_class_name = colorsCount++;
-    public static final int key_code_high_light_comment = colorsCount++;
-    public static final int key_code_high_light_constant = colorsCount++;
-    public static final int key_code_high_light_deleted = colorsCount++;
-    public static final int key_code_high_light_delimiter = colorsCount++;
-    public static final int key_code_high_light_doctype = colorsCount++;
-    public static final int key_code_high_light_entity = colorsCount++;
-    public static final int key_code_high_light_function = colorsCount++;
-    public static final int key_code_high_light_important =colorsCount++;
-    public static final int key_code_high_light_inserted = colorsCount++;
-    public static final int key_code_high_light_keyword = colorsCount++;
-    public static final int key_code_high_light_number = colorsCount++;
-    public static final int key_code_high_light_operator = colorsCount++;
-    public static final int key_code_high_light_prolog = colorsCount++;
-    public static final int key_code_high_light_property = colorsCount++;
-    public static final int key_code_high_light_punctuation = colorsCount++;
-    public static final int key_code_high_light_regex = colorsCount++;
-    public static final int key_code_high_light_selector = colorsCount++;
-    public static final int key_code_high_light_string = colorsCount++;
-    public static final int key_code_high_light_symbol = colorsCount++;
-    public static final int key_code_high_light_tag = colorsCount++;
-    public static final int key_code_high_light_url = colorsCount++;
-    public static final int key_code_high_light_variable = colorsCount++;
-
     //ununsed
     public static final int key_player_actionBarSelector = colorsCount++;
     public static final int key_player_actionBarTitle = colorsCount++;
@@ -6516,7 +6482,6 @@ public class Theme {
         applyDialogsTheme();
         applyProfileTheme();
         applyChatTheme(false, bg);
-        SyntaxHighlight.updateColors();
         boolean checkNavigationBarColor = !hasPreviousTheme;
         AndroidUtilities.runOnUIThread(() -> NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.didSetNewTheme, false, checkNavigationBarColor));
     }

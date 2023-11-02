@@ -5797,7 +5797,6 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             return;
         }
         ArrayList<TLRPC.MessageEntity> entities = MediaDataController.getInstance(currentAccount).getEntities(message, supportsSendingNewEntities());
-        message[0] = EntitiesHelper.applySyntaxHighlight(message[0], entities);
         if (!TextUtils.equals(message[0], editingMessageObject.messageText) || entities != null && !entities.isEmpty() || !editingMessageObject.messageOwner.entities.isEmpty() || editingMessageObject.messageOwner.media instanceof TLRPC.TL_messageMediaWebPage) {
             editingMessageObject.editingMessage = withMarkdown ? message[0]:messageEditText.getText().toString();
             editingMessageObject.editingMessageEntities = withMarkdown ? entities:new ArrayList<>();
@@ -5916,8 +5915,6 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                 if (!withMarkdown) {
                     message[0] = text.toString();
                     entities = new ArrayList<>();
-                } else {
-                    message[0] = EntitiesHelper.applySyntaxHighlight(message[0], entities);
                 }
 
                 boolean updateStickersOrder = false;

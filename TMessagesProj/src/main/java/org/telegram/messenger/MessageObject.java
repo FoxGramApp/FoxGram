@@ -87,7 +87,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import it.foxgram.android.MessageHelper;
-import it.foxgram.android.entities.syntax_highlight.SyntaxHighlight;
 import it.foxgram.ui.DoNotTranslateSettings;
 
 public class MessageObject {
@@ -5700,9 +5699,6 @@ public class MessageObject {
                 spannable.setSpan(new URLSpanBotCommand(url, t, run), run.start, run.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else if (run.urlEntity instanceof TLRPC.TL_messageEntityHashtag || run.urlEntity instanceof TLRPC.TL_messageEntityMention || run.urlEntity instanceof TLRPC.TL_messageEntityCashtag) {
                 spannable.setSpan(new URLSpanNoUnderline(url, run), run.start, run.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                if (run.urlEntity instanceof TLRPC.TL_messageEntityHashtag && run.urlEntity.length > 6 && run.urlEntity.length < 10 && run.urlEntity.language != null) {
-                    SyntaxHighlight.highlight(run, spannable);
-                }
             } else if (run.urlEntity instanceof TLRPC.TL_messageEntityEmail) {
                 spannable.setSpan(new URLSpanReplacement("mailto:" + url, run), run.start, run.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else if (run.urlEntity instanceof TLRPC.TL_messageEntityUrl) {
@@ -5735,9 +5731,6 @@ public class MessageObject {
                 spannable.setSpan(new URLSpanUserMention("" + ((TLRPC.TL_inputMessageEntityMentionName) run.urlEntity).user_id.user_id, t, run), run.start, run.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else if ((run.flags & TextStyleSpan.FLAG_STYLE_MONO) != 0) {
                 spannable.setSpan(new URLSpanMono(spannable, run.start, run.end, t, run), run.start, run.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                if (run.urlEntity instanceof TLRPC.TL_messageEntityPre && run.urlEntity.language != null) {
-                    SyntaxHighlight.highlight(run, spannable);
-                }
             } else {
                 setRun = true;
                 spannable.setSpan(new TextStyleSpan(run), run.start, run.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
