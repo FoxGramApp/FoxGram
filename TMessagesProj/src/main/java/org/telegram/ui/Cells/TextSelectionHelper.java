@@ -138,6 +138,10 @@ public abstract class TextSelectionHelper<Cell extends TextSelectionHelper.Selec
 
     protected boolean multiselect;
 
+    public Cell getSelectedCell() {
+        return selectedView;
+    }
+
     protected final LayoutBlock layoutBlock = new LayoutBlock();
 
     private int lastX;
@@ -2085,7 +2089,10 @@ public abstract class TextSelectionHelper<Cell extends TextSelectionHelper.Selec
         }
 
         public void drawCaption(MessageObject messageObject, MessageObject.TextLayoutBlock block, Canvas canvas) {
-            if (isDescription) {
+            if (messageObject == null) {
+                return;
+            }
+            if (isDescription || selectedView == null || selectedView.getMessageObject() == null || selectedView.getMessageObject().getId() != messageObject.getId()) {
                 return;
             }
 
@@ -2393,10 +2400,7 @@ public abstract class TextSelectionHelper<Cell extends TextSelectionHelper.Selec
             try {
                 currentEditDate = messageObject.messageOwner.edit_date;
             } catch (Exception ignore) {}
-            if (selectedCellId == messageObject.getId() // &&
-//                !(selectedCellEditDate != null && selectedCellEditDate.equals(currentEditDate) ||
-//                  selectedCellEditDate == null && currentEditDate == null)
-            ) {
+            if (selectedCellId == messageObject.getId()) {
                 clear(true);
             }
         }

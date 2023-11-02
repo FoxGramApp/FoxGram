@@ -217,6 +217,7 @@ public class WebviewActivity extends BaseFragment {
         FrameLayout frameLayout = (FrameLayout) fragmentView;
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
+        webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
         webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptThirdPartyCookies(webView, true);

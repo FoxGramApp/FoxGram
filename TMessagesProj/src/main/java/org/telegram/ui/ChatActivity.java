@@ -2965,7 +2965,8 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 chatActivity != null && chatActivity.getCurrentEncryptedChat() == null && !chatActivity.textSelectionHelper.isDescription &&
                 selectedView != null && selectedView.getMessageObject() != null && selectedView.getMessageObject().type != MessageObject.TYPE_STORY &&
                 !selectedView.getMessageObject().isVoiceTranscriptionOpen() && !selectedView.getMessageObject().isInvoice() &&
-                !chatActivity.getMessagesController().getTranslateController().isTranslatingDialog(chatActivity.dialog_id, chatActivity.getTopicId())
+                !chatActivity.getMessagesController().getTranslateController().isTranslatingDialog(chatActivity.dialog_id, chatActivity.getTopicId()) &&
+                !UserObject.isService(chatActivity.dialog_id)
             );
         }
 
@@ -2978,7 +2979,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 end = Math.min(end, start + chatActivity.getMessagesController().quoteLengthMax);
                 if (messageObject.getGroupId() != 0) {
                     MessageObject.GroupedMessages group = chatActivity.getGroup(messageObject.getGroupId());
-                    if (group != null) {
+                    if (group != null && !group.isDocuments) {
                         messageObject = group.captionMessage;
                     }
                 }
@@ -8416,7 +8417,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
 
             @Override
             protected void onQuoteSelectedPart() {
-                if (replyingQuote == null) {
+                if (replyingQuote == null || replyingQuote.message == null || messagePreviewParams.quote != null && messagePreviewParams.quote.message != null && replyingQuote.message.getId() != messagePreviewParams.quote.message.getId()) {
                     replyingQuote = messagePreviewParams.quote;
                 }
             }
@@ -22044,7 +22045,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     }
 
     private void updateBottomOverlay() {
-        if (bottomOverlayChatText == null || chatMode == MODE_SCHEDULED) {
+        if (bottomOverlayChatText == null || chatMode == MODE_SCHEDULED || getContext() == null) {
             return;
         }
         boolean haveBeenWaiting = bottomOverlayChatWaitsReply;
