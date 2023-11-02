@@ -1,10 +1,3 @@
-/*
- * This is the source code of FoxGram for Android v. 3.0.x.
- * It is licensed under GNU GPL v. 2 or later.
- * You should have received a copy of the license in this archive (see LICENSE).
- *
- * Copyright Pierlu096, 2023.
- */
 package it.foxgram.ui;
 
 import android.view.View;
@@ -12,8 +5,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.telegram.messenger.AndroidUtilities;
-import org.telegram.messenger.BuildConfig;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.LocaleController;
@@ -21,13 +12,8 @@ import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.HeaderCell;
-import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Cells.TextCheckCell;
-import org.telegram.ui.Cells.TextInfoPrivacyCell;
 
-import java.util.ArrayList;
-
-import it.foxgram.android.AlertController;
 import it.foxgram.android.FoxConfig;
 import it.foxgram.android.StoreUtils;
 import it.foxgram.android.http.FileDownloader;
@@ -35,7 +21,6 @@ import it.foxgram.android.magic.FOXENC;
 import it.foxgram.android.updates.AppDownloader;
 import it.foxgram.android.updates.PlayStoreAPI;
 import it.foxgram.android.updates.UpdateManager;
-import it.foxgram.android.utils.FoxTextUtils;
 import it.foxgram.ui.Cells.UpdateAvailableCell;
 import it.foxgram.ui.Cells.UpdateCheckCell;
 
@@ -43,21 +28,12 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
 
     private int updateSectionAvailableRow;
     private int updateSectionDividerRow;
-    private int updateCheckHeaderRow;
+    private int updateSectionHeader;
     private int updateCheckRow;
+    private int betaUpdatesRow;
     private int notifyWhenAvailableRow;
-    private int infoHeaderRow;
-    private int updatesChannelRow;
-    private int infoUpdatesChannelRow;
-    private int versionInfoRow;
-    private int baseVersionRow;
-    private int buildTypeRow;
-    private int buildInfoRow;
-    private int updateTypeRow;
-    private int downloadSourceRow;
-    private int releaseDateRow;
     private boolean checkingUpdates;
-    private TextCell changeBetaMode;
+    private TextCheckCell changeBetaMode;
 
     private FOXENC.UpdateAvailable updateAvailable;
     private UpdateCheckCell updateCheckCell;
@@ -88,7 +64,7 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
 
             @Override
             public void onFinished() {
-                if (!StoreUtils.isFromPlayStore()) changeBetaMode.setEnabled(!AppDownloader.updateDownloaded());
+                if (!StoreUtils.isFromPlayStore()) changeBetaMode.setEnabled(!AppDownloader.updateDownloaded(), null);
                 updateCheckCell.setCanCheckForUpdate(!AppDownloader.updateDownloaded() && !PlayStoreAPI.isRunningDownload());
                 if (PlayStoreAPI.updateDownloaded()) {
                     updateCheckCell.setDownloaded();
@@ -112,74 +88,29 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
 
     @Override
     protected void onItemClick(View view, int position, float x, float y) {
-        if (position == notifyWhenAvailableRow) {
+        if (position == betaUpdatesRow) {
+            if (!UpdateManager.updateDownloaded() && !checkingUpdates) {
+                FoxConfig.toggleBetaUpdates();
+                FileDownloader.cancel("appUpdate");
+                UpdateManager.deleteUpdate();
+                if (updateAvailable != null) {
+                    FoxConfig.remindUpdate(updateAvailable.version);
+                    NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
+                    updateAvailable = null;
+                    listAdapter.notifyItemRangeRemoved(updateSectionAvailableRow, 2);
+                    listAdapter.notifyItemRangeChanged(updateSectionAvailableRow, 1);
+                    updateRowsId();
+                }
+                checkUpdates();
+                if (view instanceof TextCheckCell) {
+                    ((TextCheckCell) view).setChecked(FoxConfig.betaUpdates);
+                }
+            }
+        } else if (position == notifyWhenAvailableRow) {
             FoxConfig.toggleNotifyUpdates();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(FoxConfig.notifyUpdates);
             }
-        } else if (position == updatesChannelRow) {
-            if (!UpdateManager.updateDownloaded() && !checkingUpdates) {
-                ArrayList<String> arrayList = new ArrayList<>();
-                ArrayList<Integer> types = new ArrayList<>();
-                arrayList.add(LocaleController.getString("Stable", R.string.Stable));
-                types.add(0);
-                arrayList.add("Release Preview");
-                types.add(1);
-                int updateChannel = FoxConfig.betaUpdates ? 1 : 0;
-                AlertController.show(arrayList, LocaleController.getString("InstallPreview", R.string.InstallPreview), types.indexOf(updateChannel), context, i -> {
-                    switch (types.get(i)) {
-                        case 0:
-                            if (FoxConfig.betaUpdates) {
-                                FoxConfig.toggleBetaUpdates();
-                                FileDownloader.cancel("appUpdate");
-                                listAdapter.notifyItemChanged(updatesChannelRow, PARTIAL);
-                                UpdateManager.deleteUpdate();
-                                if (updateAvailable != null) {
-                                    FoxConfig.remindUpdate(updateAvailable.version);
-                                    NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
-                                    updateAvailable = null;
-                                    listAdapter.notifyItemRangeRemoved(updateSectionAvailableRow, 2);
-                                    listAdapter.notifyItemRangeChanged(updateSectionAvailableRow, 1);
-                                    updateRowsId();
-                                }
-                                checkUpdates();
-                            }
-                            break;
-                        case 1:
-                            if (!FoxConfig.betaUpdates) {
-                                FoxConfig.toggleBetaUpdates();
-                                FileDownloader.cancel("appUpdate");
-                                listAdapter.notifyItemChanged(updatesChannelRow, PARTIAL);
-                                UpdateManager.deleteUpdate();
-                                if (updateAvailable != null) {
-                                    FoxConfig.remindUpdate(updateAvailable.version);
-                                    NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
-                                    updateAvailable = null;
-                                    listAdapter.notifyItemRangeRemoved(updateSectionAvailableRow, 2);
-                                    listAdapter.notifyItemRangeChanged(updateSectionAvailableRow, 1);
-                                    updateRowsId();
-                                }
-                                checkUpdates();
-                            }
-                            break;
-                    }
-                });
-            }
-        } else if (position == versionInfoRow) {
-            AndroidUtilities.addToClipboard(FoxTextUtils.appInfo.appVersion);
-        } else if (position == baseVersionRow) {
-            AndroidUtilities.addToClipboard(FoxTextUtils.appInfo.telegramVersion);
-        } else if (position == buildInfoRow) {
-            AndroidUtilities.addToClipboard(String.valueOf(FoxTextUtils.appInfo.buildNumber));
-        } else if (position == buildTypeRow) {
-            AndroidUtilities.addToClipboard(FoxTextUtils.appInfo.buildType);
-        } else if (position == updateTypeRow) {
-            AndroidUtilities.addToClipboard(FoxTextUtils.appInfo.appName);
-        } else if (position == downloadSourceRow) {
-            String source = StoreUtils.isFromPlayStore() ? "Play Store" : StoreUtils.isFromHuaweiStore() ? "Huawei Store" : "APK";
-            AndroidUtilities.addToClipboard(source);
-        } else if (position == releaseDateRow) {
-            AndroidUtilities.addToClipboard(LocaleController.formatDateAudio(BuildConfig.GIT_COMMIT_DATE, true));
         }
     }
 
@@ -188,28 +119,19 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
         super.updateRowsId();
         updateSectionAvailableRow = -1;
         updateSectionDividerRow = -1;
+        betaUpdatesRow = -1;
 
         if (updateAvailable != null && !StoreUtils.isDownloadedFromAnyStore()) {
             updateSectionAvailableRow = rowCount++;
             updateSectionDividerRow = rowCount++;
         }
 
-        updateCheckHeaderRow = rowCount++;
+        updateSectionHeader = rowCount++;
         updateCheckRow = rowCount++;
         notifyWhenAvailableRow = rowCount++;
         if (!StoreUtils.isDownloadedFromAnyStore()) {
-            updatesChannelRow = rowCount++;
-            infoUpdatesChannelRow = rowCount++;
+            betaUpdatesRow = rowCount++;
         }
-
-        infoHeaderRow = rowCount++;
-        versionInfoRow = rowCount++;
-        buildInfoRow = rowCount++;
-        baseVersionRow = rowCount++;
-        buildTypeRow = rowCount++;
-        updateTypeRow = rowCount++;
-        downloadSourceRow = rowCount++;
-        releaseDateRow = rowCount++;
     }
 
     @Override
@@ -247,10 +169,8 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
                     break;
                 case HEADER:
                     HeaderCell headerCell = (HeaderCell) holder.itemView;
-                    if (position == updateCheckHeaderRow) {
+                    if (position == updateSectionHeader) {
                         headerCell.setText(LocaleController.getString("InAppUpdates", R.string.InAppUpdates));
-                    } else if (position == infoHeaderRow) {
-                        headerCell.setText(LocaleController.getString("UpdatesInfoSettings", R.string.UpdatesInfoSettings));
                     }
                     break;
                 case UPDATE_CHECK:
@@ -263,41 +183,13 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
                     break;
                 case SWITCH:
                     TextCheckCell textCheckCell = (TextCheckCell) holder.itemView;
-                    if (position == notifyWhenAvailableRow) {
+                    textCheckCell.setEnabled(!AppDownloader.updateDownloaded() || position != betaUpdatesRow, null);
+                    if (position == betaUpdatesRow) {
+                        changeBetaMode = textCheckCell;
+                        changeBetaMode.setTextAndValueAndCheck(LocaleController.getString("InstallPreview", R.string.InstallPreview), LocaleController.getString("InstallPreviewDesc", R.string.InstallPreviewDesc), FoxConfig.betaUpdates, true, true);
+                    } else if (position == notifyWhenAvailableRow) {
                         textCheckCell.setTextAndValueAndCheck(LocaleController.getString("AutoUpdate", R.string.AutoUpdate), LocaleController.getString("AutoUpdatePrompt", R.string.AutoUpdatePrompt), FoxConfig.notifyUpdates, true, true);
                     }
-                    break;
-                case TEXT_CELL:
-                    TextCell textCell = (TextCell) holder.itemView;
-                    if (position == updatesChannelRow) {
-                        changeBetaMode = textCell;
-                        changeBetaMode.setTextAndValue(LocaleController.getString("APKsChannel", R.string.APKsChannel), FoxTextUtils.getUpdatesChannel(),partial, false);
-                    } else if (position == versionInfoRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("InstalledVersion", R.string.InstalledVersion), FoxTextUtils.appInfo.appVersion, R.drawable.msg_info, true);
-                    } else if (position == baseVersionRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("BaseVersionUpdated", R.string.BaseVersionUpdated), FoxTextUtils.appInfo.telegramVersion + " (" + FoxTextUtils.appInfo.telegramBuildNumber + ")", R.drawable.msg_photo_switch2, true);
-                    } else if (position == buildTypeRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("BuildType", R.string.BuildType), FoxTextUtils.appInfo.buildType,R.drawable.msg_map_type, true);
-                    } else if (position == buildInfoRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("BuildVersion", R.string.BuildVersion), String.valueOf(FoxTextUtils.appInfo.buildNumber), R.drawable.msg_text_check, true);
-                    } else if (position == updateTypeRow) {
-                        String updateType;
-                        if (FoxTextUtils.appInfo.appName.contains("Beta") || FoxTextUtils.appInfo.appName.contains("Alpha") || BuildConfig.DEBUG_PRIVATE_VERSION) {
-                            updateType = "Preview";
-                        } else {
-                            updateType = LocaleController.getString("Stable", R.string.Stable);
-                        }
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("UpdateType", R.string.UpdateType), updateType,R.drawable.round_update_white_28, true);
-                    } else if (position == downloadSourceRow) {
-                        String source = StoreUtils.isFromPlayStore() ? "Play Store" : StoreUtils.isFromHuaweiStore() ? "Huawei Store" : "APK";
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("DownloadSource", R.string.DownloadSource), source, R.drawable.msg_current_location, true);
-                    } else if (position == releaseDateRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString("ReleaseDate", R.string.ReleaseDate),LocaleController.formatDateAudio(BuildConfig.GIT_COMMIT_DATE, true), R.drawable.msg_calendar2, false);
-                    }
-                    break;
-                case TEXT_HINT_WITH_PADDING:
-                    TextInfoPrivacyCell textInfoPrivacyCell = (TextInfoPrivacyCell) holder.itemView;
-                    textInfoPrivacyCell.setText(LocaleController.getString("InstallPreviewDesc", R.string.InstallPreviewDesc) + " " + LocaleController.getString("UpdatesChannelInfo", R.string.UpdatesChannelInfo));
                     break;
             }
         }
@@ -373,19 +265,12 @@ public class FoxGramUpdateSettings extends BaseSettingsActivity {
                 return ViewType.SHADOW;
             } else if (position == updateSectionAvailableRow) {
                 return ViewType.UPDATE;
-            } else if (position == updateCheckHeaderRow || position == infoHeaderRow) {
+            } else if (position == updateSectionHeader) {
                 return ViewType.HEADER;
             } else if (position == updateCheckRow) {
                 return ViewType.UPDATE_CHECK;
-            } else if (position == notifyWhenAvailableRow) {
+            } else if (position == betaUpdatesRow || position == notifyWhenAvailableRow) {
                 return ViewType.SWITCH;
-            } else if (position == updatesChannelRow || position == versionInfoRow ||
-                    position == buildInfoRow || position == buildTypeRow ||
-                    position == updateTypeRow || position == downloadSourceRow ||
-                    position == releaseDateRow || position == baseVersionRow) {
-                return ViewType.TEXT_CELL;
-            } else if (position == infoUpdatesChannelRow) {
-                return ViewType.TEXT_HINT_WITH_PADDING;
             }
             throw new IllegalArgumentException("Invalid position");
         }
