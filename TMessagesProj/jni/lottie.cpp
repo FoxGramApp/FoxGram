@@ -6,6 +6,7 @@
 #include <condition_variable>
 #include <atomic>
 #include <thread>
+#include <lz4.h>
 #include <map>
 #include <sys/stat.h>
 #include <utime.h>
