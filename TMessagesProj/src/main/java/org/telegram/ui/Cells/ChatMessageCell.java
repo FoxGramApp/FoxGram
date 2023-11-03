@@ -2076,7 +2076,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                     } else {
                         instantPressed = true;
                         selectorDrawableMaskType[0] = 0;
-                        if (selectorDrawable[0].getBounds().contains(x, y)) {
+                        if (selectorDrawable[0] != null && selectorDrawable[0].getBounds().contains(x, y)) {
                             selectorDrawable[0].setHotspot(x, y);
                             selectorDrawable[0].setState(pressedState);
                         }
