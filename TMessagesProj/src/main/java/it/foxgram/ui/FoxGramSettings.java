@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BuildConfig;
 import org.telegram.messenger.Emoji;
-import org.telegram.messenger.FileLog;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.NotificationCenter;
@@ -56,7 +55,6 @@ public class FoxGramSettings extends BaseSettingsActivity {
     private int foxRow;
     private int categoryHeaderRow;
     private int generalSettingsRow;
-    private int translateSettingsRow;
     private int appearanceSettingsRow;
     private int updatesSettingsRow;
     private int chatSettingsRow;
@@ -126,8 +124,6 @@ public class FoxGramSettings extends BaseSettingsActivity {
             Browser.openUrl(getParentActivity(), "https://crowdin.com/project/colorgram");
         } else if (position == generalSettingsRow) {
             presentFragment(new FoxGramGeneralSettings());
-        } else if (position == translateSettingsRow) {
-            presentFragment(new FoxGramTranslationsSettings());
         } else if (position == chatSettingsRow) {
             presentFragment(new FoxGramChatSettings());
         } else if (position == experimentalSettingsRow) {
@@ -158,7 +154,6 @@ public class FoxGramSettings extends BaseSettingsActivity {
 
         categoryHeaderRow = rowCount++;
         generalSettingsRow = rowCount++;
-        translateSettingsRow = rowCount++;
         appearanceSettingsRow = rowCount++;
         chatSettingsRow = rowCount++;
         updatesSettingsRow = rowCount++;
@@ -189,8 +184,6 @@ public class FoxGramSettings extends BaseSettingsActivity {
                     textCell.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
                     if (position == generalSettingsRow) {
                         textCell.setTextAndIcon(LocaleController.getString("General", R.string.General), R.drawable.msg_media, true);
-                    } else if (position == translateSettingsRow) {
-                        textCell.setTextAndIcon(LocaleController.getString("TranslationsTitle", R.string.TranslationsTitle), R.drawable.msg_translate, true);
                     } else if (position == chatSettingsRow) {
                         textCell.setTextAndIcon(LocaleController.getString("Chat", R.string.Chat), R.drawable.msg_msgbubble3, true);
                     } else if (position == experimentalSettingsRow) {
@@ -274,8 +267,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
             if (pressCount >= 2) {
                 BottomSheet.Builder builder = new BottomSheet.Builder(context);
                 builder.setTitle(LocaleController.getString("DebugMenu", R.string.DebugMenu), true);
-                CharSequence[] items;
-                items = new CharSequence[]{
+                CharSequence[] items = new CharSequence[]{
                         FoxConfig.unlockedSecretIcons ? LocaleController.getString("HideSecretIcons", R.string.HideSecretIcons) : LocaleController.getString("ShowSecretIcons", R.string.ShowSecretIcons),
                         LocaleController.getString("DebugMenuCheckAppUpdate", R.string.DebugMenuCheckAppUpdate),
                 };
@@ -288,11 +280,7 @@ public class FoxGramSettings extends BaseSettingsActivity {
                 });
                 showDialog(builder.create());
             } else {
-                try {
-                    Toast.makeText(getParentActivity(), LocaleController.getString("DebugMenuLongPress", R.string.DebugMenuLongPress), Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    FileLog.e(e);
-                }
+                Toast.makeText(getParentActivity(), LocaleController.getString("DebugMenuLongPress", R.string.DebugMenuLongPress), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -305,9 +293,9 @@ public class FoxGramSettings extends BaseSettingsActivity {
         public ViewType getViewType(int position) {
             if (position == divisorInfoRow) {
                 return ViewType.SHADOW;
-            } else if (position == generalSettingsRow || position == translateSettingsRow ||
-                    position == chatSettingsRow || position == experimentalSettingsRow ||
-                    position == appearanceSettingsRow || position == updatesSettingsRow) {
+            } else if (position == generalSettingsRow || position == chatSettingsRow ||
+                    position == experimentalSettingsRow || position == appearanceSettingsRow ||
+                    position == updatesSettingsRow) {
                 return ViewType.TEXT_CELL;
             } else if (position == infoHeaderRow || position == categoryHeaderRow) {
                 return ViewType.HEADER;
