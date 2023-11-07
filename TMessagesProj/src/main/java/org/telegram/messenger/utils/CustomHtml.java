@@ -178,7 +178,11 @@ public class CustomHtml {
                 for (int j = 0; j < spans.length; ++j) {
                     CodeHighlighting.Span span = spans[j];
                     if (span != null) {
-                        out.append("<pre lang=\"").append(span.lng).append("\">");
+                        if (TextUtils.isEmpty(span.lng)) {
+                            out.append("<pre>");
+                        } else {
+                            out.append("<pre lang=\"").append(span.lng).append("\">");
+                        }
                     }
                 }
             }

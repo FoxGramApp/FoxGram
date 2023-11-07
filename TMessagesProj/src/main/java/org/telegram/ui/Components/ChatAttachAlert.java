@@ -2584,7 +2584,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
         containerView.addView(writeButtonContainer, LayoutHelper.createFrame(60, 60, Gravity.RIGHT | Gravity.BOTTOM, 0, 0, 6, 10));
 
         writeButton = new ImageView(context);
-        writeButtonDrawable = Theme.createSimpleSelectorCircleDrawable(AndroidUtilities.dp(56), getThemedColor(Theme.key_dialogFloatingButton), getThemedColor(Theme.key_dialogFloatingButtonPressed));
+        writeButtonDrawable = Theme.createSimpleSelectorCircleDrawable(AndroidUtilities.dp(56), getThemedColor(Theme.key_chat_attachCheckBoxBackground), getThemedColor(Theme.key_dialogFloatingButtonPressed));
         writeButton.setBackgroundDrawable(writeButtonDrawable);
         writeButton.setImageResource(R.drawable.attach_send);
         writeButton.setColorFilter(new PorterDuffColorFilter(getThemedColor(Theme.key_dialogFloatingIcon), PorterDuff.Mode.MULTIPLY));
@@ -2764,7 +2764,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
                 rect.set(cx - size / 2, 0, cx + size / 2, getMeasuredHeight());
                 canvas.drawRoundRect(rect, AndroidUtilities.dp(12), AndroidUtilities.dp(12), paint);
 
-                paint.setColor(getThemedColor(Theme.key_dialogRoundCheckBox));
+                paint.setColor(getThemedColor(Theme.key_chat_attachCheckBoxBackground));
                 rect.set(cx - size / 2 + AndroidUtilities.dp(2), AndroidUtilities.dp(2), cx + size / 2 - AndroidUtilities.dp(2), getMeasuredHeight() - AndroidUtilities.dp(2));
                 canvas.drawRoundRect(rect, AndroidUtilities.dp(10), AndroidUtilities.dp(10), paint);
 
@@ -3696,7 +3696,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
             }
         }
 
-        Theme.setSelectorDrawableColor(writeButtonDrawable, getThemedColor(Theme.key_dialogFloatingButton), false);
+        Theme.setSelectorDrawableColor(writeButtonDrawable, getThemedColor(Theme.key_chat_attachCheckBoxBackground), false);
         Theme.setSelectorDrawableColor(writeButtonDrawable, getThemedColor(Theme.key_dialogFloatingButtonPressed), true);
         writeButton.setColorFilter(new PorterDuffColorFilter(getThemedColor(Theme.key_dialogFloatingIcon), PorterDuff.Mode.MULTIPLY));
 

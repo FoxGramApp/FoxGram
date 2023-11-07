@@ -23,6 +23,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 
 import org.telegram.messenger.AndroidUtilities;
@@ -32,6 +33,7 @@ import org.telegram.messenger.DispatchQueue;
 import org.telegram.messenger.DispatchQueuePoolBackground;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
+import org.telegram.messenger.ImageLoader;
 import org.telegram.messenger.ImageLocation;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.ImageReceiver;
@@ -355,6 +357,7 @@ public class AnimatedFileDrawable extends BitmapDrawable implements Animatable, 
         }
     }
 
+    private int decoderTryCount = 0;
     private Runnable loadFrameRunnable = new Runnable() {
         @Override
         public void run() {
@@ -366,7 +369,7 @@ public class AnimatedFileDrawable extends BitmapDrawable implements Animatable, 
                         nativePtr = 0;
                     }
                     updateScaleFactor();
-                    decoderCreated = true;
+                    decoderCreated = !isWebmSticker || nativePtr != 0 || (decoderTryCount++) > 15;
                 }
                 try {
                     if (bitmapsCache != null) {
@@ -1087,7 +1090,7 @@ public class AnimatedFileDrawable extends BitmapDrawable implements Animatable, 
     }
 
     public boolean isRecycled() {
-        return isRecycled;
+        return isRecycled || decoderTryCount >= 15;
     }
 
     public Bitmap getNextFrame() {
