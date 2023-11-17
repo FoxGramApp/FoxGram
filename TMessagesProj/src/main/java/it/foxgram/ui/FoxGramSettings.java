@@ -223,8 +223,8 @@ public class FoxGramSettings extends BaseSettingsActivity {
         protected View onCreateViewHolder(ViewType viewType) {
             View view = null;
             if (viewType == ViewType.IMAGE_HEADER) {
-                String updateInfo = LocaleController.getString("UpdateInfo", R.string.UpdateInfo) + " " + FoxTextUtils.appInfo.appVersion + " " + "(" + FoxTextUtils.appInfo.buildNumber + ")";
-                String appName = FoxTextUtils.appInfo.appName;
+                String updateInfo = LocaleController.getString("UpdateInfo", R.string.UpdateInfo) + " " + FoxTextUtils.appVersion + " " + "(" + FoxTextUtils.appBuildNumber + ")";
+                String appName = FoxTextUtils.appName;
                 LinearLayout imageCell = new LinearLayout(context);
                 imageCell.setOrientation(LinearLayout.VERTICAL);
                 ImageView imageView = new ImageView(context);
