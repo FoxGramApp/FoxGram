@@ -520,6 +520,11 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
             selectedPhotosOrder.clear();
             selectedPhotos.clear();
         }
+
+        @Override
+        public boolean allowCaption() {
+            return !parentAlert.isPhotoPicker;
+        }
     };
 
     protected void updateCheckedPhotoIndices() {
@@ -2165,6 +2170,11 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
             @Override
             public boolean canCaptureMorePhotos() {
                 return parentAlert.maxSelectedPhotos != 1;
+            }
+
+            @Override
+            public boolean allowCaption() {
+                return !parentAlert.isPhotoPicker;
             }
         }, chatActivity);
         PhotoViewer.getInstance().setAvatarFor(parentAlert.getAvatarFor());
