@@ -97,7 +97,6 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
     public static boolean switchingTheme;
     public boolean drawPremium;
     public float drawPremiumProgress;
-    private ImageView menuControllerSetting;
 
     private float stateX, stateY;
 
@@ -260,17 +259,6 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
                 sunDrawable.setCustomEndFrame(36);
             }
         }
-
-        menuControllerSetting = new ImageView(context);
-        menuControllerSetting.setImageResource(R.drawable.msg_newfilter);
-        menuControllerSetting.setColorFilter(Theme.getColor(Theme.key_chats_menuName));
-        menuControllerSetting.setScaleType(ImageView.ScaleType.CENTER);
-        menuControllerSetting.setClickable(true);
-        menuControllerSetting.setOnTouchListener((View view, MotionEvent motionEvent) -> {
-            drawerLayoutContainer.presentFragment(new DrawerOrderSettings());
-            return false;
-        });
-        addView(menuControllerSetting, LayoutHelper.createFrame(48, 48, Gravity.RIGHT | Gravity.BOTTOM, 0, 0, 48, 90));
 
         darkThemeView = new RLottieImageView(context) {
             @Override
@@ -602,11 +590,6 @@ public class DrawerProfileCell extends FrameLayout implements NotificationCenter
         boolean drawCatsShadow = false;
         int color;
         int darkBackColor = 0;
-        if (FoxConfig.showMenuControllerIcon) {
-            menuControllerSetting.setVisibility(View.VISIBLE);
-        } else {
-            menuControllerSetting.setVisibility(View.INVISIBLE);
-        }
         if (!avatarAsDrawerBackground && !useImageBackground && Theme.hasThemeKey(Theme.key_chats_menuTopShadowCats)) {
             color = Theme.getColor(Theme.key_chats_menuTopShadowCats);
             drawCatsShadow = true;

@@ -58,7 +58,6 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
     private int chatHeaderRow;
     private int jumpChannelRow;
     private int showGreetings;
-    private int hideChannelBottomRow;
     private int hideKeyboardRow;
     private int playGifAsVideoRow;
     private int chatDividerRow;
@@ -120,11 +119,6 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
             FoxConfig.toggleShowGreetings();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(FoxConfig.showGreetings);
-            }
-        } else if (position == hideChannelBottomRow) {
-            FoxConfig.toggleHideChannelBottom();
-            if (view instanceof TextCheckCell) {
-                ((TextCheckCell) view).setChecked((FoxConfig.hideChannelBottom));
             }
         } else if (position == hideKeyboardRow) {
             FoxConfig.toggleHideKeyboard();
@@ -323,7 +317,6 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
         chatHeaderRow = rowCount++;
         jumpChannelRow = rowCount++;
         showGreetings = rowCount++;
-        hideChannelBottomRow = rowCount++;
         hideKeyboardRow = rowCount++;
         hideSendAsChannelRow = rowCount++;
         openArchiveOnPullRow = rowCount++;
@@ -413,8 +406,6 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
                         textCheckCell.setTextAndCheck(LocaleController.getString("JumpToNextChannel", R.string.JumpToNextChannel), FoxConfig.jumpChannel, true);
                     } else if (position == showGreetings) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("GreetingSticker", R.string.GreetingSticker), FoxConfig.showGreetings, true);
-                    } else if (position == hideChannelBottomRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("HideChannelBottomButton", R.string.HideChannelBottomButton), FoxConfig.hideChannelBottom, true);
                     } else if (position == hideKeyboardRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("HideChatKeyboard", R.string.HideChatKeyboard), FoxConfig.hideKeyboard, true);
                     } else if (position == playGifAsVideoRow) {
@@ -578,9 +569,10 @@ public class FoxGramChatSettings extends BaseSettingsActivity implements Notific
             } else if (position == cameraEnableRow || position == cameraXOptimizeRow ||
                     position == cameraPreviewRow || position == rearCameraStartingRow ||
                     position == jumpChannelRow || position == hideKeyboardRow ||
-                    position == playGifAsVideoRow || position == showGreetings || position == hideChannelBottomRow ||
-                    position == proximitySensorRow || position == suppressionRow || position == turnSoundOnVDKeyRow ||
-                    position == openArchiveOnPullRow || position == hideTimeOnStickerRow || position == onlineStatusRow ||
+                    position == playGifAsVideoRow || position == showGreetings ||
+                    position == proximitySensorRow || position == suppressionRow ||
+                    position == turnSoundOnVDKeyRow || position == openArchiveOnPullRow ||
+                    position == hideTimeOnStickerRow || position == onlineStatusRow ||
                     position == hideSendAsChannelRow) {
                 return ViewType.SWITCH;
             } else if (position == stickerSizeRow) {

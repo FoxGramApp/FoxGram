@@ -45,7 +45,6 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
 
     private int drawerRow;
     private int drawerAvatarAsBackgroundRow;
-    private int showMenuControllerIconRow;
     private int showGradientRow;
     private int showAvatarRow;
     private int drawerDarkenBackgroundRow;
@@ -155,14 +154,6 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                 listAdapter.notifyItemRangeRemoved(showGradientRow, 4 + (FoxConfig.avatarBackgroundBlur ? 3 : 0));
                 updateRowsId();
             }
-        } else if (position == showMenuControllerIconRow) {
-            FoxConfig.toggleShowMenuControllerIcon();
-            if (view instanceof TextCheckCell) {
-                ((TextCheckCell) view).setChecked(FoxConfig.showMenuControllerIcon);
-            }
-            reloadMainInfo();
-            listAdapter.notifyItemChanged(drawerRow, PARTIAL);
-            TransitionManager.beginDelayedTransition(profilePreviewCell);
         } else if (position == menuItemsRow) {
             presentFragment(new DrawerOrderSettings());
         } else if (position == useSystemFontRow) {
@@ -323,7 +314,6 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
             drawerDarkenBackgroundRow = rowCount++;
             drawerBlurBackgroundRow = rowCount++;
         }
-        showMenuControllerIconRow = rowCount++;
         drawerDividerRow = rowCount++;
         if (FoxConfig.avatarBackgroundBlur && FoxConfig.avatarAsDrawerBackground) {
             editBlurHeaderRow = rowCount++;
@@ -422,8 +412,6 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                         textCheckCell.setTextAndCheck(LocaleController.getString("ShowAvatar", R.string.ShowAvatar), FoxConfig.showAvatarImage, drawerBlurBackgroundRow != -1);
                     } else if (position == drawerAvatarAsBackgroundRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("AvatarAsBackground", R.string.AvatarAsBackground), FoxConfig.avatarAsDrawerBackground, FoxConfig.avatarAsDrawerBackground);
-                    } else if (position == showMenuControllerIconRow) {
-                        textCheckCell.setTextAndCheck(LocaleController.getString("ShowItemManagement", R.string.ShowItemManagement), FoxConfig.showMenuControllerIcon, false);
                     } else if (position == drawerBlurBackgroundRow) {
                         textCheckCell.setTextAndCheck(LocaleController.getString("AvatarBlur", R.string.AvatarBlur), FoxConfig.avatarBackgroundBlur, true);
                     } else if (position == drawerDarkenBackgroundRow) {
@@ -611,14 +599,14 @@ public class FoxGramAppearanceSettings extends BaseSettingsActivity implements N
                 return ViewType.HEADER;
             } else if (position == roundedNumberSwitchRow || position == messageTimeSwitchRow ||
                     position == useSystemFontRow || position == drawerAvatarAsBackgroundRow ||
-                    position == showMenuControllerIconRow || position == drawerDarkenBackgroundRow ||
-                    position == drawerBlurBackgroundRow || position == showGradientRow ||
-                    position == showAvatarRow || position == forcePacmanRow ||
-                    position == smoothNavRow || position == smartButtonsRow ||
-                    position == appBarShadowRow || position == showSantaHatRow ||
-                    position == showFallingSnowRow || position == slidingTitleRow ||
-                    position == searchIconInActionBarRow || position == showPencilIconRow ||
-                    position == inAppBlurRow || position == showStoriesRow) {
+                    position == drawerDarkenBackgroundRow || position == drawerBlurBackgroundRow ||
+                    position == showGradientRow || position == showAvatarRow ||
+                    position == forcePacmanRow || position == smoothNavRow ||
+                    position == smartButtonsRow || position == appBarShadowRow ||
+                    position == showSantaHatRow || position == showFallingSnowRow ||
+                    position == slidingTitleRow || position == searchIconInActionBarRow ||
+                    position == showPencilIconRow || position == inAppBlurRow ||
+                    position == showStoriesRow) {
                 return ViewType.SWITCH;
             } else if (position == drawerRow) {
                 return ViewType.PROFILE_PREVIEW;

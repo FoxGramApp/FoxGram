@@ -66,14 +66,12 @@ public class FoxConfig extends SettingsController {
     public static boolean useSystemFont;
     public static boolean useSystemEmoji;
     public static boolean showGreetings;
-    public static boolean hideChannelBottom;
     public static boolean showTranslate;
     public static boolean betaUpdates;
     public static boolean notifyUpdates;
     public static boolean avatarBackgroundDarken;
     public static boolean avatarBackgroundBlur;
     public static boolean avatarAsDrawerBackground;
-    public static boolean showMenuControllerIcon;
     public static boolean betterAudioQuality;
     public static boolean showGradientColor;
     public static boolean showAvatarImage;
@@ -183,14 +181,12 @@ public class FoxConfig extends SettingsController {
             useSystemFont = getBoolean("useSystemFont", false);
             useSystemEmoji = getBoolean("useSystemEmoji", false);
             showGreetings = getBoolean("showGreetings", true);
-            hideChannelBottom = getBoolean("hideChannelBottom", false);
             showTranslate = getBoolean("showTranslate", false);
             betaUpdates = getBoolean("betaUpdates", false);
             notifyUpdates = getBoolean("notifyUpdates", true);
             avatarBackgroundDarken = getBoolean("avatarBackgroundDarken", false);
             avatarBackgroundBlur = getBoolean("avatarBackgroundBlur", false);
             avatarAsDrawerBackground = getBoolean("avatarAsDrawerBackground", false);
-            showMenuControllerIcon = getBoolean("showMenuControllerIcon", false);
             showGradientColor = getBoolean("showGradientColor", false);
             showAvatarImage = getBoolean("showAvatarImage", true);
             pacmanForced = getBoolean("pacmanForced", false);
@@ -331,7 +327,6 @@ public class FoxConfig extends SettingsController {
     public static void toggleShowGreetings() {
         putValue("showGreetings", showGreetings ^= true);
     }
-    public static void toggleHideChannelBottom() { putValue("hideChannelBottom", hideChannelBottom ^= true); }
 
     public static void toggleShowTranslate() {
         putValue("showTranslate", showTranslate ^= true);
@@ -347,10 +342,6 @@ public class FoxConfig extends SettingsController {
 
     public static void toggleAvatarAsDrawerBackground() {
         putValue("avatarAsDrawerBackground", avatarAsDrawerBackground ^= true);
-    }
-
-    public static void toggleShowMenuControllerIcon() {
-        putValue("showMenuControllerIcon", showMenuControllerIcon ^= true);
     }
 
     public static void toggleAvatarBackgroundBlur() {
@@ -611,7 +602,6 @@ public class FoxConfig extends SettingsController {
     public static void setCompression(int compression) {
         putValue("lastSelectedCompression", lastSelectedCompression = compression);
     }
-
 
     public static void applyUpdateData() {
         putValue("updateData", updateData.serializeToStream());

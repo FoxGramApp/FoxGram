@@ -7857,7 +7857,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             return;
         }
         undoView = new UndoView(getContext(), this, false, themeDelegate);
-        undoView.setAdditionalTranslationY(isBottomOverlaysInvisible() ? 0 : AndroidUtilities.dp(51));
+        undoView.setAdditionalTranslationY(AndroidUtilities.dp(51));
         contentView.addView(undoView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.BOTTOM | Gravity.LEFT, 8, 0, 8, 8));
     }
 
@@ -9460,7 +9460,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             bottomMessagesActionContainer.setTranslationY(bottomPanelTranslationYReverse);
         }
         if (undoView != null) {
-            undoView.setAdditionalTranslationY(chatActivityEnterView.getHeightWithTopView() - chatActivityEnterView.getAnimatedTop() - (isBottomOverlaysInvisible() ? AndroidUtilities.dp(51) : 0));
+            undoView.setAdditionalTranslationY(chatActivityEnterView.getHeightWithTopView() - chatActivityEnterView.getAnimatedTop());
         }
     }
 
@@ -14486,7 +14486,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     bottom = bottomOverlayChat.getBottom();
                 }
                 top -= (int) ((pullingDownAnimateToActivity == null ? 0 : pullingDownAnimateToActivity.pullingBottomOffset) * pullingDownAnimateProgress);
-                if ((!isMuteUnmuteButton() && bottomOverlayChat.getVisibility() == View.VISIBLE) || chatActivityEnterView.getVisibility() == View.VISIBLE)
+                if ((bottomOverlayChat.getVisibility() == View.VISIBLE) || chatActivityEnterView.getVisibility() == View.VISIBLE)
                     pullingDownDrawable.drawBottomPanel(canvas, top, bottom, getMeasuredWidth());
             }
             if (pullingDownAnimateToActivity != null) {
@@ -14662,7 +14662,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     child.measure(contentWidthSpec, contentHeightSpec);
                 } else if (child == chatListView) {
                     int contentWidthSpec = View.MeasureSpec.makeMeasureSpec(widthSize, View.MeasureSpec.EXACTLY);
-                    int h = heightSize - listViewTopHeight - (inPreviewMode ? AndroidUtilities.statusBarHeight : 0) + blurredViewTopOffset + blurredViewBottomOffset + (isBottomOverlaysInvisible() ? AndroidUtilities.dp(50) : 0);
+                    int h = heightSize - listViewTopHeight - (inPreviewMode ? AndroidUtilities.statusBarHeight : 0) + blurredViewTopOffset + blurredViewBottomOffset;
                     if (keyboardSize > AndroidUtilities.dp(20) && getLayoutParams().height < 0) {
                         h += keyboardSize;
                     }
@@ -14866,7 +14866,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     childTop -= chatActivityEnterView.getMeasuredHeight() - AndroidUtilities.dp(2);
                     mentionContainer.setTranslationY(chatActivityEnterView.getAnimatedTop());
                 } else if (child == pagedownButton || child == mentiondownButton || child == reactionsMentiondownButton) {
-                    childTop += (isBottomOverlaysInvisible() ? AndroidUtilities.dp(50) : 0) - (!inPreviewMode ? chatActivityEnterView.getMeasuredHeight() : 0);
+                    childTop += (!inPreviewMode ? chatActivityEnterView.getMeasuredHeight() : 0);
                 } else if (child == emptyViewContainer) {
                     childTop -= inputFieldHeight / 2 - (actionBar.getVisibility() == VISIBLE ? actionBar.getMeasuredHeight() / 2 : 0);
                 } else if (chatActivityEnterView.isPopupView(child)) {
@@ -18126,9 +18126,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 showGigagroupConvertAlert();
                 long prevLinkedChatId = chatInfo != null ? chatInfo.linked_chat_id : 0;
                 chatInfo = chatFull;
-                if (FoxConfig.hideChannelBottom) {
-                    updateBottomOverlay();
-                }
                 groupCall = getMessagesController().getGroupCall(currentChat.id, true);
                 if (ChatObject.isChannel(currentChat) && currentChat.megagroup && fragmentContextView != null) {
                     fragmentContextView.checkCall(openAnimationStartTime == 0 || SystemClock.elapsedRealtime() < openAnimationStartTime + 150);
@@ -22361,7 +22358,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             chatActivityEnterView.setVisibility(View.VISIBLE);
             chatActivityEnterView.setBotInfo(botInfo);
         }
-        if (isMuteUnmuteButton()) bottomOverlayChat.setVisibility(View.INVISIBLE);
         checkRaiseSensors();
     }
 
@@ -23977,7 +23973,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     height += translationY;
                 }
                 height += contentPanTranslation;
-                return height - AndroidUtilities.dp(1.5f) - (isBottomOverlaysInvisible() ? AndroidUtilities.dp(50) : 0);
+                return height - AndroidUtilities.dp(1.5f);
             }
 
             @Override
@@ -24632,9 +24628,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         }
         if (chatActivityEnterView != null) {
             chatActivityEnterView.preventInput = false;
-        }
-        if (FoxConfig.hideChannelBottom) {
-            updatePaddings();
         }
         textSelectionHintWasShowed = false;
     }
@@ -34520,31 +34513,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         }
         skeleton.width = (int) Math.min(chatListView.getWidth() * 0.8f - (noAvatar ? 0 : AndroidUtilities.dp(42)), AndroidUtilities.dp(42) + (0.4f + Utilities.fastRandom.nextFloat() * 0.35f) * chatListView.getWidth());
         return skeleton;
-    }
-
-    private boolean isBottomOverlaysInvisible() {
-        if (bottomMessagesActionContainer == null) createBottomMessagesActionButtons();
-        if (searchContainer == null) createSearchContainer();
-        return bottomOverlayChat.getVisibility() == View.INVISIBLE && chatActivityEnterView.getVisibility() == View.INVISIBLE && bottomMessagesActionContainer.getVisibility() == View.INVISIBLE && searchContainer.getVisibility() == View.INVISIBLE && !isInPreviewMode() && !isInBubbleMode() && FoxConfig.hideChannelBottom;
-    }
-
-    private boolean isMuteUnmuteButton() {
-        return (bottomOverlayChatText.getText() == LocaleController.getString("ChannelMute", R.string.ChannelMute) || bottomOverlayChatText.getText() == LocaleController.getString("ChannelUnmute", R.string.ChannelUnmute)) && FoxConfig.hideChannelBottom;
-    }
-
-    private void updatePaddings() {
-        UndoView undoView = getUndoView();
-        ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f).setDuration(200);
-        animator.addUpdateListener(animation -> {
-            if (fragmentView != null) {
-                fragmentView.requestLayout();
-            }
-            updateBulletinLayout();
-            if (undoView != null) {
-                undoView.setAdditionalTranslationY(0);
-            }
-        });
-        animator.start();
     }
 
     @Override
