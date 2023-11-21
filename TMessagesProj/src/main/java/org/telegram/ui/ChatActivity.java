@@ -14486,8 +14486,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     bottom = bottomOverlayChat.getBottom();
                 }
                 top -= (int) ((pullingDownAnimateToActivity == null ? 0 : pullingDownAnimateToActivity.pullingBottomOffset) * pullingDownAnimateProgress);
-                if ((bottomOverlayChat.getVisibility() == View.VISIBLE) || chatActivityEnterView.getVisibility() == View.VISIBLE)
-                    pullingDownDrawable.drawBottomPanel(canvas, top, bottom, getMeasuredWidth());
+                pullingDownDrawable.drawBottomPanel(canvas, top, bottom, getMeasuredWidth());
             }
             if (pullingDownAnimateToActivity != null) {
                 canvas.saveLayerAlpha(0, 0, getMeasuredWidth(), getMeasuredHeight(), (int) (255 * pullingDownAnimateProgress), Canvas.ALL_SAVE_FLAG);
