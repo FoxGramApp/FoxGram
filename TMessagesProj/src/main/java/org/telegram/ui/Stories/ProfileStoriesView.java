@@ -38,6 +38,7 @@ import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.Utilities;
+import org.telegram.tgnet.TLRPC;
 import org.telegram.tgnet.tl.TL_stories;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.AnimatedFloat;
@@ -85,6 +86,7 @@ public class ProfileStoriesView extends View implements NotificationCenter.Notif
     private float fragmentTransitionProgress;
     private int uploadingStoriesCount;
     private StoriesController.UploadingStory lastUploadingStory;
+    private final StoriesUtilities.StoryGradientTools gradientTools = new StoriesUtilities.StoryGradientTools(this, false);
 
     public void setProgressToStoriesInsets(float progressToInsets) {
         if (this.progressToInsets == progressToInsets) {
@@ -364,6 +366,14 @@ public class ProfileStoriesView extends View implements NotificationCenter.Notif
         this.count = newCount;
         titleDrawable.setText(this.count > 0 ? LocaleController.formatPluralString("Stories", this.count) : "", animated && !LocaleController.isRTL);
 
+        if (dialogId >= 0) {
+            TLRPC.User user = MessagesController.getInstance(currentAccount).getUser(dialogId);
+            gradientTools.setUser(user, animated);
+        } else {
+            TLRPC.Chat chat = MessagesController.getInstance(currentAccount).getChat(-dialogId);
+            gradientTools.setChat(chat, animated);
+        }
+
         invalidate();
     }
 
@@ -507,7 +517,7 @@ public class ProfileStoriesView extends View implements NotificationCenter.Notif
         if (progressToUploading > 0) {
             rect2.set(rect1);
             rect2.inset(-dpf2(2.66f + 2.23f / 2), -dpf2(2.66f + 2.23f / 2));
-            unreadPaint = StoriesUtilities.getUnreadCirclePaint(rect2, true);
+            unreadPaint = gradientTools.getPaint(rect2);
             if (radialProgress == null) {
                 radialProgress = new RadialProgress(this);
                 radialProgress.setBackground(null, true, false);
@@ -602,7 +612,7 @@ public class ProfileStoriesView extends View implements NotificationCenter.Notif
                     }
 
                     if (read < 1) {
-                        unreadPaint = StoriesUtilities.getUnreadCirclePaint(rect2, true);
+                        unreadPaint = gradientTools.getPaint(rect2);
                         unreadPaint.setAlpha((int) (0xFF * (1f - read) * segmentsAlpha));
                         unreadPaint.setStrokeWidth(dpf2(2.33f));
                         canvas.drawArc(rect2, a, -widthAngle * appear, false, unreadPaint);
@@ -655,7 +665,7 @@ public class ProfileStoriesView extends View implements NotificationCenter.Notif
             }
             readPaint.setColor(ColorUtils.blendARGB(0x5affffff, 0x80BBC4CC, expandProgress));
             readPaintAlpha = readPaint.getAlpha();
-            unreadPaint = StoriesUtilities.getUnreadCirclePaint(rect2, true);
+            unreadPaint = gradientTools.getPaint(rect2);
             unreadPaint.setStrokeWidth(lerp(dpf2(2.33f), dpf2(1.5f), expandProgress));
             readPaint.setStrokeWidth(lerp(dpf2(1.125f), dpf2(1.5f), expandProgress));
             if (expandProgress > 0) {

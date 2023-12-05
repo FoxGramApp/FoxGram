@@ -74,7 +74,7 @@ public class PreviewHighlightView extends FrameLayout {
             }
         };
         PeerStoriesView.PeerHeaderView headerView = new PeerStoriesView.PeerHeaderView(getContext(), null);
-        headerView.backupImageView.getAvatarDrawable().setInfo(me);
+        headerView.backupImageView.getAvatarDrawable().setInfo(currentAccount, me);
         headerView.backupImageView.setForUserOrChat(me, headerView.backupImageView.getAvatarDrawable());
         CharSequence text = UserObject.getUserName(me);
         text = Emoji.replaceEmoji(text, headerView.titleView.getPaint().getFontMetricsInt(), false);
@@ -145,7 +145,7 @@ public class PreviewHighlightView extends FrameLayout {
 
     public void updateCaption(CharSequence caption) {
         caption = AnimatedEmojiSpan.cloneSpans(new SpannableString(caption));
-        storyCaptionView.captionTextview.setText(caption, false, false);
+        storyCaptionView.captionTextview.setText(caption, null, false, false);
     }
 
     private boolean shownTop = false, shownBottom = false;
