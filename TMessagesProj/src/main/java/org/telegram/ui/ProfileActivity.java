@@ -8666,12 +8666,6 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         updateEmojiStatusDrawableColor(lastEmojiStatusProgress);
     }
     private void updateEmojiStatusDrawableColor(float progress) {
-        final int color =
-                ColorUtils.blendARGB(
-                        AndroidUtilities.getOffsetColor(getThemedColor(Theme.key_profile_verifiedBackground), getThemedColor(Theme.key_player_actionBarTitle), mediaHeaderAnimationProgress, 1.0f),
-                        0xffffffff,
-                        progress
-                );
         for (int a = 0; a < 2; ++a) {
             final int fromColor;
             if (peerColor != null && a == 1) {
