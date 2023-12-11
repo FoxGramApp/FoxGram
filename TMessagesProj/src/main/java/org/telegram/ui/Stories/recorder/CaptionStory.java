@@ -136,11 +136,7 @@ public class CaptionStory extends CaptionContainerView {
 
     private void checkFlipButton() {
         if (flipButton != null) return;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            flipButton = (AnimatedVectorDrawable) ContextCompat.getDrawable(getContext(), R.drawable.avd_flip);
-        } else {
-            flipButton = getContext().getResources().getDrawable(R.drawable.vd_flip).mutate();
-        }
+        flipButton = (AnimatedVectorDrawable) ContextCompat.getDrawable(getContext(), R.drawable.avd_flip);
     }
 
     private boolean hasRoundVideo;

@@ -1909,7 +1909,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
 
             @Override
             public boolean canRecord() {
-                return requestAudioPermission();
+                return requestAudioPermission() && FoxConfig.isEnabledCamera;
             }
 
             @Override
@@ -4742,12 +4742,16 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
 
 
     private Drawable getCameraThumb() {
+        if (!FoxConfig.isEnabledCamera) {
+            return getContext().getResources().getDrawable(R.drawable.black_bg_sa);
+        }
+
         Bitmap bitmap = null;
         try {
             File file = new File(ApplicationLoader.getFilesDirFixed(), "cthumb.jpg");
             bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
         } catch (Throwable ignore) {}
-        if (bitmap != null) {
+        if (bitmap != null && FoxConfig.isEnabledCamera) {
             return new BitmapDrawable(bitmap);
         } else {
             return getContext().getResources().getDrawable(R.drawable.icplaceholder);
@@ -4755,7 +4759,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
     }
 
     private void saveLastCameraBitmap(Runnable whenDone) {
-        if (cameraView == null || cameraView.getTextureView() == null) {
+        if (cameraView == null || cameraView.getTextureView() == null || !FoxConfig.isEnabledCamera) {
             return;
         }
         try {
