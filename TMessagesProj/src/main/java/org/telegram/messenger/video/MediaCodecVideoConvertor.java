@@ -296,8 +296,8 @@ public class MediaCodecVideoConvertor {
                             }
 
                             if (!decoderDone) {
-                                outputSurface.drawImage();
                                 long presentationTime = (long) (framesCount / 30.0f * 1000L * 1000L * 1000L);
+                                outputSurface.drawImage(presentationTime);
                                 inputSurface.setPresentationTime(presentationTime);
                                 inputSurface.swapBuffers();
                                 framesCount++;
@@ -517,7 +517,7 @@ public class MediaCodecVideoConvertor {
                             mediaMuxer = new MP4Builder().createMovie(movie, isSecret, outputMimeType.equals("video/hevc"));
                             if (audioIndex >= 0) {
                                 MediaFormat audioFormat = extractor.getTrackFormat(audioIndex);
-                                copyAudioBuffer = convertVideoParams.soundInfos.isEmpty() && audioFormat.getString(MediaFormat.KEY_MIME).equals(MediaController.AUIDO_MIME_TYPE) || audioFormat.getString(MediaFormat.KEY_MIME).equals("audio/mpeg");
+                                copyAudioBuffer = convertVideoParams.soundInfos.isEmpty() && audioFormat.getString(MediaFormat.KEY_MIME).equals(MediaController.AUDIO_MIME_TYPE) || audioFormat.getString(MediaFormat.KEY_MIME).equals("audio/mpeg");
 
                                 if (audioFormat.getString(MediaFormat.KEY_MIME).equals("audio/unknown")) {
                                     audioIndex = -1;
@@ -799,7 +799,7 @@ public class MediaCodecVideoConvertor {
                                                     FileLog.e(e);
                                                 }
                                                 if (!errorWait) {
-                                                    outputSurface.drawImage();
+                                                    outputSurface.drawImage(info.presentationTimeUs * 1000);
                                                     inputSurface.setPresentationTime(info.presentationTimeUs * 1000);
                                                     inputSurface.swapBuffers();
                                                 }
