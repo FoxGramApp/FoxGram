@@ -45,7 +45,7 @@ public class LauncherIconController {
         ARI("AriIcon", R.color.icon_9_launcher_background, R.mipmap.thank_u_next_fg, R.string.AriIcon, false, true),
         PREMIUM("PremiumIcon", R.drawable.premium_bg_sa, R.mipmap.premium_icon_fg, R.string.AppIconPremium, true),
         GALAXY("GalaxyIcon", R.drawable.galaxy_bg, R.drawable.icon_launcher_foreground, R.string.AppIconGalaxy, true),
-        SHINE("ShineIcon", R.drawable.shining_fox_bg, R.drawable.icon_launcher_foreground, R.string.AppIconFoxgram, true);
+        SHINE("ShineIcon", R.mipmap.shining_fox_bg, R.drawable.icon_launcher_foreground, R.string.AppIconFoxgram, true);
 
         public final String key;
         public final int background;
