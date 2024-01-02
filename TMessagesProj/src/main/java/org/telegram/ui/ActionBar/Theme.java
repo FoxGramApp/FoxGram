@@ -5719,22 +5719,6 @@ public class Theme {
                     background,
                     maskDrawable
                 );
-            } else {
-                StateListDrawable stateListDrawable = new StateListDrawable();
-                Drawable ripple;
-                if (hasNonzeroRadii(radii)) {
-                    ripple = new ShapeDrawable(new RoundRectShape(calcRadii(radii), null, null));
-                    ((ShapeDrawable) ripple).getPaint().setColor(rippleColor);
-                } else {
-                    ripple = new ShapeDrawable(new RectShape());
-                    ((ShapeDrawable) ripple).getPaint().setColor(rippleColor);
-                }
-                Drawable pressed = background == null ? ripple : new LayerDrawable(new Drawable[] { background, ripple });
-                stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, pressed);
-                stateListDrawable.addState(new int[]{android.R.attr.state_selected}, pressed);
-                stateListDrawable.addState(StateSet.WILD_CARD, background);
-                return stateListDrawable;
-            }
         }
 
         private static Drawable createCircle(int rippleColor) {
@@ -5759,15 +5743,6 @@ public class Theme {
                     background,
                     new CircleDrawable(radius)
                 );
-            } else {
-                StateListDrawable stateListDrawable = new StateListDrawable();
-                Drawable ripple = new CircleDrawable(radius, rippleColor);
-                Drawable pressed = background == null ? ripple : new LayerDrawable(new Drawable[] { background, ripple });
-                stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, pressed);
-                stateListDrawable.addState(new int[]{android.R.attr.state_selected}, pressed);
-                stateListDrawable.addState(StateSet.WILD_CARD, background);
-                return stateListDrawable;
-            }
         }
 
         private static class CircleDrawable extends Drawable {

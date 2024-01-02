@@ -11415,7 +11415,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     position == questionRow || position == devicesRow || position == filtersRow || position == stickersRow ||
                     position == faqRow || position == policyRow || position == sendLogsRow || position == sendLastLogsRow ||
                     position == clearLogsRow || position == switchBackendRow || position == setAvatarRow || position == addToGroupButtonRow ||
-                    position == addToContactsRow || position == liteModeRow || position == colorSettingsRow ||) {
+                    position == addToContactsRow || position == liteModeRow || position == colorSettingsRow ||
                     position == premiumGiftingRow) {
                 return VIEW_TYPE_TEXT;
             } else if (position == notificationsDividerRow) {
