@@ -1838,7 +1838,7 @@ public class FilterTabsView extends FrameLayout {
 
         @Override
         public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            if (!FoxConfig.hideAllTab && MessagesController.getInstance(UserConfig.selectedAccount).premiumLocked && (!isEditing || (viewHolder.getAdapterPosition() == 0 && tabs.get(0).isDefault && !UserConfig.getInstance(UserConfig.selectedAccount).isPremium()))) {
+            if (!FoxConfig.hideAllTab && MessagesController.getInstance(UserConfig.selectedAccount).premiumFeaturesBlocked() && (!isEditing || (viewHolder.getAdapterPosition() == 0 && tabs.get(0).isDefault && !UserConfig.getInstance(UserConfig.selectedAccount).isPremium()))) {
                 return makeMovementFlags(0, 0);
             }
             return makeMovementFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, 0);
@@ -1846,7 +1846,7 @@ public class FilterTabsView extends FrameLayout {
 
         @Override
         public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
-            if (!FoxConfig.hideAllTab && MessagesController.getInstance(UserConfig.selectedAccount).premiumLocked && ((source.getAdapterPosition() == 0 || target.getAdapterPosition() == 0) && !UserConfig.getInstance(UserConfig.selectedAccount).isPremium())) {
+            if (!FoxConfig.hideAllTab && MessagesController.getInstance(UserConfig.selectedAccount).premiumFeaturesBlocked() && ((source.getAdapterPosition() == 0 || target.getAdapterPosition() == 0) && !UserConfig.getInstance(UserConfig.selectedAccount).isPremium())) {
                 return false;
             }
             adapter.swapElements(source.getAdapterPosition(), target.getAdapterPosition());

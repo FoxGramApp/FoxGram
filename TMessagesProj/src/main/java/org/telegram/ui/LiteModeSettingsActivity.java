@@ -64,6 +64,7 @@ import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.SeekBarAccessibilityDelegate;
 import org.telegram.ui.Components.SeekBarView;
 import org.telegram.ui.Components.Switch;
+import org.telegram.ui.Components.ThanosEffect;
 
 import java.util.ArrayList;
 
@@ -252,6 +253,9 @@ public class LiteModeSettingsActivity extends BaseFragment {
             items.add(Item.asCheckbox(LocaleController.getString("LiteOptionsSpoiler"), LiteMode.FLAG_CHAT_SPOILER));
             //items.add(Item.asCheckbox(LocaleController.getString("LiteOptionsBlur"), LiteMode.FLAG_CHAT_BLUR));
             items.add(Item.asCheckbox(LocaleController.getString("LiteOptionsScale"), LiteMode.FLAG_CHAT_SCALE));
+            if (ThanosEffect.supports()) {
+                items.add(Item.asCheckbox(LocaleController.getString("LiteOptionsThanos"), LiteMode.FLAG_CHAT_THANOS));
+            }
         }
         items.add(Item.asSwitch(R.drawable.msg2_call_earpiece, LocaleController.getString("LiteOptionsCalls"), LiteMode.FLAG_CALLS_ANIMATIONS));
         items.add(Item.asSwitch(R.drawable.msg2_videocall, LocaleController.getString("LiteOptionsAutoplayVideo"), LiteMode.FLAG_AUTOPLAY_VIDEOS));
@@ -619,6 +623,9 @@ public class LiteModeSettingsActivity extends BaseFragment {
                 count--;
             }*/
             if ((flags & LiteMode.FLAG_CHAT_BLUR) > 0) {
+                count--;
+            }
+            if (!ThanosEffect.supports() && (flags & LiteMode.FLAG_CHAT_THANOS) > 0) {
                 count--;
             }
             return count;

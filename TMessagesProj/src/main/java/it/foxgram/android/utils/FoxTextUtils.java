@@ -130,6 +130,10 @@ public class FoxTextUtils {
         }
     }
 
+    public static String getAppLanguage() {
+        return LocaleController.getInstance().getCurrentLocale().getLanguage();
+    }
+
     public static String getOfficialChannel() {
         Locale locale = LocaleController.getInstance().getCurrentLocale();
         return locale.getLanguage().equals(new Locale("it").getLanguage()) ? "FoxGramAppIT" : "FoxGramApp";
