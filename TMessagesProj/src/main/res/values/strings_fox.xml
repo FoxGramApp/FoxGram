@@ -390,4 +390,16 @@
     <string name="ChangeIconDesc">Since on Android 12 the monet icon was forced and you upgraded to Android 13, you need to change the app icon to the default one for a better support.</string>
     <string name="AppCrashed">Something went wrong</string>
     <string name="AppCrashedDesc">FoxGram has stopped working. Please, send logs to the developers so that they can fix this bug as soon as possible.</string>
+    <!-- Locked Chats -->
+    <string name="LockedChats">Locked Chats</string>
+    <string name="RemoveLockedChats">Remove Locked Chats</string>
+    <string name="RemoveLockedChatsDesc">Do you want remove all your locked chats?</string>
+    <string name="RemoveLock">Remove Lock</string>
+    <string name="LockedChatsInfoHeader">Manage Locked Chats</string>
+    <string name="LockOtherChats">Lock other chats</string>
+    <string name="RemoveAllLocks">Remove all Locks</string>
+    <string name="RemoveChatLock">Do you want remove lock for %s?</string>
+    <string name="LockedChatsDesc">Lock chats with your Telegram Passcode.</string>
+    <string name="LockedChatsDesc2">Selected chat can be only unlocked with your Telegram Passcode.</string>
+    <string name="UnlockChatDesc">Use your Telegram Passcode to unlock the chat.</string>
 </resources>

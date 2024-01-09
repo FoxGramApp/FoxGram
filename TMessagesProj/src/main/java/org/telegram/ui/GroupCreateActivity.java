@@ -121,6 +121,7 @@ public class GroupCreateActivity extends BaseFragment implements NotificationCen
     private int chatType = ChatObject.CHAT_TYPE_CHAT;
     private boolean forImport;
     private boolean isAlwaysShare;
+    private boolean isChatLock;
     private boolean isNeverShare;
     private boolean addToGroup;
     private boolean searchWas;
@@ -350,12 +351,13 @@ public class GroupCreateActivity extends BaseFragment implements NotificationCen
         chatType = args.getInt("chatType", ChatObject.CHAT_TYPE_CHAT);
         forImport = args.getBoolean("forImport", false);
         isAlwaysShare = args.getBoolean("isAlwaysShare", false);
+        isChatLock = args.getBoolean("isChatLock", false);
         isNeverShare = args.getBoolean("isNeverShare", false);
         addToGroup = args.getBoolean("addToGroup", false);
         chatAddType = args.getInt("chatAddType", 0);
         chatId = args.getLong("chatId");
         channelId = args.getLong("channelId");
-        if (isAlwaysShare || isNeverShare || addToGroup) {
+        if (isAlwaysShare || isNeverShare || addToGroup || isChatLock) {
             maxCount = 0;
         } else {
             maxCount = chatType == ChatObject.CHAT_TYPE_CHAT ? getMessagesController().maxMegagroupCount : getMessagesController().maxBroadcastCount;
@@ -429,6 +431,8 @@ public class GroupCreateActivity extends BaseFragment implements NotificationCen
                 } else {
                     actionBar.setTitle(LocaleController.getString("AlwaysShareWithTitle", R.string.AlwaysShareWithTitle));
                 }
+            } else if (isChatLock) {
+                actionBar.setTitle(LocaleController.getString("FilterAddChats", R.string.FilterAddChats));
             } else if (isNeverShare) {
                 if (chatAddType == 2) {
                     actionBar.setTitle(LocaleController.getString("FilterNeverShow", R.string.FilterNeverShow));
@@ -785,7 +789,7 @@ public class GroupCreateActivity extends BaseFragment implements NotificationCen
         Drawable drawable = Theme.createSimpleSelectorCircleDrawable(AndroidUtilities.dp(56), Theme.getColor(Theme.key_chats_actionBackground), Theme.getColor(Theme.key_chats_actionPressedBackground));
         floatingButton.setBackgroundDrawable(drawable);
         floatingButton.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_chats_actionIcon), PorterDuff.Mode.MULTIPLY));
-        if (isNeverShare || isAlwaysShare || addToGroup) {
+        if (isNeverShare || isAlwaysShare || addToGroup || isChatLock) {
             floatingButton.setImageResource(R.drawable.floating_check);
         } else {
             BackDrawable backDrawable = new BackDrawable(false);
@@ -826,7 +830,7 @@ public class GroupCreateActivity extends BaseFragment implements NotificationCen
         } else {
             if (addToGroup || (adapter != null && adapter.noContactsStubRow == 0)) {
                 editText.setHintText(LocaleController.getString("SearchForPeople", R.string.SearchForPeople));
-            } else if (isAlwaysShare || isNeverShare) {
+            } else if (isAlwaysShare || isNeverShare || isChatLock) {
                 editText.setHintText(LocaleController.getString("SearchForPeopleAndGroups", R.string.SearchForPeopleAndGroups));
             } else {
                 editText.setHintText(LocaleController.getString("SendMessageTo", R.string.SendMessageTo));
@@ -1039,7 +1043,7 @@ public class GroupCreateActivity extends BaseFragment implements NotificationCen
                     for (int a = 0; a < selectedContacts.size(); a++) {
                         result.add(selectedContacts.keyAt(a));
                     }
-                    if (isAlwaysShare || isNeverShare) {
+                    if (isAlwaysShare || isNeverShare || isChatLock) {
                         if (delegate != null) {
                             delegate.didSelectUsers(result);
                         }
@@ -1074,7 +1078,7 @@ public class GroupCreateActivity extends BaseFragment implements NotificationCen
     }
 
     private void updateHint() {
-        if (!isAlwaysShare && !isNeverShare && !addToGroup) {
+        if (!isAlwaysShare && !isNeverShare && !addToGroup && !isChatLock) {
             if (chatType == ChatObject.CHAT_TYPE_CHANNEL) {
                 actionBar.setSubtitle(LocaleController.formatPluralString("Members", selectedContacts.size()));
             } else {
@@ -1159,7 +1163,7 @@ public class GroupCreateActivity extends BaseFragment implements NotificationCen
                 }
                 contacts.add(user);
             }
-            if (isNeverShare || isAlwaysShare) {
+            if (isNeverShare || isAlwaysShare || isChatLock) {
                 ArrayList<TLRPC.Dialog> dialogs = getMessagesController().getAllDialogs();
                 for (int a = 0, N = dialogs.size(); a < N; a++) {
                     TLRPC.Dialog dialog = dialogs.get(a);
@@ -1470,12 +1474,12 @@ public class GroupCreateActivity extends BaseFragment implements NotificationCen
             searchResult.clear();
             searchResultNames.clear();
             searchAdapterHelper.mergeResults(null);
-            searchAdapterHelper.queryServerSearch(null, true, isAlwaysShare || isNeverShare, false, false, false, 0, false, 0, 0);
+            searchAdapterHelper.queryServerSearch(null, true, isAlwaysShare || isNeverShare || isChatLock, false, false, false, 0, false, 0, 0);
             notifyDataSetChanged();
 
             if (!TextUtils.isEmpty(query)){
                 Utilities.searchQueue.postRunnable(searchRunnable = () -> AndroidUtilities.runOnUIThread(() -> {
-                    searchAdapterHelper.queryServerSearch(query, true, isAlwaysShare || isNeverShare, true, false, false, 0, false, 0, 0);
+                    searchAdapterHelper.queryServerSearch(query, true, isAlwaysShare || isNeverShare || isChatLock, true, false, false, 0, false, 0, 0);
                     Utilities.searchQueue.postRunnable(searchRunnable = () -> {
                         String search1 = query.trim().toLowerCase();
                         if (search1.length() == 0) {

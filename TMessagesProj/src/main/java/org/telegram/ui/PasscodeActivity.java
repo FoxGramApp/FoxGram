@@ -93,6 +93,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import it.foxgram.android.PasscodeController;
 import it.foxgram.ui.AccountProtectionSettings;
 import it.foxgram.ui.AccountProtectionIntro;
+import it.foxgram.ui.LockedChatsSettings;
 
 public class PasscodeActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
     public final static int TYPE_MANAGE_CODE_SETTINGS = 0,
@@ -143,6 +144,7 @@ public class PasscodeActivity extends BaseFragment implements NotificationCenter
     private int changePasscodeRow;
     private int fingerprintRow;
     private int autoLockRow;
+    private int lockedChatsRow;
     private int accountProtectionRow;
     private int autoLockDetailRow;
 
@@ -376,6 +378,8 @@ public class PasscodeActivity extends BaseFragment implements NotificationCenter
                             UserConfig.getInstance(currentAccount).saveConfig(false);
                         });
                         showDialog(builder.create());
+                    } else if (position == lockedChatsRow) {
+                        presentFragment(new LockedChatsSettings());
                     } else if (position == fingerprintRow) {
                         SharedConfig.useFingerprint = !SharedConfig.useFingerprint;
                         UserConfig.getInstance(currentAccount).saveConfig(false);
@@ -924,6 +928,7 @@ public class PasscodeActivity extends BaseFragment implements NotificationCenter
         }
         autoLockRow = rowCount++;
         accountProtectionRow = rowCount++;
+        lockedChatsRow = rowCount++;
         autoLockDetailRow = rowCount++;
         captureHeaderRow = rowCount++;
         captureRow = rowCount++;
@@ -1210,7 +1215,7 @@ public class PasscodeActivity extends BaseFragment implements NotificationCenter
         @Override
         public boolean isEnabled(RecyclerView.ViewHolder holder) {
             int position = holder.getAdapterPosition();
-            return position == fingerprintRow || position == autoLockRow || position == accountProtectionRow || position == captureRow ||
+            return position == fingerprintRow || position == autoLockRow || position == lockedChatsRow || position == accountProtectionRow || position == captureRow ||
                     position == changePasscodeRow || position == disablePasscodeRow;
         }
 
@@ -1292,6 +1297,8 @@ public class PasscodeActivity extends BaseFragment implements NotificationCenter
                         textCell.setTextColor(Theme.getColor(Theme.key_dialogTextRed));
                     } else if (position == accountProtectionRow) {
                         textCell.setText(LocaleController.getString("AccountProtection", R.string.AccountProtection), false);
+                    } else if (position == lockedChatsRow) {
+                        textCell.setText(LocaleController.getString("LockedChats", R.string.LockedChats), false);
                     }
                     break;
                 }
@@ -1333,7 +1340,7 @@ public class PasscodeActivity extends BaseFragment implements NotificationCenter
         public int getItemViewType(int position) {
             if (position == fingerprintRow || position == captureRow) {
                 return VIEW_TYPE_CHECK;
-            } else if (position == changePasscodeRow || position == autoLockRow || position == disablePasscodeRow || position == accountProtectionRow) {
+            } else if (position == changePasscodeRow || position == autoLockRow || position == disablePasscodeRow || position == accountProtectionRow || position == lockedChatsRow) {
                 return VIEW_TYPE_SETTING;
             } else if (position == autoLockDetailRow || position == captureDetailRow || position == hintRow) {
                 return VIEW_TYPE_INFO;

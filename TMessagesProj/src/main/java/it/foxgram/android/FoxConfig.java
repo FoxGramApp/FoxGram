@@ -111,6 +111,7 @@ public class FoxConfig extends SettingsController {
     public static boolean editInAppBlur;
     public static boolean unlockedSecretIcons;
     public static boolean showStories;
+    public static boolean lockChats;
     public static String translationTarget = "app";
     public static String translationKeyboardTarget = "app";
     public static String oldBuildVersion = null;
@@ -234,6 +235,7 @@ public class FoxConfig extends SettingsController {
             idType = getInt("idType", 0);
             searchIconInActionBar = getBoolean("searchIconInActionBar", false);
             autoTranslate = getBoolean("autoTranslate", false);
+            lockChats = getBoolean("lockChats", false);
             showPencilIcon = getBoolean("showPencilIcon", false);
             keepTranslationMarkdown = getBoolean("keepTranslationMarkdown", true);
             hideTimeOnSticker = getBoolean("hideTimeOnSticker", false);
@@ -496,6 +498,10 @@ public class FoxConfig extends SettingsController {
 
     public static void setAutoTranslate(boolean enabled) {
         putValue("autoTranslate", autoTranslate = enabled);
+    }
+
+    public static void setLockChats(boolean enabled) {
+        putValue("lockChats", lockChats = enabled);
     }
 
     public static void setTranslationProvider(int provider) {

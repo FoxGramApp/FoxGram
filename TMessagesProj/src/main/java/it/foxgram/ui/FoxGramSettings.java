@@ -270,12 +270,15 @@ public class FoxGramSettings extends BaseSettingsActivity {
                 CharSequence[] items = new CharSequence[]{
                         FoxConfig.unlockedSecretIcons ? LocaleController.getString("HideSecretIcons", R.string.HideSecretIcons) : LocaleController.getString("ShowSecretIcons", R.string.ShowSecretIcons),
                         LocaleController.getString("DebugMenuCheckAppUpdate", R.string.DebugMenuCheckAppUpdate),
+                        LocaleController.getString("LockedChats", R.string.LockedChats),
                 };
                 builder.setItems(items, (dialog, which) -> {
                     if (which == 0) {
                         FoxConfig.toggleUnlockedSecretIcons();
                     } else if (which == 1) {
                         ((LaunchActivity) getParentActivity()).checkAppUpdate(true);
+                    } else if (which == 2) {
+                        presentFragment(new LockedChatsListActivity());
                     }
                 });
                 showDialog(builder.create());
