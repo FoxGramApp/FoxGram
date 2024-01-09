@@ -12,13 +12,11 @@ import org.json.JSONObject;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildVars;
-import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.tgnet.TLRPC;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import it.foxgram.android.FoxConfig;
 import it.foxgram.android.StoreUtils;
@@ -26,6 +24,7 @@ import it.foxgram.android.entities.HTMLKeeper;
 import it.foxgram.android.http.FileDownloader;
 import it.foxgram.android.http.StandardHTTPRequest;
 import it.foxgram.android.magic.FOXENC;
+import it.foxgram.android.utils.FoxTextUtils;
 
 public class UpdateManager {
 
@@ -45,18 +44,21 @@ public class UpdateManager {
         void onResult(boolean result);
     }
 
+    public static boolean betaMode() {
+        return FoxConfig.betaUpdates && !StoreUtils.isDownloadedFromAnyStore();
+    }
+
     public static void getChangelogs(ChangelogCallback changelogCallback) {
         if (checkingForChangelogs) return;
         checkingForChangelogs = true;
-        boolean betaMode = FoxConfig.betaUpdates && !StoreUtils.isDownloadedFromAnyStore();
-        Locale locale = LocaleController.getInstance().getCurrentLocale();
         new Thread() {
             @Override
             public void run() {
                 try {
-                    String url = betaMode ? String.format("https://raw.githubusercontent.com/FoxGramApp/FoxAssets/main/Updates/Previews/updates_info_%s.json", locale.getLanguage()) : String.format("https://raw.githubusercontent.com/FoxGramApp/FoxAssets/main/Updates/updates_info_%s.json", locale.getLanguage());
+                    String url = "https://raw.githubusercontent.com/FoxGramApp/FoxAssets/main/Updates/update_params.json";
                     JSONObject obj = new JSONObject(new StandardHTTPRequest(url).request());
-                    String changelog_text = obj.getString("changelog");
+                    boolean skipBeta = obj.getBoolean("skip_beta_check");
+                    String changelog_text = obj.getString(String.format("%s-%s-changelog", FoxTextUtils.getAppLanguage(), betaMode() && !skipBeta ? "beta" : "stable"));
                     if (!changelog_text.equals("null")) {
                         AndroidUtilities.runOnUIThread(() -> changelogCallback.onSuccess(HTMLKeeper.htmlToEntities(changelog_text, null, true, false)));
                     }
@@ -91,14 +93,12 @@ public class UpdateManager {
     }
 
     private static void checkInternal(UpdateCallback updateCallback, AppUpdateInfo psAppUpdateInfo) {
-        boolean betaMode = FoxConfig.betaUpdates && !StoreUtils.isDownloadedFromAnyStore();
-        Locale locale = LocaleController.getInstance().getCurrentLocale();
         new Thread() {
             @Override
             public void run() {
                 try {
                     PackageInfo pInfo = ApplicationLoader.applicationContext.getPackageManager().getPackageInfo(ApplicationLoader.applicationContext.getPackageName(), 0);
-                    String url = betaMode ? String.format("https://raw.githubusercontent.com/Pierlu096/FoxAssets/main/Updates/Previews/updates_info_%s.json", locale.getLanguage()) : String.format("https://raw.githubusercontent.com/Pierlu096/FoxAssets/main/Updates/updates_info_%s.json", locale.getLanguage());
+                    String url = "https://raw.githubusercontent.com/Pierlu096/FoxAssets/main/Updates/update_params.json";
                     JSONObject update = new JSONObject(new StandardHTTPRequest(url).request());
                     int remoteVersion = BuildVars.IGNORE_VERSION_CHECK ? Integer.MAX_VALUE : (psAppUpdateInfo != null ? PlayStoreAPI.getVersionCode(psAppUpdateInfo) : update.getInt("build_number"));
                     int code = pInfo.versionCode / 10;

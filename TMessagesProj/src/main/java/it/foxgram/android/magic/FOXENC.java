@@ -19,6 +19,7 @@ import java.util.Iterator;
 import it.foxgram.android.FoxConfig;
 import it.foxgram.android.MenuOrderController;
 import it.foxgram.android.updates.PlayStoreAPI;
+import it.foxgram.android.updates.UpdateManager;
 import it.foxgram.android.utils.FoxTextUtils;
 
 public class FOXENC {
@@ -102,13 +103,15 @@ public class FOXENC {
         public UpdateAvailable() {}
 
         public void fromJSON(JSONObject updateInfo) throws JSONException {
-            title = updateInfo.getString("title");
-            description = updateInfo.getString("description");
-            note = updateInfo.getString("note");
-            banner = updateInfo.getString("banner");
-            version = updateInfo.getInt("build_number");
-            fileLink = updateInfo.getString(FoxTextUtils.getAbi());
-            fileSize = updateInfo.getLong(String.format("size_%s", FoxTextUtils.getAbi()));
+            boolean skipBeta = updateInfo.getBoolean("skip_beta_check");
+
+            title = updateInfo.getString(String.format("%s-title", UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
+            description = updateInfo.getString(String.format("%s-description", UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
+            note = updateInfo.getString(String.format("%s-note", UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
+            banner = updateInfo.getString(String.format("%s-banner", UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
+            version = updateInfo.getInt(String.format("%s-banner", UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
+            fileLink = updateInfo.getString(String.format("%s-" + FoxTextUtils.getAbi(), UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
+            fileSize = updateInfo.getLong(String.format("%s-size_%s", UpdateManager.betaMode() && !skipBeta ? "beta" : "stable", FoxTextUtils.getAbi()));
         }
 
         @Override
