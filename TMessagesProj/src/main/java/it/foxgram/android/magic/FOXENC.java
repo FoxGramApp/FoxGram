@@ -105,11 +105,11 @@ public class FOXENC {
         public void fromJSON(JSONObject updateInfo) throws JSONException {
             boolean skipBeta = updateInfo.getBoolean("skip_beta_check");
 
-            title = updateInfo.getString(String.format("%s-title", UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
-            description = updateInfo.getString(String.format("%s-description", UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
-            note = updateInfo.getString(String.format("%s-note", UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
+            title = updateInfo.getString(String.format("%s-%s-title", FoxTextUtils.getAppLanguage(), UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
+            description = updateInfo.getString(String.format("%s-%s-description", FoxTextUtils.getAppLanguage(), UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
+            note = updateInfo.getString(String.format("%s-%s-note", FoxTextUtils.getAppLanguage(), UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
             banner = updateInfo.getString(String.format("%s-banner", UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
-            version = updateInfo.getInt(String.format("%s-banner", UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
+            version = updateInfo.getInt(String.format("%s-build_number", UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
             fileLink = updateInfo.getString(String.format("%s-" + FoxTextUtils.getAbi(), UpdateManager.betaMode() && !skipBeta ? "beta" : "stable"));
             fileSize = updateInfo.getLong(String.format("%s-size_%s", UpdateManager.betaMode() && !skipBeta ? "beta" : "stable", FoxTextUtils.getAbi()));
         }
