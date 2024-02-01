@@ -123,7 +123,7 @@ public class TranslateController extends BaseController {
             if (messageObject.replyToForumTopic != null) {
                 topicId = messageObject.replyToForumTopic.id;
             } else {
-                topicId = MessageObject.getTopicId(messageObject.messageOwner, true);
+                topicId = (int) MessageObject.getTopicId(messageObject.currentAccount, messageObject.messageOwner, true);
             }
         }
         return getIdWithTopic(messageObject.getDialogId(), topicId);

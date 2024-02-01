@@ -9555,7 +9555,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             if (topicId == 0 && ChatObject.canChangeChatInfo(chat)) {
                 createAutoDeleteItem(context);
             }
-            createAutoTranslateItem(ProfileActivity.this, -chatId, topicId, chat);
+            createAutoTranslateItem(ProfileActivity.this, -chatId, (int) topicId, chat);
             if (ChatObject.isChannel(chat)) {
                 /*if (isTopic) {
                     if (ChatObject.canManageTopic(currentAccount, chat, topicId)) {

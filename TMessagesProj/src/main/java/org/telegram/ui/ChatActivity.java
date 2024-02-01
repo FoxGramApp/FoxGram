@@ -2642,8 +2642,8 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         if (isTopic) {
             getMessagesController().getTopicsController().getTopicRepliesCount(dialog_id, getTopicId());
         }
-        if (AutoTranslateConfig.isAutoTranslateEnabled(dialog_id, getTopicId()) && LanguageDetector.hasSupport() && TranslatorHelper.isSupportAutoTranslate()) {
-            getMessagesController().getTranslateController().toggleTranslatingDialog(dialog_id, getTopicId(), true);
+        if (AutoTranslateConfig.isAutoTranslateEnabled(dialog_id, (int) getTopicId()) && LanguageDetector.hasSupport() && TranslatorHelper.isSupportAutoTranslate()) {
+            getMessagesController().getTranslateController().toggleTranslatingDialog(dialog_id, (int) getTopicId(), true);
         }
         getMessagesController().getSavedMessagesController().preloadDialogs();
         return true;
@@ -2952,7 +2952,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 chatActivity != null && chatActivity.getCurrentEncryptedChat() == null && !chatActivity.textSelectionHelper.isDescription &&
                 selectedView != null && selectedView.getMessageObject() != null && selectedView.getMessageObject().type != MessageObject.TYPE_STORY &&
                 !selectedView.getMessageObject().isVoiceTranscriptionOpen() && !selectedView.getMessageObject().isInvoice() &&
-                !chatActivity.getMessagesController().getTranslateController().isTranslatingDialog(chatActivity.dialog_id, chatActivity.getTopicId()) &&
+                !chatActivity.getMessagesController().getTranslateController().isTranslatingDialog(chatActivity.dialog_id, (int) chatActivity.getTopicId()) &&
                 !UserObject.isService(chatActivity.dialog_id)
             );
         }
@@ -3306,8 +3306,8 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 } else if (id == search) {
                     openSearchWithText(null);
                 } else if (id == translate) {
-                    getMessagesController().getTranslateController().setHideTranslateDialog(getDialogId(), getTopicId(), false, true);
-                    if (!getMessagesController().getTranslateController().toggleTranslatingDialog(getDialogId(), getTopicId(), true)) {
+                    getMessagesController().getTranslateController().setHideTranslateDialog(getDialogId(), (int) getTopicId(), false, true);
+                    if (!getMessagesController().getTranslateController().toggleTranslatingDialog(getDialogId(), (int) getTopicId(), true)) {
                         updateTopPanel(true);
                     }
                 } else if (id == call || id == video_call) {
@@ -8006,7 +8006,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 if (!getUserConfig().isPremium() && FoxConfig.translationProvider == Translator.PROVIDER_TELEGRAM) {
                     showDialog(new PremiumFeatureBottomSheet(ChatActivity.this, PremiumPreviewFragment.PREMIUM_FEATURE_TRANSLATIONS, false));
                 } else {
-                    getMessagesController().getTranslateController().toggleTranslatingDialog(getDialogId(), getTopicId());
+                    getMessagesController().getTranslateController().toggleTranslatingDialog(getDialogId(), (int) getTopicId());
                 }
                 updateTopPanel(true);
             }
@@ -8812,7 +8812,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         if (!getMessagesController().getTranslateController().isFeatureAvailable() || !getMessagesController().getTranslateController().isChatTranslateEnabled()) {
             translateItem.setVisibility(View.GONE);
         } else {
-            translateItem.setVisibility(getMessagesController().getTranslateController().isTranslateDialogHidden(getDialogId(), getTopicId()) || !getMessagesController().getTranslateController().isDialogTranslatable(getDialogId(), getTopicId()) ? View.VISIBLE : View.GONE);
+            translateItem.setVisibility(getMessagesController().getTranslateController().isTranslateDialogHidden(getDialogId(), (int) getTopicId()) || !getMessagesController().getTranslateController().isDialogTranslatable(getDialogId(), (int) getTopicId()) ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -20024,7 +20024,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             groupChecked.add(group.groupId);
                         }
                         if (messageObject != null && messageObject.replyMessageObject != null) {
-                            MessageObject translatedReplyMessageObject = getMessagesController().getTranslateController().findReplyMessageObject(dialogId, getTopicId(), messageObject.replyMessageObject.getId());
+                            MessageObject translatedReplyMessageObject = getMessagesController().getTranslateController().findReplyMessageObject(dialogId, (int) getTopicId(), messageObject.replyMessageObject.getId());
                             if (translatedReplyMessageObject != null) {
                                 messageObject.replyMessageObject.messageOwner.translatedText = translatedReplyMessageObject.messageOwner.translatedText;
                                 messageObject.replyMessageObject.messageOwner.translatedToLanguage = translatedReplyMessageObject.messageOwner.translatedToLanguage;
@@ -23966,7 +23966,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         boolean showAddMembersToGroup = preferences.getBoolean("dialog_bar_invite" + did, false);
         TLRPC.EmojiStatus showEmojiStatusReport = currentUser != null && (showReport || showBlock) && (currentUser.emoji_status instanceof TLRPC.TL_emojiStatus || currentUser.emoji_status instanceof TLRPC.TL_emojiStatusUntil && ((TLRPC.TL_emojiStatusUntil) currentUser.emoji_status).until > (int) (System.currentTimeMillis() / 1000)) ? currentUser.emoji_status : null;
         boolean showRestartTopic = !isInPreviewMode() && forumTopic != null && forumTopic.closed && !forumTopic.hidden && ChatObject.canManageTopic(currentAccount, currentChat, forumTopic);
-        boolean showTranslate = getMessagesController().getTranslateController().isDialogTranslatable(getDialogId(), getTopicId()) && !getMessagesController().getTranslateController().isTranslateDialogHidden(getDialogId(), getTopicId()) && getMessagesController().getTranslateController().isChatTranslateEnabled() && TranslatorHelper.isSupportAutoTranslate();
+        boolean showTranslate = getMessagesController().getTranslateController().isDialogTranslatable(getDialogId(), (int) getTopicId()) && !getMessagesController().getTranslateController().isTranslateDialogHidden(getDialogId(), (int) getTopicId()) && getMessagesController().getTranslateController().isChatTranslateEnabled() && TranslatorHelper.isSupportAutoTranslate();
         if (showRestartTopic) {
             shownRestartTopic = true;
         }
