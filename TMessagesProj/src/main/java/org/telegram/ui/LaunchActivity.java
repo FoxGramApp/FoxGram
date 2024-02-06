@@ -1791,7 +1791,6 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         long push_user_id = 0;
         long push_chat_id = 0;
         long profile_user_id = 0;
-        int push_topic_id = 0;
         long[] push_story_dids = null;
         int push_story_id = 0;
         long push_topic_id = 0;
@@ -6540,7 +6539,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             showUpdateActivity(UserConfig.selectedAccount, SharedConfig.pendingAppUpdate, true);
         }
         checkAppUpdate();
-        LanguageController.loadRemoteLanguageFromCache(LocaleController.getInstance().getCurrentLocale(), false, null);
+        LanguageController.loadRemoteLanguageFromCache(LocaleController.getInstance().getCurrentLocale(), false);
         UpdateSignaling.checkWasUpdated();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

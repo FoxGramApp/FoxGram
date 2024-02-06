@@ -25,14 +25,14 @@ import it.foxgram.ui.AutoTranslateGroupInfo;
 public class AutoTranslatePopupWrapper {
     public ActionBarPopupWindow.ActionBarPopupWindowLayout windowLayout;
     private final long dialogId;
-    private final int topicId;
+    private final long topicId;
     private final ActionBarMenuSubItem defaultItem;
     private ActionBarMenuSubItem enableItem;
     private ActionBarMenuSubItem disableItem;
     private FragmentDelegate delegate;
     private final boolean isAlwaysShare;
 
-    public AutoTranslatePopupWrapper(BaseFragment fragment, boolean isForum, ActionBarMenuItem otherItem, long dialogId, int topicId, boolean isAlwaysShare, Theme.ResourcesProvider resourcesProvider) {
+    public AutoTranslatePopupWrapper(BaseFragment fragment, boolean isForum, ActionBarMenuItem otherItem, long dialogId, long topicId, boolean isAlwaysShare, Theme.ResourcesProvider resourcesProvider) {
         this.isAlwaysShare = isAlwaysShare;
         Context context = fragment.getParentActivity();
         windowLayout = new ActionBarPopupWindow.ActionBarPopupWindowLayout(context, 0, resourcesProvider);

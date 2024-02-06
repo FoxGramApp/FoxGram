@@ -3330,8 +3330,8 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 } else if (id == search) {
                     openSearchWithText(isSupportedTags() ? "" : null);
                 } else if (id == translate) {
-                    getMessagesController().getTranslateController().setHideTranslateDialog(getDialogId(), (int) getTopicId(), false, true);
-                    if (!getMessagesController().getTranslateController().toggleTranslatingDialog(getDialogId(), (int) getTopicId(), true)) {
+                    getMessagesController().getTranslateController().setHideTranslateDialog(getDialogId(), getTopicId(), false, true);
+                    if (!getMessagesController().getTranslateController().toggleTranslatingDialog(getDialogId(), getTopicId(), true)) {
                         updateTopPanel(true);
                     }
                 } else if (id == call || id == video_call) {
@@ -8918,10 +8918,8 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         searchBeginningButton.setImageResource(R.drawable.round_arrow_upward_white_28);
         searchBeginningButton.setColorFilter(new PorterDuffColorFilter(getThemedColor(Theme.key_chat_searchPanelIcons), PorterDuff.Mode.MULTIPLY));
         searchBeginningButton.setBackgroundDrawable(Theme.createSelectorDrawable(getThemedColor(Theme.key_actionBarActionModeDefaultSelector), 1));
-        searchContainer.addView(searchBeginningButton, LayoutHelper.createFrame(48, 48, Gravity.RIGHT | Gravity.TOP, 0, 0, 96, 0));
-        searchBeginningButton.setOnClickListener(view -> {
-            jumpToDate(1375315200);
-        });
+        searchContainer.addView(searchBeginningButton, LayoutHelper.createFrame(48, 48, Gravity.RIGHT | Gravity.TOP, 0, 0, 150, 0));
+        searchBeginningButton.setOnClickListener(view -> jumpToDate(1375315200));
         searchBeginningButton.setContentDescription(LocaleController.getString("JumpToBeginning", R.string.JumpToBeginning));
 
         if (currentChat != null && (!ChatObject.isChannel(currentChat) || currentChat.megagroup)) {
@@ -20974,7 +20972,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             groupChecked.add(group.groupId);
                         }
                         if (messageObject != null && messageObject.replyMessageObject != null) {
-                            MessageObject translatedReplyMessageObject = getMessagesController().getTranslateController().findReplyMessageObject(dialogId, (int) getTopicId(), messageObject.replyMessageObject.getId());
+                            MessageObject translatedReplyMessageObject = getMessagesController().getTranslateController().findReplyMessageObject(dialogId, getTopicId(), messageObject.replyMessageObject.getId());
                             if (translatedReplyMessageObject != null) {
                                 messageObject.replyMessageObject.messageOwner.translatedText = translatedReplyMessageObject.messageOwner.translatedText;
                                 messageObject.replyMessageObject.messageOwner.translatedToLanguage = translatedReplyMessageObject.messageOwner.translatedToLanguage;
@@ -34686,7 +34684,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                 }
                             }
                         };
-                        LaunchActivity.instance.checkAppUpdate(true, progressDialogCurrent);
+                        LaunchActivity.instance.checkAppUpdate(true);
                     }
                 } else if (BuildVars.isHuaweiStoreApp()){
                     Browser.openUrl(getContext(), BuildVars.HUAWEI_STORE_URL);

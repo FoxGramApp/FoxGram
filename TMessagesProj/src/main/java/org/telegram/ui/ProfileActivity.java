@@ -3907,7 +3907,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                             } else if (which == 7) {
                                 SharedConfig.toggleRoundCamera16to9();
                             } else if (which == 8) {
-                                ((LaunchActivity) getParentActivity()).checkAppUpdate(true, null);
+                                ((LaunchActivity) getParentActivity()).checkAppUpdate(true);
                             } else if (which == 9) {
                                 getMessagesStorage().readAllDialogs(-1);
                             } else if (which == 10) {
@@ -9573,7 +9573,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             if (topicId == 0 && ChatObject.canChangeChatInfo(chat)) {
                 createAutoDeleteItem(context);
             }
-            createAutoTranslateItem(ProfileActivity.this, -chatId, (int) topicId, chat);
+            createAutoTranslateItem(ProfileActivity.this, -chatId, topicId, chat);
             if (ChatObject.isChannel(chat)) {
                 /*if (isTopic) {
                     if (ChatObject.canManageTopic(currentAccount, chat, topicId)) {
@@ -9887,7 +9887,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private void createAutoTranslateItem(BaseFragment context, long dialogId) {
         createAutoTranslateItem(context, dialogId, 0, null);
     }
-    private void createAutoTranslateItem(BaseFragment context, long dialogId, int topicId, TLRPC.Chat chat) {
+    private void createAutoTranslateItem(BaseFragment context, long dialogId, long topicId, TLRPC.Chat chat) {
         boolean supportAutoTranslate = LanguageDetector.hasSupport() && TranslatorHelper.isSupportAutoTranslate() && getMessagesController().getTranslateController().isFeatureAvailable();
         if (supportAutoTranslate) {
             AutoTranslatePopupWrapper autoTranslatePopupWrapper = new AutoTranslatePopupWrapper(context, ChatObject.isForum(currentChat), otherItem, dialogId, topicId, arguments.getBoolean("isAlwaysShare", false), getResourceProvider());

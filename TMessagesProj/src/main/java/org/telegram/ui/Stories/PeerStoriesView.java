@@ -3327,7 +3327,7 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
         buttonTextView.setOnClickListener(v -> {
             if (ApplicationLoader.isStandaloneBuild()) {
                 if (LaunchActivity.instance != null) {
-                    LaunchActivity.instance.checkAppUpdate(true, null);
+                    LaunchActivity.instance.checkAppUpdate(true);
                 }
             } else if (BuildVars.isHuaweiStoreApp()){
                 Browser.openUrl(getContext(), BuildVars.HUAWEI_STORE_URL);

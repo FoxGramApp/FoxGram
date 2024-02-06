@@ -43,7 +43,7 @@ public class TranslateButton extends FrameLayout {
 
     private final int currentAccount;
     private final long dialogId;
-    private final int topicId;
+    private final long topicId;
     private final BaseFragment fragment;
 
     private final Theme.ResourcesProvider resourcesProvider;
@@ -56,10 +56,10 @@ public class TranslateButton extends FrameLayout {
     private final boolean[] accusative = new boolean[1];
 
     public TranslateButton(Context context, ChatActivity chatActivity, Theme.ResourcesProvider resourcesProvider) {
-        this(context, chatActivity.getCurrentAccount(), chatActivity.getDialogId(), (int) chatActivity.getTopicId(), chatActivity, resourcesProvider);
+        this(context, chatActivity.getCurrentAccount(), chatActivity.getDialogId(), chatActivity.getTopicId(), chatActivity, resourcesProvider);
     }
 
-    public TranslateButton(Context context, int currentAccount, long dialogId, int topicId, BaseFragment fragment, Theme.ResourcesProvider resourcesProvider) {
+    public TranslateButton(Context context, int currentAccount, long dialogId, long topicId, BaseFragment fragment, Theme.ResourcesProvider resourcesProvider) {
         super(context);
 
         this.currentAccount = currentAccount;

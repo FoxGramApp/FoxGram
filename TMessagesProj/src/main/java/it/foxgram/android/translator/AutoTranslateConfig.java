@@ -23,7 +23,7 @@ import it.foxgram.android.FoxConfig;
 public class AutoTranslateConfig {
     private static final SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("OwlDialogConfig", Context.MODE_PRIVATE);
 
-    public static boolean isAutoTranslateEnabled(long dialogId, int topicId) {
+    public static boolean isAutoTranslateEnabled(long dialogId, long topicId) {
         if (hasAutoTranslateConfig(dialogId, topicId)) {
             return preferences.getBoolean(getExceptionsKey(dialogId, topicId), FoxConfig.autoTranslate);
         } else {
@@ -31,11 +31,11 @@ public class AutoTranslateConfig {
         }
     }
 
-    public static boolean hasAutoTranslateConfig(long dialogId, int topicId) {
+    public static boolean hasAutoTranslateConfig(long dialogId, long topicId) {
         return preferences.contains(getExceptionsKey(dialogId, topicId));
     }
 
-    public static void setEnabled(long dialogId, int topicId, boolean enable) {
+    public static void setEnabled(long dialogId, long topicId, boolean enable) {
         preferences.edit().putBoolean(getExceptionsKey(dialogId, topicId), enable).apply();
         if (isAllTopicEnabledOrDisabled(dialogId, enable) || topicId == 0) {
             preferences.edit().putBoolean(getExceptionsKey(dialogId, 0), enable).apply();
@@ -43,7 +43,7 @@ public class AutoTranslateConfig {
         }
     }
 
-    public static boolean isDefault(long dialogId, int topicId) {
+    public static boolean isDefault(long dialogId, long topicId) {
         return !hasAutoTranslateConfig(dialogId, topicId);
     }
 
@@ -74,7 +74,7 @@ public class AutoTranslateConfig {
         }
     }
 
-    public static boolean isLastTopicAvailable(long dialogId, int topicId, boolean enabled) {
+    public static boolean isLastTopicAvailable(long dialogId, long topicId, boolean enabled) {
         List<TLRPC.TL_forumTopic> topics = MessagesController.getInstance(UserConfig.selectedAccount).getTopicsController().getTopics(-dialogId);
         if (topics != null) {
             return topics.stream().filter(t -> t.id != topicId).anyMatch(t -> isAutoTranslateEnabled(dialogId, t.id) == enabled);
@@ -83,11 +83,11 @@ public class AutoTranslateConfig {
         }
     }
 
-    public static void setDefault(long dialogId, int topicId) {
+    public static void setDefault(long dialogId, long topicId) {
         preferences.edit().remove(getExceptionsKey(dialogId, topicId)).apply();
     }
 
-    private static String getExceptionsKey(long dialogId, int topicId) {
+    private static String getExceptionsKey(long dialogId, long topicId) {
         return "exceptions_" + UserConfig.selectedAccount + "_" + dialogId + (topicId != 0 ? "_" + topicId : "");
     }
 
@@ -98,7 +98,7 @@ public class AutoTranslateConfig {
                     String key = entry.getKey();
                     String[] parts = key.split("_");
                     long dialogId = Long.parseLong(parts[1]);
-                    int topicId = parts.length > 2 ? Integer.parseInt(parts[2]) : 0;
+                    long topicId = parts.length > 2 ? Integer.parseInt(parts[2]) : 0;
                     boolean value = (boolean) entry.getValue();
                     setEnabled(dialogId, topicId, value);
                     preferences.edit().remove(key).apply();
@@ -107,11 +107,11 @@ public class AutoTranslateConfig {
 
     public static class AutoTranslateException {
         public final long dialogId;
-        public final int topicId;
+        public final long topicId;
         public final boolean isAllow;
         public TLObject chat;
 
-        public AutoTranslateException(long dialogId, int topicId, boolean isAllow) {
+        public AutoTranslateException(long dialogId, long topicId, boolean isAllow) {
             this.dialogId = dialogId;
             this.topicId = topicId;
             this.isAllow = isAllow;
